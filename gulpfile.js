@@ -2,13 +2,10 @@
 
 // ソース元の対象ファイル
 var source_file = './src/js/main.js';
-
 // 出力ディレクトリ
 var dist_dir = './public/js/';
-
 // アプリファイル
 var appjs = 'main.js';
-
 // minify後のアプリ名ファイル
 var appminjs = 'main.min.js';
 
