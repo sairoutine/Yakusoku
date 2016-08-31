@@ -18,11 +18,17 @@ var rename     = require('gulp-rename');
 var plumber    = require('gulp-plumber');
 var runSequence= require('run-sequence');
 var path       = require('path');
+var notify     = require('gulp-notify');
 
 gulp.task('browserify', function() {
 	return browserify(source_file)
 		.bundle()
-		.pipe(plumber())
+		.on('error', function(err){   //ここからエラーだった時の記述
+			// デスクトップ通知
+			var error_handle = notify.onError('<%= error.message %>');
+			error_handle(err);
+			this.emit('end');
+		})
 		.pipe(source(appjs))
 		.pipe(gulp.dest(dist_dir));
 });

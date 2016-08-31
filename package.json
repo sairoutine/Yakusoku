@@ -28,5 +28,8 @@
     "run-sequence": "1.1.5",
     "vinyl-source-stream": "1.1.0"
   },
-  "homepage": "https://github.com/sairoutine/TouhouRyuryusei#readme"
+  "homepage": "https://github.com/sairoutine/TouhouRyuryusei#readme",
+  "dependencies": {
+    "gulp-notify": "2.2.0"
+  }
 }
