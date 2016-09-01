@@ -188,6 +188,12 @@ Game.prototype = {
 		// 次の描画タイミングで再呼び出ししてループ
 		requestAnimationFrame(this.run.bind(this));
 	},
+	notifyLoadingDone: function() {
+
+	},
 };
+
+
+
 
 module.exports = Game;

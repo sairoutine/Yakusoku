@@ -39,7 +39,7 @@ LoadingScene.prototype.run = function(){
 	// 素材を全て読み込んだら
 	if(this.loaded_material_num() >= Constant.ALL_MATERIAL_NUM) {
 		// 読み込み終わったことをゲームに通知
-		//TODO: this.game.notifyLoadingDone();
+		this.game.notifyLoadingDone();
 	}
 };
 
