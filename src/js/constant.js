@@ -75,4 +75,8 @@ var Constant = {
 	},
 };
 
+// 全素材数
+Constant.ALL_MATERIAL_NUM = Object.keys(Constant.IMAGES).length + Object.keys(Constant.SOUNDS).length + Object.keys(Constant.BGMS).length;
+
+
 module.exports = Constant;

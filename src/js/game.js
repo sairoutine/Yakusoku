@@ -2,8 +2,9 @@
 
 var config = require('./config');
 var constant = require('./constant');
-/*
+
 var LoadingScene  = require('./scene/loading');
+/*
 var TitleScene    = require('./scene/title');
 var PrologueScene = require('./scene/prologue');
 var StageScene    = require('./scene/stage');
@@ -22,9 +23,9 @@ var Game = function(mainCanvas) {
 
 	// シーン一覧
 	this.scenes = [];
-	/*
 	// ローディング画面
-	this.scenes[ this.LOADING_SCENE ] = new LoadingScene(this);
+	this.scenes[ constant.LOADING_SCENE ] = new LoadingScene(this);
+	/*
 	// オープニング画面
 	this.scenes[ this.OPENING_SCENE ] = new OpeningScene(this);
 	// ゲーム画面
