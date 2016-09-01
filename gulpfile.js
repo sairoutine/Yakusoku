@@ -19,6 +19,7 @@ var plumber    = require('gulp-plumber');
 var runSequence= require('run-sequence');
 var path       = require('path');
 var notify     = require('gulp-notify');
+var browserSync= require('browser-sync').create();
 
 gulp.task('browserify', function() {
 	return browserify(source_file)
@@ -41,14 +42,28 @@ gulp.task('minify', function() {
 });
 
 
+gulp.task('reload', function () {
+	return browserSync.reload();
+});
+
 gulp.task('build', function(callback) {
 	return runSequence(
 		'browserify',
 		'minify',
+		'reload',
 		callback
 	);
 });
 
-gulp.task('watch', function() {
+gulp.task('browser-sync', function() {
+	return browserSync.init({
+		server: {
+			baseDir: "public",
+			index: "index.html"
+		}
+	});
+});
+
+gulp.task('watch', ['browser-sync'], function() {
 	gulp.watch('src/js/**/*.js', ['build']);
 });
