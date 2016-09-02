@@ -69,7 +69,7 @@ LoadingScene.prototype._loadImages = function() {
 	var image;
 	for(var key in Config.IMAGES) {
 		image = new Image();
-		image.src = this.game.IMAGES[key] ;
+		image.src = Config.IMAGES[key] ;
 		image.onload = onload_function;
 		this.game.images[key] = image;
 	}
