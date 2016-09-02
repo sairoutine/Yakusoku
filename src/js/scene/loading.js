@@ -2,7 +2,7 @@
 
 /* ローディング画面 */
 var Util = require('../util');
-var Constant = require('../constant');
+var Config = require('../config');
 var BaseScene = require('./base');
 
 var LoadingScene = function(game) {
@@ -37,7 +37,7 @@ LoadingScene.prototype.loaded_material_num = function() {
 // フレーム処理
 LoadingScene.prototype.run = function(){
 	// 素材を全て読み込んだら
-	if(this.loaded_material_num() >= Constant.ALL_MATERIAL_NUM) {
+	if(this.loaded_material_num() >= Config.ALL_MATERIAL_NUM) {
 		// 読み込み終わったことをゲームに通知
 		this.game.notifyLoadingDone();
 	}
@@ -45,14 +45,14 @@ LoadingScene.prototype.run = function(){
 
 // 画面更新
 LoadingScene.prototype.updateDisplay = function(){
-	var material_num = Constant.ALL_MATERIAL_NUM;
+	var material_num = Config.ALL_MATERIAL_NUM;
 	var loaded_material_num = this.loaded_material_num();
 
 	this.game.surface.save( ) ;
 	this.game.surface.clearRect( 0, 0, this.game.width, this.game.height);
 	this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
 	this.game.surface.textAlign = 'right';
-	this.game.surface.font = "30px 'ＭＳ ゴシック'";
+	this.game.surface.font = "30px 'Comic Sans MS'" ;
 	this.game.surface.fillText('Now Loading...', 400, 225);
 	this.game.surface.fillText( loaded_material_num + '/' + material_num, 400, 285);
 	this.game.surface.restore();
@@ -67,7 +67,7 @@ LoadingScene.prototype._loadImages = function() {
 	};
 
 	var image;
-	for(var key in Constant.IMAGES) {
+	for(var key in Config.IMAGES) {
 		image = new Image();
 		image.src = this.game.IMAGES[key] ;
 		image.onload = onload_function;
@@ -85,8 +85,8 @@ LoadingScene.prototype._loadSounds = function() {
 	};
 
 	var conf, audio;
-	for(var key in Constant.SOUNDS) {
-		conf = Constant.SOUNDS[key];
+	for(var key in Config.SOUNDS) {
+		conf = Config.SOUNDS[key];
 		audio = new Audio(conf.path);
 		audio.volume = conf.volume;
 		audio.addEventListener('canplay', onload_function);
@@ -105,8 +105,8 @@ LoadingScene.prototype._loadBGMs = function() {
 	};
 
 	var conf, audio;
-	for(var key in Constant.BGMS) {
-		conf = Constant.BGMS[key];
+	for(var key in Config.BGMS) {
+		conf = Config.BGMS[key];
 		audio = new Audio(conf.path);
 		audio.volume = conf.volume;
 		audio.addEventListener('canplay', onload_function);
