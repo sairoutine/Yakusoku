@@ -2,37 +2,9 @@
 'use strict';
 
 var Config = {
-
-
-};
-
-module.exports = Config;
-
-},{}],2:[function(require,module,exports){
-'use strict';
-
-var Constant = {
-	DEBUG: true,
-
-	LOADING_SCENE:  0,
-	TITLE_SCENE:    1,
-	PROLOGUE_SCENE: 2,
-	STAGE_SCENE:    3,
-	EPILOGUE_SCENE: 4,
-	ENDING_SCENE:   5,
-
-	BUTTON_LEFT:  0x01,
-	BUTTON_UP:    0x02,
-	BUTTON_RIGHT: 0x04,
-	BUTTON_DOWN:  0x08,
-	BUTTON_Z:     0x10,
-	BUTTON_X:     0x20,
-	BUTTON_SHIFT: 0x40,
-	BUTTON_SPACE: 0x80,
-
 	IMAGES: {
-		/*
 		title_bg:  'image/title_bg.png',
+		/*
 		stage1_bg: 'image/stage1_bg.jpg',
 		reimu:     'image/reimu.png',
 		shot:      'image/shot.png',
@@ -43,12 +15,12 @@ var Constant = {
 	},
 
 	SOUNDS: {
-		/*
 		select: {
 			id: 0x01,
 			path:   'sound/select.wav',
 			volume: 1.00
 		},
+		/*
 		shot: {
 			id: 0x02,
 			path: 'sound/shot.wav',
@@ -73,11 +45,11 @@ var Constant = {
 	},
 
 	BGMS:{
-		/*
 		title: {
 			path:   'bgm/title.mp3',
 			volume: 0.40
 		},
+		/*
 		stage1: {
 			path:   'bgm/stage1.mp3',
 			volume: 0.50
@@ -87,8 +59,33 @@ var Constant = {
 };
 
 // 全素材数
-Constant.ALL_MATERIAL_NUM = Object.keys(Constant.IMAGES).length + Object.keys(Constant.SOUNDS).length + Object.keys(Constant.BGMS).length;
+Config.ALL_MATERIAL_NUM = Object.keys(Config.IMAGES).length + Object.keys(Config.SOUNDS).length + Object.keys(Config.BGMS).length;
 
+
+module.exports = Config;
+
+},{}],2:[function(require,module,exports){
+'use strict';
+
+var Constant = {
+	DEBUG: true,
+
+	LOADING_SCENE:  0,
+	TITLE_SCENE:    1,
+	PROLOGUE_SCENE: 2,
+	STAGE_SCENE:    3,
+	EPILOGUE_SCENE: 4,
+	ENDING_SCENE:   5,
+
+	BUTTON_LEFT:  0x01,
+	BUTTON_UP:    0x02,
+	BUTTON_RIGHT: 0x04,
+	BUTTON_DOWN:  0x08,
+	BUTTON_Z:     0x10,
+	BUTTON_X:     0x20,
+	BUTTON_SHIFT: 0x40,
+	BUTTON_SPACE: 0x80,
+};
 
 module.exports = Constant;
 
@@ -99,8 +96,8 @@ var config = require('./config');
 var constant = require('./constant');
 
 var LoadingScene  = require('./scene/loading');
-/*
 var TitleScene    = require('./scene/title');
+/*
 var PrologueScene = require('./scene/prologue');
 var StageScene    = require('./scene/stage');
 var EpilogueScene = require('./scene/epilogue');
@@ -120,9 +117,9 @@ var Game = function(mainCanvas) {
 	this.scenes = [];
 	// ローディング画面
 	this.scenes[ constant.LOADING_SCENE ] = new LoadingScene(this);
+	// タイトル画面
+	this.scenes[ constant.TITLE_SCENE ] = new TitleScene(this);
 	/*
-	// オープニング画面
-	this.scenes[ this.OPENING_SCENE ] = new OpeningScene(this);
 	// ゲーム画面
 	this.scenes[ this.STAGE_SCENE ]   = new StageScene(this);
 	// エンディング画面
@@ -283,11 +280,19 @@ Game.prototype = {
 		// 次の描画タイミングで再呼び出ししてループ
 		requestAnimationFrame(this.run.bind(this));
 	},
+	// ローディング画面が終わったら
+	notifyLoadingDone: function() {
+		// オープニング画面に切り替え
+		this.changeScene(constant.TITLE_SCENE);
+	},
 };
+
+
+
 
 module.exports = Game;
 
-},{"./config":1,"./constant":2,"./scene/loading":6}],4:[function(require,module,exports){
+},{"./config":1,"./constant":2,"./scene/loading":6,"./scene/title":7}],4:[function(require,module,exports){
 'use strict';
 var Game = require('./game');
 
@@ -352,7 +357,7 @@ module.exports = BaseScene;
 
 /* ローディング画面 */
 var Util = require('../util');
-var Constant = require('../constant');
+var Config = require('../config');
 var BaseScene = require('./base');
 
 var LoadingScene = function(game) {
@@ -387,22 +392,22 @@ LoadingScene.prototype.loaded_material_num = function() {
 // フレーム処理
 LoadingScene.prototype.run = function(){
 	// 素材を全て読み込んだら
-	if(this.loaded_material_num() >= Constant.ALL_MATERIAL_NUM) {
+	if(this.loaded_material_num() >= Config.ALL_MATERIAL_NUM) {
 		// 読み込み終わったことをゲームに通知
-		//TODO: this.game.notifyLoadingDone();
+		this.game.notifyLoadingDone();
 	}
 };
 
 // 画面更新
 LoadingScene.prototype.updateDisplay = function(){
-	var material_num = Constant.ALL_MATERIAL_NUM;
+	var material_num = Config.ALL_MATERIAL_NUM;
 	var loaded_material_num = this.loaded_material_num();
 
 	this.game.surface.save( ) ;
 	this.game.surface.clearRect( 0, 0, this.game.width, this.game.height);
 	this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
 	this.game.surface.textAlign = 'right';
-	this.game.surface.font = "30px 'ＭＳ ゴシック'";
+	this.game.surface.font = "30px 'Comic Sans MS'" ;
 	this.game.surface.fillText('Now Loading...', 400, 225);
 	this.game.surface.fillText( loaded_material_num + '/' + material_num, 400, 285);
 	this.game.surface.restore();
@@ -417,9 +422,9 @@ LoadingScene.prototype._loadImages = function() {
 	};
 
 	var image;
-	for(var key in Constant.IMAGES) {
+	for(var key in Config.IMAGES) {
 		image = new Image();
-		image.src = this.game.IMAGES[key] ;
+		image.src = Config.IMAGES[key] ;
 		image.onload = onload_function;
 		this.game.images[key] = image;
 	}
@@ -435,8 +440,8 @@ LoadingScene.prototype._loadSounds = function() {
 	};
 
 	var conf, audio;
-	for(var key in Constant.SOUNDS) {
-		conf = Constant.SOUNDS[key];
+	for(var key in Config.SOUNDS) {
+		conf = Config.SOUNDS[key];
 		audio = new Audio(conf.path);
 		audio.volume = conf.volume;
 		audio.addEventListener('canplay', onload_function);
@@ -455,8 +460,8 @@ LoadingScene.prototype._loadBGMs = function() {
 	};
 
 	var conf, audio;
-	for(var key in Constant.BGMS) {
-		conf = Constant.BGMS[key];
+	for(var key in Config.BGMS) {
+		conf = Config.BGMS[key];
 		audio = new Audio(conf.path);
 		audio.volume = conf.volume;
 		audio.addEventListener('canplay', onload_function);
@@ -468,7 +473,91 @@ LoadingScene.prototype._loadBGMs = function() {
 
 module.exports = LoadingScene;
 
-},{"../constant":2,"../util":7,"./base":5}],7:[function(require,module,exports){
+},{"../config":1,"../util":8,"./base":5}],7:[function(require,module,exports){
+'use strict';
+
+/* タイトル画面 */
+
+// 基底クラス
+var BaseScene = require('./base');
+
+var Util = require('../util');
+var Constant = require('../constant');
+
+
+// 画面切り替え効果時間
+var SHOW_TRANSITION_COUNT = 100;
+
+
+var OpeningScene = function(game) {
+	BaseScene.apply(this, arguments);
+};
+
+// 基底クラスを継承
+Util.inherit(OpeningScene, BaseScene);
+
+// 初期化
+OpeningScene.prototype.init = function() {
+	BaseScene.prototype.init.apply(this, arguments);
+
+	this.game.playBGM('title');
+};
+
+// フレーム処理
+OpeningScene.prototype.run = function(){
+	BaseScene.prototype.run.apply(this, arguments);
+
+	if(this.game.isKeyPush(Constant.BUTTON_Z)) {
+			this.game.playSound('select');
+			this.game.notifyOpeningDone();
+	}
+};
+
+// 画面更新
+OpeningScene.prototype.updateDisplay = function(){
+	this.game.surface.clearRect( 0, 0, this.game.width, this.game.height ) ;
+
+	this.game.surface.save();
+
+	// 切り替え効果
+	if( this.frame_count < SHOW_TRANSITION_COUNT ) {
+		this.game.surface.globalAlpha = this.frame_count / SHOW_TRANSITION_COUNT;
+	}
+	else {
+		this.game.surface.globalAlpha = 1.0;
+	}
+
+	var title_bg = this.game.getImage('title_bg');
+
+	// 魔理沙背景画像表示
+	this.game.surface.drawImage(title_bg,
+					0,
+					0,
+					title_bg.width,
+					title_bg.height,
+					0,
+					0,
+					this.game.width,
+					this.game.height);
+
+	this.game.surface.font = "24px 'Comic Sans MS'" ;
+	this.game.surface.textAlign = 'center' ;
+	this.game.surface.textBaseAlign = 'middle' ;
+	this.game.surface.fillStyle = 'rgb( 0, 0, 0 )' ;
+	//this.game.surface.fillText( 'Touhou Project', 120, 200 ) ;
+	//this.game.surface.fillText( 'on Javascript',  120, 250 ) ;
+	//
+	if (Math.floor(this.frame_count / 50) % 2 === 0) {
+		this.game.surface.fillText('Press Z to Start',450, 350 ) ;
+	}
+
+	this.game.surface.restore();
+
+};
+
+module.exports = OpeningScene;
+
+},{"../constant":2,"../util":8,"./base":5}],8:[function(require,module,exports){
 'use strict';
 var Util = {
 	inherit: function( child, parent ) {
