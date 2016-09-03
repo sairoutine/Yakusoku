@@ -68,9 +68,12 @@ OpeningScene.prototype.updateDisplay = function(){
 	this.game.surface.textAlign = 'center' ;
 	this.game.surface.textBaseAlign = 'middle' ;
 	this.game.surface.fillStyle = 'rgb( 0, 0, 0 )' ;
-	this.game.surface.fillText( 'Touhou Project', 120, 200 ) ;
-	this.game.surface.fillText( 'on Javascript',  120, 250 ) ;
-	this.game.surface.fillText('Press Z to Start',120, 350 ) ;
+	//this.game.surface.fillText( 'Touhou Project', 120, 200 ) ;
+	//this.game.surface.fillText( 'on Javascript',  120, 250 ) ;
+	//
+	if (Math.floor(this.frame_count / 50) % 2 === 0) {
+		this.game.surface.fillText('Press Z to Start',450, 350 ) ;
+	}
 
 	this.game.surface.restore();
 
