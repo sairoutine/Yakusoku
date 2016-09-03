@@ -488,6 +488,9 @@ var Constant = require('../constant');
 // 画面切り替え効果時間
 var SHOW_TRANSITION_COUNT = 100;
 
+// スタートメッセージを表示する間隔
+var SHOW_START_MESSAGE_INTERVAL = 50;
+
 
 var OpeningScene = function(game) {
 	BaseScene.apply(this, arguments);
@@ -500,7 +503,7 @@ Util.inherit(OpeningScene, BaseScene);
 OpeningScene.prototype.init = function() {
 	BaseScene.prototype.init.apply(this, arguments);
 
-	this.game.playBGM('title');
+	//TODO: this.game.playBGM('title');
 };
 
 // フレーム処理
@@ -529,7 +532,7 @@ OpeningScene.prototype.updateDisplay = function(){
 
 	var title_bg = this.game.getImage('title_bg');
 
-	// 魔理沙背景画像表示
+	// 背景画像表示
 	this.game.surface.drawImage(title_bg,
 					0,
 					0,
@@ -544,11 +547,10 @@ OpeningScene.prototype.updateDisplay = function(){
 	this.game.surface.textAlign = 'center' ;
 	this.game.surface.textBaseAlign = 'middle' ;
 	this.game.surface.fillStyle = 'rgb( 0, 0, 0 )' ;
-	//this.game.surface.fillText( 'Touhou Project', 120, 200 ) ;
-	//this.game.surface.fillText( 'on Javascript',  120, 250 ) ;
-	//
-	if (Math.floor(this.frame_count / 50) % 2 === 0) {
-		this.game.surface.fillText('Press Z to Start',450, 350 ) ;
+
+	// N秒ごとに start メッセージを点滅
+	if (Math.floor(this.frame_count / SHOW_START_MESSAGE_INTERVAL) % 2 === 0) {
+		this.game.surface.fillText('Press Z to Start', 450, 350);
 	}
 
 	this.game.surface.restore();
