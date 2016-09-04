@@ -5,6 +5,7 @@ var constant = require('./constant');
 
 var LoadingScene  = require('./scene/loading');
 var TitleScene    = require('./scene/title');
+var PrologueScene    = require('./scene/prologue');
 /*
 var PrologueScene = require('./scene/prologue');
 var StageScene    = require('./scene/stage');
@@ -27,6 +28,9 @@ var Game = function(mainCanvas) {
 	this.scenes[ constant.LOADING_SCENE ] = new LoadingScene(this);
 	// タイトル画面
 	this.scenes[ constant.TITLE_SCENE ] = new TitleScene(this);
+	// プロローグ画面
+	this.scenes[ constant.PROLOGUE_SCENE ] = new PrologueScene(this);
+
 	/*
 	// ゲーム画面
 	this.scenes[ this.STAGE_SCENE ]   = new StageScene(this);
@@ -196,7 +200,12 @@ Game.prototype = {
 	// タイトル画面が終わったら
 	notifyTitleDone: function() {
 		// プロローグ画面に切り替え
-		//this.changeScene(constant.PROLOGUE_SCENE);
+		this.changeScene(constant.PROLOGUE_SCENE);
+	},
+	// プロローグ画面が終わったら
+	notifyPrologueDone: function() {
+		// ステージ画面に切り替え
+		this.changeScene(constant.STAGE_SCENE);
 	},
 
 };
