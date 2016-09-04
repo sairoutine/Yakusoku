@@ -193,6 +193,12 @@ Game.prototype = {
 		// オープニング画面に切り替え
 		this.changeScene(constant.TITLE_SCENE);
 	},
+	// タイトル画面が終わったら
+	notifyTitleDone: function() {
+		// プロローグ画面に切り替え
+		//this.changeScene(constant.PROLOGUE_SCENE);
+	},
+
 };
 
 

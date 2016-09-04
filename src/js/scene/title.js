@@ -36,7 +36,7 @@ OpeningScene.prototype.run = function(){
 
 	if(this.game.isKeyPush(Constant.BUTTON_Z)) {
 			this.game.playSound('select');
-			this.game.notifyOpeningDone();
+			this.game.notifyTitleDone();
 	}
 };
 
