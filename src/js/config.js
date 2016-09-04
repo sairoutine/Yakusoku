@@ -3,6 +3,7 @@
 var Config = {
 	IMAGES: {
 		title_bg:  'image/title_bg.png',
+		prologue_bg:  'image/prologue_bg.jpg',
 		/*
 		stage1_bg: 'image/stage1_bg.jpg',
 		reimu:     'image/reimu.png',
@@ -17,7 +18,7 @@ var Config = {
 		select: {
 			id: 0x01,
 			path:   'sound/select.wav',
-			volume: 1.00
+			volume: 0.80
 		},
 		/*
 		shot: {
@@ -48,6 +49,11 @@ var Config = {
 			path:   'bgm/title.mp3',
 			volume: 0.40
 		},
+		prologue: {
+			path:   'bgm/prologue.mp3',
+			volume: 0.40
+		},
+
 		/*
 		stage1: {
 			path:   'bgm/stage1.mp3',
