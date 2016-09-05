@@ -4,6 +4,9 @@ var Config = {
 	IMAGES: {
 		title_bg:  'image/title_bg.png',
 		prologue_bg:  'image/prologue_bg.jpg',
+		renko_normal:  'image/renko_normal.jpg',
+		merry_normal:  'image/merry_normal.jpg',
+		ganger_normal:  'image/ganger_normal.jpg',
 		/*
 		stage1_bg: 'image/stage1_bg.jpg',
 		reimu:     'image/reimu.png',
@@ -61,6 +64,22 @@ var Config = {
 		},
 	   */
 	},
+	MESSAGE_SPEED: 10,
+	PROLOGUE_LEFT_X: 20,
+	PROLOGUE_LEFT_Y: 130,
+	PROLOGUE_RIGHT_X: 350,
+	PROLOGUE_RIGHT_Y: 130,
+	CHARA: {
+		"ganger": {
+			name: "？？？",
+		},
+		"renko": {
+			name: "蓮子",
+		},
+		"merry": {
+			name: "メリー",
+		},
+	}
 };
 
 // 全素材数
