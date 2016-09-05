@@ -57,7 +57,7 @@ var Serif= [
 		exp: "normal",
 	},
 	{
-		serif: "約束といえば、前に博霊神社の入り口を調べようって約束してたわね。",
+		serif: "約束といえば、前に博霊神社の入り口を\n調べようって約束してたわね。",
 		chara: "renko",
 		pos: "left",
 		exp: "normal",
