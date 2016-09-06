@@ -64,9 +64,12 @@ var Config = {
 		},
 	   */
 	},
+	// テキストの typography スピード
 	MESSAGE_SPEED: 10,
+	// ノベルパートにおける左キャラの(x, y)
 	PROLOGUE_LEFT_X: 20,
 	PROLOGUE_LEFT_Y: 130,
+	// ノベルパートにおける右キャラの(x, y)
 	PROLOGUE_RIGHT_X: 350,
 	PROLOGUE_RIGHT_Y: 130,
 	CHARA: {
