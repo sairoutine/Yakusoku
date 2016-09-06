@@ -133,8 +133,12 @@ Scene.prototype.updateDisplay = function(){
 	}
 
 	// メッセージ表示
-	if (this.serif.text()) {
-		this.game.surface.fillText(this.serif.text(), 15, 380);
+	if (this.serif.lines().length) {
+		var y = 380;
+		for(var i = 0, len = this.serif.lines().length; i < len; i++) {
+			this.game.surface.fillText(this.serif.lines()[i], 15, y);
+			y+= 30;
+		}
 	}
 
 	this.game.surface.restore();

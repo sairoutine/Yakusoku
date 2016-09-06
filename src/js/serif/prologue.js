@@ -105,7 +105,7 @@ var Serif= [
 		exp: "normal",
 	},
 	{
-		serif: "はぁ…。そんなに嫌なら仕方ないわね。私一人で行ってくるわ。",
+		serif: "はぁ…。そんなに嫌なら仕方ないわね。\n私一人で行ってくるわ。",
 		chara: "renko",
 		pos: "left",
 		exp: "normal",

@@ -11,7 +11,7 @@ var Logic = function (script) {
 	this.script = script;
 
 	// どこまでセリフが進んだか
-	this.progress = 0;
+	this.progress = null;
 
 	this.timeoutID = null;
 
@@ -20,10 +20,11 @@ var Logic = function (script) {
 	this.left_exp = null;
 	this.right_chara = null;
 	this.right_exp = null;
-
+	this.is_left  = null;
+	this.is_right = null;
 
 	// 現在表示しているメッセージ
-	this.printing_message = "";
+	this.printing_lines = [];
 };
 
 Logic.prototype.init = function () {
@@ -34,9 +35,10 @@ Logic.prototype.init = function () {
 	this.left_exp = null;
 	this.right_chara = null;
 	this.right_exp = null;
+	this.is_left  = null;
+	this.is_right = null;
 
-
-	this.printing_message = "";
+	this.printing_lines = [];
 
 	this.next(); // start
 };
@@ -100,7 +102,8 @@ Logic.prototype._printMessage = function (message) {
 	var idx = 0;
 
 	// 表示されているセリフをクリア
-	self.printing_message = "";
+	self.line_num = 0;
+	self.printing_lines = [];
 
 	var output = function() {
 		if (idx >= char_length) return;
@@ -112,12 +115,13 @@ Logic.prototype._printMessage = function (message) {
 		idx++;
 
 		if (ch === "\n") {
-			//speed += 1000;
-			//self.printing_message = "";
-			self.printing_message = self.printing_message + ch;
+			self.line_num++;
 		}
 		else {
-			self.printing_message = self.printing_message + ch;
+			if(!self.printing_lines[self.line_num]) {
+				self.printing_lines[self.line_num] = "";
+			}
+			self.printing_lines[self.line_num] = self.printing_lines[self.line_num] + ch;
 		}
 
 		self.timeoutID = setTimeout(output, speed);
@@ -135,8 +139,8 @@ Logic.prototype.text_name = function () {
 	return(this.talking_chara ? Config.CHARA[this.talking_chara].name : "");
 };
 
-Logic.prototype.text = function () {
-	return this.printing_message;
+Logic.prototype.lines = function () {
+	return this.printing_lines;
 };
 
 module.exports = Logic;
