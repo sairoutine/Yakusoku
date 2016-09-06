@@ -7,37 +7,37 @@ var Config = require("../config");
 
 
 var Logic = function (script) {
+	this.timeoutID = null;
+
 	// セリフテキスト
 	this.script = script;
 
-	// どこまでセリフが進んだか
+	// どこまでスクリプトが進んだか
 	this.progress = null;
 
-	this.timeoutID = null;
+	this.left_chara_id  = null; // 左のキャラID
+	this.left_exp       = null; // 左のキャラの表情
+	this.right_chara_id = null; // 右のキャラのID
+	this.right_exp      = null; // 右のキャラの表情
 
-	this.talking_chara = null;
-	this.left_chara = null;
-	this.left_exp = null;
-	this.right_chara = null;
-	this.right_exp = null;
-	this.is_left  = null;
-	this.is_right = null;
+	// 今どっちのキャラが喋っているか
+	this.pos = null;
 
 	// 現在表示しているメッセージ
+	this.line_num = 0;
 	this.printing_lines = [];
 };
 
 Logic.prototype.init = function () {
 	this.progress = -1;
 	this.timeoutID = null;
-	this.talking_chara = null;
-	this.left_chara = null;
+	this.left_chara_id = null;
 	this.left_exp = null;
 	this.right_chara = null;
 	this.right_exp = null;
-	this.is_left  = null;
-	this.is_right = null;
+	this.pos  = null;
 
+	this.line_num = 0;
 	this.printing_lines = [];
 
 	this.next(); // start
@@ -67,19 +67,13 @@ Logic.prototype.next = function () {
 // 左右に配置するキャラを設定
 Logic.prototype._showChara = function(script) {
 	if(script.pos) {
-		this.talking_chara = script.chara;
+		this.pos  = script.pos;
 
 		if(script.pos === "left") {
-
-			this.is_left  = true;
-			this.is_right = false;
-			this.left_chara = script.chara;
+			this.left_chara_id = script.chara;
 			this.left_exp = script.exp;
 		}
 		else if(script.pos === "right") {
-			this.is_left  = false;
-			this.is_right = true;
-
 			this.right_chara = script.chara;
 			this.right_exp = script.exp;
 		}
@@ -133,11 +127,25 @@ Logic.prototype.right_image = function () {
 	return(this.right_chara ? this.right_chara + "_" + this.right_exp : null);
 };
 Logic.prototype.left_image = function () {
-	return(this.left_chara ? this.left_chara + "_" + this.left_exp : null);
+	return(this.left_chara_id ? this.left_chara_id + "_" + this.left_exp : null);
 };
 Logic.prototype.text_name = function () {
-	return(this.talking_chara ? Config.CHARA[this.talking_chara].name : "");
+	if (this.is_left_talking()) {
+		return Config.CHARA[this.left_chara_id].name;
+	}
+	else if (this.is_right_talking()) {
+		return Config.CHARA[this.right_chara].name;
+	}
 };
+
+Logic.prototype.is_left_talking = function () {
+	return this.pos === "left" ? true : false;
+};
+Logic.prototype.is_right_talking = function () {
+	return this.pos === "right" ? true : false;
+};
+
+
 
 Logic.prototype.lines = function () {
 	return this.printing_lines;

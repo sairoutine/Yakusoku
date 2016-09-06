@@ -67,7 +67,7 @@ Scene.prototype.updateDisplay = function(){
 
 	if(this.serif.right_image()) {
 		this.game.surface.save();
-		if(!this.serif.is_right) {
+		if(!this.serif.is_right_talking()) {
 			this.game.surface.globalAlpha = 0.5;
 		}
 		var right_image = this.game.getImage(this.serif.right_image());
@@ -83,7 +83,7 @@ Scene.prototype.updateDisplay = function(){
 
 	if(this.serif.left_image()) {
 		this.game.surface.save();
-		if(!this.serif.is_left) {
+		if(!this.serif.is_left_talking()) {
 			this.game.surface.globalAlpha = 0.5;
 		}
 		var left_image = this.game.getImage(this.serif.left_image());
