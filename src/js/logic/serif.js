@@ -68,10 +68,16 @@ Logic.prototype._showChara = function(script) {
 		this.talking_chara = script.chara;
 
 		if(script.pos === "left") {
+
+			this.is_left  = true;
+			this.is_right = false;
 			this.left_chara = script.chara;
 			this.left_exp = script.exp;
 		}
 		else if(script.pos === "right") {
+			this.is_left  = false;
+			this.is_right = true;
+
 			this.right_chara = script.chara;
 			this.right_exp = script.exp;
 		}

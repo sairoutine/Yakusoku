@@ -63,8 +63,13 @@ Scene.prototype.updateDisplay = function(){
 					0,
 					this.game.width,
 					this.game.height);
+	this.game.surface.restore();
 
 	if(this.serif.right_image()) {
+		this.game.surface.save();
+		if(!this.serif.is_right) {
+			this.game.surface.globalAlpha = 0.5;
+		}
 		var right_image = this.game.getImage(this.serif.right_image());
 
 		this.game.surface.drawImage(right_image,
@@ -72,9 +77,15 @@ Scene.prototype.updateDisplay = function(){
 						Config.PROLOGUE_RIGHT_Y,
 						right_image.width * 0.25,
 						right_image.height * 0.25);
+
+		this.game.surface.restore();
 	}
 
 	if(this.serif.left_image()) {
+		this.game.surface.save();
+		if(!this.serif.is_left) {
+			this.game.surface.globalAlpha = 0.5;
+		}
 		var left_image = this.game.getImage(this.serif.left_image());
 
 		this.game.surface.drawImage(left_image,
@@ -82,6 +93,8 @@ Scene.prototype.updateDisplay = function(){
 						Config.PROLOGUE_LEFT_Y,
 						left_image.width * 0.5,
 						left_image.height * 0.5);
+
+		this.game.surface.restore();
 	}
 
 	// メッセージウィンドウ表示
@@ -110,18 +123,18 @@ Scene.prototype.updateDisplay = function(){
 	this.game.surface.save();
 
 	this.game.surface.font = "24px 'Comic Sans MS'";
-	this.game.surface.textAlign = 'left';
+		this.game.surface.textAlign = 'left';
 	this.game.surface.textBaseAlign = 'middle';
 	this.game.surface.fillStyle = 'rgb( 255, 255, 255 )';
 
 	// 名前表示
 	if (this.serif.text_name()) {
-		this.game.surface.fillText(this.serif.text_name(), 10, 345);
+		this.game.surface.fillText(this.serif.text_name(), 15, 340);
 	}
 
 	// メッセージ表示
 	if (this.serif.text()) {
-		this.game.surface.fillText(this.serif.text(), 10, 380);
+		this.game.surface.fillText(this.serif.text(), 15, 380);
 	}
 
 	this.game.surface.restore();
