@@ -702,7 +702,7 @@ Scene.prototype.init = function() {
 	BaseScene.prototype.init.apply(this, arguments);
 	this.serif.init();
 
-	this.game.playBGM('prologue');
+	//TODO: this.game.playBGM('prologue');
 };
 
 // フレーム処理
