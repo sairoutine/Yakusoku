@@ -33,7 +33,7 @@ Logic.prototype.init = function () {
 	this.timeoutID = null;
 	this.left_chara_id = null;
 	this.left_exp = null;
-	this.right_chara = null;
+	this.right_chara_id = null;
 	this.right_exp = null;
 	this.pos  = null;
 
@@ -74,7 +74,7 @@ Logic.prototype._showChara = function(script) {
 			this.left_exp = script.exp;
 		}
 		else if(script.pos === "right") {
-			this.right_chara = script.chara;
+			this.right_chara_id = script.chara;
 			this.right_exp = script.exp;
 		}
 	}
@@ -112,9 +112,12 @@ Logic.prototype._printMessage = function (message) {
 			self.line_num++;
 		}
 		else {
+			// 初期化
 			if(!self.printing_lines[self.line_num]) {
 				self.printing_lines[self.line_num] = "";
 			}
+
+			// 1文字表示
 			self.printing_lines[self.line_num] = self.printing_lines[self.line_num] + ch;
 		}
 
@@ -124,7 +127,7 @@ Logic.prototype._printMessage = function (message) {
 };
 
 Logic.prototype.right_image = function () {
-	return(this.right_chara ? this.right_chara + "_" + this.right_exp : null);
+	return(this.right_chara_id ? this.right_chara_id + "_" + this.right_exp : null);
 };
 Logic.prototype.left_image = function () {
 	return(this.left_chara_id ? this.left_chara_id + "_" + this.left_exp : null);
@@ -134,18 +137,15 @@ Logic.prototype.text_name = function () {
 		return Config.CHARA[this.left_chara_id].name;
 	}
 	else if (this.is_right_talking()) {
-		return Config.CHARA[this.right_chara].name;
+		return Config.CHARA[this.right_chara_id].name;
 	}
 };
-
 Logic.prototype.is_left_talking = function () {
 	return this.pos === "left" ? true : false;
 };
 Logic.prototype.is_right_talking = function () {
 	return this.pos === "right" ? true : false;
 };
-
-
 
 Logic.prototype.lines = function () {
 	return this.printing_lines;
