@@ -1,6 +1,6 @@
 'use strict';
 
-/* プロローグ画面 */
+/* プロローグ画面2 */
 
 // 基底クラス
 var BaseScene = require('./base');
