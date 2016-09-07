@@ -4,7 +4,8 @@
 var Config = {
 	IMAGES: {
 		title_bg:  'image/title_bg.png',
-		prologue_bg:  'image/prologue_bg.jpg',
+		prologue1_1_bg:  'image/black.jpg',
+		prologue2_bg:  'image/prologue_bg.jpg',
 		renko_normal:  'image/renko_normal.jpg',
 		merry_normal:  'image/merry_normal.jpg',
 		ganger_normal:  'image/ganger_normal.jpg',
@@ -53,7 +54,11 @@ var Config = {
 			path:   'bgm/title.mp3',
 			volume: 0.40
 		},
-		prologue: {
+		prologue1: {
+			path:   'bgm/prologue.mp3',
+			volume: 0.40
+		},
+		prologue2: {
 			path:   'bgm/prologue.mp3',
 			volume: 0.40
 		},
@@ -68,11 +73,11 @@ var Config = {
 	// テキストの typography スピード
 	MESSAGE_SPEED: 10,
 	// ノベルパートにおける左キャラの(x, y)
-	PROLOGUE_LEFT_X: 20,
-	PROLOGUE_LEFT_Y: 130,
+	PROLOGUE2_LEFT_X: 20,
+	PROLOGUE2_LEFT_Y: 130,
 	// ノベルパートにおける右キャラの(x, y)
-	PROLOGUE_RIGHT_X: 350,
-	PROLOGUE_RIGHT_Y: 130,
+	PROLOGUE2_RIGHT_X: 350,
+	PROLOGUE2_RIGHT_Y: 130,
 	CHARA: {
 		"ganger": {
 			name: "？？？",
@@ -100,10 +105,11 @@ var Constant = {
 
 	LOADING_SCENE:  0,
 	TITLE_SCENE:    1,
-	PROLOGUE_SCENE: 2,
-	STAGE_SCENE:    3,
-	EPILOGUE_SCENE: 4,
-	ENDING_SCENE:   5,
+	PROLOGUE1_SCENE:2,
+	PROLOGUE2_SCENE:3,
+	STAGE_SCENE:    4,
+	EPILOGUE_SCENE: 5,
+	ENDING_SCENE:   6,
 
 	BUTTON_LEFT:  0x01,
 	BUTTON_UP:    0x02,
@@ -123,11 +129,16 @@ module.exports = Constant;
 var config = require('./config');
 var constant = require('./constant');
 
-var LoadingScene  = require('./scene/loading');
-var TitleScene    = require('./scene/title');
-var PrologueScene    = require('./scene/prologue');
+// TODO: デバッグ(最初に表示するシーン)
+ var DEBUG_SCENE;
+//var DEBUG_SCENE = constant.PROLOGUE1_SCENE;
+
+
+var LoadingScene   = require('./scene/loading');
+var TitleScene     = require('./scene/title');
+var Prologue1Scene = require('./scene/prologue1');
+var Prologue2Scene = require('./scene/prologue2');
 /*
-var PrologueScene = require('./scene/prologue');
 var StageScene    = require('./scene/stage');
 var EpilogueScene = require('./scene/epilogue');
 var EndingScene   = require('./scene/ending');
@@ -148,8 +159,10 @@ var Game = function(mainCanvas) {
 	this.scenes[ constant.LOADING_SCENE ] = new LoadingScene(this);
 	// タイトル画面
 	this.scenes[ constant.TITLE_SCENE ] = new TitleScene(this);
-	// プロローグ画面
-	this.scenes[ constant.PROLOGUE_SCENE ] = new PrologueScene(this);
+	// プロローグ画面1
+	this.scenes[ constant.PROLOGUE1_SCENE ] = new Prologue1Scene(this);
+	// プロローグ画面2
+	this.scenes[ constant.PROLOGUE2_SCENE ] = new Prologue2Scene(this);
 
 	/*
 	// ゲーム画面
@@ -315,15 +328,20 @@ Game.prototype = {
 	// ローディング画面が終わったら
 	notifyLoadingDone: function() {
 		// オープニング画面に切り替え
-		this.changeScene(constant.TITLE_SCENE);
+		this.changeScene(constant.DEBUG && DEBUG_SCENE ? DEBUG_SCENE : constant.TITLE_SCENE);
 	},
 	// タイトル画面が終わったら
 	notifyTitleDone: function() {
 		// プロローグ画面に切り替え
-		this.changeScene(constant.PROLOGUE_SCENE);
+		this.changeScene(constant.PROLOGUE1_SCENE);
+	},
+	// プロローグ画面1が終わったら
+	notifyPrologue1Done: function() {
+		// プロローグ画面2に切り替え
+		this.changeScene(constant.PROLOGUE2_SCENE);
 	},
 	// プロローグ画面が終わったら
-	notifyPrologueDone: function() {
+	notifyPrologue2Done: function() {
 		// ステージ画面に切り替え
 		this.changeScene(constant.STAGE_SCENE);
 	},
@@ -335,7 +353,7 @@ Game.prototype = {
 
 module.exports = Game;
 
-},{"./config":1,"./constant":2,"./scene/loading":7,"./scene/prologue":8,"./scene/title":9}],4:[function(require,module,exports){
+},{"./config":1,"./constant":2,"./scene/loading":7,"./scene/prologue1":8,"./scene/prologue2":9,"./scene/title":10}],4:[function(require,module,exports){
 'use strict';
 
 /* セリフを扱うクラス */
@@ -606,7 +624,7 @@ LoadingScene.prototype.updateDisplay = function(){
 	this.game.surface.clearRect( 0, 0, this.game.width, this.game.height);
 	this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
 	this.game.surface.textAlign = 'right';
-	this.game.surface.font = "30px 'Comic Sans MS'" ;
+	this.game.surface.font = "30px 'Nikumaru'" ;
 	this.game.surface.fillText('Now Loading...', 400, 225);
 	this.game.surface.fillText( loaded_material_num + '/' + material_num, 400, 285);
 	this.game.surface.restore();
@@ -672,10 +690,24 @@ LoadingScene.prototype._loadBGMs = function() {
 
 module.exports = LoadingScene;
 
-},{"../config":1,"../util":11,"./base":6}],8:[function(require,module,exports){
+},{"../config":1,"../util":12,"./base":6}],8:[function(require,module,exports){
 'use strict';
 
-/* プロローグ画面 */
+/* プロローグ画面1 */
+var MESSAGE = (function () {/*
+蝉の鳴き声が聞こえる。
+蓮子は湖のほとりにきている。
+メリーと湖で涼もうと約束していた。
+蓮子は珍しく先に到着した。
+携帯情報端末を見ると、
+8月31日の午前9時50分を回ったところ。
+夜なら星を見れば時間がわかるのだけど。
+約束まで、あと10分。
+メリーの事だから早めに来るだろう、
+と考えていた時に、背後から物音が聞こえる。
+メリーだと思い振り向くと、
+自分にそっくりな容姿の女の子が立っていた。
+*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
 
 // 基底クラス
 var BaseScene = require('./base');
@@ -684,7 +716,118 @@ var Util = require('../util');
 var Constant = require('../constant');
 var Config = require('../config');
 
-var serif = require('../serif/prologue');
+var SHOW_TITLE_COUNT = 300;
+
+var Scene = function(game) {
+	BaseScene.apply(this, arguments);
+};
+
+// 基底クラスを継承
+Util.inherit(Scene, BaseScene);
+
+// 初期化
+Scene.prototype.init = function() {
+	BaseScene.prototype.init.apply(this, arguments);
+
+	//TODO: this.game.playBGM('prologue1');
+};
+
+// フレーム処理
+Scene.prototype.run = function(){
+	BaseScene.prototype.run.apply(this, arguments);
+
+	if(SHOW_TITLE_COUNT + 60 < this.frame_count) {
+		this.game.notifyPrologue1Done();
+	}
+	/*
+	if(this.game.isKeyPush(Constant.BUTTON_Z)) {
+		if(this.serif.is_end()) {
+			this.game.notifyPrologue1Done();
+		}
+		else {
+			// セリフを送る
+			this.serif.next();
+		}
+	}
+	*/
+};
+
+// 画面更新
+Scene.prototype.updateDisplay = function(){
+	this.game.surface.clearRect( 0, 0, this.game.width, this.game.height ) ;
+
+	var prologue2_bg = this.game.getImage('prologue1_1_bg');
+
+	// 背景画像表示
+	this.game.surface.drawImage(prologue2_bg,
+					0,
+					0,
+					prologue2_bg.width,
+					prologue2_bg.height,
+					0,
+					0,
+					this.game.width,
+					this.game.height);
+
+	this.game.surface.save();
+
+	var alpha = 1.0;
+	// 切り替え効果
+	if( this.frame_count < (SHOW_TITLE_COUNT / 3)) {
+		// 最初の1/3はフェードイン
+		alpha = (this.frame_count * 3) / SHOW_TITLE_COUNT;
+	}
+	else if(SHOW_TITLE_COUNT / 3 < this.frame_count && this.frame_count < SHOW_TITLE_COUNT * 2 / 3) {
+		// 真ん中の1/3は表示
+		alpha = 1.0;
+	}
+	else if(SHOW_TITLE_COUNT * 2 / 3 < this.frame_count) {
+		// 最後の1/3はフェードアウト
+		alpha = (SHOW_TITLE_COUNT - this.frame_count) * 3 / SHOW_TITLE_COUNT;
+	}
+
+	this.game.surface.globalAlpha = alpha;
+
+
+
+
+	if(SHOW_TITLE_COUNT > this.frame_count) {
+		this.game.surface.font = "24px 'Cosmic Sans MS'" ;
+		this.game.surface.textBaseAlign = 'middle' ;
+		this.game.surface.fillStyle = 'rgb( 255, 255, 255 )' ;
+
+		// セリフ表示
+		var lines = MESSAGE.split("\n");
+		if (lines.length) {
+			// セリフテキストの y 座標初期位置
+			var y = 50;
+
+			for(var i = 0, len = lines.length; i < len; i++) {
+				this.game.surface.fillText(lines[i], 50, y); // 1行表示
+
+				y+= 30;
+			}
+		}
+	}
+
+	this.game.surface.restore();
+};
+
+module.exports = Scene;
+
+},{"../config":1,"../constant":2,"../util":12,"./base":6}],9:[function(require,module,exports){
+'use strict';
+
+/* プロローグ画面2 */
+
+// 基底クラス
+var BaseScene = require('./base');
+
+var Util = require('../util');
+var Constant = require('../constant');
+var Config = require('../config');
+
+var serif = require('../serif/prologue2');
 
 var Serif = require('../logic/serif');
 
@@ -702,7 +845,7 @@ Scene.prototype.init = function() {
 	BaseScene.prototype.init.apply(this, arguments);
 	this.serif.init();
 
-	//TODO: this.game.playBGM('prologue');
+	//TODO: this.game.playBGM('prologue2');
 };
 
 // フレーム処理
@@ -711,7 +854,7 @@ Scene.prototype.run = function(){
 
 	if(this.game.isKeyPush(Constant.BUTTON_Z)) {
 		if(this.serif.is_end()) {
-			this.game.notifyPrologueDone();
+			this.game.notifyPrologue2Done();
 		}
 		else {
 			// セリフを送る
@@ -726,14 +869,14 @@ Scene.prototype.updateDisplay = function(){
 
 	this.game.surface.save();
 
-	var prologue_bg = this.game.getImage('prologue_bg');
+	var prologue2_bg = this.game.getImage('prologue2_bg');
 
 	// 背景画像表示
-	this.game.surface.drawImage(prologue_bg,
+	this.game.surface.drawImage(prologue2_bg,
 					0,
 					0,
-					prologue_bg.width,
-					prologue_bg.height,
+					prologue2_bg.width,
+					prologue2_bg.height,
 					0,
 					0,
 					this.game.width,
@@ -750,8 +893,8 @@ Scene.prototype.updateDisplay = function(){
 		var right_image = this.game.getImage(this.serif.right_image());
 
 		this.game.surface.drawImage(right_image,
-						Config.PROLOGUE_RIGHT_X,
-						Config.PROLOGUE_RIGHT_Y,
+						Config.PROLOGUE2_RIGHT_X,
+						Config.PROLOGUE2_RIGHT_Y,
 						right_image.width * 0.25,
 						right_image.height * 0.25);
 
@@ -769,8 +912,8 @@ Scene.prototype.updateDisplay = function(){
 		var left_image = this.game.getImage(this.serif.left_image());
 
 		this.game.surface.drawImage(left_image,
-						Config.PROLOGUE_LEFT_X,
-						Config.PROLOGUE_LEFT_Y,
+						Config.PROLOGUE2_LEFT_X,
+						Config.PROLOGUE2_LEFT_Y,
 						left_image.width * 0.5,
 						left_image.height * 0.5);
 
@@ -798,7 +941,7 @@ Scene.prototype.updateDisplay = function(){
 	// テキスト表示
 	this.game.surface.save();
 
-	this.game.surface.font = "24px 'Comic Sans MS'";
+	this.game.surface.font = "24px 'Nikumaru'";
 	this.game.surface.textAlign = 'left';
 	this.game.surface.textBaseAlign = 'middle';
 	this.game.surface.fillStyle = 'rgb( 255, 255, 255 )';
@@ -827,7 +970,7 @@ Scene.prototype.updateDisplay = function(){
 
 module.exports = Scene;
 
-},{"../config":1,"../constant":2,"../logic/serif":4,"../serif/prologue":10,"../util":11,"./base":6}],9:[function(require,module,exports){
+},{"../config":1,"../constant":2,"../logic/serif":4,"../serif/prologue2":11,"../util":12,"./base":6}],10:[function(require,module,exports){
 'use strict';
 
 /* タイトル画面 */
@@ -897,7 +1040,7 @@ OpeningScene.prototype.updateDisplay = function(){
 					this.game.width,
 					this.game.height);
 
-	this.game.surface.font = "24px 'Comic Sans MS'" ;
+	this.game.surface.font = "24px 'Nikumaru'" ;
 	this.game.surface.textAlign = 'center' ;
 	this.game.surface.textBaseAlign = 'middle' ;
 	this.game.surface.fillStyle = 'rgb( 0, 0, 0 )' ;
@@ -913,115 +1056,133 @@ OpeningScene.prototype.updateDisplay = function(){
 
 module.exports = OpeningScene;
 
-},{"../constant":2,"../util":11,"./base":6}],10:[function(require,module,exports){
+},{"../constant":2,"../util":12,"./base":6}],11:[function(require,module,exports){
 'use strict';
 
 // セリフ
 var Serif= [
 	{
 		serif: "今日は8月31日。",
+		fukidash: null,
 		chara: null,
 		pos: null,
 		exp: null,
 	},
 	{
 		serif: null,
+		fukidash: null,
 		chara: "ganger",
 		pos: "right",
 		exp: "normal",
 	},
 	{
 		serif: null,
+		fukidash: null,
 		chara: "renko",
 		pos: "left",
 		exp: "normal",
 	},
 	{
 		serif: "約束を守りなさい。早く博霊神社に行かないと。",
+		fukidash: "normal",
 		chara: "ganger",
 		pos: "right",
 		exp: "normal",
 	},
 	{
 		serif: "え、そんな約束してたっけ？",
+		fukidash: "normal",
 		chara: "renko",
 		pos: "left",
 		exp: "normal",
 	},
 	{
 		serif: null,
+		fukidash: null,
 		chara: "merry",
 		pos: "right",
 		exp: "normal",
 	},
 	{
 		serif: "どうしたの？",
+		fukidash: "normal",
 		chara: "merry",
 		pos: "right",
 		exp: "normal",
 	},
 	{
 		serif: "実はかくかくしかじかで",
+		fukidash: "normal",
 		chara: "renko",
 		pos: "left",
 		exp: "normal",
 	},
 	{
 		serif: "ふーん",
+		fukidash: "normal",
 		chara: "merry",
 		pos: "right",
 		exp: "normal",
 	},
 	{
 		serif: "約束といえば、前に博霊神社の入り口を\n調べようって約束してたわね。",
+		fukidash: "normal",
 		chara: "renko",
 		pos: "left",
 		exp: "normal",
 	},
 	{
 		serif: "そうだっけ？",
+		fukidash: "normal",
 		chara: "renko",
 		pos: "left",
 		exp: "normal",
 	},
 	{
 		serif: "なんだか気になるわ。ねえ、今から行ってみない？",
+		fukidash: "normal",
 		chara: "renko",
 		pos: "left",
 		exp: "normal",
 	},
 	{
 		serif: "今から！？面倒だわ…。",
+		fukidash: "normal",
 		chara: "merry",
 		pos: "right",
 		exp: "normal",
 	},
 	{
 		serif: "そんな事言わずに行きましょうよ。",
+		fukidash: "normal",
 		chara: "renko",
 		pos: "left",
 		exp: "normal",
 	},
 	{
 		serif: "うっ…急にめまいとフラつきと腹痛と頭痛が",
+		fukidash: "normal",
 		chara: "merry",
 		pos: "right",
 		exp: "normal",
 	},
 	{
 		serif: "さっきまで元気だったじゃない！",
+		fukidash: "normal",
 		chara: "renko",
 		pos: "left",
 		exp: "normal",
 	},
 	{
 		serif: "うーん、気が進まないわ。",
+		fukidash: "normal",
 		chara: "merry",
 		pos: "right",
 		exp: "normal",
 	},
 	{
 		serif: "はぁ…。そんなに嫌なら仕方ないわね。\n私一人で行ってくるわ。",
+		fukidash: "normal",
 		chara: "renko",
 		pos: "left",
 		exp: "normal",
@@ -1030,7 +1191,7 @@ var Serif= [
 
 module.exports = Serif;
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 var Util = {
 	inherit: function( child, parent ) {
