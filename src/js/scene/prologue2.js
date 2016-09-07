@@ -9,7 +9,7 @@ var Util = require('../util');
 var Constant = require('../constant');
 var Config = require('../config');
 
-var serif = require('../serif/prologue');
+var serif = require('../serif/prologue2');
 
 var Serif = require('../logic/serif');
 
@@ -27,7 +27,7 @@ Scene.prototype.init = function() {
 	BaseScene.prototype.init.apply(this, arguments);
 	this.serif.init();
 
-	//TODO: this.game.playBGM('prologue');
+	//TODO: this.game.playBGM('prologue2');
 };
 
 // フレーム処理
@@ -36,7 +36,7 @@ Scene.prototype.run = function(){
 
 	if(this.game.isKeyPush(Constant.BUTTON_Z)) {
 		if(this.serif.is_end()) {
-			this.game.notifyPrologueDone();
+			this.game.notifyPrologue2Done();
 		}
 		else {
 			// セリフを送る
@@ -51,14 +51,14 @@ Scene.prototype.updateDisplay = function(){
 
 	this.game.surface.save();
 
-	var prologue_bg = this.game.getImage('prologue_bg');
+	var prologue2_bg = this.game.getImage('prologue2_bg');
 
 	// 背景画像表示
-	this.game.surface.drawImage(prologue_bg,
+	this.game.surface.drawImage(prologue2_bg,
 					0,
 					0,
-					prologue_bg.width,
-					prologue_bg.height,
+					prologue2_bg.width,
+					prologue2_bg.height,
 					0,
 					0,
 					this.game.width,
@@ -75,8 +75,8 @@ Scene.prototype.updateDisplay = function(){
 		var right_image = this.game.getImage(this.serif.right_image());
 
 		this.game.surface.drawImage(right_image,
-						Config.PROLOGUE_RIGHT_X,
-						Config.PROLOGUE_RIGHT_Y,
+						Config.PROLOGUE2_RIGHT_X,
+						Config.PROLOGUE2_RIGHT_Y,
 						right_image.width * 0.25,
 						right_image.height * 0.25);
 
@@ -94,8 +94,8 @@ Scene.prototype.updateDisplay = function(){
 		var left_image = this.game.getImage(this.serif.left_image());
 
 		this.game.surface.drawImage(left_image,
-						Config.PROLOGUE_LEFT_X,
-						Config.PROLOGUE_LEFT_Y,
+						Config.PROLOGUE2_LEFT_X,
+						Config.PROLOGUE2_LEFT_Y,
 						left_image.width * 0.5,
 						left_image.height * 0.5);
 
