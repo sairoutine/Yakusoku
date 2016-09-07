@@ -3,8 +3,7 @@
 var Config = {
 	IMAGES: {
 		title_bg:  'image/title_bg.png',
-		prologue1_1_bg:  'image/prologue_bg.jpg',
-		prologue1_2_bg:  'image/prologue_bg.jpg',
+		prologue1_1_bg:  'image/black.jpg',
 		prologue2_bg:  'image/prologue_bg.jpg',
 		renko_normal:  'image/renko_normal.jpg',
 		merry_normal:  'image/merry_normal.jpg',
