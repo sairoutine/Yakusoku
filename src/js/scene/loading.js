@@ -52,7 +52,7 @@ LoadingScene.prototype.updateDisplay = function(){
 	this.game.surface.clearRect( 0, 0, this.game.width, this.game.height);
 	this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
 	this.game.surface.textAlign = 'right';
-	this.game.surface.font = "30px 'Comic Sans MS'" ;
+	this.game.surface.font = "30px 'Nikumaru'" ;
 	this.game.surface.fillText('Now Loading...', 400, 225);
 	this.game.surface.fillText( loaded_material_num + '/' + material_num, 400, 285);
 	this.game.surface.restore();

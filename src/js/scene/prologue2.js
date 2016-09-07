@@ -123,7 +123,7 @@ Scene.prototype.updateDisplay = function(){
 	// テキスト表示
 	this.game.surface.save();
 
-	this.game.surface.font = "24px 'Comic Sans MS'";
+	this.game.surface.font = "24px 'Nikumaru'";
 	this.game.surface.textAlign = 'left';
 	this.game.surface.textBaseAlign = 'middle';
 	this.game.surface.fillStyle = 'rgb( 255, 255, 255 )';
