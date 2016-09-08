@@ -99,7 +99,7 @@ Scene.prototype.updateDisplay = function(){
 
 
 	if(SHOW_TITLE_COUNT > this.frame_count) {
-		this.game.surface.font = "24px 'Cosmic Sans MS'" ;
+		this.game.surface.font = "24px 'Migu'" ;
 		this.game.surface.textBaseAlign = 'middle' ;
 		this.game.surface.fillStyle = 'rgb( 255, 255, 255 )' ;
 

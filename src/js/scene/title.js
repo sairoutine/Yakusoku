@@ -67,7 +67,7 @@ OpeningScene.prototype.updateDisplay = function(){
 					this.game.width,
 					this.game.height);
 
-	this.game.surface.font = "24px 'Nikumaru'" ;
+	this.game.surface.font = "24px 'Migu'" ;
 	this.game.surface.textAlign = 'center' ;
 	this.game.surface.textBaseAlign = 'middle' ;
 	this.game.surface.fillStyle = 'rgb( 0, 0, 0 )' ;
