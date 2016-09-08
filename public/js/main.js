@@ -624,7 +624,7 @@ LoadingScene.prototype.updateDisplay = function(){
 	this.game.surface.clearRect( 0, 0, this.game.width, this.game.height);
 	this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
 	this.game.surface.textAlign = 'right';
-	this.game.surface.font = "30px 'Nikumaru'" ;
+	this.game.surface.font = "30px 'Migu'" ;
 	this.game.surface.fillText('Now Loading...', 400, 225);
 	this.game.surface.fillText( loaded_material_num + '/' + material_num, 400, 285);
 	this.game.surface.restore();
@@ -792,7 +792,7 @@ Scene.prototype.updateDisplay = function(){
 
 
 	if(SHOW_TITLE_COUNT > this.frame_count) {
-		this.game.surface.font = "24px 'Cosmic Sans MS'" ;
+		this.game.surface.font = "24px 'Migu'" ;
 		this.game.surface.textBaseAlign = 'middle' ;
 		this.game.surface.fillStyle = 'rgb( 255, 255, 255 )' ;
 
@@ -941,7 +941,7 @@ Scene.prototype.updateDisplay = function(){
 	// テキスト表示
 	this.game.surface.save();
 
-	this.game.surface.font = "24px 'Nikumaru'";
+	this.game.surface.font = "24px 'Migu'";
 	this.game.surface.textAlign = 'left';
 	this.game.surface.textBaseAlign = 'middle';
 	this.game.surface.fillStyle = 'rgb( 255, 255, 255 )';
@@ -1040,7 +1040,7 @@ OpeningScene.prototype.updateDisplay = function(){
 					this.game.width,
 					this.game.height);
 
-	this.game.surface.font = "24px 'Nikumaru'" ;
+	this.game.surface.font = "24px 'Migu'" ;
 	this.game.surface.textAlign = 'center' ;
 	this.game.surface.textBaseAlign = 'middle' ;
 	this.game.surface.fillStyle = 'rgb( 0, 0, 0 )' ;
