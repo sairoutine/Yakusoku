@@ -5,6 +5,8 @@
 // キャラのサイズ(1/2)
 var CHARA_SIZE_RATIO = 0.5;
 
+// 喋ってる方が寄る際のpx
+var TALKER_MOVE_PX = 5;
 
 
 // 基底クラス
@@ -70,18 +72,29 @@ Scene.prototype.updateDisplay = function(){
 					this.game.height);
 	this.game.surface.restore();
 
+	var x, y;
 	if(this.serif.right_image()) {
 		this.game.surface.save();
 
-		// 喋ってない方のキャラは薄くなる
+		x = Config.PROLOGUE2_RIGHT_X;
+		y = Config.PROLOGUE2_RIGHT_Y;
+
 		if(!this.serif.is_right_talking()) {
+			// 喋ってない方のキャラは薄くなる
 			this.game.surface.globalAlpha = 0.5;
 		}
+		else {
+			// 喋ってる方のキャラは真ん中に寄る
+			x -= TALKER_MOVE_PX;
+			y -= TALKER_MOVE_PX;
+		}
+
+
 		var right_image = this.game.getImage(this.serif.right_image());
 
 		this.game.surface.drawImage(right_image,
-						Config.PROLOGUE2_RIGHT_X,
-						Config.PROLOGUE2_RIGHT_Y,
+						x,
+						y,
 						right_image.width * CHARA_SIZE_RATIO,
 						right_image.height * CHARA_SIZE_RATIO);
 
@@ -91,16 +104,24 @@ Scene.prototype.updateDisplay = function(){
 	if(this.serif.left_image()) {
 		this.game.surface.save();
 
+		x = Config.PROLOGUE2_LEFT_X;
+		y = Config.PROLOGUE2_LEFT_Y;
+
 		// 喋ってない方のキャラは薄くなる
 		if(!this.serif.is_left_talking()) {
 			this.game.surface.globalAlpha = 0.5;
 		}
+		else {
+			// 喋ってる方のキャラは真ん中に寄る
+			x -= TALKER_MOVE_PX;
+			y -= TALKER_MOVE_PX;
+		}
 
 		var left_image = this.game.getImage(this.serif.left_image());
-		this.game.surface.transform(-1, 0, 0, 1, left_image.width, 0); // 左右反転
+		this.game.surface.transform(-1, 0, 0, 1, left_image.width * CHARA_SIZE_RATIO, 0); // 左右反転
 		this.game.surface.drawImage(left_image,
-						this.game.width - Config.PROLOGUE2_RIGHT_X, // x座標を反転させたのでposも反転
-						Config.PROLOGUE2_RIGHT_Y,
+						x,
+						y,
 						left_image.width * CHARA_SIZE_RATIO,
 						left_image.height * CHARA_SIZE_RATIO);
 
@@ -142,7 +163,7 @@ Scene.prototype.updateDisplay = function(){
 	var lines = this.serif.lines();
 	if (lines.length) {
 		// セリフテキストの y 座標初期位置
-		var y = 380;
+		y = 380;
 
 		for(var i = 0, len = lines.length; i < len; i++) {
 			this.game.surface.fillText(lines[i], 15, y); // 1行表示
