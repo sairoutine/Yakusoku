@@ -314,6 +314,10 @@ Game.prototype = {
 	currentScene: function() {
 		return this.scenes[this.state];
 	},
+	clearCanvas: function() {
+		this.surface.clearRect(0, 0, this.width, this.height);
+	},
+
 	// ゲーム起動
 	run: function(){
 		// シーン更新
@@ -633,17 +637,18 @@ LoadingScene.prototype.run = function(){
 
 // 画面更新
 LoadingScene.prototype.updateDisplay = function(){
+	this.game.clearCanvas();
 	var material_num = Config.ALL_MATERIAL_NUM;
 	var loaded_material_num = this.loaded_material_num();
 
-	this.game.surface.save( ) ;
-	this.game.surface.clearRect( 0, 0, this.game.width, this.game.height);
-	this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
-	this.game.surface.textAlign = 'right';
-	this.game.surface.font = "30px 'Migu'" ;
-	this.game.surface.fillText('Now Loading...', 400, 225);
-	this.game.surface.fillText( loaded_material_num + '/' + material_num, 400, 285);
-	this.game.surface.restore();
+	var ctx = this.game.surface;
+	ctx.save();
+	ctx.fillStyle = 'rgb( 0, 0, 0 )';
+	ctx.textAlign = 'right';
+	ctx.font = "30px 'Migu'" ;
+	ctx.fillText('Now Loading...', 400, 225);
+	ctx.fillText( loaded_material_num + '/' + material_num, 400, 285);
+	ctx.restore();
 };
 
 LoadingScene.prototype._loadImages = function() {
@@ -777,12 +782,23 @@ Scene.prototype.run = function(){
 
 // 画面更新
 Scene.prototype.updateDisplay = function(){
-	this.game.surface.clearRect( 0, 0, this.game.width, this.game.height ) ;
-
-	var prologue1_bg = this.game.getImage('prologue1_1_bg');
+	this.game.clearCanvas();
+	var ctx = this.game.surface;
 
 	// 背景画像表示
-	this.game.surface.drawImage(prologue1_bg,
+	this._showBG();
+	// メッセージウィンドウ表示
+	this._showMessageWindow();
+	// メッセージ表示
+	this._showMessage();
+};
+
+// 背景画像表示
+Scene.prototype._showBG = function() {
+	var ctx = this.game.surface;
+	var prologue1_bg = this.game.getImage('prologue1_1_bg');
+
+	ctx.drawImage(prologue1_bg,
 					0,
 					0,
 					prologue1_bg.width,
@@ -791,24 +807,26 @@ Scene.prototype.updateDisplay = function(){
 					0,
 					this.game.width,
 					this.game.height);
+};
+// メッセージウィンドウ表示
+Scene.prototype._showMessageWindow = function(){
+	var ctx = this.game.surface;
+	ctx.save();
 
-
-	// メッセージウィンドウ表示
-	this.game.surface.save();
-
-	this.game.surface.globalAlpha = 0.5;
-	this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
-	this.game.surface.fillRect(
+	ctx.globalAlpha = 0.5;
+	ctx.fillStyle = 'rgb( 0, 0, 0 )';
+	ctx.fillRect(
 		MESSAGE_WINDOW_OUTLINE_MARGIN,
 		MESSAGE_WINDOW_OUTLINE_MARGIN,
 		this.game.width - MESSAGE_WINDOW_OUTLINE_MARGIN * 2,
 		this.game.height - MESSAGE_WINDOW_OUTLINE_MARGIN * 2
 	);
 
-	this.game.surface.restore();
-
-
-	this.game.surface.save();
+	ctx.restore();
+};
+// 切り替え効果
+Scene.prototype._setTransition = function(){
+	var ctx = this.game.surface;
 
 	var alpha = 1.0;
 	// 切り替え効果
@@ -825,13 +843,21 @@ Scene.prototype.updateDisplay = function(){
 		alpha = (SHOW_MESSAGE_COUNT - this.frame_count) * 3 / SHOW_MESSAGE_COUNT;
 	}
 
-	this.game.surface.globalAlpha = alpha;
+	ctx.globalAlpha = alpha;
+};
+// メッセージ表示
+Scene.prototype._showMessage = function(){
+	var ctx = this.game.surface;
+	ctx.save();
+
+	// 切り替え効果
+	this._setTransition();
 
 	// メッセージ表示期間なら
 	if(SHOW_MESSAGE_COUNT > this.frame_count) {
-		this.game.surface.font = FONT_SIZE + "px 'Migu'" ;
-		this.game.surface.textBaseAlign = 'middle' ;
-		this.game.surface.fillStyle = 'rgb( 255, 255, 255 )' ;
+		ctx.font = FONT_SIZE + "px 'Migu'" ;
+		ctx.textBaseAlign = 'middle' ;
+		ctx.fillStyle = 'rgb( 255, 255, 255 )' ;
 
 		// セリフ表示
 		var lines = MESSAGE.split("\n");
@@ -840,15 +866,18 @@ Scene.prototype.updateDisplay = function(){
 			var y = MESSAGE_WINDOW_INLINE_MARGIN;
 
 			for(var i = 0, len = lines.length; i < len; i++) {
-				this.game.surface.fillText(lines[i], MESSAGE_WINDOW_INLINE_MARGIN, y); // 1行表示
+				ctx.fillText(lines[i], MESSAGE_WINDOW_INLINE_MARGIN, y); // 1行表示
 
 				y+= FONT_SIZE + FONT_MARGIN;
 			}
 		}
 	}
 
-	this.game.surface.restore();
+	ctx.restore();
 };
+
+
+
 
 module.exports = Scene;
 
@@ -909,13 +938,49 @@ Scene.prototype.run = function(){
 
 // 画面更新
 Scene.prototype.updateDisplay = function(){
-	this.game.surface.clearRect( 0, 0, this.game.width, this.game.height ) ;
-
-	this.game.surface.save();
+	this.game.clearCanvas();
+	var ctx = this.game.surface;
 
 	// 背景画像表示
+	this._showBG();
+
+	if(this.serif.right_image()) {
+		// キャラ表示
+		this._showRightChara();
+	}
+	if (this.serif.right_name()) {
+		// メッセージウィンドウ 名前欄表示
+		this._showNameWindow(440, 420, 100, 40);
+		// 名前表示
+		this._showName(this.serif.right_name(), 450, 450);
+	}
+
+	if(this.serif.left_image()) {
+		// キャラ表示
+		this._showLeftChara();
+	}
+	if (this.serif.left_name()) {
+		// メッセージウィンドウ 名前欄表示
+		this._showNameWindow(100, 420, 100, 40);
+		// 名前表示
+		this._showName(this.serif.left_name(), 120, 450);
+	}
+
+	// セリフウィンドウ表示
+	if(this.serif.serif_window()) {
+		this._showMessageWindow();
+	}
+
+	// セリフ表示
+	this._showMessage();
+};
+
+// 背景画像表示
+Scene.prototype._showBG = function(){
+	var ctx = this.game.surface;
 	var prologue2_bg = this.game.getImage('prologue2_bg');
-	this.game.surface.drawImage(prologue2_bg,
+	ctx.save();
+	ctx.drawImage(prologue2_bg,
 					0,
 					0,
 					prologue2_bg.width,
@@ -924,142 +989,125 @@ Scene.prototype.updateDisplay = function(){
 					0,
 					this.game.width,
 					this.game.height);
-	this.game.surface.restore();
+	ctx.restore();
+};
+// 右のキャラを表示
+Scene.prototype._showRightChara = function(){
+	var ctx = this.game.surface;
+	ctx.save();
 
-	var x, y;
+	var x = Config.PROLOGUE2_RIGHT_X;
+	var y = Config.PROLOGUE2_RIGHT_Y;
 
-	if(this.serif.right_image()) {
-		this.game.surface.save();
-
-		x = Config.PROLOGUE2_RIGHT_X;
-		y = Config.PROLOGUE2_RIGHT_Y;
-
-		if(!this.serif.is_right_talking()) {
-			// 喋ってない方のキャラは薄くなる
-			this.game.surface.globalAlpha = 0.5;
-		}
-		else {
-			// 喋ってる方のキャラは真ん中に寄る
-			x -= TALKER_MOVE_PX;
-			y -= TALKER_MOVE_PX;
-		}
-
-
-		var right_image = this.game.getImage(this.serif.right_image());
-
-		this.game.surface.drawImage(right_image,
-						x,
-						y,
-						right_image.width * CHARA_SIZE_RATIO,
-						right_image.height * CHARA_SIZE_RATIO);
-
-		this.game.surface.restore();
-
-		// メッセージウィンドウ 名前欄表示
-		this.game.surface.save();
-
-		this.game.surface.globalAlpha = 0.5;
-		this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
-		this.game.surface.fillRect(440, 420, 100, 40);
-
-		this.game.surface.restore();
-
-		// 名前表示
-		this.game.surface.save();
-
-		this.game.surface.font = "24px 'Migu'";
-		this.game.surface.textAlign = 'middle';
-		this.game.surface.textBaseAlign = 'middle';
-		this.game.surface.fillStyle = 'rgb( 255, 255, 255 )';
-
-		if (this.serif.right_name()) {
-			this.game.surface.fillText(this.serif.right_name(), 450, 450);
-		}
-
-		this.game.surface.restore();
-
-
-	}
-
-	if(this.serif.left_image()) {
-		this.game.surface.save();
-
-		x = Config.PROLOGUE2_LEFT_X;
-		y = Config.PROLOGUE2_LEFT_Y;
-
+	if(!this.serif.is_right_talking()) {
 		// 喋ってない方のキャラは薄くなる
-		if(!this.serif.is_left_talking()) {
-			this.game.surface.globalAlpha = 0.5;
-		}
-		else {
-			// 喋ってる方のキャラは真ん中に寄る
-			x -= TALKER_MOVE_PX;
-			y -= TALKER_MOVE_PX;
-		}
-
-		var left_image = this.game.getImage(this.serif.left_image());
-		this.game.surface.transform(-1, 0, 0, 1, left_image.width * CHARA_SIZE_RATIO, 0); // 左右反転
-		this.game.surface.drawImage(left_image,
-						x,
-						y,
-						left_image.width * CHARA_SIZE_RATIO,
-						left_image.height * CHARA_SIZE_RATIO);
-
-		this.game.surface.restore();
-
-		// メッセージウィンドウ 名前欄表示
-		this.game.surface.save();
-
-		this.game.surface.globalAlpha = 0.5;
-		this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
-		this.game.surface.fillRect(100, 420, 100, 40);
-
-		this.game.surface.restore();
-
-		// 名前表示
-		this.game.surface.save();
-
-		this.game.surface.font = "24px 'Migu'";
-		this.game.surface.textAlign = 'middle';
-		this.game.surface.textBaseAlign = 'middle';
-		this.game.surface.fillStyle = 'rgb( 255, 255, 255 )';
-
-		if (this.serif.left_name()) {
-			this.game.surface.fillText(this.serif.left_name(), 120, 450);
-		}
-
-		this.game.surface.restore();
+		ctx.globalAlpha = 0.5;
+	}
+	else {
+		// 喋ってる方のキャラは真ん中に寄る
+		x -= TALKER_MOVE_PX;
+		y -= TALKER_MOVE_PX;
 	}
 
-	// セリフウィンドウ表示
-	if(this.serif.serif_window()) {
-		this.game.surface.save();
 
-		x = Config.PROLOGUE2_SERIF_WINDOW_X;
-		y = Config.PROLOGUE2_SERIF_WINDOW_Y;
+	var right_image = this.game.getImage(this.serif.right_image());
+
+	ctx.drawImage(right_image,
+					x,
+					y,
+					right_image.width * CHARA_SIZE_RATIO,
+					right_image.height * CHARA_SIZE_RATIO);
+
+	ctx.restore();
+};
+
+// 左のキャラを表示
+Scene.prototype._showLeftChara = function () {
+	var ctx = this.game.surface;
+	ctx.save();
+
+	var x = Config.PROLOGUE2_LEFT_X;
+	var y = Config.PROLOGUE2_LEFT_Y;
+
+	// 喋ってない方のキャラは薄くなる
+	if(!this.serif.is_left_talking()) {
+		ctx.globalAlpha = 0.5;
+	}
+	else {
+		// 喋ってる方のキャラは真ん中に寄る
+		x -= -TALKER_MOVE_PX; // 左右反転
+		y -= TALKER_MOVE_PX;
+	}
+
+	var left_image = this.game.getImage(this.serif.left_image());
+	ctx.transform(-1, 0, 0, 1, left_image.width * CHARA_SIZE_RATIO, 0); // 左右反転
+	ctx.drawImage(left_image,
+					-x, // 左右反転
+					y,
+					left_image.width * CHARA_SIZE_RATIO,
+					left_image.height * CHARA_SIZE_RATIO);
+
+	ctx.restore();
+};
+// メッセージウィンドウ 名前欄表示
+Scene.prototype._showNameWindow = function(x,y,xx,yy){
+	var ctx = this.game.surface;
+	ctx.save();
+
+	ctx.globalAlpha = 0.5;
+	ctx.fillStyle = 'rgb( 0, 0, 0 )';
+	ctx.fillRect(x,y,xx,yy);
+
+	ctx.restore();
+};
+// 名前表示
+Scene.prototype._showName = function(name, x, y){
+	var ctx = this.game.surface;
+	ctx.save();
+
+	ctx.font = "24px 'Migu'";
+	ctx.textAlign = 'middle';
+	ctx.textBaseAlign = 'middle';
+	ctx.fillStyle = 'rgb( 255, 255, 255 )';
+
+	ctx.fillText(name, x, y);
+
+	ctx.restore();
+};
+
+// セリフウィンドウ表示
+Scene.prototype._showMessageWindow = function(){
+		var ctx = this.game.surface;
+		ctx.save();
+
+		var x = Config.PROLOGUE2_SERIF_WINDOW_X;
+		var y = Config.PROLOGUE2_SERIF_WINDOW_Y;
 
 		var fukidashi = this.game.getImage(this.serif.serif_window());
 		if(this.serif.is_right_talking()) {
-			x = -x;//fukidashi.width * CHARA_SIZE_RATIO;
-			this.game.surface.transform(-1, 0, 0, 1, fukidashi.width * CHARA_SIZE_RATIO, 0); // 左右反転
+			x = -x; // 反転
+			ctx.transform(-1, 0, 0, 1, fukidashi.width * CHARA_SIZE_RATIO, 0); // 左右反転
 		}
-		this.game.surface.drawImage(fukidashi,
+		ctx.drawImage(fukidashi,
 						x,
 						y,
 						fukidashi.width * CHARA_SIZE_RATIO,
 						fukidashi.height * CHARA_SIZE_RATIO
 		);
-		this.game.surface.restore();
-	}
+		ctx.restore();
+}
 
-	// テキスト表示
-	this.game.surface.save();
+// セリフ表示
+Scene.prototype._showMessage = function() {
+	var ctx = this.game.surface;
+	ctx.save();
 
-	this.game.surface.font = "18px 'Migu'";
-	this.game.surface.textAlign = 'left';
-	this.game.surface.textBaseAlign = 'middle';
-	this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
+	ctx.font = "18px 'Migu'";
+	ctx.textAlign = 'left';
+	ctx.textBaseAlign = 'middle';
+	ctx.fillStyle = 'rgb( 0, 0, 0 )';
 
+	var x, y;
 	// セリフ表示
 	var lines = this.serif.lines();
 	if (lines.length) {
@@ -1067,15 +1115,22 @@ Scene.prototype.updateDisplay = function(){
 		y = 80;
 
 		for(var i = 0, len = lines.length; i < len; i++) {
-			this.game.surface.fillText(lines[i], 200, y); // 1行表示
+			ctx.fillText(lines[i], 200, y); // 1行表示
 
 			y+= 30;
 		}
 	}
 
-	this.game.surface.restore();
-
+	ctx.restore();
 };
+
+
+
+
+
+
+
+
 
 module.exports = Scene;
 
@@ -1124,22 +1179,23 @@ OpeningScene.prototype.run = function(){
 
 // 画面更新
 OpeningScene.prototype.updateDisplay = function(){
-	this.game.surface.clearRect( 0, 0, this.game.width, this.game.height ) ;
+	this.game.clearCanvas();
+	var ctx = this.game.surface;
 
-	this.game.surface.save();
+	ctx.save();
 
 	// 切り替え効果
 	if( this.frame_count < SHOW_TRANSITION_COUNT ) {
-		this.game.surface.globalAlpha = this.frame_count / SHOW_TRANSITION_COUNT;
+		ctx.globalAlpha = this.frame_count / SHOW_TRANSITION_COUNT;
 	}
 	else {
-		this.game.surface.globalAlpha = 1.0;
+		ctx.globalAlpha = 1.0;
 	}
 
 	var title_bg = this.game.getImage('title_bg');
 
 	// 背景画像表示
-	this.game.surface.drawImage(title_bg,
+	ctx.drawImage(title_bg,
 					0,
 					0,
 					title_bg.width,
@@ -1149,17 +1205,17 @@ OpeningScene.prototype.updateDisplay = function(){
 					this.game.width,
 					this.game.height);
 
-	this.game.surface.font = "24px 'Migu'" ;
-	this.game.surface.textAlign = 'center' ;
-	this.game.surface.textBaseAlign = 'middle' ;
-	this.game.surface.fillStyle = 'rgb( 0, 0, 0 )' ;
+	ctx.font = "24px 'Migu'" ;
+	ctx.textAlign = 'center' ;
+	ctx.textBaseAlign = 'middle' ;
+	ctx.fillStyle = 'rgb( 0, 0, 0 )' ;
 
 	// N秒ごとに start メッセージを点滅
 	if (Math.floor(this.frame_count / SHOW_START_MESSAGE_INTERVAL) % 2 === 0) {
-		this.game.surface.fillText('Press Z to Start', 450, 350);
+		ctx.fillText('Press Z to Start', 450, 350);
 	}
 
-	this.game.surface.restore();
+	ctx.restore();
 
 };
 
