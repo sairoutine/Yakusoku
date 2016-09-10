@@ -97,10 +97,10 @@ Scene.prototype.updateDisplay = function(){
 		}
 
 		var left_image = this.game.getImage(this.serif.left_image());
-
+		this.game.surface.transform(-1, 0, 0, 1, left_image.width, 0); // 左右反転
 		this.game.surface.drawImage(left_image,
-						Config.PROLOGUE2_LEFT_X,
-						Config.PROLOGUE2_LEFT_Y,
+						this.game.width - Config.PROLOGUE2_RIGHT_X, // x座標を反転させたのでposも反転
+						Config.PROLOGUE2_RIGHT_Y,
 						left_image.width * CHARA_SIZE_RATIO,
 						left_image.height * CHARA_SIZE_RATIO);
 
