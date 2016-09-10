@@ -11,7 +11,7 @@ var Config = {
 		aya_normal:  'image/aya_normal.png',
 		ganger_normal:  'image/ganger_normal.png',
 		logo:  'image/logo.png',
-		serif_window:  'image/serif.png',
+		fukidashi_normal:  'image/serif.png',
 		/*
 		stage1_bg: 'image/stage1_bg.jpg',
 		reimu:     'image/reimu.png',
@@ -81,6 +81,10 @@ var Config = {
 	// ノベルパートにおける右キャラの(x, y)
 	PROLOGUE2_RIGHT_X: 283,
 	PROLOGUE2_RIGHT_Y: 132,
+	// セリフウィンドウの(x, y)
+	PROLOGUE2_SERIF_WINDOW_X: 80,
+	PROLOGUE2_SERIF_WINDOW_Y: 0,
+
 	CHARA: {
 		"ganger": {
 			name: "？？？",
@@ -133,8 +137,8 @@ var config = require('./config');
 var constant = require('./constant');
 
 // TODO: デバッグ(最初に表示するシーン)
- var DEBUG_SCENE;
-//var DEBUG_SCENE = constant.PROLOGUE1_SCENE;
+var DEBUG_SCENE;
+//DEBUG_SCENE = constant.PROLOGUE2_SCENE;
 
 
 var LoadingScene   = require('./scene/loading');
@@ -382,6 +386,9 @@ var Logic = function (script) {
 	// 今どっちのキャラが喋っているか
 	this.pos = null;
 
+	// 吹き出しの種類
+	this.fukidashi = null;
+
 	// 現在表示しているメッセージ
 	this.line_num = 0;
 	this.printing_lines = [];
@@ -395,6 +402,7 @@ Logic.prototype.init = function () {
 	this.right_chara_id = null;
 	this.right_exp = null;
 	this.pos  = null;
+	this.fukidashi = null;
 
 	this.line_num = 0;
 	this.printing_lines = [];
@@ -427,6 +435,7 @@ Logic.prototype.next = function () {
 Logic.prototype._showChara = function(script) {
 	if(script.pos) {
 		this.pos  = script.pos;
+		this.fukidashi = script.fukidashi;
 
 		if(script.pos === "left") {
 			this.left_chara_id = script.chara;
@@ -491,14 +500,18 @@ Logic.prototype.right_image = function () {
 Logic.prototype.left_image = function () {
 	return(this.left_chara_id ? this.left_chara_id + "_" + this.left_exp : null);
 };
-Logic.prototype.text_name = function () {
-	if (this.is_left_talking()) {
-		return Config.CHARA[this.left_chara_id].name;
-	}
-	else if (this.is_right_talking()) {
-		return Config.CHARA[this.right_chara_id].name;
-	}
+
+Logic.prototype.right_name = function () {
+	return this.right_chara_id ? Config.CHARA[this.right_chara_id].name : null;
 };
+Logic.prototype.left_name = function () {
+	return this.left_chara_id ? Config.CHARA[this.left_chara_id].name : null;
+};
+Logic.prototype.serif_window = function () {
+	return this.fukidashi ? "fukidashi_" + this.fukidashi : null;
+};
+
+
 Logic.prototype.is_left_talking = function () {
 	return this.pos === "left" ? true : false;
 };
@@ -712,6 +725,23 @@ var MESSAGE = (function () {/*
 自分にそっくりな容姿の女の子が立っていた。
 */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
 
+
+// メッセージを表示している期間
+var SHOW_MESSAGE_COUNT = 300;
+
+// メッセージウィンドウの上下左右の余白
+var MESSAGE_WINDOW_OUTLINE_MARGIN = 20;
+var MESSAGE_WINDOW_INLINE_MARGIN  = 50;
+
+// フォントサイズ(px)
+var FONT_SIZE = 24;
+// 行間
+var FONT_MARGIN = 6;
+
+
+
+
+
 // 基底クラス
 var BaseScene = require('./base');
 
@@ -719,7 +749,6 @@ var Util = require('../util');
 var Constant = require('../constant');
 var Config = require('../config');
 
-var SHOW_TITLE_COUNT = 300;
 
 var Scene = function(game) {
 	BaseScene.apply(this, arguments);
@@ -739,63 +768,68 @@ Scene.prototype.init = function() {
 Scene.prototype.run = function(){
 	BaseScene.prototype.run.apply(this, arguments);
 
-	if(SHOW_TITLE_COUNT + 60 < this.frame_count) {
+	// 表示期間終了 or Z押下
+	if(SHOW_MESSAGE_COUNT < this.frame_count ||
+	   this.game.isKeyPush(Constant.BUTTON_Z)) {
 		this.game.notifyPrologue1Done();
 	}
-	/*
-	if(this.game.isKeyPush(Constant.BUTTON_Z)) {
-		if(this.serif.is_end()) {
-			this.game.notifyPrologue1Done();
-		}
-		else {
-			// セリフを送る
-			this.serif.next();
-		}
-	}
-	*/
 };
 
 // 画面更新
 Scene.prototype.updateDisplay = function(){
 	this.game.surface.clearRect( 0, 0, this.game.width, this.game.height ) ;
 
-	var prologue2_bg = this.game.getImage('prologue1_1_bg');
+	var prologue1_bg = this.game.getImage('prologue1_1_bg');
 
 	// 背景画像表示
-	this.game.surface.drawImage(prologue2_bg,
+	this.game.surface.drawImage(prologue1_bg,
 					0,
 					0,
-					prologue2_bg.width,
-					prologue2_bg.height,
+					prologue1_bg.width,
+					prologue1_bg.height,
 					0,
 					0,
 					this.game.width,
 					this.game.height);
 
+
+	// メッセージウィンドウ表示
+	this.game.surface.save();
+
+	this.game.surface.globalAlpha = 0.5;
+	this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
+	this.game.surface.fillRect(
+		MESSAGE_WINDOW_OUTLINE_MARGIN,
+		MESSAGE_WINDOW_OUTLINE_MARGIN,
+		this.game.width - MESSAGE_WINDOW_OUTLINE_MARGIN * 2,
+		this.game.height - MESSAGE_WINDOW_OUTLINE_MARGIN * 2
+	);
+
+	this.game.surface.restore();
+
+
 	this.game.surface.save();
 
 	var alpha = 1.0;
 	// 切り替え効果
-	if( this.frame_count < (SHOW_TITLE_COUNT / 3)) {
+	if( this.frame_count < (SHOW_MESSAGE_COUNT / 3)) {
 		// 最初の1/3はフェードイン
-		alpha = (this.frame_count * 3) / SHOW_TITLE_COUNT;
+		alpha = (this.frame_count * 3) / SHOW_MESSAGE_COUNT;
 	}
-	else if(SHOW_TITLE_COUNT / 3 < this.frame_count && this.frame_count < SHOW_TITLE_COUNT * 2 / 3) {
+	else if(SHOW_MESSAGE_COUNT / 3 < this.frame_count && this.frame_count < SHOW_MESSAGE_COUNT * 2 / 3) {
 		// 真ん中の1/3は表示
 		alpha = 1.0;
 	}
-	else if(SHOW_TITLE_COUNT * 2 / 3 < this.frame_count) {
+	else if(SHOW_MESSAGE_COUNT * 2 / 3 < this.frame_count) {
 		// 最後の1/3はフェードアウト
-		alpha = (SHOW_TITLE_COUNT - this.frame_count) * 3 / SHOW_TITLE_COUNT;
+		alpha = (SHOW_MESSAGE_COUNT - this.frame_count) * 3 / SHOW_MESSAGE_COUNT;
 	}
 
 	this.game.surface.globalAlpha = alpha;
 
-
-
-
-	if(SHOW_TITLE_COUNT > this.frame_count) {
-		this.game.surface.font = "24px 'Migu'" ;
+	// メッセージ表示期間なら
+	if(SHOW_MESSAGE_COUNT > this.frame_count) {
+		this.game.surface.font = FONT_SIZE + "px 'Migu'" ;
 		this.game.surface.textBaseAlign = 'middle' ;
 		this.game.surface.fillStyle = 'rgb( 255, 255, 255 )' ;
 
@@ -803,12 +837,12 @@ Scene.prototype.updateDisplay = function(){
 		var lines = MESSAGE.split("\n");
 		if (lines.length) {
 			// セリフテキストの y 座標初期位置
-			var y = 50;
+			var y = MESSAGE_WINDOW_INLINE_MARGIN;
 
 			for(var i = 0, len = lines.length; i < len; i++) {
-				this.game.surface.fillText(lines[i], 50, y); // 1行表示
+				this.game.surface.fillText(lines[i], MESSAGE_WINDOW_INLINE_MARGIN, y); // 1行表示
 
-				y+= 30;
+				y+= FONT_SIZE + FONT_MARGIN;
 			}
 		}
 	}
@@ -826,6 +860,8 @@ module.exports = Scene;
 // キャラのサイズ(1/2)
 var CHARA_SIZE_RATIO = 0.5;
 
+// 喋ってる方が寄る際のpx
+var TALKER_MOVE_PX = 5;
 
 
 // 基底クラス
@@ -877,9 +913,8 @@ Scene.prototype.updateDisplay = function(){
 
 	this.game.surface.save();
 
-	var prologue2_bg = this.game.getImage('prologue2_bg');
-
 	// 背景画像表示
+	var prologue2_bg = this.game.getImage('prologue2_bg');
 	this.game.surface.drawImage(prologue2_bg,
 					0,
 					0,
@@ -891,82 +926,148 @@ Scene.prototype.updateDisplay = function(){
 					this.game.height);
 	this.game.surface.restore();
 
+	var x, y;
+
 	if(this.serif.right_image()) {
 		this.game.surface.save();
 
-		// 喋ってない方のキャラは薄くなる
+		x = Config.PROLOGUE2_RIGHT_X;
+		y = Config.PROLOGUE2_RIGHT_Y;
+
 		if(!this.serif.is_right_talking()) {
+			// 喋ってない方のキャラは薄くなる
 			this.game.surface.globalAlpha = 0.5;
 		}
+		else {
+			// 喋ってる方のキャラは真ん中に寄る
+			x -= TALKER_MOVE_PX;
+			y -= TALKER_MOVE_PX;
+		}
+
+
 		var right_image = this.game.getImage(this.serif.right_image());
 
 		this.game.surface.drawImage(right_image,
-						Config.PROLOGUE2_RIGHT_X,
-						Config.PROLOGUE2_RIGHT_Y,
+						x,
+						y,
 						right_image.width * CHARA_SIZE_RATIO,
 						right_image.height * CHARA_SIZE_RATIO);
 
 		this.game.surface.restore();
+
+		// メッセージウィンドウ 名前欄表示
+		this.game.surface.save();
+
+		this.game.surface.globalAlpha = 0.5;
+		this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
+		this.game.surface.fillRect(440, 420, 100, 40);
+
+		this.game.surface.restore();
+
+		// 名前表示
+		this.game.surface.save();
+
+		this.game.surface.font = "24px 'Migu'";
+		this.game.surface.textAlign = 'middle';
+		this.game.surface.textBaseAlign = 'middle';
+		this.game.surface.fillStyle = 'rgb( 255, 255, 255 )';
+
+		if (this.serif.right_name()) {
+			this.game.surface.fillText(this.serif.right_name(), 450, 450);
+		}
+
+		this.game.surface.restore();
+
+
 	}
 
 	if(this.serif.left_image()) {
 		this.game.surface.save();
 
+		x = Config.PROLOGUE2_LEFT_X;
+		y = Config.PROLOGUE2_LEFT_Y;
+
 		// 喋ってない方のキャラは薄くなる
 		if(!this.serif.is_left_talking()) {
 			this.game.surface.globalAlpha = 0.5;
 		}
+		else {
+			// 喋ってる方のキャラは真ん中に寄る
+			x -= TALKER_MOVE_PX;
+			y -= TALKER_MOVE_PX;
+		}
 
 		var left_image = this.game.getImage(this.serif.left_image());
-
+		this.game.surface.transform(-1, 0, 0, 1, left_image.width * CHARA_SIZE_RATIO, 0); // 左右反転
 		this.game.surface.drawImage(left_image,
-						Config.PROLOGUE2_LEFT_X,
-						Config.PROLOGUE2_LEFT_Y,
+						x,
+						y,
 						left_image.width * CHARA_SIZE_RATIO,
 						left_image.height * CHARA_SIZE_RATIO);
 
 		this.game.surface.restore();
+
+		// メッセージウィンドウ 名前欄表示
+		this.game.surface.save();
+
+		this.game.surface.globalAlpha = 0.5;
+		this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
+		this.game.surface.fillRect(100, 420, 100, 40);
+
+		this.game.surface.restore();
+
+		// 名前表示
+		this.game.surface.save();
+
+		this.game.surface.font = "24px 'Migu'";
+		this.game.surface.textAlign = 'middle';
+		this.game.surface.textBaseAlign = 'middle';
+		this.game.surface.fillStyle = 'rgb( 255, 255, 255 )';
+
+		if (this.serif.left_name()) {
+			this.game.surface.fillText(this.serif.left_name(), 120, 450);
+		}
+
+		this.game.surface.restore();
 	}
 
-	// メッセージウィンドウ表示
-	this.game.surface.save();
+	// セリフウィンドウ表示
+	if(this.serif.serif_window()) {
+		this.game.surface.save();
 
-	this.game.surface.globalAlpha = 0.5;
-	this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
-	this.game.surface.fillRect(5, 345, 630, 125);
+		x = Config.PROLOGUE2_SERIF_WINDOW_X;
+		y = Config.PROLOGUE2_SERIF_WINDOW_Y;
 
-	this.game.surface.restore();
-
-	// メッセージウィンドウ 名前欄表示
-	this.game.surface.save();
-
-	this.game.surface.globalAlpha = 0.5;
-	this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
-	this.game.surface.fillRect(5, 305, 100, 40);
-
-	this.game.surface.restore();
+		var fukidashi = this.game.getImage(this.serif.serif_window());
+		if(this.serif.is_right_talking()) {
+			x = -x;//fukidashi.width * CHARA_SIZE_RATIO;
+			this.game.surface.transform(-1, 0, 0, 1, fukidashi.width * CHARA_SIZE_RATIO, 0); // 左右反転
+		}
+		this.game.surface.drawImage(fukidashi,
+						x,
+						y,
+						fukidashi.width * CHARA_SIZE_RATIO,
+						fukidashi.height * CHARA_SIZE_RATIO
+		);
+		this.game.surface.restore();
+	}
 
 	// テキスト表示
 	this.game.surface.save();
 
-	this.game.surface.font = "24px 'Migu'";
+	this.game.surface.font = "18px 'Migu'";
 	this.game.surface.textAlign = 'left';
 	this.game.surface.textBaseAlign = 'middle';
-	this.game.surface.fillStyle = 'rgb( 255, 255, 255 )';
-
-	// 名前表示
-	if (this.serif.text_name()) {
-		this.game.surface.fillText(this.serif.text_name(), 15, 340);
-	}
+	this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
 
 	// セリフ表示
 	var lines = this.serif.lines();
 	if (lines.length) {
 		// セリフテキストの y 座標初期位置
-		var y = 380;
+		y = 80;
 
 		for(var i = 0, len = lines.length; i < len; i++) {
-			this.game.surface.fillText(lines[i], 15, y); // 1行表示
+			this.game.surface.fillText(lines[i], 200, y); // 1行表示
 
 			y+= 30;
 		}
@@ -1070,127 +1171,120 @@ module.exports = OpeningScene;
 // セリフ
 var Serif= [
 	{
-		serif: "今日は8月31日。",
-		fukidash: null,
-		chara: null,
-		pos: null,
-		exp: null,
-	},
-	{
 		serif: null,
-		fukidash: null,
+		fukidashi: null,
 		chara: "ganger",
 		pos: "right",
 		exp: "normal",
 	},
 	{
 		serif: null,
-		fukidash: null,
+		fukidashi: null,
 		chara: "renko",
 		pos: "left",
 		exp: "normal",
 	},
 	{
-		serif: "約束を守りなさい。早く博霊神社に行かないと。",
-		fukidash: "normal",
+		serif: "約束を守りなさい。\n早く博霊神社に行かないと。",
+		fukidashi: "normal",
 		chara: "ganger",
 		pos: "right",
 		exp: "normal",
 	},
 	{
 		serif: "え、そんな約束してたっけ？",
-		fukidash: "normal",
+		fukidashi: "normal",
 		chara: "renko",
 		pos: "left",
 		exp: "normal",
 	},
 	{
 		serif: null,
-		fukidash: null,
+		fukidashi: null,
 		chara: "merry",
 		pos: "right",
 		exp: "normal",
 	},
 	{
 		serif: "どうしたの？",
-		fukidash: "normal",
+		fukidashi: "normal",
 		chara: "merry",
 		pos: "right",
 		exp: "normal",
 	},
 	{
 		serif: "実はかくかくしかじかで",
-		fukidash: "normal",
+		fukidashi: "normal",
 		chara: "renko",
 		pos: "left",
 		exp: "normal",
 	},
 	{
 		serif: "ふーん",
-		fukidash: "normal",
+		fukidashi: "normal",
 		chara: "merry",
 		pos: "right",
 		exp: "normal",
 	},
 	{
-		serif: "約束といえば、前に博霊神社の入り口を\n調べようって約束してたわね。",
-		fukidash: "normal",
+		serif: "約束といえば、前に博霊神社の\n入り口を調べようって\n約束してたわね。",
+		fukidashi: "normal",
 		chara: "renko",
 		pos: "left",
 		exp: "normal",
 	},
 	{
 		serif: "そうだっけ？",
-		fukidash: "normal",
-		chara: "renko",
-		pos: "left",
+		fukidashi: "normal",
+		chara: "merry",
+		pos: "right",
 		exp: "normal",
 	},
 	{
-		serif: "なんだか気になるわ。ねえ、今から行ってみない？",
-		fukidash: "normal",
+		serif: "なんだか気になるわ。\nねえ、今から行ってみない？",
+		fukidashi: "normal",
 		chara: "renko",
 		pos: "left",
 		exp: "normal",
 	},
 	{
 		serif: "今から！？面倒だわ…。",
-		fukidash: "normal",
+		fukidashi: "normal",
 		chara: "merry",
 		pos: "right",
 		exp: "normal",
 	},
 	{
-		serif: "そんな事言わずに行きましょうよ。",
-		fukidash: "normal",
+		serif: "そんな事言わずに\n行きましょうよ。",
+		fukidashi: "normal",
 		chara: "renko",
 		pos: "left",
 		exp: "normal",
 	},
 	{
-		serif: "うっ…急にめまいとフラつきと腹痛と頭痛が",
-		fukidash: "normal",
+		serif: "うっ…急にめまいと\nフラつきと腹痛と頭痛が",
+		fukidashi: "normal",
 		chara: "merry",
 		pos: "right",
 		exp: "normal",
 	},
 	{
-		serif: "さっきまで元気だったじゃない！",
-		fukidash: "normal",
+		serif: "さっきまで\n元気だったじゃない！",
+		fukidashi: "normal",
 		chara: "renko",
 		pos: "left",
 		exp: "normal",
 	},
 	{
 		serif: "うーん、気が進まないわ。",
-		fukidash: "normal",
+		fukidashi: "normal",
 		chara: "merry",
 		pos: "right",
 		exp: "normal",
 	},
 	{
-		serif: "はぁ…。そんなに嫌なら仕方ないわね。\n私一人で行ってくるわ。",
-		fukidash: "normal",
+		serif: "はぁ…。そんなに嫌なら\n仕方ないわね。\n私一人で行ってくるわ。",
+		fukidashi: "normal",
 		chara: "renko",
 		pos: "left",
 		exp: "normal",
