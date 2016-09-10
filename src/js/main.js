@@ -14,3 +14,14 @@ window.onload = function() {
 	// ゲーム起動
 	game.run();
 };
+window.onerror = function (msg, file, line, column, err) {
+	/*
+	msg: error message
+	file: file path
+	line: row number
+	column: column number
+	err: error object
+	*/ 
+	window.alert(msg + "\n" + line + ":" + column);
+};
+
