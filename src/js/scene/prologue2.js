@@ -2,6 +2,11 @@
 
 /* プロローグ画面2 */
 
+// キャラのサイズ(1/2)
+var CHARA_SIZE_RATIO = 0.5;
+
+
+
 // 基底クラス
 var BaseScene = require('./base');
 
@@ -77,8 +82,8 @@ Scene.prototype.updateDisplay = function(){
 		this.game.surface.drawImage(right_image,
 						Config.PROLOGUE2_RIGHT_X,
 						Config.PROLOGUE2_RIGHT_Y,
-						right_image.width * 0.25,
-						right_image.height * 0.25);
+						right_image.width * CHARA_SIZE_RATIO,
+						right_image.height * CHARA_SIZE_RATIO);
 
 		this.game.surface.restore();
 	}
@@ -96,8 +101,8 @@ Scene.prototype.updateDisplay = function(){
 		this.game.surface.drawImage(left_image,
 						Config.PROLOGUE2_LEFT_X,
 						Config.PROLOGUE2_LEFT_Y,
-						left_image.width * 0.5,
-						left_image.height * 0.5);
+						left_image.width * CHARA_SIZE_RATIO,
+						left_image.height * CHARA_SIZE_RATIO);
 
 		this.game.surface.restore();
 	}

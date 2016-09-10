@@ -3,11 +3,14 @@
 var Config = {
 	IMAGES: {
 		title_bg:  'image/title_bg.png',
-		prologue1_1_bg:  'image/black.jpg',
-		prologue2_bg:  'image/prologue_bg.jpg',
-		renko_normal:  'image/renko_normal.jpg',
-		merry_normal:  'image/merry_normal.jpg',
-		ganger_normal:  'image/ganger_normal.jpg',
+		prologue1_1_bg:  'image/prologue_bg.png',
+		prologue2_bg:  'image/prologue_bg.png',
+		renko_normal:  'image/renko_normal.png',
+		merry_normal:  'image/merry_normal.png',
+		aya_normal:  'image/aya_normal.png',
+		ganger_normal:  'image/ganger_normal.png',
+		logo:  'image/logo.png',
+		serif_window:  'image/serif.png',
 		/*
 		stage1_bg: 'image/stage1_bg.jpg',
 		reimu:     'image/reimu.png',
@@ -72,11 +75,11 @@ var Config = {
 	// テキストの typography スピード
 	MESSAGE_SPEED: 10,
 	// ノベルパートにおける左キャラの(x, y)
-	PROLOGUE2_LEFT_X: 20,
-	PROLOGUE2_LEFT_Y: 130,
+	PROLOGUE2_LEFT_X: 0,
+	PROLOGUE2_LEFT_Y: 132,
 	// ノベルパートにおける右キャラの(x, y)
-	PROLOGUE2_RIGHT_X: 350,
-	PROLOGUE2_RIGHT_Y: 130,
+	PROLOGUE2_RIGHT_X: 283,
+	PROLOGUE2_RIGHT_Y: 132,
 	CHARA: {
 		"ganger": {
 			name: "？？？",
