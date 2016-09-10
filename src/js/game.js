@@ -5,15 +5,15 @@ var constant = require('./constant');
 
 // TODO: デバッグ(最初に表示するシーン)
 var DEBUG_SCENE;
-//DEBUG_SCENE = constant.PROLOGUE2_SCENE;
+//DEBUG_SCENE = constant.STAGE_SCENE;
 
 
 var LoadingScene   = require('./scene/loading');
 var TitleScene     = require('./scene/title');
 var Prologue1Scene = require('./scene/prologue1');
 var Prologue2Scene = require('./scene/prologue2');
-/*
 var StageScene    = require('./scene/stage');
+/*
 var EpilogueScene = require('./scene/epilogue');
 var EndingScene   = require('./scene/ending');
 */
@@ -37,6 +37,8 @@ var Game = function(mainCanvas) {
 	this.scenes[ constant.PROLOGUE1_SCENE ] = new Prologue1Scene(this);
 	// プロローグ画面2
 	this.scenes[ constant.PROLOGUE2_SCENE ] = new Prologue2Scene(this);
+	// ステージ
+	this.scenes[ constant.STAGE_SCENE ] = new StageScene(this);
 
 	/*
 	// ゲーム画面

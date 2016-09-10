@@ -19,6 +19,11 @@ var Constant = {
 	BUTTON_X:     0x20,
 	BUTTON_SHIFT: 0x40,
 	BUTTON_SPACE: 0x80,
+
+	WAY_STATE:    0,
+	TALK_STATE:   1,
+	BOSS_STATE:   2,
+	RESULT_STATE: 3,
 };
 
 module.exports = Constant;
