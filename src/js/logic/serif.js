@@ -23,6 +23,9 @@ var Logic = function (script) {
 	// 今どっちのキャラが喋っているか
 	this.pos = null;
 
+	// 吹き出しの種類
+	this.fukidashi = null;
+
 	// 現在表示しているメッセージ
 	this.line_num = 0;
 	this.printing_lines = [];
@@ -36,6 +39,7 @@ Logic.prototype.init = function () {
 	this.right_chara_id = null;
 	this.right_exp = null;
 	this.pos  = null;
+	this.fukidashi = null;
 
 	this.line_num = 0;
 	this.printing_lines = [];
@@ -68,6 +72,7 @@ Logic.prototype.next = function () {
 Logic.prototype._showChara = function(script) {
 	if(script.pos) {
 		this.pos  = script.pos;
+		this.fukidashi = script.fukidashi;
 
 		if(script.pos === "left") {
 			this.left_chara_id = script.chara;
@@ -132,14 +137,18 @@ Logic.prototype.right_image = function () {
 Logic.prototype.left_image = function () {
 	return(this.left_chara_id ? this.left_chara_id + "_" + this.left_exp : null);
 };
-Logic.prototype.text_name = function () {
-	if (this.is_left_talking()) {
-		return Config.CHARA[this.left_chara_id].name;
-	}
-	else if (this.is_right_talking()) {
-		return Config.CHARA[this.right_chara_id].name;
-	}
+
+Logic.prototype.right_name = function () {
+	return this.right_chara_id ? Config.CHARA[this.right_chara_id].name : null;
 };
+Logic.prototype.left_name = function () {
+	return this.left_chara_id ? Config.CHARA[this.left_chara_id].name : null;
+};
+Logic.prototype.serif_window = function () {
+	return this.fukidashi ? "fukidashi_" + this.fukidashi : null;
+};
+
+
 Logic.prototype.is_left_talking = function () {
 	return this.pos === "left" ? true : false;
 };

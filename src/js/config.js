@@ -10,7 +10,7 @@ var Config = {
 		aya_normal:  'image/aya_normal.png',
 		ganger_normal:  'image/ganger_normal.png',
 		logo:  'image/logo.png',
-		serif_window:  'image/serif.png',
+		fukidashi_normal:  'image/serif.png',
 		/*
 		stage1_bg: 'image/stage1_bg.jpg',
 		reimu:     'image/reimu.png',
@@ -80,6 +80,10 @@ var Config = {
 	// ノベルパートにおける右キャラの(x, y)
 	PROLOGUE2_RIGHT_X: 283,
 	PROLOGUE2_RIGHT_Y: 132,
+	// セリフウィンドウの(x, y)
+	PROLOGUE2_SERIF_WINDOW_X: 80,
+	PROLOGUE2_SERIF_WINDOW_Y: 0,
+
 	CHARA: {
 		"ganger": {
 			name: "？？？",

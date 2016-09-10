@@ -58,9 +58,8 @@ Scene.prototype.updateDisplay = function(){
 
 	this.game.surface.save();
 
-	var prologue2_bg = this.game.getImage('prologue2_bg');
-
 	// 背景画像表示
+	var prologue2_bg = this.game.getImage('prologue2_bg');
 	this.game.surface.drawImage(prologue2_bg,
 					0,
 					0,
@@ -73,6 +72,7 @@ Scene.prototype.updateDisplay = function(){
 	this.game.surface.restore();
 
 	var x, y;
+
 	if(this.serif.right_image()) {
 		this.game.surface.save();
 
@@ -176,41 +176,43 @@ Scene.prototype.updateDisplay = function(){
 		this.game.surface.restore();
 	}
 
+	// セリフウィンドウ表示
+	if(this.serif.serif_window()) {
+		this.game.surface.save();
 
+		x = Config.PROLOGUE2_SERIF_WINDOW_X;
+		y = Config.PROLOGUE2_SERIF_WINDOW_Y;
 
+		var fukidashi = this.game.getImage(this.serif.serif_window());
+		if(this.serif.is_right_talking()) {
+			x = -x;//fukidashi.width * CHARA_SIZE_RATIO;
+			this.game.surface.transform(-1, 0, 0, 1, fukidashi.width * CHARA_SIZE_RATIO, 0); // 左右反転
+		}
+		this.game.surface.drawImage(fukidashi,
+						x,
+						y,
+						fukidashi.width * CHARA_SIZE_RATIO,
+						fukidashi.height * CHARA_SIZE_RATIO
+		);
+		this.game.surface.restore();
+	}
 
-
-
-
-
-
-
-	/*
-	// メッセージウィンドウ表示
-	this.game.surface.save();
-
-	this.game.surface.globalAlpha = 0.5;
-	this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
-	this.game.surface.fillRect(5, 345, 630, 125);
-
-	this.game.surface.restore();
-	*/
 	// テキスト表示
 	this.game.surface.save();
 
-	this.game.surface.font = "24px 'Migu'";
+	this.game.surface.font = "18px 'Migu'";
 	this.game.surface.textAlign = 'left';
 	this.game.surface.textBaseAlign = 'middle';
-	this.game.surface.fillStyle = 'rgb( 255, 255, 255 )';
+	this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
 
 	// セリフ表示
 	var lines = this.serif.lines();
 	if (lines.length) {
 		// セリフテキストの y 座標初期位置
-		y = 380;
+		y = 80;
 
 		for(var i = 0, len = lines.length; i < len; i++) {
-			this.game.surface.fillText(lines[i], 15, y); // 1行表示
+			this.game.surface.fillText(lines[i], 200, y); // 1行表示
 
 			y+= 30;
 		}
