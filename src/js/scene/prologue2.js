@@ -99,6 +99,31 @@ Scene.prototype.updateDisplay = function(){
 						right_image.height * CHARA_SIZE_RATIO);
 
 		this.game.surface.restore();
+
+		// メッセージウィンドウ 名前欄表示
+		this.game.surface.save();
+
+		this.game.surface.globalAlpha = 0.5;
+		this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
+		this.game.surface.fillRect(440, 420, 100, 40);
+
+		this.game.surface.restore();
+
+		// 名前表示
+		this.game.surface.save();
+
+		this.game.surface.font = "24px 'Migu'";
+		this.game.surface.textAlign = 'middle';
+		this.game.surface.textBaseAlign = 'middle';
+		this.game.surface.fillStyle = 'rgb( 255, 255, 255 )';
+
+		if (this.serif.right_name()) {
+			this.game.surface.fillText(this.serif.right_name(), 450, 450);
+		}
+
+		this.game.surface.restore();
+
+
 	}
 
 	if(this.serif.left_image()) {
@@ -126,30 +151,31 @@ Scene.prototype.updateDisplay = function(){
 						left_image.height * CHARA_SIZE_RATIO);
 
 		this.game.surface.restore();
+
+		// メッセージウィンドウ 名前欄表示
+		this.game.surface.save();
+
+		this.game.surface.globalAlpha = 0.5;
+		this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
+		this.game.surface.fillRect(100, 420, 100, 40);
+
+		this.game.surface.restore();
+
+		// 名前表示
+		this.game.surface.save();
+
+		this.game.surface.font = "24px 'Migu'";
+		this.game.surface.textAlign = 'middle';
+		this.game.surface.textBaseAlign = 'middle';
+		this.game.surface.fillStyle = 'rgb( 255, 255, 255 )';
+
+		if (this.serif.left_name()) {
+			this.game.surface.fillText(this.serif.left_name(), 120, 450);
+		}
+
+		this.game.surface.restore();
 	}
 
-	// メッセージウィンドウ 名前欄表示
-	this.game.surface.save();
-
-	this.game.surface.globalAlpha = 0.5;
-	this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
-	this.game.surface.fillRect(5, 305, 100, 40);
-
-	this.game.surface.restore();
-
-	// 名前表示
-	this.game.surface.save();
-
-	this.game.surface.font = "24px 'Migu'";
-	this.game.surface.textAlign = 'left';
-	this.game.surface.textBaseAlign = 'middle';
-	this.game.surface.fillStyle = 'rgb( 255, 255, 255 )';
-
-	if (this.serif.text_name()) {
-		this.game.surface.fillText(this.serif.text_name(), 15, 340);
-	}
-
-	this.game.surface.restore();
 
 
 
@@ -159,8 +185,7 @@ Scene.prototype.updateDisplay = function(){
 
 
 
-
-
+	/*
 	// メッセージウィンドウ表示
 	this.game.surface.save();
 
@@ -169,7 +194,7 @@ Scene.prototype.updateDisplay = function(){
 	this.game.surface.fillRect(5, 345, 630, 125);
 
 	this.game.surface.restore();
-
+	*/
 	// テキスト表示
 	this.game.surface.save();
 
