@@ -4,8 +4,8 @@ var config = require('./config');
 var constant = require('./constant');
 
 // TODO: デバッグ(最初に表示するシーン)
- var DEBUG_SCENE;
-//var DEBUG_SCENE = constant.PROLOGUE1_SCENE;
+var DEBUG_SCENE;
+//DEBUG_SCENE = constant.PROLOGUE2_SCENE;
 
 
 var LoadingScene   = require('./scene/loading');
