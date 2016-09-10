@@ -75,8 +75,8 @@ var Serif= [
 	{
 		serif: "そうだっけ？",
 		fukidash: "normal",
-		chara: "renko",
-		pos: "left",
+		chara: "merry",
+		pos: "right",
 		exp: "normal",
 	},
 	{
