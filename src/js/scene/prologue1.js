@@ -71,9 +71,19 @@ Scene.prototype.updateDisplay = function(){
 	this.game.clearCanvas();
 	var ctx = this.game.surface;
 
+	// 背景画像表示
+	this._showBG();
+	// メッセージウィンドウ表示
+	this._showMessageWindow();
+	// メッセージ表示
+	this._showMessage();
+};
+
+// 背景画像表示
+Scene.prototype._showBG = function() {
+	var ctx = this.game.surface;
 	var prologue1_bg = this.game.getImage('prologue1_1_bg');
 
-	// 背景画像表示
 	ctx.drawImage(prologue1_bg,
 					0,
 					0,
@@ -83,9 +93,10 @@ Scene.prototype.updateDisplay = function(){
 					0,
 					this.game.width,
 					this.game.height);
-
-
-	// メッセージウィンドウ表示
+};
+// メッセージウィンドウ表示
+Scene.prototype._showMessageWindow = function(){
+	var ctx = this.game.surface;
 	ctx.save();
 
 	ctx.globalAlpha = 0.5;
@@ -98,9 +109,10 @@ Scene.prototype.updateDisplay = function(){
 	);
 
 	ctx.restore();
-
-
-	ctx.save();
+};
+// 切り替え効果
+Scene.prototype._setTransition = function(){
+	var ctx = this.game.surface;
 
 	var alpha = 1.0;
 	// 切り替え効果
@@ -118,6 +130,14 @@ Scene.prototype.updateDisplay = function(){
 	}
 
 	ctx.globalAlpha = alpha;
+};
+// メッセージ表示
+Scene.prototype._showMessage = function(){
+	var ctx = this.game.surface;
+	ctx.save();
+
+	// 切り替え効果
+	this._setTransition();
 
 	// メッセージ表示期間なら
 	if(SHOW_MESSAGE_COUNT > this.frame_count) {
@@ -141,5 +161,8 @@ Scene.prototype.updateDisplay = function(){
 
 	ctx.restore();
 };
+
+
+
 
 module.exports = Scene;

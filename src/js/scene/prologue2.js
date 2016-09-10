@@ -57,10 +57,45 @@ Scene.prototype.updateDisplay = function(){
 	this.game.clearCanvas();
 	var ctx = this.game.surface;
 
-	ctx.save();
-
 	// 背景画像表示
+	this._showBG();
+
+	if(this.serif.right_image()) {
+		// キャラ表示
+		this._showRightChara();
+	}
+	if (this.serif.right_name()) {
+		// メッセージウィンドウ 名前欄表示
+		this._showNameWindow(440, 420, 100, 40);
+		// 名前表示
+		this._showName(this.serif.right_name(), 450, 450);
+	}
+
+	if(this.serif.left_image()) {
+		// キャラ表示
+		this._showLeftChara();
+	}
+	if (this.serif.left_name()) {
+		// メッセージウィンドウ 名前欄表示
+		this._showNameWindow(100, 420, 100, 40);
+		// 名前表示
+		this._showName(this.serif.left_name(), 120, 450);
+	}
+
+	// セリフウィンドウ表示
+	if(this.serif.serif_window()) {
+		this._showMessageWindow();
+	}
+
+	// セリフ表示
+	this._showMessage();
+};
+
+// 背景画像表示
+Scene.prototype._showBG = function(){
+	var ctx = this.game.surface;
 	var prologue2_bg = this.game.getImage('prologue2_bg');
+	ctx.save();
 	ctx.drawImage(prologue2_bg,
 					0,
 					0,
@@ -71,122 +106,102 @@ Scene.prototype.updateDisplay = function(){
 					this.game.width,
 					this.game.height);
 	ctx.restore();
+};
+// 右のキャラを表示
+Scene.prototype._showRightChara = function(){
+	var ctx = this.game.surface;
+	ctx.save();
 
-	var x, y;
+	var x = Config.PROLOGUE2_RIGHT_X;
+	var y = Config.PROLOGUE2_RIGHT_Y;
 
-	if(this.serif.right_image()) {
-		ctx.save();
-
-		x = Config.PROLOGUE2_RIGHT_X;
-		y = Config.PROLOGUE2_RIGHT_Y;
-
-		if(!this.serif.is_right_talking()) {
-			// 喋ってない方のキャラは薄くなる
-			ctx.globalAlpha = 0.5;
-		}
-		else {
-			// 喋ってる方のキャラは真ん中に寄る
-			x -= TALKER_MOVE_PX;
-			y -= TALKER_MOVE_PX;
-		}
-
-
-		var right_image = this.game.getImage(this.serif.right_image());
-
-		ctx.drawImage(right_image,
-						x,
-						y,
-						right_image.width * CHARA_SIZE_RATIO,
-						right_image.height * CHARA_SIZE_RATIO);
-
-		ctx.restore();
-
-		// メッセージウィンドウ 名前欄表示
-		ctx.save();
-
-		ctx.globalAlpha = 0.5;
-		ctx.fillStyle = 'rgb( 0, 0, 0 )';
-		ctx.fillRect(440, 420, 100, 40);
-
-		ctx.restore();
-
-		// 名前表示
-		ctx.save();
-
-		ctx.font = "24px 'Migu'";
-		ctx.textAlign = 'middle';
-		ctx.textBaseAlign = 'middle';
-		ctx.fillStyle = 'rgb( 255, 255, 255 )';
-
-		if (this.serif.right_name()) {
-			ctx.fillText(this.serif.right_name(), 450, 450);
-		}
-
-		ctx.restore();
-
-
-	}
-
-	if(this.serif.left_image()) {
-		ctx.save();
-
-		x = Config.PROLOGUE2_LEFT_X;
-		y = Config.PROLOGUE2_LEFT_Y;
-
+	if(!this.serif.is_right_talking()) {
 		// 喋ってない方のキャラは薄くなる
-		if(!this.serif.is_left_talking()) {
-			ctx.globalAlpha = 0.5;
-		}
-		else {
-			// 喋ってる方のキャラは真ん中に寄る
-			x -= TALKER_MOVE_PX;
-			y -= TALKER_MOVE_PX;
-		}
-
-		var left_image = this.game.getImage(this.serif.left_image());
-		ctx.transform(-1, 0, 0, 1, left_image.width * CHARA_SIZE_RATIO, 0); // 左右反転
-		ctx.drawImage(left_image,
-						x,
-						y,
-						left_image.width * CHARA_SIZE_RATIO,
-						left_image.height * CHARA_SIZE_RATIO);
-
-		ctx.restore();
-
-		// メッセージウィンドウ 名前欄表示
-		ctx.save();
-
 		ctx.globalAlpha = 0.5;
-		ctx.fillStyle = 'rgb( 0, 0, 0 )';
-		ctx.fillRect(100, 420, 100, 40);
-
-		ctx.restore();
-
-		// 名前表示
-		ctx.save();
-
-		ctx.font = "24px 'Migu'";
-		ctx.textAlign = 'middle';
-		ctx.textBaseAlign = 'middle';
-		ctx.fillStyle = 'rgb( 255, 255, 255 )';
-
-		if (this.serif.left_name()) {
-			ctx.fillText(this.serif.left_name(), 120, 450);
-		}
-
-		ctx.restore();
+	}
+	else {
+		// 喋ってる方のキャラは真ん中に寄る
+		x -= TALKER_MOVE_PX;
+		y -= TALKER_MOVE_PX;
 	}
 
-	// セリフウィンドウ表示
-	if(this.serif.serif_window()) {
+
+	var right_image = this.game.getImage(this.serif.right_image());
+
+	ctx.drawImage(right_image,
+					x,
+					y,
+					right_image.width * CHARA_SIZE_RATIO,
+					right_image.height * CHARA_SIZE_RATIO);
+
+	ctx.restore();
+};
+
+// 左のキャラを表示
+Scene.prototype._showLeftChara = function () {
+	var ctx = this.game.surface;
+	ctx.save();
+
+	var x = Config.PROLOGUE2_LEFT_X;
+	var y = Config.PROLOGUE2_LEFT_Y;
+
+	// 喋ってない方のキャラは薄くなる
+	if(!this.serif.is_left_talking()) {
+		ctx.globalAlpha = 0.5;
+	}
+	else {
+		// 喋ってる方のキャラは真ん中に寄る
+		x -= -TALKER_MOVE_PX; // 左右反転
+		y -= TALKER_MOVE_PX;
+	}
+
+	var left_image = this.game.getImage(this.serif.left_image());
+	ctx.transform(-1, 0, 0, 1, left_image.width * CHARA_SIZE_RATIO, 0); // 左右反転
+	ctx.drawImage(left_image,
+					-x, // 左右反転
+					y,
+					left_image.width * CHARA_SIZE_RATIO,
+					left_image.height * CHARA_SIZE_RATIO);
+
+	ctx.restore();
+};
+// メッセージウィンドウ 名前欄表示
+Scene.prototype._showNameWindow = function(x,y,xx,yy){
+	var ctx = this.game.surface;
+	ctx.save();
+
+	ctx.globalAlpha = 0.5;
+	ctx.fillStyle = 'rgb( 0, 0, 0 )';
+	ctx.fillRect(x,y,xx,yy);
+
+	ctx.restore();
+};
+// 名前表示
+Scene.prototype._showName = function(name, x, y){
+	var ctx = this.game.surface;
+	ctx.save();
+
+	ctx.font = "24px 'Migu'";
+	ctx.textAlign = 'middle';
+	ctx.textBaseAlign = 'middle';
+	ctx.fillStyle = 'rgb( 255, 255, 255 )';
+
+	ctx.fillText(name, x, y);
+
+	ctx.restore();
+};
+
+// セリフウィンドウ表示
+Scene.prototype._showMessageWindow = function(){
+		var ctx = this.game.surface;
 		ctx.save();
 
-		x = Config.PROLOGUE2_SERIF_WINDOW_X;
-		y = Config.PROLOGUE2_SERIF_WINDOW_Y;
+		var x = Config.PROLOGUE2_SERIF_WINDOW_X;
+		var y = Config.PROLOGUE2_SERIF_WINDOW_Y;
 
 		var fukidashi = this.game.getImage(this.serif.serif_window());
 		if(this.serif.is_right_talking()) {
-			x = -x;//fukidashi.width * CHARA_SIZE_RATIO;
+			x = -x; // 反転
 			ctx.transform(-1, 0, 0, 1, fukidashi.width * CHARA_SIZE_RATIO, 0); // 左右反転
 		}
 		ctx.drawImage(fukidashi,
@@ -196,9 +211,11 @@ Scene.prototype.updateDisplay = function(){
 						fukidashi.height * CHARA_SIZE_RATIO
 		);
 		ctx.restore();
-	}
+}
 
-	// テキスト表示
+// セリフ表示
+Scene.prototype._showMessage = function() {
+	var ctx = this.game.surface;
 	ctx.save();
 
 	ctx.font = "18px 'Migu'";
@@ -206,6 +223,7 @@ Scene.prototype.updateDisplay = function(){
 	ctx.textBaseAlign = 'middle';
 	ctx.fillStyle = 'rgb( 0, 0, 0 )';
 
+	var x, y;
 	// セリフ表示
 	var lines = this.serif.lines();
 	if (lines.length) {
@@ -220,7 +238,14 @@ Scene.prototype.updateDisplay = function(){
 	}
 
 	ctx.restore();
-
 };
+
+
+
+
+
+
+
+
 
 module.exports = Scene;
