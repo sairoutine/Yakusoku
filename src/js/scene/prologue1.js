@@ -68,12 +68,13 @@ Scene.prototype.run = function(){
 
 // 画面更新
 Scene.prototype.updateDisplay = function(){
-	this.game.surface.clearRect( 0, 0, this.game.width, this.game.height ) ;
+	this.game.clearCanvas();
+	var ctx = this.game.surface;
 
 	var prologue1_bg = this.game.getImage('prologue1_1_bg');
 
 	// 背景画像表示
-	this.game.surface.drawImage(prologue1_bg,
+	ctx.drawImage(prologue1_bg,
 					0,
 					0,
 					prologue1_bg.width,
@@ -85,21 +86,21 @@ Scene.prototype.updateDisplay = function(){
 
 
 	// メッセージウィンドウ表示
-	this.game.surface.save();
+	ctx.save();
 
-	this.game.surface.globalAlpha = 0.5;
-	this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
-	this.game.surface.fillRect(
+	ctx.globalAlpha = 0.5;
+	ctx.fillStyle = 'rgb( 0, 0, 0 )';
+	ctx.fillRect(
 		MESSAGE_WINDOW_OUTLINE_MARGIN,
 		MESSAGE_WINDOW_OUTLINE_MARGIN,
 		this.game.width - MESSAGE_WINDOW_OUTLINE_MARGIN * 2,
 		this.game.height - MESSAGE_WINDOW_OUTLINE_MARGIN * 2
 	);
 
-	this.game.surface.restore();
+	ctx.restore();
 
 
-	this.game.surface.save();
+	ctx.save();
 
 	var alpha = 1.0;
 	// 切り替え効果
@@ -116,13 +117,13 @@ Scene.prototype.updateDisplay = function(){
 		alpha = (SHOW_MESSAGE_COUNT - this.frame_count) * 3 / SHOW_MESSAGE_COUNT;
 	}
 
-	this.game.surface.globalAlpha = alpha;
+	ctx.globalAlpha = alpha;
 
 	// メッセージ表示期間なら
 	if(SHOW_MESSAGE_COUNT > this.frame_count) {
-		this.game.surface.font = FONT_SIZE + "px 'Migu'" ;
-		this.game.surface.textBaseAlign = 'middle' ;
-		this.game.surface.fillStyle = 'rgb( 255, 255, 255 )' ;
+		ctx.font = FONT_SIZE + "px 'Migu'" ;
+		ctx.textBaseAlign = 'middle' ;
+		ctx.fillStyle = 'rgb( 255, 255, 255 )' ;
 
 		// セリフ表示
 		var lines = MESSAGE.split("\n");
@@ -131,14 +132,14 @@ Scene.prototype.updateDisplay = function(){
 			var y = MESSAGE_WINDOW_INLINE_MARGIN;
 
 			for(var i = 0, len = lines.length; i < len; i++) {
-				this.game.surface.fillText(lines[i], MESSAGE_WINDOW_INLINE_MARGIN, y); // 1行表示
+				ctx.fillText(lines[i], MESSAGE_WINDOW_INLINE_MARGIN, y); // 1行表示
 
 				y+= FONT_SIZE + FONT_MARGIN;
 			}
 		}
 	}
 
-	this.game.surface.restore();
+	ctx.restore();
 };
 
 module.exports = Scene;

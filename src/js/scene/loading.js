@@ -45,17 +45,18 @@ LoadingScene.prototype.run = function(){
 
 // 画面更新
 LoadingScene.prototype.updateDisplay = function(){
+	this.game.clearCanvas();
 	var material_num = Config.ALL_MATERIAL_NUM;
 	var loaded_material_num = this.loaded_material_num();
 
-	this.game.surface.save( ) ;
-	this.game.surface.clearRect( 0, 0, this.game.width, this.game.height);
-	this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
-	this.game.surface.textAlign = 'right';
-	this.game.surface.font = "30px 'Migu'" ;
-	this.game.surface.fillText('Now Loading...', 400, 225);
-	this.game.surface.fillText( loaded_material_num + '/' + material_num, 400, 285);
-	this.game.surface.restore();
+	var ctx = this.game.surface;
+	ctx.save();
+	ctx.fillStyle = 'rgb( 0, 0, 0 )';
+	ctx.textAlign = 'right';
+	ctx.font = "30px 'Migu'" ;
+	ctx.fillText('Now Loading...', 400, 225);
+	ctx.fillText( loaded_material_num + '/' + material_num, 400, 285);
+	ctx.restore();
 };
 
 LoadingScene.prototype._loadImages = function() {

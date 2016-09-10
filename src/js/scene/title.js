@@ -42,22 +42,23 @@ OpeningScene.prototype.run = function(){
 
 // 画面更新
 OpeningScene.prototype.updateDisplay = function(){
-	this.game.surface.clearRect( 0, 0, this.game.width, this.game.height ) ;
+	this.game.clearCanvas();
+	var ctx = this.game.surface;
 
-	this.game.surface.save();
+	ctx.save();
 
 	// 切り替え効果
 	if( this.frame_count < SHOW_TRANSITION_COUNT ) {
-		this.game.surface.globalAlpha = this.frame_count / SHOW_TRANSITION_COUNT;
+		ctx.globalAlpha = this.frame_count / SHOW_TRANSITION_COUNT;
 	}
 	else {
-		this.game.surface.globalAlpha = 1.0;
+		ctx.globalAlpha = 1.0;
 	}
 
 	var title_bg = this.game.getImage('title_bg');
 
 	// 背景画像表示
-	this.game.surface.drawImage(title_bg,
+	ctx.drawImage(title_bg,
 					0,
 					0,
 					title_bg.width,
@@ -67,17 +68,17 @@ OpeningScene.prototype.updateDisplay = function(){
 					this.game.width,
 					this.game.height);
 
-	this.game.surface.font = "24px 'Migu'" ;
-	this.game.surface.textAlign = 'center' ;
-	this.game.surface.textBaseAlign = 'middle' ;
-	this.game.surface.fillStyle = 'rgb( 0, 0, 0 )' ;
+	ctx.font = "24px 'Migu'" ;
+	ctx.textAlign = 'center' ;
+	ctx.textBaseAlign = 'middle' ;
+	ctx.fillStyle = 'rgb( 0, 0, 0 )' ;
 
 	// N秒ごとに start メッセージを点滅
 	if (Math.floor(this.frame_count / SHOW_START_MESSAGE_INTERVAL) % 2 === 0) {
-		this.game.surface.fillText('Press Z to Start', 450, 350);
+		ctx.fillText('Press Z to Start', 450, 350);
 	}
 
-	this.game.surface.restore();
+	ctx.restore();
 
 };
 

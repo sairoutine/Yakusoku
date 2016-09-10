@@ -181,6 +181,10 @@ Game.prototype = {
 	currentScene: function() {
 		return this.scenes[this.state];
 	},
+	clearCanvas: function() {
+		this.surface.clearRect(0, 0, this.width, this.height);
+	},
+
 	// ゲーム起動
 	run: function(){
 		// シーン更新
