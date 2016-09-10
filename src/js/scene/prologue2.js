@@ -128,21 +128,45 @@ Scene.prototype.updateDisplay = function(){
 		this.game.surface.restore();
 	}
 
-	// メッセージウィンドウ表示
-	this.game.surface.save();
-
-	this.game.surface.globalAlpha = 0.5;
-	this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
-	this.game.surface.fillRect(5, 345, 630, 125);
-
-	this.game.surface.restore();
-
 	// メッセージウィンドウ 名前欄表示
 	this.game.surface.save();
 
 	this.game.surface.globalAlpha = 0.5;
 	this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
 	this.game.surface.fillRect(5, 305, 100, 40);
+
+	this.game.surface.restore();
+
+	// 名前表示
+	this.game.surface.save();
+
+	this.game.surface.font = "24px 'Migu'";
+	this.game.surface.textAlign = 'left';
+	this.game.surface.textBaseAlign = 'middle';
+	this.game.surface.fillStyle = 'rgb( 255, 255, 255 )';
+
+	if (this.serif.text_name()) {
+		this.game.surface.fillText(this.serif.text_name(), 15, 340);
+	}
+
+	this.game.surface.restore();
+
+
+
+
+
+
+
+
+
+
+
+	// メッセージウィンドウ表示
+	this.game.surface.save();
+
+	this.game.surface.globalAlpha = 0.5;
+	this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
+	this.game.surface.fillRect(5, 345, 630, 125);
 
 	this.game.surface.restore();
 
@@ -153,11 +177,6 @@ Scene.prototype.updateDisplay = function(){
 	this.game.surface.textAlign = 'left';
 	this.game.surface.textBaseAlign = 'middle';
 	this.game.surface.fillStyle = 'rgb( 255, 255, 255 )';
-
-	// 名前表示
-	if (this.serif.text_name()) {
-		this.game.surface.fillText(this.serif.text_name(), 15, 340);
-	}
 
 	// セリフ表示
 	var lines = this.serif.lines();
