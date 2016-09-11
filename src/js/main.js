@@ -13,7 +13,7 @@ window.onload = function() {
 	window.onkeyup   = function(e) { game.handleKeyUp(e); };
 
 	// フォントの読み込みが完了
-	document.fonts.onloadingdone = function() { game.fontLoadingDone(); };
+	document.fonts.addEventListener('loadingdone', function() { game.fontLoadingDone(); });
 	// ゲーム起動
 	game.run();
 };
