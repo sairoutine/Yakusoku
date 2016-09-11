@@ -1,6 +1,7 @@
 'use strict';
 
 var Config = {
+	DEBUG: true,
 	IMAGES: {
 		title_bg:  'image/title_bg.png',
 		prologue1_1_bg:  'image/prologue_bg.png',
