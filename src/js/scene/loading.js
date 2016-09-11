@@ -14,6 +14,9 @@ var LoadingScene = function(game) {
 	this.loadedSoundNum = 0;
 	// 読み込んだBGMの数
 	this.loadedBGMNum = 0;
+
+	// フォントの読み込みが完了したか
+	this.fontLoadingDone = false;
 };
 
 // 基底クラスを継承
@@ -33,11 +36,14 @@ LoadingScene.prototype.init = function() {
 LoadingScene.prototype.loaded_material_num = function() {
 	return this.loadedImageNum + this.loadedSoundNum + this.loadedBGMNum;
 };
-
+// フォントの読み込み完了
+LoadingScene.prototype.notifyFontLoadingDone = function () {
+	this.fontLoadingDone = true;
+};
 // フレーム処理
 LoadingScene.prototype.run = function(){
 	// 素材を全て読み込んだら
-	if(this.loaded_material_num() >= Config.ALL_MATERIAL_NUM) {
+	if(this.loaded_material_num() >= Config.ALL_MATERIAL_NUM && this.fontLoadingDone) {
 		// 読み込み終わったことをゲームに通知
 		this.game.notifyLoadingDone();
 	}

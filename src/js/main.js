@@ -11,6 +11,9 @@ window.onload = function() {
 	// キーバインド
 	window.onkeydown = function(e) { game.handleKeyDown(e); };
 	window.onkeyup   = function(e) { game.handleKeyUp(e); };
+
+	// フォントの読み込みが完了
+	document.fonts.onloadingdone = function() { game.fontLoadingDone(); };
 	// ゲーム起動
 	game.run();
 };

@@ -84,6 +84,12 @@ Game.prototype = {
 		// シーンをローディング画面にする
 		this.changeScene(constant.LOADING_SCENE);
 	},
+	// フォントのロードが完了
+	fontLoadingDone: function(){
+		if(this.state === constant.LOADING_SCENE) {
+			this.currentScene().notifyFontLoadingDone();
+		}
+	},
 	// キー押下
 	handleKeyDown: function(e){
 		this.keyflag |= this._keyCodeToBitCode(e.keyCode);
