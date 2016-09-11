@@ -146,7 +146,8 @@ Scene.prototype._showMessage = function(){
 		ctx.fillStyle = 'rgb( 255, 255, 255 )' ;
 
 		// セリフ表示
-		var lines = MESSAGE.split("\n");
+		// TODO: DEBUG
+		var lines = Config.DEBUG ? document.getElementById("prologue1").value.split("\n") : MESSAGE.split("\n");
 		if (lines.length) {
 			// セリフテキストの y 座標初期位置
 			var y = MESSAGE_WINDOW_INLINE_MARGIN;
