@@ -25,8 +25,8 @@ var Config = {
 		name_sanae:  'image/name_sanae.png',
 		name_yukari:  'image/name_yukari.png',
 
+		stage1_bg: 'image/stage1_bg.png',
 		/*
-		stage1_bg: 'image/stage1_bg.jpg',
 		reimu:     'image/reimu.png',
 		shot:      'image/shot.png',
 		enemy:     'image/enemy.png',
@@ -76,6 +76,10 @@ var Config = {
 		},
 		prologue2: {
 			path:   'bgm/prologue.mp3',
+			volume: 0.40
+		},
+		douchu: {
+			path:   'bgm/douchu.mp3',
 			volume: 0.40
 		},
 
