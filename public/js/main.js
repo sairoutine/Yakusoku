@@ -2,18 +2,32 @@
 'use strict';
 
 var Config = {
+	DEBUG: true,
 	IMAGES: {
 		title_bg:  'image/title_bg.png',
 		prologue1_1_bg:  'image/prologue_bg.png',
 		prologue2_bg:  'image/prologue_bg.png',
-		renko_normal:  'image/renko_normal.png',
-		merry_normal:  'image/merry_normal.png',
-		aya_normal:  'image/aya_normal.png',
-		ganger_normal:  'image/ganger_normal.png',
 		logo:  'image/logo.png',
 		fukidashi_normal:  'image/serif.png',
+		// キャラ立ち絵
+		aya_normal:  'image/aya_normal.png',
+		ganger_normal:  'image/ganger_normal.png',
+		hatena_normal:  'image/ganger_normal.png',
+		merry_normal:  'image/merry_normal.png',
+		renko_normal:  'image/renko_normal.png',
+
+		// 名前
+		name_aya:  'image/name_aya.png',
+		name_ganger:  'image/name_ganger.png',
+		name_hatena:  'image/name_hatena.png',
+		name_merry:  'image/name_merry.png',
+		name_renko:  'image/name_renko.png',
+		name_yuka:  'image/name_yuka.png',
+		name_sanae:  'image/name_sanae.png',
+		name_yukari:  'image/name_yukari.png',
+
+		stage1_bg: 'image/stage1_bg.png',
 		/*
-		stage1_bg: 'image/stage1_bg.jpg',
 		reimu:     'image/reimu.png',
 		shot:      'image/shot.png',
 		enemy:     'image/enemy.png',
@@ -65,6 +79,10 @@ var Config = {
 			path:   'bgm/prologue.mp3',
 			volume: 0.40
 		},
+		douchu: {
+			path:   'bgm/douchu.mp3',
+			volume: 0.40
+		},
 
 		/*
 		stage1: {
@@ -84,18 +102,14 @@ var Config = {
 	// セリフウィンドウの(x, y)
 	PROLOGUE2_SERIF_WINDOW_X: 80,
 	PROLOGUE2_SERIF_WINDOW_Y: 0,
+	// 左の名前プレートの(x, y)
+	PROLOGUE2_LEFT_NAME_WINDOW_X: 0,
+	PROLOGUE2_LEFT_NAME_WINDOW_Y: 420,
+	// 右の名前プレートの(x, y)
+	PROLOGUE2_RIGHT_NAME_WINDOW_X: 280,
+	PROLOGUE2_RIGHT_NAME_WINDOW_Y: 420,
 
-	CHARA: {
-		"ganger": {
-			name: "？？？",
-		},
-		"renko": {
-			name: "蓮子",
-		},
-		"merry": {
-			name: "メリー",
-		},
-	}
+
 };
 
 // 全素材数
@@ -126,6 +140,11 @@ var Constant = {
 	BUTTON_X:     0x20,
 	BUTTON_SHIFT: 0x40,
 	BUTTON_SPACE: 0x80,
+
+	WAY_STATE:    0,
+	TALK_STATE:   1,
+	BOSS_STATE:   2,
+	RESULT_STATE: 3,
 };
 
 module.exports = Constant;
@@ -138,15 +157,15 @@ var constant = require('./constant');
 
 // TODO: デバッグ(最初に表示するシーン)
 var DEBUG_SCENE;
-//DEBUG_SCENE = constant.PROLOGUE2_SCENE;
+//DEBUG_SCENE = constant.STAGE_SCENE;
 
 
 var LoadingScene   = require('./scene/loading');
 var TitleScene     = require('./scene/title');
 var Prologue1Scene = require('./scene/prologue1');
 var Prologue2Scene = require('./scene/prologue2');
-/*
 var StageScene    = require('./scene/stage');
+/*
 var EpilogueScene = require('./scene/epilogue');
 var EndingScene   = require('./scene/ending');
 */
@@ -170,6 +189,8 @@ var Game = function(mainCanvas) {
 	this.scenes[ constant.PROLOGUE1_SCENE ] = new Prologue1Scene(this);
 	// プロローグ画面2
 	this.scenes[ constant.PROLOGUE2_SCENE ] = new Prologue2Scene(this);
+	// ステージ
+	this.scenes[ constant.STAGE_SCENE ] = new StageScene(this);
 
 	/*
 	// ゲーム画面
@@ -214,6 +235,12 @@ Game.prototype = {
 
 		// シーンをローディング画面にする
 		this.changeScene(constant.LOADING_SCENE);
+	},
+	// フォントのロードが完了
+	fontLoadingDone: function(){
+		if(this.state === constant.LOADING_SCENE) {
+			this.currentScene().notifyFontLoadingDone();
+		}
 	},
 	// キー押下
 	handleKeyDown: function(e){
@@ -364,7 +391,7 @@ Game.prototype = {
 
 module.exports = Game;
 
-},{"./config":1,"./constant":2,"./scene/loading":7,"./scene/prologue1":8,"./scene/prologue2":9,"./scene/title":10}],4:[function(require,module,exports){
+},{"./config":1,"./constant":2,"./scene/loading":7,"./scene/prologue1":8,"./scene/prologue2":9,"./scene/stage":10,"./scene/title":11}],4:[function(require,module,exports){
 'use strict';
 
 /* セリフを扱うクラス */
@@ -421,6 +448,11 @@ Logic.prototype.is_end = function () {
 
 Logic.prototype.next = function () {
 	this.progress++;
+
+	// TODO: DEBUG
+	if(Config.DEBUG) { 
+		this.script = JSON.parse(document.getElementById("prologue2").value);
+	}
 
 	var script = this.script[this.progress];
 
@@ -506,10 +538,10 @@ Logic.prototype.left_image = function () {
 };
 
 Logic.prototype.right_name = function () {
-	return this.right_chara_id ? Config.CHARA[this.right_chara_id].name : null;
+	return this.right_chara_id ? "name_" + this.right_chara_id : null;
 };
 Logic.prototype.left_name = function () {
-	return this.left_chara_id ? Config.CHARA[this.left_chara_id].name : null;
+	return this.left_chara_id ? "name_" + this.left_chara_id : null;
 };
 Logic.prototype.serif_window = function () {
 	return this.fukidashi ? "fukidashi_" + this.fukidashi : null;
@@ -543,9 +575,23 @@ window.onload = function() {
 	// キーバインド
 	window.onkeydown = function(e) { game.handleKeyDown(e); };
 	window.onkeyup   = function(e) { game.handleKeyUp(e); };
+
+	// フォントの読み込みが完了
+	document.fonts.onloadingdone = function() { game.fontLoadingDone(); };
 	// ゲーム起動
 	game.run();
 };
+window.onerror = function (msg, file, line, column, err) {
+	/*
+	msg: error message
+	file: file path
+	line: row number
+	column: column number
+	err: error object
+	*/ 
+	window.alert(msg + "\n" + line + ":" + column);
+};
+
 
 },{"./game":3}],6:[function(require,module,exports){
 'use strict';
@@ -606,6 +652,9 @@ var LoadingScene = function(game) {
 	this.loadedSoundNum = 0;
 	// 読み込んだBGMの数
 	this.loadedBGMNum = 0;
+
+	// フォントの読み込みが完了したか
+	this.fontLoadingDone = false;
 };
 
 // 基底クラスを継承
@@ -625,11 +674,14 @@ LoadingScene.prototype.init = function() {
 LoadingScene.prototype.loaded_material_num = function() {
 	return this.loadedImageNum + this.loadedSoundNum + this.loadedBGMNum;
 };
-
+// フォントの読み込み完了
+LoadingScene.prototype.notifyFontLoadingDone = function () {
+	this.fontLoadingDone = true;
+};
 // フレーム処理
 LoadingScene.prototype.run = function(){
 	// 素材を全て読み込んだら
-	if(this.loaded_material_num() >= Config.ALL_MATERIAL_NUM) {
+	if(this.loaded_material_num() >= Config.ALL_MATERIAL_NUM && this.fontLoadingDone) {
 		// 読み込み終わったことをゲームに通知
 		this.game.notifyLoadingDone();
 	}
@@ -711,7 +763,7 @@ LoadingScene.prototype._loadBGMs = function() {
 
 module.exports = LoadingScene;
 
-},{"../config":1,"../util":12,"./base":6}],8:[function(require,module,exports){
+},{"../config":1,"../util":13,"./base":6}],8:[function(require,module,exports){
 'use strict';
 
 /* プロローグ画面1 */
@@ -860,7 +912,8 @@ Scene.prototype._showMessage = function(){
 		ctx.fillStyle = 'rgb( 255, 255, 255 )' ;
 
 		// セリフ表示
-		var lines = MESSAGE.split("\n");
+		// TODO: DEBUG
+		var lines = Config.DEBUG ? document.getElementById("prologue1").value.split("\n") : MESSAGE.split("\n");
 		if (lines.length) {
 			// セリフテキストの y 座標初期位置
 			var y = MESSAGE_WINDOW_INLINE_MARGIN;
@@ -881,7 +934,7 @@ Scene.prototype._showMessage = function(){
 
 module.exports = Scene;
 
-},{"../config":1,"../constant":2,"../util":12,"./base":6}],9:[function(require,module,exports){
+},{"../config":1,"../constant":2,"../util":13,"./base":6}],9:[function(require,module,exports){
 'use strict';
 
 /* プロローグ画面2 */
@@ -949,10 +1002,8 @@ Scene.prototype.updateDisplay = function(){
 		this._showRightChara();
 	}
 	if (this.serif.right_name()) {
-		// メッセージウィンドウ 名前欄表示
-		this._showNameWindow(440, 420, 100, 40);
 		// 名前表示
-		this._showName(this.serif.right_name(), 450, 450);
+		this._showName(this.serif.right_name(), Config.PROLOGUE2_RIGHT_NAME_WINDOW_X, Config.PROLOGUE2_RIGHT_NAME_WINDOW_Y);
 	}
 
 	if(this.serif.left_image()) {
@@ -960,10 +1011,8 @@ Scene.prototype.updateDisplay = function(){
 		this._showLeftChara();
 	}
 	if (this.serif.left_name()) {
-		// メッセージウィンドウ 名前欄表示
-		this._showNameWindow(100, 420, 100, 40);
 		// 名前表示
-		this._showName(this.serif.left_name(), 120, 450);
+		this._showName(this.serif.left_name(), Config.PROLOGUE2_LEFT_NAME_WINDOW_X, Config.PROLOGUE2_LEFT_NAME_WINDOW_Y);
 	}
 
 	// セリフウィンドウ表示
@@ -1049,29 +1098,18 @@ Scene.prototype._showLeftChara = function () {
 
 	ctx.restore();
 };
-// メッセージウィンドウ 名前欄表示
-Scene.prototype._showNameWindow = function(x,y,xx,yy){
-	var ctx = this.game.surface;
-	ctx.save();
 
-	ctx.globalAlpha = 0.5;
-	ctx.fillStyle = 'rgb( 0, 0, 0 )';
-	ctx.fillRect(x,y,xx,yy);
-
-	ctx.restore();
-};
 // 名前表示
 Scene.prototype._showName = function(name, x, y){
 	var ctx = this.game.surface;
 	ctx.save();
 
-	ctx.font = "24px 'Migu'";
-	ctx.textAlign = 'middle';
-	ctx.textBaseAlign = 'middle';
-	ctx.fillStyle = 'rgb( 255, 255, 255 )';
-
-	ctx.fillText(name, x, y);
-
+	var name_image = this.game.getImage(name);
+	ctx.drawImage(name_image,
+					x,
+					y,
+					name_image.width * CHARA_SIZE_RATIO,
+					name_image.height * CHARA_SIZE_RATIO);
 	ctx.restore();
 };
 
@@ -1095,7 +1133,7 @@ Scene.prototype._showMessageWindow = function(){
 						fukidashi.height * CHARA_SIZE_RATIO
 		);
 		ctx.restore();
-}
+};
 
 // セリフ表示
 Scene.prototype._showMessage = function() {
@@ -1134,7 +1172,142 @@ Scene.prototype._showMessage = function() {
 
 module.exports = Scene;
 
-},{"../config":1,"../constant":2,"../logic/serif":4,"../serif/prologue2":11,"../util":12,"./base":6}],10:[function(require,module,exports){
+},{"../config":1,"../constant":2,"../logic/serif":4,"../serif/prologue2":12,"../util":13,"./base":6}],10:[function(require,module,exports){
+'use strict';
+
+/* タイトル画面 */
+
+// サイドバーの横の長さ
+var SIDE_WIDTH = 160;
+// 背景画像のスクロールスピード
+var BACKGROUND_SCROLL_SPEED = 2;
+
+
+// 基底クラス
+var BaseScene = require('./base');
+
+var Util = require('../util');
+var Constant = require('../constant');
+
+
+var Scene = function(game) {
+	BaseScene.apply(this, arguments);
+
+	// ステージの現在の状態
+	this.state = null;
+
+	// ステージの状態一覧
+	this.states = [];
+	/*
+	this.scenes[ constant.WAY_STATE ]    = new WayState(this);
+	this.scenes[ constant.TALK_STATE ]   = new TalkState(this);
+	this.scenes[ constant.BOSS_STATE ]   = new BossState(this);
+	this.scenes[ constant.RESULT_STATE ] = new ResultState(this);
+	*/
+};
+
+// 基底クラスを継承
+Util.inherit(Scene, BaseScene);
+
+// 初期化
+Scene.prototype.init = function() {
+	BaseScene.prototype.init.apply(this, arguments);
+
+	this.state = null;
+
+	// 道中開始
+	this.changeState(Constant.WAY_STATE);
+	// TODO: WAY_STATEに移動?
+	//this.game.playBGM('douchu');
+};
+
+// 現在のシーン
+Scene.prototype.currentState = function(){
+	return this.states[this.state];
+};
+
+// シーンを切り替え
+Scene.prototype.changeState = function(state){
+	// 切り替え
+	this.state = state;
+	// 切り替え後の状態を初期化
+	//this.currentState().init();
+};
+
+// フレーム処理
+Scene.prototype.run = function(){
+	BaseScene.prototype.run.apply(this, arguments);
+	//this.currentState().run();
+};
+
+// 画面更新
+Scene.prototype.updateDisplay = function(){
+	this.game.clearCanvas();
+
+	// 背景画像表示
+	this._showBG();
+
+	//this.currentState().updateDisplay();
+
+	// サイドバー表示
+	this._showSidebar();
+};
+
+// サイドバー表示
+Scene.prototype._showSidebar = function(){
+	var ctx = this.game.surface;
+	var x = this.game.width - SIDE_WIDTH;
+	var y = 0;
+
+	ctx.save();
+	ctx.fillStyle = 'rgb(0, 0, 0)';
+	ctx.fillRect(x, y, SIDE_WIDTH, this.game.height);
+	ctx.fillStyle = 'rgb(255, 255, 255)';
+
+	ctx.restore();
+};
+
+// 背景画像表示
+Scene.prototype._showBG = function() {
+	var ctx = this.game.surface;
+	var x = 0;
+	// 背景画像をスクロールさせる
+	var y = (this.frame_count * BACKGROUND_SCROLL_SPEED) % this.game.height;
+
+	ctx.save();
+
+	// 2枚つなげてスクロールさせる
+	var stage1_bg = this.game.getImage('stage1_bg');
+	this.game.surface.drawImage(stage1_bg,
+		0,
+		0,
+		stage1_bg.width,
+		stage1_bg.height,
+		x,
+		y,
+		this.game.width - SIDE_WIDTH,
+		this.game.height
+	);
+
+	this.game.surface.drawImage(stage1_bg,
+		0,
+		0,
+		stage1_bg.width,
+		stage1_bg.height,
+		x,
+		y - this.game.height,
+		this.game.width - SIDE_WIDTH,
+		this.game.height
+	);
+
+	this.game.surface.restore();
+};
+
+
+
+module.exports = Scene;
+
+},{"../constant":2,"../util":13,"./base":6}],11:[function(require,module,exports){
 'use strict';
 
 /* タイトル画面 */
@@ -1221,7 +1394,7 @@ OpeningScene.prototype.updateDisplay = function(){
 
 module.exports = OpeningScene;
 
-},{"../constant":2,"../util":12,"./base":6}],11:[function(require,module,exports){
+},{"../constant":2,"../util":13,"./base":6}],12:[function(require,module,exports){
 'use strict';
 
 // セリフ
@@ -1349,7 +1522,7 @@ var Serif= [
 
 module.exports = Serif;
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 var Util = {
 	inherit: function( child, parent ) {
