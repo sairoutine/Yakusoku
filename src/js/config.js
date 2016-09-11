@@ -11,6 +11,16 @@ var Config = {
 		ganger_normal:  'image/ganger_normal.png',
 		logo:  'image/logo.png',
 		fukidashi_normal:  'image/serif.png',
+		// 名前
+		name_aya:  'image/name_aya.png',
+		name_ganger:  'image/name_ganger.png',
+		name_hatena:  'image/name_hatena.png',
+		name_merry:  'image/name_merry.png',
+		name_renko:  'image/name_renko.png',
+		name_yuka:  'image/name_yuka.png',
+		name_sanae:  'image/name_sanae.png',
+		name_yukari:  'image/name_yukari.png',
+
 		/*
 		stage1_bg: 'image/stage1_bg.jpg',
 		reimu:     'image/reimu.png',
