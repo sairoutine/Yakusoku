@@ -42,7 +42,8 @@ Scene.prototype.init = function() {
 
 	// 道中開始
 	this.changeState(Constant.WAY_STATE);
-	//TODO: this.game.playBGM('title');
+	// TODO: WAY_STATEに移動?
+	//this.game.playBGM('douchu');
 };
 
 // 現在のシーン
