@@ -5,12 +5,15 @@ var Config = {
 		title_bg:  'image/title_bg.png',
 		prologue1_1_bg:  'image/prologue_bg.png',
 		prologue2_bg:  'image/prologue_bg.png',
-		renko_normal:  'image/renko_normal.png',
-		merry_normal:  'image/merry_normal.png',
-		aya_normal:  'image/aya_normal.png',
-		ganger_normal:  'image/ganger_normal.png',
 		logo:  'image/logo.png',
 		fukidashi_normal:  'image/serif.png',
+		// キャラ立ち絵
+		aya_normal:  'image/aya_normal.png',
+		ganger_normal:  'image/ganger_normal.png',
+		hatena_normal:  'image/ganger_normal.png',
+		merry_normal:  'image/merry_normal.png',
+		renko_normal:  'image/renko_normal.png',
+
 		// 名前
 		name_aya:  'image/name_aya.png',
 		name_ganger:  'image/name_ganger.png',
@@ -93,18 +96,14 @@ var Config = {
 	// セリフウィンドウの(x, y)
 	PROLOGUE2_SERIF_WINDOW_X: 80,
 	PROLOGUE2_SERIF_WINDOW_Y: 0,
+	// 左の名前プレートの(x, y)
+	PROLOGUE2_LEFT_NAME_WINDOW_X: 0,
+	PROLOGUE2_LEFT_NAME_WINDOW_Y: 420,
+	// 右の名前プレートの(x, y)
+	PROLOGUE2_RIGHT_NAME_WINDOW_X: 280,
+	PROLOGUE2_RIGHT_NAME_WINDOW_Y: 420,
 
-	CHARA: {
-		"ganger": {
-			name: "？？？",
-		},
-		"renko": {
-			name: "蓮子",
-		},
-		"merry": {
-			name: "メリー",
-		},
-	}
+
 };
 
 // 全素材数

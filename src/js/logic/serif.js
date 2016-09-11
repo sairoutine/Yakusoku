@@ -139,10 +139,10 @@ Logic.prototype.left_image = function () {
 };
 
 Logic.prototype.right_name = function () {
-	return this.right_chara_id ? Config.CHARA[this.right_chara_id].name : null;
+	return this.right_chara_id ? "name_" + this.right_chara_id : null;
 };
 Logic.prototype.left_name = function () {
-	return this.left_chara_id ? Config.CHARA[this.left_chara_id].name : null;
+	return this.left_chara_id ? "name_" + this.left_chara_id : null;
 };
 Logic.prototype.serif_window = function () {
 	return this.fukidashi ? "fukidashi_" + this.fukidashi : null;
