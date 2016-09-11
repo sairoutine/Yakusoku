@@ -763,25 +763,11 @@ LoadingScene.prototype._loadBGMs = function() {
 
 module.exports = LoadingScene;
 
-},{"../config":1,"../util":13,"./base":6}],8:[function(require,module,exports){
+},{"../config":1,"../util":14,"./base":6}],8:[function(require,module,exports){
 'use strict';
 
 /* プロローグ画面1 */
-var MESSAGE = (function () {/*
-蝉の鳴き声が聞こえる。
-蓮子は湖のほとりにきている。
-メリーと湖で涼もうと約束していた。
-蓮子は珍しく先に到着した。
-携帯情報端末を見ると、
-8月31日の午前9時50分を回ったところ。
-夜なら星を見れば時間がわかるのだけど。
-約束まで、あと10分。
-メリーの事だから早めに来るだろう、
-と考えていた時に、背後から物音が聞こえる。
-メリーだと思い振り向くと、
-自分にそっくりな容姿の女の子が立っていた。
-*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
-
+var MESSAGE = require('../serif/prologue1');
 
 // メッセージを表示している期間
 var SHOW_MESSAGE_COUNT = 300;
@@ -934,7 +920,7 @@ Scene.prototype._showMessage = function(){
 
 module.exports = Scene;
 
-},{"../config":1,"../constant":2,"../util":13,"./base":6}],9:[function(require,module,exports){
+},{"../config":1,"../constant":2,"../serif/prologue1":12,"../util":14,"./base":6}],9:[function(require,module,exports){
 'use strict';
 
 /* プロローグ画面2 */
@@ -1172,7 +1158,7 @@ Scene.prototype._showMessage = function() {
 
 module.exports = Scene;
 
-},{"../config":1,"../constant":2,"../logic/serif":4,"../serif/prologue2":12,"../util":13,"./base":6}],10:[function(require,module,exports){
+},{"../config":1,"../constant":2,"../logic/serif":4,"../serif/prologue2":13,"../util":14,"./base":6}],10:[function(require,module,exports){
 'use strict';
 
 /* タイトル画面 */
@@ -1307,7 +1293,7 @@ Scene.prototype._showBG = function() {
 
 module.exports = Scene;
 
-},{"../constant":2,"../util":13,"./base":6}],11:[function(require,module,exports){
+},{"../constant":2,"../util":14,"./base":6}],11:[function(require,module,exports){
 'use strict';
 
 /* タイトル画面 */
@@ -1394,7 +1380,14 @@ OpeningScene.prototype.updateDisplay = function(){
 
 module.exports = OpeningScene;
 
-},{"../constant":2,"../util":13,"./base":6}],12:[function(require,module,exports){
+},{"../constant":2,"../util":14,"./base":6}],12:[function(require,module,exports){
+'use strict';
+
+var Serif = ["蝉の鳴き声が聞こえる。","蓮子は湖のほとりにきている。","メリーと湖で涼もうと約束していた。","蓮子は珍しく先に到着した。","携帯情報端末を見ると、","8月31日の午前9時50分を回ったところ。","夜なら星を見れば時間がわかるのだけど。","約束まで、あと10分。","メリーの事だから早めに来るだろう、","と考えていた時に、背後から物音が聞こえる。","メリーだと思い振り向くと、","自分にそっくりな容姿の女の子が立っていた。"].join("\n");
+
+module.exports = Serif;
+
+},{}],13:[function(require,module,exports){
 'use strict';
 
 // セリフ
@@ -1522,7 +1515,7 @@ var Serif= [
 
 module.exports = Serif;
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 var Util = {
 	inherit: function( child, parent ) {
