@@ -27,6 +27,7 @@ var Config = {
 		name_yukari:  'image/name_yukari.png',
 
 		stage1_bg: 'image/stage1_bg.png',
+		character_renko:     'image/character_renko.png',
 		/*
 		reimu:     'image/reimu.png',
 		shot:      'image/shot.png',
@@ -103,10 +104,10 @@ var Config = {
 	PROLOGUE2_SERIF_WINDOW_X: 80,
 	PROLOGUE2_SERIF_WINDOW_Y: 0,
 	// 左の名前プレートの(x, y)
-	PROLOGUE2_LEFT_NAME_WINDOW_X: 0,
+	PROLOGUE2_LEFT_NAME_WINDOW_X: 78,
 	PROLOGUE2_LEFT_NAME_WINDOW_Y: 420,
 	// 右の名前プレートの(x, y)
-	PROLOGUE2_RIGHT_NAME_WINDOW_X: 280,
+	PROLOGUE2_RIGHT_NAME_WINDOW_X: 362,
 	PROLOGUE2_RIGHT_NAME_WINDOW_Y: 420,
 
 
@@ -145,6 +146,7 @@ var Constant = {
 	TALK_STATE:   1,
 	BOSS_STATE:   2,
 	RESULT_STATE: 3,
+	GAMEOVER_STATE: 4,
 };
 
 module.exports = Constant;
@@ -391,7 +393,7 @@ Game.prototype = {
 
 module.exports = Game;
 
-},{"./config":1,"./constant":2,"./scene/loading":7,"./scene/prologue1":8,"./scene/prologue2":9,"./scene/stage":10,"./scene/title":11}],4:[function(require,module,exports){
+},{"./config":1,"./constant":2,"./scene/loading":9,"./scene/prologue1":10,"./scene/prologue2":11,"./scene/stage":12,"./scene/title":18}],4:[function(require,module,exports){
 'use strict';
 
 /* セリフを扱うクラス */
@@ -603,6 +605,394 @@ window.onerror = function (msg, file, line, column, err) {
 },{"./game":3}],6:[function(require,module,exports){
 'use strict';
 
+/* オブジェクトの基底クラス */
+
+// ステージ外かどうかの判定の余白
+var EXTRA_OUT_OF_SIZE = 100;
+
+// オブジェクトを一意に識別するID
+var id = 0;
+
+var ObjectBase = function(scene) {
+	this.frame_count = 0;
+
+	// StageScene インスタンス
+	this.stage = scene;
+	// Game インスタンス
+	this.game = scene.game;
+
+	// オブジェクトを識別する一意なID
+	this.id = ++id;
+
+	// x座標(中心)
+	this.x = 0;
+	// y座標(中心)
+	this.y = 0;
+};
+
+// 初期化
+ObjectBase.prototype.init = function() {
+	// 経過フレーム数初期化
+	this.frame_count = 0;
+};
+
+// 衝突した時
+ObjectBase.prototype.notifyCollision = function(obj) {
+	console.error('notifyCollision method must be overridden.');
+};
+
+// 当たり判定サイズ
+ObjectBase.prototype.collisionHeight = function() {
+	console.error('collisionHeight method must be overridden.');
+};
+
+// 当たり判定サイズ
+ObjectBase.prototype.collisionWidth = function() {
+	console.error('collisionWidth method must be overridden.');
+};
+
+// スプライトの開始位置
+ObjectBase.prototype.spriteX = function() {
+	console.error('spriteX method must be overridden.');
+};
+
+// スプライトの開始位置
+ObjectBase.prototype.spriteY = function() {
+	console.error('spriteY method must be overridden.');
+};
+
+// スプライト画像
+ObjectBase.prototype.spriteImage = function() {
+	console.error('spriteImage method must be overridden.');
+};
+
+// スプライトのサイズ
+ObjectBase.prototype.spriteWidth = function() {
+	console.error('spriteWidth method must be overridden.');
+};
+
+// スプライトのサイズ
+ObjectBase.prototype.spriteHeight = function() {
+	console.error('spriteHeight method must be overridden.');
+};
+
+// フレーム処理
+ObjectBase.prototype.run = function(){
+	// 経過フレーム数更新
+	this.frame_count++;
+};
+
+// 画面更新
+ObjectBase.prototype.updateDisplay = function(){
+	// スプライトの描画開始座標
+	var sprite_x = Math.round(this.x - this.spriteWidth() / 2);
+	var sprite_y = Math.round(this.y - this.spriteHeight() / 2);
+
+	var image = this.game.getImage(this.spriteImage());
+
+	this.game.surface.save();
+	// オブジェクト描画
+
+	this.game.surface.drawImage(image,
+		// スプライトの取得位置
+		this.spriteWidth()  * this.spriteX(), this.spriteHeight() * this.spriteY(),
+		// スプライトのサイズ
+		this.spriteWidth(),                   this.spriteHeight(),
+		// オブジェクトのゲーム上の位置
+		sprite_x,                             sprite_y,
+		// オブジェクトのゲーム上のサイズ
+		this.spriteWidth(),                   this.spriteHeight()
+	);
+	this.game.surface.restore();
+};
+
+// オブジェクトとオブジェクトの衝突判定を行う
+ObjectBase.prototype.checkCollision = function(obj) {
+	if( this.inCollisionArea(obj.getCollisionLeftX(),  obj.getCollisionUpY()) ||
+		this.inCollisionArea(obj.getCollisionLeftX(),  obj.getCollisionBottomY()) ||
+		this.inCollisionArea(obj.getCollisionRightX(), obj.getCollisionUpY()) ||
+		this.inCollisionArea(obj.getCollisionRightX(), obj.getCollisionBottomY()) ||
+		this.inCollisionArea(obj.x,                    obj.y)
+	  ) {
+		return true ;
+	}
+
+	return false ;
+};
+
+ObjectBase.prototype.getCollisionLeftX = function() {
+	return this.x - this.collisionWidth() / 2;
+};
+
+
+ObjectBase.prototype.getCollisionRightX = function() {
+	return this.x + this.collisionWidth() / 2;
+};
+
+ObjectBase.prototype.getCollisionUpY = function() {
+	return this.y - this.collisionHeight() / 2;
+};
+
+ObjectBase.prototype.getCollisionBottomY = function() {
+	return this.y + this.collisionHeight() / 2;
+};
+
+ObjectBase.prototype.inCollisionArea = function(x, y) {
+	if( x >= this.getCollisionLeftX() && x <= this.getCollisionRightX() &&
+		y >= this.getCollisionUpY()  && y <= this.getCollisionBottomY()) {
+		return true;
+	}
+
+	return false ;
+};
+
+// 画面外に出たかどうかの判定
+ObjectBase.prototype.isOutOfStage = function( ) {
+	if(this.x + EXTRA_OUT_OF_SIZE < 0 ||
+	   this.y + EXTRA_OUT_OF_SIZE < 0 ||
+	   this.x > this.stage.width  + EXTRA_OUT_OF_SIZE ||
+	   this.y > this.stage.height + EXTRA_OUT_OF_SIZE
+	  ) {
+		return true;
+	}
+
+	return false;
+};
+
+module.exports = ObjectBase;
+
+},{}],7:[function(require,module,exports){
+'use strict';
+
+/* 自機 */
+
+// 基底クラス
+var BaseObject = require('./base');
+var Util = require('../util');
+var Constant = require('../constant');
+
+// 自機の移動速度(通常時)
+var FAST_SPEED = 4;
+// 自機の移動速度(Z押下時)
+var SLOW_SPEED = 3;
+// Nフレーム毎に自機をアニメーション
+var ANIMATION_SPAN = 2;
+// 死亡時の無敵時間(フレーム)
+var UNHITTABLE_COUNT = 100;
+// 初期ライフ
+var INIT_LIFE = 3;
+
+// constructor
+var Character = function(stage) {
+	// 継承元new呼び出し
+	BaseObject.apply(this, arguments);
+
+	// 自機のスプライトの位置
+	this.indexX = 0; this.indexY = 0;
+};
+
+// 基底クラスを継承
+Util.inherit(Character, BaseObject);
+
+
+
+// 自機を初期位置に置く
+Character.prototype.setInitPosition = function() {
+	// 自機の初期位置
+	this.x = (this.stage.width / 2);
+	this.y = (this.stage.height - 100);
+};
+
+// 初期化
+Character.prototype.init = function() {
+	BaseObject.prototype.init.apply(this, arguments);
+
+	// 自機を初期位置に置く
+	this.setInitPosition();
+
+	// 初期ライフ3
+	this.life = INIT_LIFE;
+
+	// ステージ開始直後は無敵状態にする
+	this.is_unhittable = true;
+
+	// 無敵状態になったフレームを保存
+	this.unhittable_count = 0;
+};
+
+// フレーム処理
+Character.prototype.run = function(){
+	BaseObject.prototype.run.apply(this, arguments);
+
+	// TODO:
+	/*
+	// Zが押下されていればショット生成
+	if(this.game.isKeyDown(this.game.BUTTON_Z)) {
+		// 5フレーム置きにショットを生成 TODO:
+		if(this.frame_count % 5 === 0) {
+			this.stage.shotmanager.create();
+			this.game.playSound('shot');
+		}
+	}
+	*/
+
+	// 移動速度
+	var speed = this.game.isKeyDown(Constant.BUTTON_Z) ? SLOW_SPEED : FAST_SPEED;
+
+	// 自機移動
+	if(this.game.isKeyDown(Constant.BUTTON_LEFT)) {
+		this.x -= speed;
+	}
+	if(this.game.isKeyDown(Constant.BUTTON_RIGHT)) {
+		this.x += speed;
+	}
+	if(this.game.isKeyDown(Constant.BUTTON_DOWN)) {
+		this.y += speed;
+	}
+	if(this.game.isKeyDown(Constant.BUTTON_UP)) {
+		this.y -= speed;
+	}
+
+	// 画面外に出させない
+	if(this.x < 0) {
+		this.x = 0;
+	}
+	if(this.x > this.stage.width) {
+		this.x = this.stage.width;
+	}
+	if(this.y < 0) {
+		this.y = 0;
+	}
+	if(this.y > this.stage.height) {
+		this.y = this.stage.height;
+	}
+
+
+	// 左右の移動に合わせて自機のアニメーションを変更
+	if(this.game.isKeyDown(Constant.BUTTON_LEFT) && !this.game.isKeyDown(Constant.BUTTON_RIGHT)) {
+		// 左移動中
+		this.indexY = 1;
+	}
+	else if(this.game.isKeyDown(Constant.BUTTON_RIGHT) && !this.game.isKeyDown(Constant.BUTTON_LEFT)) {
+		// 右移動中
+		this.indexY = 2;
+	}
+	else {
+		// 左右には未移動
+		this.indexY = 0;
+	}
+
+	// 自機が無敵状態なら無敵切れか判定
+	if(this.is_unhittable && this.unhittable_count + UNHITTABLE_COUNT < this.frame_count) {
+		this.is_unhittable = false;
+	}
+
+	// Nフレーム毎に自機をアニメーション
+	if(this.frame_count % ANIMATION_SPAN === 0) {
+		// 次のスプライトに
+		this.indexX++;
+
+		// 自機が未移動状態かつスプライトを全て表示しきったら
+		if(this.indexY === 0 && this.indexX > 7) {
+			// 最初のスプライトに戻る
+			this.indexX = 0 ;
+		}
+		// 自機が移動状態かつスプライトを全て表示しきったら
+		else if((this.indexY === 1 || this.indexY === 2) && this.indexX > 7) {
+			// 移動中を除く最初のスプライトに戻る
+			this.indexX = 4 ;
+		}
+	}
+};
+
+// 自機を描画
+Character.prototype.updateDisplay = function(){
+	// 無敵状態ならば半透明に
+	if (this.is_unhittable) {
+		this.game.surface.globalAlpha = 0.7;
+	}
+
+	// 描画
+	BaseObject.prototype.updateDisplay.apply(this, arguments);
+
+	if (this.is_unhittable) {
+		this.game.surface.globalAlpha = 1.0;
+	}
+};
+
+/*
+// 衝突判定
+Character.prototype.checkCollision = function(obj) {
+	// 無敵中なら衝突しない
+	if(this.is_unhittable) {
+		return false;
+	}
+
+	return BaseObject.prototype.checkCollision.apply(this, arguments);
+};
+
+// 衝突した時
+Character.prototype.notifyCollision = function(obj) {
+	// 敵もしくは敵弾にぶつかったら
+	if(obj instanceof Bullet || obj instanceof Enemy) {
+		// 死亡音再生
+		this.game.playSound('dead');
+
+		// 自機死亡エフェクト生成
+		this.stage.effectmanager.create(this);
+
+		// 自機を死亡
+		this.die();
+
+		// 残機がなくなればゲームオーバー画面表示
+		if(this.life === 0) {
+			this.stage.notifyCharacterDead();
+		}
+	}
+};
+*/
+
+/*
+// 自機を死亡
+Character.prototype.die = function() {
+	// 自機の初期位置に戻す
+	this.x = (this.stage.width / 2);
+	this.y = ( this.stage.height - 100);
+
+	// 自機を減らす
+	this.life -= 1;
+
+	// 無敵状態にする
+	this.is_unhittable = true;
+
+	// 無敵状態になったフレームを保存
+	this.unhittable_count = this.frame_count;
+};
+*/
+
+// 当たり判定サイズ
+Character.prototype.collisionWidth  = function() { return 4; };
+Character.prototype.collisionHeight = function() { return 4; };
+
+// スプライトの開始位置
+Character.prototype.spriteX = function() { return this.indexX; };
+Character.prototype.spriteY = function() { return this.indexY; };
+
+// スプライト画像
+Character.prototype.spriteImage = function() { return 'character_renko'; };
+
+// スプライトのサイズ
+Character.prototype.spriteWidth  = function() { return 32; };
+Character.prototype.spriteHeight = function() { return 48; };
+
+
+
+
+module.exports = Character;
+
+},{"../constant":2,"../util":21,"./base":6}],8:[function(require,module,exports){
+'use strict';
+
 /* シーンの基底クラス */
 
 var BaseScene = function(game) {
@@ -619,15 +1009,6 @@ BaseScene.prototype.init = function(){
 	this.frame_count = 0;
 };
 
-// キー押下
-BaseScene.prototype.handleKeyDown = function(e){
-};
-
-// キーを離す
-BaseScene.prototype.handleKeyUp = function(e){
-};
-
-
 // フレーム処理
 BaseScene.prototype.run = function(){
 	// 経過フレーム数更新
@@ -642,7 +1023,7 @@ BaseScene.prototype.updateDisplay = function(){
 
 module.exports = BaseScene;
 
-},{}],7:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 /* ローディング画面 */
@@ -770,7 +1151,7 @@ LoadingScene.prototype._loadBGMs = function() {
 
 module.exports = LoadingScene;
 
-},{"../config":1,"../util":14,"./base":6}],8:[function(require,module,exports){
+},{"../config":1,"../util":21,"./base":8}],10:[function(require,module,exports){
 'use strict';
 
 /* プロローグ画面1 */
@@ -927,7 +1308,7 @@ Scene.prototype._showMessage = function(){
 
 module.exports = Scene;
 
-},{"../config":1,"../constant":2,"../serif/prologue1":12,"../util":14,"./base":6}],9:[function(require,module,exports){
+},{"../config":1,"../constant":2,"../serif/prologue1":19,"../util":21,"./base":8}],11:[function(require,module,exports){
 'use strict';
 
 /* プロローグ画面2 */
@@ -1165,7 +1546,7 @@ Scene.prototype._showMessage = function() {
 
 module.exports = Scene;
 
-},{"../config":1,"../constant":2,"../logic/serif":4,"../serif/prologue2":13,"../util":14,"./base":6}],10:[function(require,module,exports){
+},{"../config":1,"../constant":2,"../logic/serif":4,"../serif/prologue2":20,"../util":21,"./base":8}],12:[function(require,module,exports){
 'use strict';
 
 /* タイトル画面 */
@@ -1182,6 +1563,15 @@ var BaseScene = require('./base');
 var Util = require('../util');
 var Constant = require('../constant');
 
+// ステージの状態
+var WayState = require('./stage/state/way');
+var TalkState = require('./stage/state/talk');
+var BossState = require('./stage/state/boss');
+var ResultState = require('./stage/state/result');
+var GameoverState = require('./stage/state/result');
+
+// オブジェクト
+var Character = require('../object/character');
 
 var Scene = function(game) {
 	BaseScene.apply(this, arguments);
@@ -1191,12 +1581,17 @@ var Scene = function(game) {
 
 	// ステージの状態一覧
 	this.states = [];
-	/*
-	this.scenes[ constant.WAY_STATE ]    = new WayState(this);
-	this.scenes[ constant.TALK_STATE ]   = new TalkState(this);
-	this.scenes[ constant.BOSS_STATE ]   = new BossState(this);
-	this.scenes[ constant.RESULT_STATE ] = new ResultState(this);
-	*/
+	this.states[ Constant.WAY_STATE ]    = new WayState(this);
+	this.states[ Constant.TALK_STATE ]   = new TalkState(this);
+	this.states[ Constant.BOSS_STATE ]   = new BossState(this);
+	this.states[ Constant.RESULT_STATE ] = new ResultState(this);
+	this.states[ Constant.GAMEOVER_STATE ] = new GameoverState(this);
+
+	// サイドバーを除いたステージの大きさ
+	this.width = this.game.width - SIDE_WIDTH;
+	this.height= this.game.height;
+
+	this.character = new Character(this);
 };
 
 // 基底クラスを継承
@@ -1208,10 +1603,10 @@ Scene.prototype.init = function() {
 
 	this.state = null;
 
+	this.character.init();
+
 	// 道中開始
 	this.changeState(Constant.WAY_STATE);
-	// TODO: WAY_STATEに移動?
-	//this.game.playBGM('douchu');
 };
 
 // 現在のシーン
@@ -1224,13 +1619,13 @@ Scene.prototype.changeState = function(state){
 	// 切り替え
 	this.state = state;
 	// 切り替え後の状態を初期化
-	//this.currentState().init();
+	this.currentState().init();
 };
 
 // フレーム処理
 Scene.prototype.run = function(){
 	BaseScene.prototype.run.apply(this, arguments);
-	//this.currentState().run();
+	this.currentState().run();
 };
 
 // 画面更新
@@ -1240,7 +1635,7 @@ Scene.prototype.updateDisplay = function(){
 	// 背景画像表示
 	this._showBG();
 
-	//this.currentState().updateDisplay();
+	this.currentState().updateDisplay();
 
 	// サイドバー表示
 	this._showSidebar();
@@ -1300,7 +1695,122 @@ Scene.prototype._showBG = function() {
 
 module.exports = Scene;
 
-},{"../constant":2,"../util":14,"./base":6}],11:[function(require,module,exports){
+},{"../constant":2,"../object/character":7,"../util":21,"./base":8,"./stage/state/boss":14,"./stage/state/result":15,"./stage/state/talk":16,"./stage/state/way":17}],13:[function(require,module,exports){
+'use strict';
+
+/* ステージ状態の基底クラス */
+
+var BaseState = function(stage) {
+	this.stage = stage;
+
+	// 経過フレーム数
+	this.frame_count = 0;
+};
+
+// 初期化
+BaseState.prototype.init = function(){
+	// 経過フレーム数初期化
+	this.frame_count = 0;
+};
+
+// フレーム処理
+BaseState.prototype.run = function(){
+	// 経過フレーム数更新
+	this.frame_count++;
+
+};
+
+// 画面更新
+BaseState.prototype.updateDisplay = function(){
+	console.error("updateDisplay method must be overridden");
+};
+
+module.exports = BaseState;
+
+},{}],14:[function(require,module,exports){
+'use strict';
+
+/* シーンの基底クラス */
+
+var BaseScene = function(game) {
+	// ゲームインスタンス
+	this.game = game;
+
+	// 経過フレーム数
+	this.frame_count = 0;
+};
+
+// 初期化
+BaseScene.prototype.init = function(){
+	// 経過フレーム数初期化
+	this.frame_count = 0;
+};
+
+// キー押下
+BaseScene.prototype.handleKeyDown = function(e){
+};
+
+// キーを離す
+BaseScene.prototype.handleKeyUp = function(e){
+};
+
+
+// フレーム処理
+BaseScene.prototype.run = function(){
+	// 経過フレーム数更新
+	this.frame_count++;
+
+};
+
+// 画面更新
+BaseScene.prototype.updateDisplay = function(){
+	console.error("updateDisplay method must be overridden");
+};
+
+module.exports = BaseScene;
+
+},{}],15:[function(require,module,exports){
+arguments[4][14][0].apply(exports,arguments)
+},{"dup":14}],16:[function(require,module,exports){
+arguments[4][14][0].apply(exports,arguments)
+},{"dup":14}],17:[function(require,module,exports){
+'use strict';
+
+var BaseScene = require('./base');
+var Util = require('../../../util');
+var Config = require('../../../config');
+
+
+
+var State = function(stage) {
+	BaseScene.apply(this, arguments);
+};
+Util.inherit(State, BaseScene);
+
+// 初期化
+State.prototype.init = function(){
+	BaseScene.prototype.init.apply(this, arguments);
+	// TODO:
+	//this.game.playBGM('douchu');
+};
+
+// フレーム処理
+State.prototype.run = function(){
+	BaseScene.prototype.run.apply(this, arguments);
+
+	// 自機
+	this.stage.character.run();
+};
+
+// 画面更新
+State.prototype.updateDisplay = function(){
+	// 自機描画
+	this.stage.character.updateDisplay();
+};
+
+module.exports = State;
+
+},{"../../../config":1,"../../../util":21,"./base":13}],18:[function(require,module,exports){
 'use strict';
 
 /* タイトル画面 */
@@ -1387,14 +1897,14 @@ OpeningScene.prototype.updateDisplay = function(){
 
 module.exports = OpeningScene;
 
-},{"../constant":2,"../util":14,"./base":6}],12:[function(require,module,exports){
+},{"../constant":2,"../util":21,"./base":8}],19:[function(require,module,exports){
 'use strict';
 
 var Serif = ["蝉の鳴き声が聞こえる。","蓮子は湖のほとりにきている。","メリーと湖で涼もうと約束していた。","蓮子は珍しく先に到着した。","携帯情報端末を見ると、","8月31日の午前9時50分を回ったところ。","夜なら星を見れば時間がわかるのだけど。","約束まで、あと10分。","メリーの事だから早めに来るだろう、","と考えていた時に、背後から物音が聞こえる。","メリーだと思い振り向くと、","自分にそっくりな容姿の女の子が立っていた。"].join("\n");
 
 module.exports = Serif;
 
-},{}],13:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 'use strict';
 
 // セリフ
@@ -1522,7 +2032,7 @@ var Serif= [
 
 module.exports = Serif;
 
-},{}],14:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 'use strict';
 var Util = {
 	inherit: function( child, parent ) {
