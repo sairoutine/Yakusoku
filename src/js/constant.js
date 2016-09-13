@@ -24,6 +24,7 @@ var Constant = {
 	TALK_STATE:   1,
 	BOSS_STATE:   2,
 	RESULT_STATE: 3,
+	GAMEOVER_STATE: 4,
 };
 
 module.exports = Constant;
