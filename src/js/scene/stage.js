@@ -23,6 +23,11 @@ var GameoverState = require('./stage/state/result');
 
 // オブジェクト
 var Character = require('../object/character');
+var Shot = require('../object/shot.js');
+
+
+var Manager = require('../logic/manager');
+
 
 var Scene = function(game) {
 	BaseScene.apply(this, arguments);
@@ -43,6 +48,7 @@ var Scene = function(game) {
 	this.height= this.game.height;
 
 	this.character = new Character(this);
+	this.shot_manager = new Manager(Shot, this);
 };
 
 // 基底クラスを継承
@@ -55,6 +61,7 @@ Scene.prototype.init = function() {
 	this.state = null;
 
 	this.character.init();
+	this.shot_manager.init();
 
 	// 道中開始
 	this.changeState(Constant.WAY_STATE);
@@ -76,6 +83,7 @@ Scene.prototype.changeState = function(state){
 // フレーム処理
 Scene.prototype.run = function(){
 	BaseScene.prototype.run.apply(this, arguments);
+	this.shot_manager.run();
 	this.currentState().run();
 };
 
@@ -86,6 +94,7 @@ Scene.prototype.updateDisplay = function(){
 	// 背景画像表示
 	this._showBG();
 
+	this.shot_manager.updateDisplay();
 	this.currentState().updateDisplay();
 
 	// サイドバー表示
