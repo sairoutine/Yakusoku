@@ -14,6 +14,15 @@ var BaseScene = require('./base');
 var Util = require('../util');
 var Constant = require('../constant');
 
+// ステージの状態
+var WayState = require('./stage/state/way');
+var TalkState = require('./stage/state/talk');
+var BossState = require('./stage/state/boss');
+var ResultState = require('./stage/state/result');
+var GameoverState = require('./stage/state/result');
+
+// オブジェクト
+var Character = require('../object/character');
 
 var Scene = function(game) {
 	BaseScene.apply(this, arguments);
@@ -23,12 +32,17 @@ var Scene = function(game) {
 
 	// ステージの状態一覧
 	this.states = [];
-	/*
-	this.scenes[ constant.WAY_STATE ]    = new WayState(this);
-	this.scenes[ constant.TALK_STATE ]   = new TalkState(this);
-	this.scenes[ constant.BOSS_STATE ]   = new BossState(this);
-	this.scenes[ constant.RESULT_STATE ] = new ResultState(this);
-	*/
+	this.states[ Constant.WAY_STATE ]    = new WayState(this);
+	this.states[ Constant.TALK_STATE ]   = new TalkState(this);
+	this.states[ Constant.BOSS_STATE ]   = new BossState(this);
+	this.states[ Constant.RESULT_STATE ] = new ResultState(this);
+	this.states[ Constant.GAMEOVER_STATE ] = new GameoverState(this);
+
+	// サイドバーを除いたステージの大きさ
+	this.width = this.game.width - SIDE_WIDTH;
+	this.height= this.game.height;
+
+	this.character = new Character(this);
 };
 
 // 基底クラスを継承
@@ -40,10 +54,10 @@ Scene.prototype.init = function() {
 
 	this.state = null;
 
+	this.character.init();
+
 	// 道中開始
 	this.changeState(Constant.WAY_STATE);
-	// TODO: WAY_STATEに移動?
-	//this.game.playBGM('douchu');
 };
 
 // 現在のシーン
@@ -56,13 +70,13 @@ Scene.prototype.changeState = function(state){
 	// 切り替え
 	this.state = state;
 	// 切り替え後の状態を初期化
-	//this.currentState().init();
+	this.currentState().init();
 };
 
 // フレーム処理
 Scene.prototype.run = function(){
 	BaseScene.prototype.run.apply(this, arguments);
-	//this.currentState().run();
+	this.currentState().run();
 };
 
 // 画面更新
@@ -72,7 +86,7 @@ Scene.prototype.updateDisplay = function(){
 	// 背景画像表示
 	this._showBG();
 
-	//this.currentState().updateDisplay();
+	this.currentState().updateDisplay();
 
 	// サイドバー表示
 	this._showSidebar();
