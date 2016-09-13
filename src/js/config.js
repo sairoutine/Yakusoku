@@ -27,6 +27,7 @@ var Config = {
 
 		stage1_bg: 'image/stage1_bg.png',
 		character_renko:     'image/character_renko.png',
+		shot:      'image/shot.png',
 		/*
 		reimu:     'image/reimu.png',
 		shot:      'image/shot.png',
