@@ -26,6 +26,7 @@ var Config = {
 		name_yukari:  'image/name_yukari.png',
 
 		stage1_bg: 'image/stage1_bg.png',
+		character_renko:     'image/character_renko.png',
 		/*
 		reimu:     'image/reimu.png',
 		shot:      'image/shot.png',
