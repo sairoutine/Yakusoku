@@ -12,7 +12,7 @@ var FAST_SPEED = 4;
 // 自機の移動速度(Z押下時)
 var SLOW_SPEED = 3;
 // Nフレーム毎に自機をアニメーション
-var ANIMATION_SPAN = 2;
+var ANIMATION_SPAN = 6;
 // 死亡時の無敵時間(フレーム)
 var UNHITTABLE_COUNT = 100;
 // 初期ライフ
