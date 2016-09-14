@@ -13,6 +13,8 @@ var FAST_SPEED = 4;
 var SLOW_SPEED = 3;
 // Nフレーム毎に自機をアニメーション
 var ANIMATION_SPAN = 6;
+// Nフレーム毎に自機をショット
+var SHOT_SPAN = 5;
 // 死亡時の無敵時間(フレーム)
 var UNHITTABLE_COUNT = 100;
 // 初期ライフ
@@ -60,17 +62,14 @@ Character.prototype.init = function() {
 Character.prototype.run = function(){
 	BaseObject.prototype.run.apply(this, arguments);
 
-	// TODO:
-	/*
 	// Zが押下されていればショット生成
-	if(this.game.isKeyDown(this.game.BUTTON_Z)) {
-		// 5フレーム置きにショットを生成 TODO:
-		if(this.frame_count % 5 === 0) {
-			this.stage.shotmanager.create();
-			this.game.playSound('shot');
+	if(this.game.isKeyDown(Constant.BUTTON_Z)) {
+		// Nフレーム置きにショットを生成
+		if(this.frame_count % SHOT_SPAN === 0) {
+			this.stage.shot_manager.create(this.x, this.y);
+			//this.game.playSound('shot'); TODO
 		}
 	}
-	*/
 
 	// 移動速度
 	var speed = this.game.isKeyDown(Constant.BUTTON_Z) ? SLOW_SPEED : FAST_SPEED;

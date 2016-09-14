@@ -1,7 +1,8 @@
 'use strict';
 
-var Factory = function(Class) {
+var Factory = function(Class, stage) {
 	this.Class = Class;
+	this.stage = stage;
 
 	// 生成したオブジェクト
 	this.pool = [];
@@ -9,9 +10,9 @@ var Factory = function(Class) {
 
 // オブジェクトを生成
 Factory.prototype.get = function() {
-	var object = new this.Class();
+	var object = new this.Class(this.stage);
 	// 初期化
-	object.init();
+	object.init.apply(object, arguments);
 
 	return object;
 };

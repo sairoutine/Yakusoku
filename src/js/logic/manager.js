@@ -7,7 +7,7 @@ var Manager = function(Class, stage) {
 	this.stage = stage;
 
 	// オブジェクト生成クラス
-	this.factory = new Factory(Class);
+	this.factory = new Factory(Class, stage);
 
 	// 画面上のオブジェクト一覧
 	this.objects = {};
@@ -27,7 +27,7 @@ Manager.prototype.init = function() {
 
 // オブジェクト生成
 Manager.prototype.create = function() {
-	var obj = this.factory.get();
+	var obj = this.factory.get.apply(this.factory, arguments);
 
 	this.objects[obj.id] = obj;
 
