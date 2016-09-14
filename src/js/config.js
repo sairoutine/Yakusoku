@@ -28,6 +28,7 @@ var Config = {
 
 		stage1_bg: 'image/stage1_bg.png',
 		character_renko:     'image/character_renko.png',
+		boss_aya:     'image/boss_aya.png',
 		shot:      'image/shot.png',
 		/*
 		reimu:     'image/reimu.png',
@@ -73,11 +74,7 @@ var Config = {
 			path:   'bgm/title.mp3',
 			volume: 0.40
 		},
-		prologue1: {
-			path:   'bgm/prologue.mp3',
-			volume: 0.40
-		},
-		prologue2: {
+		prologue: {
 			path:   'bgm/prologue.mp3',
 			volume: 0.40
 		},
