@@ -49,6 +49,12 @@ var Scene = function(game) {
 
 	this.character = new Character(this);
 	this.shot_manager = new Manager(Shot, this);
+
+	// シーンが管理するオブジェクト一覧
+	this.objects = [
+		this.shot_manager,
+		this.character,
+	];
 };
 
 // 基底クラスを継承
@@ -60,8 +66,9 @@ Scene.prototype.init = function() {
 
 	this.state = null;
 
-	this.character.init();
-	this.shot_manager.init();
+	for(var i = 0, len = this.objects.length; i < len; i++) {
+		this.objects[i].init();
+	}
 
 	// 道中開始
 	this.changeState(Constant.WAY_STATE);
@@ -83,7 +90,11 @@ Scene.prototype.changeState = function(state){
 // フレーム処理
 Scene.prototype.run = function(){
 	BaseScene.prototype.run.apply(this, arguments);
-	this.shot_manager.run();
+
+	for(var i = 0, len = this.objects.length; i < len; i++) {
+		this.objects[i].run();
+	}
+
 	this.currentState().run();
 };
 
@@ -94,8 +105,9 @@ Scene.prototype.updateDisplay = function(){
 	// 背景画像表示
 	this._showBG();
 
-	this.shot_manager.updateDisplay();
-	this.currentState().updateDisplay();
+	for(var i = 0, len = this.objects.length; i < len; i++) {
+		this.objects[i].updateDisplay();
+	}
 
 	// サイドバー表示
 	this._showSidebar();
