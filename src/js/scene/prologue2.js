@@ -34,7 +34,7 @@ Scene.prototype.init = function() {
 	BaseScene.prototype.init.apply(this, arguments);
 	this.serif.init();
 
-	//TODO: this.game.playBGM('prologue2');
+	this.game.playBGM('prologue');
 };
 
 // フレーム処理

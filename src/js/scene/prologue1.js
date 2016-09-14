@@ -37,8 +37,6 @@ Util.inherit(Scene, BaseScene);
 // 初期化
 Scene.prototype.init = function() {
 	BaseScene.prototype.init.apply(this, arguments);
-
-	//TODO: this.game.playBGM('prologue1');
 };
 
 // フレーム処理

@@ -150,20 +150,25 @@ Game.prototype = {
 	// BGMを再生
 	playBGM: function(bgm) {
 		// 全てのBGM再生をストップ
-		for(var key in this.bgms) {
-			this.bgms[key].pause();
-			this.bgms[key].currentTime = 0;
-		}
+		this.stopBGM();
 
 		// 再生をループする
 		this.bgms[bgm].loop = true;
 		// 再生
 		this.bgms[bgm].play();
 	},
+	stopBGM: function(bgm) {
+		// 全てのBGM再生をストップ
+		for(var key in this.bgms) {
+			this.bgms[key].pause();
+			this.bgms[key].currentTime = 0;
+		}
+	},
 	// 再生するSEをセット
 	playSound: function(key) {
 		this.soundflag |= config.SOUNDS[key].id;
 	},
+
 	// セットされたフラグにもとづいてSEを再生
 	runPlaySound: function() {
 		for(var key in config.SOUNDS) {
