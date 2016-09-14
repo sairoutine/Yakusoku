@@ -24,6 +24,7 @@ var GameoverState = require('./stage/state/result');
 // オブジェクト
 var Character = require('../object/character');
 var Shot = require('../object/shot.js');
+var Enemy = require('../object/enemy.js');
 
 
 var Manager = require('../logic/manager');
@@ -49,6 +50,7 @@ var Scene = function(game) {
 
 	this.character = new Character(this);
 	this.shot_manager = new Manager(Shot, this);
+	this.enemy_manager = new Manager(Enemy, this);
 
 	// シーンが管理するオブジェクト一覧
 	this.objects = [
