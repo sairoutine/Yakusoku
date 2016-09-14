@@ -4,6 +4,7 @@
 
 var BaseState = function(stage) {
 	this.stage = stage;
+	this.game = stage.game;
 
 	// 経過フレーム数
 	this.frame_count = 0;
