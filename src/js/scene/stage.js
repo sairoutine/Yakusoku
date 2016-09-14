@@ -122,10 +122,17 @@ Scene.prototype._showSidebar = function(){
 	var y = 0;
 
 	ctx.save();
-	ctx.fillStyle = 'rgb(0, 0, 0)';
-	ctx.fillRect(x, y, SIDE_WIDTH, this.game.height);
-	ctx.fillStyle = 'rgb(255, 255, 255)';
-
+	var side_bar = this.game.getImage('side_bar');
+	this.game.surface.drawImage(side_bar,
+		0,
+		0,
+		side_bar.width,
+		side_bar.height,
+		x,
+		y,
+		SIDE_WIDTH,
+		this.game.height
+	);
 	ctx.restore();
 };
 
