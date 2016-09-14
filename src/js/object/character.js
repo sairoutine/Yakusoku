@@ -128,14 +128,14 @@ Character.prototype.run = function(){
 		this.indexX++;
 
 		// 自機が未移動状態かつスプライトを全て表示しきったら
-		if(this.indexY === 0 && this.indexX > 7) {
+		if(this.indexY === 0 && this.indexX > 2) {
 			// 最初のスプライトに戻る
-			this.indexX = 0 ;
+			this.indexX = 0;
 		}
 		// 自機が移動状態かつスプライトを全て表示しきったら
-		else if((this.indexY === 1 || this.indexY === 2) && this.indexX > 7) {
+		else if((this.indexY === 1 || this.indexY === 2) && this.indexX > 2) {
 			// 移動中を除く最初のスプライトに戻る
-			this.indexX = 4 ;
+			this.indexX = 0;
 		}
 	}
 };
@@ -217,7 +217,7 @@ Character.prototype.spriteY = function() { return this.indexY; };
 Character.prototype.spriteImage = function() { return 'character_renko'; };
 
 // スプライトのサイズ
-Character.prototype.spriteWidth  = function() { return 32; };
+Character.prototype.spriteWidth  = function() { return 48; };
 Character.prototype.spriteHeight = function() { return 48; };
 
 
