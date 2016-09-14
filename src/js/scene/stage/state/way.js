@@ -18,8 +18,7 @@ Util.inherit(State, BaseScene);
 // 初期化
 State.prototype.init = function(){
 	BaseScene.prototype.init.apply(this, arguments);
-	// TODO:
-	//this.game.playBGM('douchu');
+	this.game.playBGM('douchu');
 };
 
 // フレーム処理
