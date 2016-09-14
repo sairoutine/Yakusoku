@@ -12384,6 +12384,7 @@ var Config = {
 
 		stage1_bg: 'image/stage1_bg.png',
 		character_renko:     'image/character_renko.png',
+		boss_aya:     'image/boss_aya.png',
 		shot:      'image/shot.png',
 		/*
 		reimu:     'image/reimu.png',
@@ -12429,11 +12430,7 @@ var Config = {
 			path:   'bgm/title.mp3',
 			volume: 0.40
 		},
-		prologue1: {
-			path:   'bgm/prologue.mp3',
-			volume: 0.40
-		},
-		prologue2: {
+		prologue: {
 			path:   'bgm/prologue.mp3',
 			volume: 0.40
 		},
@@ -12997,20 +12994,25 @@ Game.prototype = {
 	// BGMを再生
 	playBGM: function(bgm) {
 		// 全てのBGM再生をストップ
-		for(var key in this.bgms) {
-			this.bgms[key].pause();
-			this.bgms[key].currentTime = 0;
-		}
+		this.stopBGM();
 
 		// 再生をループする
 		this.bgms[bgm].loop = true;
 		// 再生
 		this.bgms[bgm].play();
 	},
+	stopBGM: function(bgm) {
+		// 全てのBGM再生をストップ
+		for(var key in this.bgms) {
+			this.bgms[key].pause();
+			this.bgms[key].currentTime = 0;
+		}
+	},
 	// 再生するSEをセット
 	playSound: function(key) {
 		this.soundflag |= config.SOUNDS[key].id;
 	},
+
 	// セットされたフラグにもとづいてSEを再生
 	runPlaySound: function() {
 		for(var key in config.SOUNDS) {
@@ -13723,14 +13725,14 @@ Character.prototype.run = function(){
 		this.indexX++;
 
 		// 自機が未移動状態かつスプライトを全て表示しきったら
-		if(this.indexY === 0 && this.indexX > 7) {
+		if(this.indexY === 0 && this.indexX > 2) {
 			// 最初のスプライトに戻る
-			this.indexX = 0 ;
+			this.indexX = 0;
 		}
 		// 自機が移動状態かつスプライトを全て表示しきったら
-		else if((this.indexY === 1 || this.indexY === 2) && this.indexX > 7) {
+		else if((this.indexY === 1 || this.indexY === 2) && this.indexX > 2) {
 			// 移動中を除く最初のスプライトに戻る
-			this.indexX = 4 ;
+			this.indexX = 0;
 		}
 	}
 };
@@ -13812,7 +13814,7 @@ Character.prototype.spriteY = function() { return this.indexY; };
 Character.prototype.spriteImage = function() { return 'character_renko'; };
 
 // スプライトのサイズ
-Character.prototype.spriteWidth  = function() { return 32; };
+Character.prototype.spriteWidth  = function() { return 48; };
 Character.prototype.spriteHeight = function() { return 48; };
 
 
@@ -14453,8 +14455,6 @@ Util.inherit(Scene, BaseScene);
 // 初期化
 Scene.prototype.init = function() {
 	BaseScene.prototype.init.apply(this, arguments);
-
-	//TODO: this.game.playBGM('prologue1');
 };
 
 // フレーム処理
@@ -14607,7 +14607,7 @@ Scene.prototype.init = function() {
 	BaseScene.prototype.init.apply(this, arguments);
 	this.serif.init();
 
-	//TODO: this.game.playBGM('prologue2');
+	this.game.playBGM('prologue');
 };
 
 // フレーム処理
@@ -14882,6 +14882,9 @@ Scene.prototype.init = function() {
 	for(var i = 0, len = this.objects.length; i < len; i++) {
 		this.objects[i].init();
 	}
+
+	// TODO: 削除
+	this.game.stopBGM();
 
 	// 道中開始
 	this.changeState(Constant.WAY_STATE);
