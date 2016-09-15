@@ -132,6 +132,7 @@ Character.prototype.run = function(){
 			// 最初のスプライトに戻る
 			this.indexX = 0;
 		}
+		// TODO: スプライトのspanを変える。最初に戻るのは移動中もかわらん
 		// 自機が移動状態かつスプライトを全て表示しきったら
 		else if((this.indexY === 1 || this.indexY === 2) && this.indexX > 2) {
 			// 移動中を除く最初のスプライトに戻る

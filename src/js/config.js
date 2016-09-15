@@ -30,10 +30,11 @@ var Config = {
 		character_renko:     'image/character_renko.png',
 		boss_aya:     'image/boss_aya.png',
 		shot:      'image/shot.png',
+
+		enemy:     'image/enemy.png',
 		/*
 		reimu:     'image/reimu.png',
 		shot:      'image/shot.png',
-		enemy:     'image/enemy.png',
 		bullet:    'image/bullet.png',
 		item:      'image/item.png',
 	   */
