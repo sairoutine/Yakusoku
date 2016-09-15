@@ -137,7 +137,38 @@ Scene.prototype._showSidebar = function(){
 		this.game.height
 	);
 	ctx.restore();
+	this._showText();
 };
+
+Scene.prototype._showText = function(){
+	var size1 = 18;
+	var size2 = 21;
+
+	var x1 = this.game.width - SIDE_WIDTH + 10;
+	var x2 = this.game.width - SIDE_WIDTH + 35;
+
+
+	var ctx = this.game.surface;
+	ctx.save();
+	ctx.fillStyle = 'rgb( 255, 151, 151 )';
+	ctx.textAlign = 'left';
+	ctx.font = size1 + "px 'Migu'" ;
+	ctx.fillText("HiScore",   x1, 25);
+	ctx.fillText("Score",     x1, 70);
+	ctx.fillText("Player",    x1, 130);
+	ctx.fillText("Spell",     x1, 175);
+	ctx.font = size2 + "px 'Migu'" ;
+	// TODO:
+	ctx.fillText("123456789", x2, 50);  // HiScore
+	ctx.fillText("123456789", x2, 95);  // Score
+	ctx.fillText("★★★★★",     x2, 155); // Player
+	ctx.fillText("★★★★★",     x2, 200); // Spell
+	ctx.restore();
+};
+
+
+
+
 
 // 背景画像表示
 Scene.prototype._showBG = function() {
