@@ -56,6 +56,7 @@ var Scene = function(game) {
 	this.objects = [
 		this.shot_manager,
 		this.character,
+		this.enemy_manager,
 	];
 };
 
