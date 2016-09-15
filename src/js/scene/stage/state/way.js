@@ -27,6 +27,10 @@ State.prototype.run = function(){
 
 	// 今フレームで出現する雑魚一覧を取得
 	var params = this.enemy_appear.get(this.frame_count);
+
+	for(var i = 0, len = params.length; i< len; i++) {
+		this.stage.enemy_manager.create(params[i]);
+	}
 };
 
 // 画面更新
