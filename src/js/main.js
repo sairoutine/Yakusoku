@@ -1,6 +1,10 @@
 'use strict';
 var Game = require('./game');
 
+// WebAudio
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
+
+
 window.onload = function() {
 	// Canvas
 	var mainCanvas = document.getElementById('mainCanvas');

@@ -24,6 +24,9 @@ var Game = function(mainCanvas) {
 	this.width = Number(mainCanvas.getAttribute('width'));
 	this.height = Number(mainCanvas.getAttribute('height'));
 
+	// WebAudio再生用
+	this.context = new window.AudioContext();
+
 	// ゲームの現在のシーン
 	this.state = null;
 
@@ -149,15 +152,25 @@ Game.prototype = {
 	},
 	// BGMを再生
 	playBGM: function(bgm) {
+		var self = this;
+		// TODO:
 		// 全てのBGM再生をストップ
-		this.stopBGM();
+		//this.stopBGM();
+		var conf = config.BGMS[bgm];
+		var source = self.context.createBufferSource();
+		source.buffer = self.bgms[bgm];
 
-		// 再生をループする
-		this.bgms[bgm].loop = true;
-		// 再生
-		this.bgms[bgm].play();
+		source.loop = true;
+		if(conf.loopStart) { source.loopStart = conf.loopStart; }
+		if(conf.loopEnd)   { source.loopEnd = conf.loopEnd; }
+		// TODO: audio.volume = conf.volume;
+		source.connect(self.context.destination);
+		source.start = source.start || source.noteOn;
+		source.stop  = source.stop  || source.noteOff;
+		source.start();
 	},
 	stopBGM: function(bgm) {
+		return;
 		// 全てのBGM再生をストップ
 		for(var key in this.bgms) {
 			this.bgms[key].pause();
