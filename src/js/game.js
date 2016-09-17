@@ -150,6 +150,10 @@ Game.prototype = {
 	},
 	// シーンを切り替え
 	changeScene: function(scene) {
+		// シーンから離れる際の処理
+		if(this.state !== null) {
+			this.currentScene().onunload();
+		}
 		// シーン切り替え
 		this.state = scene;
 		// 切り替え後のシーンを初期化

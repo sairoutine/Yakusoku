@@ -28,4 +28,12 @@ BaseScene.prototype.updateDisplay = function(){
 	console.error("updateDisplay method must be overridden");
 };
 
+// シーンから離れる際
+BaseScene.prototype.onunload = function(){
+	// 再生中のBGMを停止
+	this.game.stopBGM();
+};
+
+
+
 module.exports = BaseScene;

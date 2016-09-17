@@ -18,7 +18,6 @@ Util.inherit(State, BaseScene);
 // 初期化
 State.prototype.init = function(){
 	BaseScene.prototype.init.apply(this, arguments);
-	this.game.stopBGM();
 };
 
 // フレーム処理
