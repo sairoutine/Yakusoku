@@ -12,6 +12,8 @@ var Config = {
 		fukidashi_normal:  'image/serif.png',
 		// キャラ立ち絵
 		aya_normal:  'image/aya_normal.png',
+		aya_dissatisfied:  'image/aya_dissatisfied.png',
+		aya_smile:  'image/aya_smile.png',
 
 		ganger_normal:  'image/ganger_normal.png',
 		ganger_owata:  'image/ganger_owata.png',
