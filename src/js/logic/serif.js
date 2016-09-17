@@ -55,11 +55,6 @@ Logic.prototype.is_end = function () {
 Logic.prototype.next = function () {
 	this.progress++;
 
-	// TODO: DEBUG
-	if(Config.DEBUG) { 
-		this.script = JSON.parse(document.getElementById("prologue2").value);
-	}
-
 	var script = this.script[this.progress];
 
 	this._showChara(script);
