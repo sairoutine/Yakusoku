@@ -7,12 +7,14 @@ var SIDE_WIDTH = 160;
 // 背景画像のスクロールスピード
 var BACKGROUND_SCROLL_SPEED = 2;
 
+var WAY_END = 3500;
 
 // 基底クラス
 var BaseScene = require('./base');
 
 var Util = require('../util');
 var Constant = require('../constant');
+var Config = require('../config');
 
 // ステージの状態
 var WayState = require('./stage/state/way');
@@ -155,12 +157,18 @@ Scene.prototype._showText = function(){
 	ctx.fillText("Score",     x1, 70);
 	ctx.fillText("Player",    x1, 130);
 	ctx.fillText("Spell",     x1, 175);
+	if(Config.DEBUG) {
+		ctx.fillText("Frame",     x1, 235);
+	}
 	ctx.font = size2 + "px 'Migu'" ;
 	// TODO:
 	ctx.fillText("123456789", x2, 50);  // HiScore
 	ctx.fillText("123456789", x2, 95);  // Score
 	ctx.fillText("★★★★★",     x2, 155); // Player
 	ctx.fillText("★★★★★",     x2, 200); // Spell
+	if(Config.DEBUG) {
+		ctx.fillText(this.frame_count,     x2, 260); // Frame
+	}
 	ctx.restore();
 };
 
