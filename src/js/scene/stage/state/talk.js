@@ -18,11 +18,13 @@ Util.inherit(State, BaseState);
 // 初期化
 State.prototype.init = function(){
 	BaseState.prototype.init.apply(this, arguments);
-	this.serif.init();
+
 	// TODO: DEBUG
 	if(Config.DEBUG) { 
 		this.serif.script = JSON.parse(document.getElementById("stage1_before").value);
 	}
+
+	this.serif.init();
 };
 
 // フレーム処理
