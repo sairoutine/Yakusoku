@@ -129,7 +129,7 @@ LoadingScene.prototype._loadBGM = function(url, successCallback, errorCallback) 
 	xhr.onload = function() {
 		if (xhr.status === 200) {
 			var arrayBuffer = xhr.response;
-			self.game.context.decodeAudioData(arrayBuffer, successCallback, function(error) {
+			self.game.audio_context.decodeAudioData(arrayBuffer, successCallback, function(error) {
 				if (error instanceof Error) {
 					window.alert(error.message);
 				} else {

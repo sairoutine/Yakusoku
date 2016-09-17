@@ -25,7 +25,12 @@ var Game = function(mainCanvas) {
 	this.height = Number(mainCanvas.getAttribute('height'));
 
 	// WebAudio再生用
-	this.context = new window.AudioContext();
+	this.audio_context = new window.AudioContext();
+	// for legacy browser
+	this.audio_context.createGain = this.audio_context.createGain || this.audio_context.createGainNode;
+	// 音量調整
+	this.audio_gain = this.audio_context.createGain();
+
 
 	// ゲームの現在のシーン
 	this.state = null;
@@ -158,15 +163,17 @@ Game.prototype = {
 		// 全てのBGM再生をストップ
 		self.stopBGM();
 
-		var source = self.context.createBufferSource();
+		var source = self.audio_context.createBufferSource();
 		self.audio_source = source;
 		source.buffer = self.bgms[bgm];
 
 		source.loop = true;
 		if(conf.loopStart) { source.loopStart = conf.loopStart; }
 		if(conf.loopEnd)   { source.loopEnd = conf.loopEnd; }
-		// TODO: audio.volume = conf.volume;
-		source.connect(self.context.destination);
+		if(conf.volume)    { self.audio_gain.gain.value = conf.volume; }
+
+		source.connect(self.audio_gain);
+		self.audio_gain.connect(self.audio_context.destination);
 		source.start = source.start || source.noteOn;
 		source.stop  = source.stop  || source.noteOff;
 		source.start(0);
@@ -176,7 +183,6 @@ Game.prototype = {
 	stopBGM: function(bgm) {
 		var self = this;
 		if(self.audio_source) {
-			console.log("aa");
 			self.audio_source.stop(0);
 		}
 		return;
