@@ -30,7 +30,8 @@ var Game = function(mainCanvas) {
 	this.audio_context.createGain = this.audio_context.createGain || this.audio_context.createGainNode;
 	// 音量調整
 	this.audio_gain = this.audio_context.createGain();
-
+	// 再生中の AudioBufferSourceNode
+	this.audio_source = null;
 
 	// ゲームの現在のシーン
 	this.state = null;
@@ -154,35 +155,21 @@ Game.prototype = {
 		if(this.state !== null) {
 			this.currentScene().onunload();
 		}
+
 		// シーン切り替え
 		this.state = scene;
 		// 切り替え後のシーンを初期化
 		this.currentScene().init();
 	},
 	// BGMを再生
-	playBGM: function(bgm) {
+	playBGM: function(key) {
 		var self = this;
-		var conf = config.BGMS[bgm];
 
-		// 全てのBGM再生をストップ
+		// 現在のBGM再生をストップ
 		self.stopBGM();
 
-		var source = self.audio_context.createBufferSource();
-		self.audio_source = source;
-		source.buffer = self.bgms[bgm];
-
-		source.loop = true;
-		if(conf.loopStart) { source.loopStart = conf.loopStart; }
-		if(conf.loopEnd)   { source.loopEnd = conf.loopEnd; }
-		if(conf.volume)    { self.audio_gain.gain.value = conf.volume; }
-
-		source.connect(self.audio_gain);
-		self.audio_gain.connect(self.audio_context.destination);
-		source.start = source.start || source.noteOn;
-		source.stop  = source.stop  || source.noteOff;
-		source.start(0);
-
-		// cache
+		self.audio_source = self._createSourceNode(key);
+		self.audio_source.start(0);
 	},
 	stopBGM: function(bgm) {
 		var self = this;
@@ -190,6 +177,28 @@ Game.prototype = {
 			self.audio_source.stop(0);
 		}
 		return;
+	},
+	// BGM の AudioBufferSourceNode インスタンスを作成
+	_createSourceNode: function(key) {
+		var self = this;
+		var arrayBuffer = self.bgms[key];
+		var conf = config.BGMS[key];
+
+		var source = self.audio_context.createBufferSource();
+		source.buffer = arrayBuffer;
+
+		source.loop = true;
+		if(conf.loopStart) { source.loopStart = conf.loopStart; }
+		if(conf.loopEnd)   { source.loopEnd = conf.loopEnd; }
+		if(conf.volume)    { self.audio_gain.gain.value = conf.volume; }
+
+		source.connect(self.audio_gain);
+
+		self.audio_gain.connect(self.audio_context.destination);
+		source.start = source.start || source.noteOn;
+		source.stop  = source.stop  || source.noteOff;
+
+		return source;
 	},
 	// 再生するSEをセット
 	playSound: function(key) {
