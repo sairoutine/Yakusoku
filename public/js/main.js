@@ -2290,6 +2290,10 @@ Util.inherit(Scene, BaseScene);
 // 初期化
 Scene.prototype.init = function() {
 	BaseScene.prototype.init.apply(this, arguments);
+	// TODO: DEBUG
+	if(Config.DEBUG) { 
+		this.serif.script = JSON.parse(document.getElementById("prologue2").value);
+	}
 	this.serif.init();
 };
 
@@ -2308,12 +2312,6 @@ Scene.prototype.run = function(){
 			this.game.notifyPrologue2Done();
 		}
 		else {
-			// TODO: DEBUG
-			if(Config.DEBUG) { 
-				this.serif.script = JSON.parse(document.getElementById("prologue2").value);
-			}
-
-
 			// セリフを送る
 			this.serif.next();
 		}
