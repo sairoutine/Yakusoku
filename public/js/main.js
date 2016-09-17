@@ -23,6 +23,8 @@ var Config = {
 
 		hatena_normal:  'image/ganger_normal.png',
 		merry_normal:  'image/merry_normal.png',
+		merry_disappointed:  'image/merry_disappointed.png',
+		merry_trouble:  'image/merry_trouble.png',
 
 		// 名前
 		name_aya:  'image/name_aya.png',
