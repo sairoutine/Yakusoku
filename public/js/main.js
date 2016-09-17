@@ -15,13 +15,14 @@ var Config = {
 
 		ganger_normal:  'image/ganger_normal.png',
 		ganger_owata:  'image/ganger_owata.png',
+		hatena_normal:  'image/ganger_normal.png',
+		hatena_owata:  'image/ganger_owata.png',
 
 		renko_normal:  'image/renko_normal.png',
 		renko_disappointed:  'image/renko_disappointed.png',
 		renko_surprised:  'image/renko_surprised.png',
 		renko_trouble:  'image/renko_trouble.png',
 
-		hatena_normal:  'image/ganger_normal.png',
 		merry_normal:  'image/merry_normal.png',
 		merry_disappointed:  'image/merry_disappointed.png',
 		merry_trouble:  'image/merry_trouble.png',
