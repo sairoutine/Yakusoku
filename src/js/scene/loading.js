@@ -107,6 +107,7 @@ LoadingScene.prototype._loadBGMs = function() {
 	var self = this;
 
 	for(var key in Config.BGMS) {
+		/*jshint loopfunc: true */
 		(function(key) {
 			var conf = Config.BGMS[key];
 			var url = conf.path;

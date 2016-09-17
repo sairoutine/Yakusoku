@@ -153,11 +153,13 @@ Game.prototype = {
 	// BGMを再生
 	playBGM: function(bgm) {
 		var self = this;
-		// TODO:
-		// 全てのBGM再生をストップ
-		//this.stopBGM();
 		var conf = config.BGMS[bgm];
+
+		// 全てのBGM再生をストップ
+		self.stopBGM();
+
 		var source = self.context.createBufferSource();
+		self.audio_source = source;
 		source.buffer = self.bgms[bgm];
 
 		source.loop = true;
@@ -168,14 +170,16 @@ Game.prototype = {
 		source.start = source.start || source.noteOn;
 		source.stop  = source.stop  || source.noteOff;
 		source.start();
+
+		// cache
 	},
 	stopBGM: function(bgm) {
-		return;
-		// 全てのBGM再生をストップ
-		for(var key in this.bgms) {
-			this.bgms[key].pause();
-			this.bgms[key].currentTime = 0;
+		var self = this;
+		if(self.audio_source) {
+			console.log("aa");
+			self.audio_source.stop(0);
 		}
+		return;
 	},
 	// 再生するSEをセット
 	playSound: function(key) {

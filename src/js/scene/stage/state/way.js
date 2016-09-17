@@ -18,12 +18,17 @@ Util.inherit(State, BaseScene);
 // 初期化
 State.prototype.init = function(){
 	BaseScene.prototype.init.apply(this, arguments);
-	this.game.playBGM('douchu');
+	this.game.stopBGM();
 };
 
 // フレーム処理
 State.prototype.run = function(){
 	BaseScene.prototype.run.apply(this, arguments);
+
+	// BGM start
+	if (this.frame_count === 60) {
+		this.game.playBGM('douchu');
+	}
 
 	// 今フレームで出現する雑魚一覧を取得
 	var params = this.enemy_appear.get(this.frame_count);
