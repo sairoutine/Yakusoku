@@ -1411,27 +1411,21 @@ Character.prototype.moveDown = function(is_slow){
 	this.y += is_slow ? SLOW_SPEED : FAST_SPEED;
 };
 
-
-
+// 移動アニメーション
+Character.prototype.animateLeft = function(is_slow){
+		this.indexY = 1;
+};
+Character.prototype.animateRight = function(is_slow){
+		this.indexY = 2;
+};
+Character.prototype.animateNeutral = function(is_slow){
+		this.indexY = 0;
+};
 
 
 // フレーム処理
 Character.prototype.run = function(){
 	BaseObject.prototype.run.apply(this, arguments);
-
-	// 左右の移動に合わせて自機のアニメーションを変更
-	if(this.game.isKeyDown(Constant.BUTTON_LEFT) && !this.game.isKeyDown(Constant.BUTTON_RIGHT)) {
-		// 左移動中
-		this.indexY = 1;
-	}
-	else if(this.game.isKeyDown(Constant.BUTTON_RIGHT) && !this.game.isKeyDown(Constant.BUTTON_LEFT)) {
-		// 右移動中
-		this.indexY = 2;
-	}
-	else {
-		// 左右には未移動
-		this.indexY = 0;
-	}
 
 	// 自機が無敵状態なら無敵切れか判定
 	if(this.is_unhittable && this.unhittable_count + UNHITTABLE_COUNT < this.frame_count) {
@@ -2835,6 +2829,10 @@ Util.inherit(State, BaseState);
 State.prototype.init = function(){
 	BaseState.prototype.init.apply(this, arguments);
 	this.serif.init();
+	// TODO: DEBUG
+	if(Config.DEBUG) { 
+		this.serif.script = JSON.parse(document.getElementById("stage1_before").value);
+	}
 };
 
 // フレーム処理
@@ -3073,21 +3071,19 @@ State.prototype.run = function(){
 	// 画面外に出させない
 	character.forbidOutOfStage();
 
-/*
 	// 左右の移動に合わせて自機のアニメーションを変更
 	if(this.game.isKeyDown(Constant.BUTTON_LEFT) && !this.game.isKeyDown(Constant.BUTTON_RIGHT)) {
 		// 左移動中
-		this.indexY = 1;
+		character.animateLeft();
 	}
 	else if(this.game.isKeyDown(Constant.BUTTON_RIGHT) && !this.game.isKeyDown(Constant.BUTTON_LEFT)) {
 		// 右移動中
-		this.indexY = 2;
+		character.animateRight();
 	}
 	else {
 		// 左右には未移動
-		this.indexY = 0;
+		character.animateNeutral();
 	}
-*/
 
 	// 今フレームで出現する雑魚一覧を取得
 	var params = this.enemy_appear.get(this.frame_count);
