@@ -157,6 +157,13 @@ module.exports = Constant;
 'use strict';
 var EnemiesParams = [ ] ;
 
+var random = function(num) {
+	var rnd = Math.floor( Math.random() * num + 1);
+	console.log(rnd);
+	return rnd;
+}
+
+
 /*
 // テスト敵
 EnemiesParams.push({
@@ -183,6 +190,7 @@ EnemiesParams.push({
 
 for( var i = 0; i < 6 ; i++ ) {
 	EnemiesParams.push({
+		'type': random(3),
 		'appear_frame': 100 + i * 15,
 		'x': 50 + i * 20,
 		'y': 0,
@@ -517,7 +525,13 @@ var Game = function(mainCanvas) {
 	this.height = Number(mainCanvas.getAttribute('height'));
 
 	// WebAudio再生用
-	this.context = new window.AudioContext();
+	this.audio_context = new window.AudioContext();
+	// for legacy browser
+	this.audio_context.createGain = this.audio_context.createGain || this.audio_context.createGainNode;
+	// 音量調整
+	this.audio_gain = this.audio_context.createGain();
+	// 再生中の AudioBufferSourceNode
+	this.audio_source = null;
 
 	// ゲームの現在のシーン
 	this.state = null;
@@ -637,41 +651,54 @@ Game.prototype = {
 	},
 	// シーンを切り替え
 	changeScene: function(scene) {
+		// シーンから離れる際の処理
+		if(this.state !== null) {
+			this.currentScene().onunload();
+		}
+
 		// シーン切り替え
 		this.state = scene;
 		// 切り替え後のシーンを初期化
 		this.currentScene().init();
 	},
 	// BGMを再生
-	playBGM: function(bgm) {
+	playBGM: function(key) {
 		var self = this;
-		var conf = config.BGMS[bgm];
 
-		// 全てのBGM再生をストップ
+		// 現在のBGM再生をストップ
 		self.stopBGM();
 
-		var source = self.context.createBufferSource();
-		self.audio_source = source;
-		source.buffer = self.bgms[bgm];
-
-		source.loop = true;
-		if(conf.loopStart) { source.loopStart = conf.loopStart; }
-		if(conf.loopEnd)   { source.loopEnd = conf.loopEnd; }
-		// TODO: audio.volume = conf.volume;
-		source.connect(self.context.destination);
-		source.start = source.start || source.noteOn;
-		source.stop  = source.stop  || source.noteOff;
-		source.start(0);
-
-		// cache
+		self.audio_source = self._createSourceNode(key);
+		self.audio_source.start(0);
 	},
 	stopBGM: function(bgm) {
 		var self = this;
 		if(self.audio_source) {
-			console.log("aa");
 			self.audio_source.stop(0);
 		}
 		return;
+	},
+	// BGM の AudioBufferSourceNode インスタンスを作成
+	_createSourceNode: function(key) {
+		var self = this;
+		var arrayBuffer = self.bgms[key];
+		var conf = config.BGMS[key];
+
+		var source = self.audio_context.createBufferSource();
+		source.buffer = arrayBuffer;
+
+		source.loop = true;
+		if(conf.loopStart) { source.loopStart = conf.loopStart; }
+		if(conf.loopEnd)   { source.loopEnd = conf.loopEnd; }
+		if(conf.volume)    { self.audio_gain.gain.value = conf.volume; }
+
+		source.connect(self.audio_gain);
+
+		self.audio_gain.connect(self.audio_context.destination);
+		source.start = source.start || source.noteOn;
+		source.stop  = source.stop  || source.noteOff;
+
+		return source;
 	},
 	// 再生するSEをセット
 	playSound: function(key) {
@@ -1497,6 +1524,9 @@ module.exports = Character;
 
 /* 敵オブジェクト */
 
+// デフォの敵タイプ
+var DEFAULT_ENEMY_TYPE = 3 * 2;
+
 // 基底クラス
 var VectorBaseObject = require('./vector_base');
 var Util = require('../util');
@@ -1512,7 +1542,7 @@ var Enemy = function(scene) {
 	VectorBaseObject.apply(this, arguments);
 
 	// 敵のスプライト上の位置
-	this.indexX = 0; this.indexY = 0;
+	this.indexX = 0; this.indexY = 2;
 };
 
 // 基底クラスを継承
@@ -1541,6 +1571,9 @@ Enemy.prototype.init = function(param) {
 
 	// どの弾を撃つ設定を適用するか
 	this.shotCountIndex = 0;
+
+	// 敵の画像種類
+	this.indexY = param.type ? param.type * 2 : DEFAULT_ENEMY_TYPE;
 };
 
 // フレーム処理
@@ -1892,6 +1925,14 @@ BaseScene.prototype.updateDisplay = function(){
 	console.error("updateDisplay method must be overridden");
 };
 
+// シーンから離れる際
+BaseScene.prototype.onunload = function(){
+	// 再生中のBGMを停止
+	this.game.stopBGM();
+};
+
+
+
 module.exports = BaseScene;
 
 },{}],16:[function(require,module,exports){
@@ -2007,7 +2048,6 @@ LoadingScene.prototype._loadBGMs = function() {
 		/*jshint loopfunc: true */
 		(function(key) {
 			var conf = Config.BGMS[key];
-			var url = conf.path;
 
 			self._loadBGM(conf.path, function(audioBuffer) {
 				// BGMが読み込まれたら読み込んだ数を+1
@@ -2019,25 +2059,27 @@ LoadingScene.prototype._loadBGMs = function() {
 };
 
 
-LoadingScene.prototype._loadBGM = function(url, successCallback, errorCallback) {
+LoadingScene.prototype._loadBGM = function(url, successCallback) {
 	var self = this;
 	var xhr = new XMLHttpRequest();
 
 	xhr.onload = function() {
-		if (xhr.status === 200) {
-			var arrayBuffer = xhr.response;
-			self.game.context.decodeAudioData(arrayBuffer, successCallback, function(error) {
-				if (error instanceof Error) {
-					window.alert(error.message);
-				} else {
-					window.alert('Error : "decodeAudioData" method.');
-				}
-			});
+		if(xhr.status !== 200) {
+			return;
 		}
+
+		var arrayBuffer = xhr.response;
+		self.game.audio_context.decodeAudioData(arrayBuffer, successCallback, function(error) {
+			if (error instanceof Error) {
+				window.alert(error.message);
+			} else {
+				window.alert('Error : "decodeAudioData" method.');
+			}
+		});
 	};
 
 	xhr.open('GET', url, true);
-	xhr.responseType = 'arraybuffer';  // XMLHttpRequest Level 2
+	xhr.responseType = 'arraybuffer';
 	xhr.send(null);
 };
 module.exports = LoadingScene;
@@ -2746,7 +2788,6 @@ Util.inherit(State, BaseScene);
 // 初期化
 State.prototype.init = function(){
 	BaseScene.prototype.init.apply(this, arguments);
-	this.game.stopBGM();
 };
 
 // フレーム処理
