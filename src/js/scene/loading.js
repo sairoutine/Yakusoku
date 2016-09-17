@@ -123,4 +123,66 @@ LoadingScene.prototype._loadBGMs = function() {
 };
 
 
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
+
+// Create the instance of AudioContext
+var context = new window.AudioContext();
+
+var xhr = new XMLHttpRequest();
+var url = 'bgm/douchu.wav';
+
+xhr.onload = function() {
+	if (xhr.status === 200) {
+		var arrayBuffer = xhr.response;
+
+		if (arrayBuffer instanceof ArrayBuffer) {
+			// The 2nd argument for decodeAudioData
+			var successCallback = function(audioBuffer) {
+
+				// Create the instance of AudioBufferSourceNode
+				var source = context.createBufferSource();
+
+				// Set the instance of AudioBuffer
+				source.buffer = audioBuffer;
+
+				// Set parameters
+				source.loop               = true;
+				source.loopStart          = 60 * 1 + 14.322;
+				source.loopEnd            = 60 * 2 + 53.419;
+				//source.playbackRate.value = 1.0;
+
+
+				// AudioBufferSourceNode (Input) -> AudioDestinationNode (Output)
+				source.connect(context.destination);
+
+				// for legacy browsers
+				source.start = source.start || source.noteOn;
+				source.stop  = source.stop  || source.noteOff;
+				// Start audio
+				source.start(0, 60 * 2 + 45);
+			};
+
+			// The 3rd argument for decodeAudioData
+			var errorCallback = function(error) {
+				if (error instanceof Error) {
+					window.alert(error.message);
+				} else {
+					window.alert('Error : "decodeAudioData" method.');
+				}
+			};
+
+			// Create the instance of AudioBuffer (Asynchronously)
+			context.decodeAudioData(arrayBuffer, successCallback, errorCallback);
+		}
+	}
+};
+
+xhr.open('GET', url, true);
+xhr.responseType = 'arraybuffer';  // XMLHttpRequest Level 2
+xhr.send(null);
+
+
+
+
+
 module.exports = LoadingScene;
