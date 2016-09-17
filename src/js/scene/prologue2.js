@@ -33,13 +33,17 @@ Util.inherit(Scene, BaseScene);
 Scene.prototype.init = function() {
 	BaseScene.prototype.init.apply(this, arguments);
 	this.serif.init();
-
-	this.game.playBGM('prologue');
 };
 
 // フレーム処理
 Scene.prototype.run = function(){
 	BaseScene.prototype.run.apply(this, arguments);
+
+	// BGM 再生
+	if(this.frame_count === 60) {
+		this.game.playBGM('prologue');
+	}
+
 
 	if(this.game.isKeyPush(Constant.BUTTON_Z)) {
 		if(this.serif.is_end()) {

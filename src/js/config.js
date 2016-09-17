@@ -76,8 +76,10 @@ var Config = {
 			volume: 0.40
 		},
 		prologue: {
-			path:   'bgm/prologue.mp3',
-			volume: 0.40
+			path:   'bgm/prologue.wav',
+			volume: 0.40,
+			loopStart: 7.500,
+			loopEnd: 60 * 2 + 15,
 		},
 		douchu: {
 			path:   'bgm/douchu.wav',
