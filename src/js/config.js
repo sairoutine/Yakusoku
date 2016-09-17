@@ -23,6 +23,7 @@ var Config = {
 		renko_disappointed:  'image/renko_disappointed.png',
 		renko_surprised:  'image/renko_surprised.png',
 		renko_trouble:  'image/renko_trouble.png',
+		renko_calm:  'image/renko_calm.png',
 
 		merry_normal:  'image/merry_normal.png',
 		merry_disappointed:  'image/merry_disappointed.png',
