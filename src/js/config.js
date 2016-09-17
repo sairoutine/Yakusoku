@@ -76,7 +76,7 @@ var Config = {
 			volume: 0.40
 		},
 		prologue: {
-			path:   'bgm/prologue.wav',
+			path:   'bgm/prologue.ogg',
 			volume: 0.40,
 			loopStart: 7.500,
 			loopEnd: 60 * 2 + 15,
