@@ -2,11 +2,15 @@
 
 /* タイトル画面 */
 
+var DEBUG_COUNT;
+//DEBUG_COUNT = 3400;
+
 // サイドバーの横の長さ
 var SIDE_WIDTH = 160;
 // 背景画像のスクロールスピード
 var BACKGROUND_SCROLL_SPEED = 2;
 
+// 道中の終了
 var WAY_END = 3500;
 
 // 基底クラス
@@ -75,6 +79,11 @@ Scene.prototype.init = function() {
 		this.objects[i].init();
 	}
 
+	// TODO: DEBUG
+	if(Constant.DEBUG && DEBUG_COUNT) {
+		this.frame_count = DEBUG_COUNT;
+	}
+
 	// 道中開始
 	this.changeState(Constant.WAY_STATE);
 };
@@ -101,6 +110,11 @@ Scene.prototype.run = function(){
 	}
 
 	this.currentState().run();
+
+	if(this.frame_count === WAY_END) {
+		// ボスとの会話シーンへ
+		this.changeState(Constant.TALK_STATE);
+	}
 };
 
 // 画面更新
@@ -113,6 +127,8 @@ Scene.prototype.updateDisplay = function(){
 	for(var i = 0, len = this.objects.length; i < len; i++) {
 		this.objects[i].updateDisplay();
 	}
+
+	this.currentState().updateDisplay();
 
 	// サイドバー表示
 	this._showSidebar();
