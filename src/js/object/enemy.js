@@ -20,7 +20,7 @@ var Enemy = function(scene) {
 	VectorBaseObject.apply(this, arguments);
 
 	// 敵のスプライト上の位置
-	this.indexX = 0; this.indexY = 2;
+	this.indexX = 0; this.indexY = 0;
 };
 
 // 基底クラスを継承
