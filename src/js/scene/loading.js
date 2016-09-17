@@ -110,7 +110,6 @@ LoadingScene.prototype._loadBGMs = function() {
 		/*jshint loopfunc: true */
 		(function(key) {
 			var conf = Config.BGMS[key];
-			var url = conf.path;
 
 			self._loadBGM(conf.path, function(audioBuffer) {
 				// BGMが読み込まれたら読み込んだ数を+1
@@ -122,25 +121,27 @@ LoadingScene.prototype._loadBGMs = function() {
 };
 
 
-LoadingScene.prototype._loadBGM = function(url, successCallback, errorCallback) {
+LoadingScene.prototype._loadBGM = function(url, successCallback) {
 	var self = this;
 	var xhr = new XMLHttpRequest();
 
 	xhr.onload = function() {
-		if (xhr.status === 200) {
-			var arrayBuffer = xhr.response;
-			self.game.audio_context.decodeAudioData(arrayBuffer, successCallback, function(error) {
-				if (error instanceof Error) {
-					window.alert(error.message);
-				} else {
-					window.alert('Error : "decodeAudioData" method.');
-				}
-			});
+		if(xhr.status !== 200) {
+			return;
 		}
+
+		var arrayBuffer = xhr.response;
+		self.game.audio_context.decodeAudioData(arrayBuffer, successCallback, function(error) {
+			if (error instanceof Error) {
+				window.alert(error.message);
+			} else {
+				window.alert('Error : "decodeAudioData" method.');
+			}
+		});
 	};
 
 	xhr.open('GET', url, true);
-	xhr.responseType = 'arraybuffer';  // XMLHttpRequest Level 2
+	xhr.responseType = 'arraybuffer';
 	xhr.send(null);
 };
 module.exports = LoadingScene;
