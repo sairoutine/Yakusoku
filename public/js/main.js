@@ -531,7 +531,7 @@ var constant = require('./constant');
 
 // TODO: デバッグ(最初に表示するシーン)
 var DEBUG_SCENE;
-DEBUG_SCENE = constant.STAGE_SCENE;
+//DEBUG_SCENE = constant.STAGE_SCENE;
 
 
 var LoadingScene   = require('./scene/loading');
