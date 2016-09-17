@@ -58,37 +58,17 @@ Character.prototype.init = function() {
 	this.unhittable_count = 0;
 };
 
-// フレーム処理
-Character.prototype.run = function(){
-	BaseObject.prototype.run.apply(this, arguments);
+// 撃つ
+Character.prototype.shot = function(){
+	// Nフレーム置きにショットを生成
+	if(this.frame_count % SHOT_SPAN === 0) {
+		this.stage.shot_manager.create(this.x, this.y);
+		//this.game.playSound('shot'); TODO
+	}
+};
 
-	// Zが押下されていればショット生成
-	if(this.game.isKeyDown(Constant.BUTTON_Z)) {
-		// Nフレーム置きにショットを生成
-		if(this.frame_count % SHOT_SPAN === 0) {
-			this.stage.shot_manager.create(this.x, this.y);
-			//this.game.playSound('shot'); TODO
-		}
-	}
-
-	// 移動速度
-	var speed = this.game.isKeyDown(Constant.BUTTON_Z) ? SLOW_SPEED : FAST_SPEED;
-
-	// 自機移動
-	if(this.game.isKeyDown(Constant.BUTTON_LEFT)) {
-		this.x -= speed;
-	}
-	if(this.game.isKeyDown(Constant.BUTTON_RIGHT)) {
-		this.x += speed;
-	}
-	if(this.game.isKeyDown(Constant.BUTTON_DOWN)) {
-		this.y += speed;
-	}
-	if(this.game.isKeyDown(Constant.BUTTON_UP)) {
-		this.y -= speed;
-	}
-
-	// 画面外に出させない
+// 画面外に出させない
+Character.prototype.forbidOutOfStage = function(){
 	if(this.x < 0) {
 		this.x = 0;
 	}
@@ -101,21 +81,37 @@ Character.prototype.run = function(){
 	if(this.y > this.stage.height) {
 		this.y = this.stage.height;
 	}
+};
 
+// 自機移動
+Character.prototype.moveLeft = function(is_slow){
+	this.x -= is_slow ? SLOW_SPEED : FAST_SPEED;
+};
+Character.prototype.moveRight = function(is_slow){
+	this.x += is_slow ? SLOW_SPEED : FAST_SPEED;
+};
+Character.prototype.moveUp = function(is_slow){
+	this.y -= is_slow ? SLOW_SPEED : FAST_SPEED;
+};
+Character.prototype.moveDown = function(is_slow){
+	this.y += is_slow ? SLOW_SPEED : FAST_SPEED;
+};
 
-	// 左右の移動に合わせて自機のアニメーションを変更
-	if(this.game.isKeyDown(Constant.BUTTON_LEFT) && !this.game.isKeyDown(Constant.BUTTON_RIGHT)) {
-		// 左移動中
+// 移動アニメーション
+Character.prototype.animateLeft = function(is_slow){
 		this.indexY = 1;
-	}
-	else if(this.game.isKeyDown(Constant.BUTTON_RIGHT) && !this.game.isKeyDown(Constant.BUTTON_LEFT)) {
-		// 右移動中
+};
+Character.prototype.animateRight = function(is_slow){
 		this.indexY = 2;
-	}
-	else {
-		// 左右には未移動
+};
+Character.prototype.animateNeutral = function(is_slow){
 		this.indexY = 0;
-	}
+};
+
+
+// フレーム処理
+Character.prototype.run = function(){
+	BaseObject.prototype.run.apply(this, arguments);
 
 	// 自機が無敵状態なら無敵切れか判定
 	if(this.is_unhittable && this.unhittable_count + UNHITTABLE_COUNT < this.frame_count) {
