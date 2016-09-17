@@ -1,6 +1,6 @@
 'use strict';
 
-var BaseScene = require('./base');
+var BaseState = require('./base');
 var Util = require('../../../util');
 var Config = require('../../../config');
 
@@ -8,21 +8,21 @@ var EnemyAppear = require('../../../logic/enemy_appear');
 var stage1_appear = require('../../../enemy/stage1');
 
 var State = function(stage) {
-	BaseScene.apply(this, arguments);
+	BaseState.apply(this, arguments);
 
 	// 雑魚敵の出現
 	this.enemy_appear = new EnemyAppear(stage1_appear);
 };
-Util.inherit(State, BaseScene);
+Util.inherit(State, BaseState);
 
 // 初期化
 State.prototype.init = function(){
-	BaseScene.prototype.init.apply(this, arguments);
+	BaseState.prototype.init.apply(this, arguments);
 };
 
 // フレーム処理
 State.prototype.run = function(){
-	BaseScene.prototype.run.apply(this, arguments);
+	BaseState.prototype.run.apply(this, arguments);
 
 	// BGM start
 	if (this.frame_count === 60) {
