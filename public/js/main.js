@@ -661,7 +661,7 @@ Game.prototype = {
 		source.connect(self.context.destination);
 		source.start = source.start || source.noteOn;
 		source.stop  = source.stop  || source.noteOff;
-		source.start();
+		source.start(0);
 
 		// cache
 	},
