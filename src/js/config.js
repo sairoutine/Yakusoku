@@ -80,8 +80,10 @@ var Config = {
 			volume: 0.40
 		},
 		douchu: {
-			path:   'bgm/douchu.mp3',
-			volume: 0.40
+			path:   'bgm/douchu.wav',
+			volume: 0.40,
+			loopStart: 60 * 1 + 14.322,
+			loopEnd: 60 * 2 + 53.419,
 		},
 
 		/*

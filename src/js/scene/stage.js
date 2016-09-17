@@ -73,9 +73,6 @@ Scene.prototype.init = function() {
 		this.objects[i].init();
 	}
 
-	// TODO: 削除
-	this.game.stopBGM();
-
 	// 道中開始
 	this.changeState(Constant.WAY_STATE);
 };

@@ -106,21 +106,41 @@ LoadingScene.prototype._loadSounds = function() {
 LoadingScene.prototype._loadBGMs = function() {
 	var self = this;
 
-	// BGMが読み込まれたら読み込んだ数を+1
-	var onload_function = function() {
-		self.loadedBGMNum++;
-	};
-
-	var conf, audio;
 	for(var key in Config.BGMS) {
-		conf = Config.BGMS[key];
-		audio = new Audio(conf.path);
-		audio.volume = conf.volume;
-		audio.addEventListener('canplay', onload_function);
-		audio.load();
-		this.game.bgms[key] = audio;
+		/*jshint loopfunc: true */
+		(function(key) {
+			var conf = Config.BGMS[key];
+			var url = conf.path;
+
+			self._loadBGM(conf.path, function(audioBuffer) {
+				// BGMが読み込まれたら読み込んだ数を+1
+				self.loadedBGMNum++;
+				self.game.bgms[key] = audioBuffer;
+			});
+		})(key);
 	}
 };
 
 
+LoadingScene.prototype._loadBGM = function(url, successCallback, errorCallback) {
+	var self = this;
+	var xhr = new XMLHttpRequest();
+
+	xhr.onload = function() {
+		if (xhr.status === 200) {
+			var arrayBuffer = xhr.response;
+			self.game.context.decodeAudioData(arrayBuffer, successCallback, function(error) {
+				if (error instanceof Error) {
+					window.alert(error.message);
+				} else {
+					window.alert('Error : "decodeAudioData" method.');
+				}
+			});
+		}
+	};
+
+	xhr.open('GET', url, true);
+	xhr.responseType = 'arraybuffer';  // XMLHttpRequest Level 2
+	xhr.send(null);
+};
 module.exports = LoadingScene;
