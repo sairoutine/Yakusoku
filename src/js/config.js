@@ -11,10 +11,17 @@ var Config = {
 		fukidashi_normal:  'image/serif.png',
 		// キャラ立ち絵
 		aya_normal:  'image/aya_normal.png',
+
 		ganger_normal:  'image/ganger_normal.png',
+		ganger_owata:  'image/ganger_owata.png',
+
+		renko_normal:  'image/renko_normal.png',
+		renko_disappointed:  'image/renko_disappointed.png',
+		renko_surprised:  'image/renko_surprised.png',
+		renko_trouble:  'image/renko_trouble.png',
+
 		hatena_normal:  'image/ganger_normal.png',
 		merry_normal:  'image/merry_normal.png',
-		renko_normal:  'image/renko_normal.png',
 
 		// 名前
 		name_aya:  'image/name_aya.png',
@@ -113,6 +120,21 @@ var Config = {
 	PROLOGUE2_RIGHT_NAME_WINDOW_X: 362,
 	PROLOGUE2_RIGHT_NAME_WINDOW_Y: 420,
 
+	// ボス会話パートにおける左キャラの(x, y)
+	TALKING_LEFT_X: -59,
+	TALKING_LEFT_Y: 132,
+	// ボス会話パートにおける右キャラの(x, y)
+	TALKING_RIGHT_X: 182,
+	TALKING_RIGHT_Y: 132,
+	// ボス会話のウィンドウの(x, y)
+	TALKING_SERIF_WINDOW_X: 0,
+	TALKING_SERIF_WINDOW_Y: 0,
+	// ボス会話の左の名前プレートの(x, y)
+	TALKING_LEFT_NAME_WINDOW_X: 0,
+	TALKING_LEFT_NAME_WINDOW_Y: 420,
+	// ボス会話の右の名前プレートの(x, y)
+	TALKING_RIGHT_NAME_WINDOW_X: 280,
+	TALKING_RIGHT_NAME_WINDOW_Y: 420,
 
 };
 
