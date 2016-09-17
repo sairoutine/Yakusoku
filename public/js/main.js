@@ -81,8 +81,10 @@ var Config = {
 			volume: 0.40
 		},
 		douchu: {
-			path:   'bgm/douchu.mp3',
-			volume: 0.40
+			path:   'bgm/douchu.wav',
+			volume: 0.40,
+			loopStart: 60 * 1 + 14.322,
+			loopEnd: 60 * 2 + 53.419,
 		},
 
 		/*
@@ -514,6 +516,9 @@ var Game = function(mainCanvas) {
 	this.width = Number(mainCanvas.getAttribute('width'));
 	this.height = Number(mainCanvas.getAttribute('height'));
 
+	// WebAudio再生用
+	this.context = new window.AudioContext();
+
 	// ゲームの現在のシーン
 	this.state = null;
 
@@ -639,20 +644,34 @@ Game.prototype = {
 	},
 	// BGMを再生
 	playBGM: function(bgm) {
-		// 全てのBGM再生をストップ
-		this.stopBGM();
+		var self = this;
+		var conf = config.BGMS[bgm];
 
-		// 再生をループする
-		this.bgms[bgm].loop = true;
-		// 再生
-		this.bgms[bgm].play();
+		// 全てのBGM再生をストップ
+		self.stopBGM();
+
+		var source = self.context.createBufferSource();
+		self.audio_source = source;
+		source.buffer = self.bgms[bgm];
+
+		source.loop = true;
+		if(conf.loopStart) { source.loopStart = conf.loopStart; }
+		if(conf.loopEnd)   { source.loopEnd = conf.loopEnd; }
+		// TODO: audio.volume = conf.volume;
+		source.connect(self.context.destination);
+		source.start = source.start || source.noteOn;
+		source.stop  = source.stop  || source.noteOff;
+		source.start();
+
+		// cache
 	},
 	stopBGM: function(bgm) {
-		// 全てのBGM再生をストップ
-		for(var key in this.bgms) {
-			this.bgms[key].pause();
-			this.bgms[key].currentTime = 0;
+		var self = this;
+		if(self.audio_source) {
+			console.log("aa");
+			self.audio_source.stop(0);
 		}
+		return;
 	},
 	// 再生するSEをセット
 	playSound: function(key) {
@@ -1045,6 +1064,10 @@ module.exports = Logic;
 },{"../config":1}],9:[function(require,module,exports){
 'use strict';
 var Game = require('./game');
+
+// WebAudio
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
+
 
 window.onload = function() {
 	// Canvas
@@ -1980,23 +2003,43 @@ LoadingScene.prototype._loadSounds = function() {
 LoadingScene.prototype._loadBGMs = function() {
 	var self = this;
 
-	// BGMが読み込まれたら読み込んだ数を+1
-	var onload_function = function() {
-		self.loadedBGMNum++;
-	};
-
-	var conf, audio;
 	for(var key in Config.BGMS) {
-		conf = Config.BGMS[key];
-		audio = new Audio(conf.path);
-		audio.volume = conf.volume;
-		audio.addEventListener('canplay', onload_function);
-		audio.load();
-		this.game.bgms[key] = audio;
+		/*jshint loopfunc: true */
+		(function(key) {
+			var conf = Config.BGMS[key];
+			var url = conf.path;
+
+			self._loadBGM(conf.path, function(audioBuffer) {
+				// BGMが読み込まれたら読み込んだ数を+1
+				self.loadedBGMNum++;
+				self.game.bgms[key] = audioBuffer;
+			});
+		})(key);
 	}
 };
 
 
+LoadingScene.prototype._loadBGM = function(url, successCallback, errorCallback) {
+	var self = this;
+	var xhr = new XMLHttpRequest();
+
+	xhr.onload = function() {
+		if (xhr.status === 200) {
+			var arrayBuffer = xhr.response;
+			self.game.context.decodeAudioData(arrayBuffer, successCallback, function(error) {
+				if (error instanceof Error) {
+					window.alert(error.message);
+				} else {
+					window.alert('Error : "decodeAudioData" method.');
+				}
+			});
+		}
+	};
+
+	xhr.open('GET', url, true);
+	xhr.responseType = 'arraybuffer';  // XMLHttpRequest Level 2
+	xhr.send(null);
+};
 module.exports = LoadingScene;
 
 },{"../config":1,"../util":28,"./base":15}],17:[function(require,module,exports){
@@ -2468,9 +2511,6 @@ Scene.prototype.init = function() {
 		this.objects[i].init();
 	}
 
-	// TODO: 削除
-	this.game.stopBGM();
-
 	// 道中開始
 	this.changeState(Constant.WAY_STATE);
 };
@@ -2706,12 +2746,17 @@ Util.inherit(State, BaseScene);
 // 初期化
 State.prototype.init = function(){
 	BaseScene.prototype.init.apply(this, arguments);
-	this.game.playBGM('douchu');
+	this.game.stopBGM();
 };
 
 // フレーム処理
 State.prototype.run = function(){
 	BaseScene.prototype.run.apply(this, arguments);
+
+	// BGM start
+	if (this.frame_count === 60) {
+		this.game.playBGM('douchu');
+	}
 
 	// 今フレームで出現する雑魚一覧を取得
 	var params = this.enemy_appear.get(this.frame_count);
