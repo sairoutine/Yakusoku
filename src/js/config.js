@@ -109,6 +109,10 @@ var Config = {
 	},
 	// テキストの typography スピード
 	MESSAGE_SPEED: 10,
+	// 喋ってる方が寄る際のpx
+	TALKER_MOVE_PX: 5,
+	// キャラのサイズ(1/2)
+	CHARA_SIZE_RATIO: 0.5,
 	// ノベルパートにおける左キャラの(x, y)
 	PROLOGUE2_LEFT_X: 0,
 	PROLOGUE2_LEFT_Y: 132,

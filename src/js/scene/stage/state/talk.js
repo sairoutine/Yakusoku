@@ -9,16 +9,6 @@ var serif = require('../../../serif/stage1');
 
 var Serif = require('../../../logic/serif');
 
-// キャラのサイズ(1/2)
-var CHARA_SIZE_RATIO = 0.5;
-
-// 喋ってる方が寄る際のpx
-var TALKER_MOVE_PX = 5;
-
-
-
-
-
 var State = function(stage) {
 	BaseState.apply(this, arguments);
 	this.serif = new Serif(serif);
@@ -90,8 +80,8 @@ State.prototype._showRightChara = function(){
 	}
 	else {
 		// 喋ってる方のキャラは真ん中に寄る
-		x -= TALKER_MOVE_PX;
-		y -= TALKER_MOVE_PX;
+		x -= Config.TALKER_MOVE_PX;
+		y -= Config.TALKER_MOVE_PX;
 	}
 
 
@@ -100,8 +90,8 @@ State.prototype._showRightChara = function(){
 	ctx.drawImage(right_image,
 					x,
 					y,
-					right_image.width * CHARA_SIZE_RATIO,
-					right_image.height * CHARA_SIZE_RATIO);
+					right_image.width * Config.CHARA_SIZE_RATIO,
+					right_image.height * Config.CHARA_SIZE_RATIO);
 
 	ctx.restore();
 };
@@ -120,17 +110,17 @@ State.prototype._showLeftChara = function () {
 	}
 	else {
 		// 喋ってる方のキャラは真ん中に寄る
-		x -= -TALKER_MOVE_PX; // 左右反転
-		y -= TALKER_MOVE_PX;
+		x -= -Config.TALKER_MOVE_PX; // 左右反転
+		y -= Config.TALKER_MOVE_PX;
 	}
 
 	var left_image = this.game.getImage(this.serif.left_image());
-	ctx.transform(-1, 0, 0, 1, left_image.width * CHARA_SIZE_RATIO, 0); // 左右反転
+	ctx.transform(-1, 0, 0, 1, left_image.width * Config.CHARA_SIZE_RATIO, 0); // 左右反転
 	ctx.drawImage(left_image,
 					-x, // 左右反転
 					y,
-					left_image.width * CHARA_SIZE_RATIO,
-					left_image.height * CHARA_SIZE_RATIO);
+					left_image.width * Config.CHARA_SIZE_RATIO,
+					left_image.height * Config.CHARA_SIZE_RATIO);
 
 	ctx.restore();
 };
@@ -144,8 +134,8 @@ State.prototype._showName = function(name, x, y){
 	ctx.drawImage(name_image,
 					x,
 					y,
-					name_image.width * CHARA_SIZE_RATIO,
-					name_image.height * CHARA_SIZE_RATIO);
+					name_image.width * Config.CHARA_SIZE_RATIO,
+					name_image.height * Config.CHARA_SIZE_RATIO);
 	ctx.restore();
 };
 
@@ -160,13 +150,13 @@ State.prototype._showMessageWindow = function(){
 		var fukidashi = this.game.getImage(this.serif.serif_window());
 		if(this.serif.is_right_talking()) {
 			x = -x; // 反転
-			ctx.transform(-1, 0, 0, 1, fukidashi.width * CHARA_SIZE_RATIO, 0); // 左右反転
+			ctx.transform(-1, 0, 0, 1, fukidashi.width * Config.CHARA_SIZE_RATIO, 0); // 左右反転
 		}
 		ctx.drawImage(fukidashi,
 						x,
 						y,
-						fukidashi.width * CHARA_SIZE_RATIO,
-						fukidashi.height * CHARA_SIZE_RATIO
+						fukidashi.width * Config.CHARA_SIZE_RATIO,
+						fukidashi.height * Config.CHARA_SIZE_RATIO
 		);
 		ctx.restore();
 };
