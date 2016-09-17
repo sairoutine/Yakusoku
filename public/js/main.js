@@ -24,6 +24,7 @@ var Config = {
 		renko_disappointed:  'image/renko_disappointed.png',
 		renko_surprised:  'image/renko_surprised.png',
 		renko_trouble:  'image/renko_trouble.png',
+		renko_calm:  'image/renko_calm.png',
 
 		merry_normal:  'image/merry_normal.png',
 		merry_disappointed:  'image/merry_disappointed.png',
@@ -110,6 +111,10 @@ var Config = {
 	},
 	// テキストの typography スピード
 	MESSAGE_SPEED: 10,
+	// 喋ってる方が寄る際のpx
+	TALKER_MOVE_PX: 5,
+	// キャラのサイズ(1/2)
+	CHARA_SIZE_RATIO: 0.5,
 	// ノベルパートにおける左キャラの(x, y)
 	PROLOGUE2_LEFT_X: 0,
 	PROLOGUE2_LEFT_Y: 132,
@@ -526,7 +531,7 @@ var constant = require('./constant');
 
 // TODO: デバッグ(最初に表示するシーン)
 var DEBUG_SCENE;
-//DEBUG_SCENE = constant.STAGE_SCENE;
+DEBUG_SCENE = constant.STAGE_SCENE;
 
 
 var LoadingScene   = require('./scene/loading');
@@ -1367,37 +1372,17 @@ Character.prototype.init = function() {
 	this.unhittable_count = 0;
 };
 
-// フレーム処理
-Character.prototype.run = function(){
-	BaseObject.prototype.run.apply(this, arguments);
+// 撃つ
+Character.prototype.shot = function(){
+	// Nフレーム置きにショットを生成
+	if(this.frame_count % SHOT_SPAN === 0) {
+		this.stage.shot_manager.create(this.x, this.y);
+		//this.game.playSound('shot'); TODO
+	}
+};
 
-	// Zが押下されていればショット生成
-	if(this.game.isKeyDown(Constant.BUTTON_Z)) {
-		// Nフレーム置きにショットを生成
-		if(this.frame_count % SHOT_SPAN === 0) {
-			this.stage.shot_manager.create(this.x, this.y);
-			//this.game.playSound('shot'); TODO
-		}
-	}
-
-	// 移動速度
-	var speed = this.game.isKeyDown(Constant.BUTTON_Z) ? SLOW_SPEED : FAST_SPEED;
-
-	// 自機移動
-	if(this.game.isKeyDown(Constant.BUTTON_LEFT)) {
-		this.x -= speed;
-	}
-	if(this.game.isKeyDown(Constant.BUTTON_RIGHT)) {
-		this.x += speed;
-	}
-	if(this.game.isKeyDown(Constant.BUTTON_DOWN)) {
-		this.y += speed;
-	}
-	if(this.game.isKeyDown(Constant.BUTTON_UP)) {
-		this.y -= speed;
-	}
-
-	// 画面外に出させない
+// 画面外に出させない
+Character.prototype.forbidOutOfStage = function(){
 	if(this.x < 0) {
 		this.x = 0;
 	}
@@ -1410,7 +1395,29 @@ Character.prototype.run = function(){
 	if(this.y > this.stage.height) {
 		this.y = this.stage.height;
 	}
+};
 
+// 自機移動
+Character.prototype.moveLeft = function(is_slow){
+	this.x -= is_slow ? SLOW_SPEED : FAST_SPEED;
+};
+Character.prototype.moveRight = function(is_slow){
+	this.x += is_slow ? SLOW_SPEED : FAST_SPEED;
+};
+Character.prototype.moveUp = function(is_slow){
+	this.y -= is_slow ? SLOW_SPEED : FAST_SPEED;
+};
+Character.prototype.moveDown = function(is_slow){
+	this.y += is_slow ? SLOW_SPEED : FAST_SPEED;
+};
+
+
+
+
+
+// フレーム処理
+Character.prototype.run = function(){
+	BaseObject.prototype.run.apply(this, arguments);
 
 	// 左右の移動に合わせて自機のアニメーションを変更
 	if(this.game.isKeyDown(Constant.BUTTON_LEFT) && !this.game.isKeyDown(Constant.BUTTON_RIGHT)) {
@@ -2260,13 +2267,6 @@ module.exports = Scene;
 
 /* プロローグ画面2 */
 
-// キャラのサイズ(1/2)
-var CHARA_SIZE_RATIO = 0.5;
-
-// 喋ってる方が寄る際のpx
-var TALKER_MOVE_PX = 5;
-
-
 // 基底クラス
 var BaseScene = require('./base');
 
@@ -2383,8 +2383,8 @@ Scene.prototype._showRightChara = function(){
 	}
 	else {
 		// 喋ってる方のキャラは真ん中に寄る
-		x -= TALKER_MOVE_PX;
-		y -= TALKER_MOVE_PX;
+		x -= Config.TALKER_MOVE_PX;
+		y -= Config.TALKER_MOVE_PX;
 	}
 
 
@@ -2393,8 +2393,8 @@ Scene.prototype._showRightChara = function(){
 	ctx.drawImage(right_image,
 					x,
 					y,
-					right_image.width * CHARA_SIZE_RATIO,
-					right_image.height * CHARA_SIZE_RATIO);
+					right_image.width * Config.CHARA_SIZE_RATIO,
+					right_image.height * Config.CHARA_SIZE_RATIO);
 
 	ctx.restore();
 };
@@ -2413,17 +2413,17 @@ Scene.prototype._showLeftChara = function () {
 	}
 	else {
 		// 喋ってる方のキャラは真ん中に寄る
-		x -= -TALKER_MOVE_PX; // 左右反転
-		y -= TALKER_MOVE_PX;
+		x -= -Config.TALKER_MOVE_PX; // 左右反転
+		y -= Config.TALKER_MOVE_PX;
 	}
 
 	var left_image = this.game.getImage(this.serif.left_image());
-	ctx.transform(-1, 0, 0, 1, left_image.width * CHARA_SIZE_RATIO, 0); // 左右反転
+	ctx.transform(-1, 0, 0, 1, left_image.width * Config.CHARA_SIZE_RATIO, 0); // 左右反転
 	ctx.drawImage(left_image,
 					-x, // 左右反転
 					y,
-					left_image.width * CHARA_SIZE_RATIO,
-					left_image.height * CHARA_SIZE_RATIO);
+					left_image.width * Config.CHARA_SIZE_RATIO,
+					left_image.height * Config.CHARA_SIZE_RATIO);
 
 	ctx.restore();
 };
@@ -2437,8 +2437,8 @@ Scene.prototype._showName = function(name, x, y){
 	ctx.drawImage(name_image,
 					x,
 					y,
-					name_image.width * CHARA_SIZE_RATIO,
-					name_image.height * CHARA_SIZE_RATIO);
+					name_image.width * Config.CHARA_SIZE_RATIO,
+					name_image.height * Config.CHARA_SIZE_RATIO);
 	ctx.restore();
 };
 
@@ -2453,13 +2453,13 @@ Scene.prototype._showMessageWindow = function(){
 		var fukidashi = this.game.getImage(this.serif.serif_window());
 		if(this.serif.is_right_talking()) {
 			x = -x; // 反転
-			ctx.transform(-1, 0, 0, 1, fukidashi.width * CHARA_SIZE_RATIO, 0); // 左右反転
+			ctx.transform(-1, 0, 0, 1, fukidashi.width * Config.CHARA_SIZE_RATIO, 0); // 左右反転
 		}
 		ctx.drawImage(fukidashi,
 						x,
 						y,
-						fukidashi.width * CHARA_SIZE_RATIO,
-						fukidashi.height * CHARA_SIZE_RATIO
+						fukidashi.width * Config.CHARA_SIZE_RATIO,
+						fukidashi.height * Config.CHARA_SIZE_RATIO
 		);
 		ctx.restore();
 };
@@ -2825,16 +2825,6 @@ var serif = require('../../../serif/stage1');
 
 var Serif = require('../../../logic/serif');
 
-// キャラのサイズ(1/2)
-var CHARA_SIZE_RATIO = 0.5;
-
-// 喋ってる方が寄る際のpx
-var TALKER_MOVE_PX = 5;
-
-
-
-
-
 var State = function(stage) {
 	BaseState.apply(this, arguments);
 	this.serif = new Serif(serif);
@@ -2906,8 +2896,8 @@ State.prototype._showRightChara = function(){
 	}
 	else {
 		// 喋ってる方のキャラは真ん中に寄る
-		x -= TALKER_MOVE_PX;
-		y -= TALKER_MOVE_PX;
+		x -= Config.TALKER_MOVE_PX;
+		y -= Config.TALKER_MOVE_PX;
 	}
 
 
@@ -2916,8 +2906,8 @@ State.prototype._showRightChara = function(){
 	ctx.drawImage(right_image,
 					x,
 					y,
-					right_image.width * CHARA_SIZE_RATIO,
-					right_image.height * CHARA_SIZE_RATIO);
+					right_image.width * Config.CHARA_SIZE_RATIO,
+					right_image.height * Config.CHARA_SIZE_RATIO);
 
 	ctx.restore();
 };
@@ -2936,17 +2926,17 @@ State.prototype._showLeftChara = function () {
 	}
 	else {
 		// 喋ってる方のキャラは真ん中に寄る
-		x -= -TALKER_MOVE_PX; // 左右反転
-		y -= TALKER_MOVE_PX;
+		x -= -Config.TALKER_MOVE_PX; // 左右反転
+		y -= Config.TALKER_MOVE_PX;
 	}
 
 	var left_image = this.game.getImage(this.serif.left_image());
-	ctx.transform(-1, 0, 0, 1, left_image.width * CHARA_SIZE_RATIO, 0); // 左右反転
+	ctx.transform(-1, 0, 0, 1, left_image.width * Config.CHARA_SIZE_RATIO, 0); // 左右反転
 	ctx.drawImage(left_image,
 					-x, // 左右反転
 					y,
-					left_image.width * CHARA_SIZE_RATIO,
-					left_image.height * CHARA_SIZE_RATIO);
+					left_image.width * Config.CHARA_SIZE_RATIO,
+					left_image.height * Config.CHARA_SIZE_RATIO);
 
 	ctx.restore();
 };
@@ -2960,8 +2950,8 @@ State.prototype._showName = function(name, x, y){
 	ctx.drawImage(name_image,
 					x,
 					y,
-					name_image.width * CHARA_SIZE_RATIO,
-					name_image.height * CHARA_SIZE_RATIO);
+					name_image.width * Config.CHARA_SIZE_RATIO,
+					name_image.height * Config.CHARA_SIZE_RATIO);
 	ctx.restore();
 };
 
@@ -2976,13 +2966,13 @@ State.prototype._showMessageWindow = function(){
 		var fukidashi = this.game.getImage(this.serif.serif_window());
 		if(this.serif.is_right_talking()) {
 			x = -x; // 反転
-			ctx.transform(-1, 0, 0, 1, fukidashi.width * CHARA_SIZE_RATIO, 0); // 左右反転
+			ctx.transform(-1, 0, 0, 1, fukidashi.width * Config.CHARA_SIZE_RATIO, 0); // 左右反転
 		}
 		ctx.drawImage(fukidashi,
 						x,
 						y,
-						fukidashi.width * CHARA_SIZE_RATIO,
-						fukidashi.height * CHARA_SIZE_RATIO
+						fukidashi.width * Config.CHARA_SIZE_RATIO,
+						fukidashi.height * Config.CHARA_SIZE_RATIO
 		);
 		ctx.restore();
 };
@@ -3029,6 +3019,7 @@ module.exports = State;
 var BaseState = require('./base');
 var Util = require('../../../util');
 var Config = require('../../../config');
+var Constant = require('../../../constant');
 
 var EnemyAppear = require('../../../logic/enemy_appear');
 var stage1_appear = require('../../../enemy/stage1');
@@ -3055,6 +3046,49 @@ State.prototype.run = function(){
 		this.game.playBGM('douchu');
 	}
 
+	var character = this.stage.character;
+
+	// Zが押下されていればショット生成
+	if(this.game.isKeyDown(Constant.BUTTON_Z)) {
+		character.shot();
+	}
+
+	// Z押しっぱで低速移動
+	var is_slow = this.game.isKeyDown(Constant.BUTTON_Z);
+
+	// 自機移動
+	if(this.game.isKeyDown(Constant.BUTTON_LEFT)) {
+		character.moveLeft(is_slow);
+	}
+	if(this.game.isKeyDown(Constant.BUTTON_RIGHT)) {
+		character.moveRight(is_slow);
+	}
+	if(this.game.isKeyDown(Constant.BUTTON_DOWN)) {
+		character.moveDown(is_slow);
+	}
+	if(this.game.isKeyDown(Constant.BUTTON_UP)) {
+		character.moveUp(is_slow);
+	}
+
+	// 画面外に出させない
+	character.forbidOutOfStage();
+
+/*
+	// 左右の移動に合わせて自機のアニメーションを変更
+	if(this.game.isKeyDown(Constant.BUTTON_LEFT) && !this.game.isKeyDown(Constant.BUTTON_RIGHT)) {
+		// 左移動中
+		this.indexY = 1;
+	}
+	else if(this.game.isKeyDown(Constant.BUTTON_RIGHT) && !this.game.isKeyDown(Constant.BUTTON_LEFT)) {
+		// 右移動中
+		this.indexY = 2;
+	}
+	else {
+		// 左右には未移動
+		this.indexY = 0;
+	}
+*/
+
 	// 今フレームで出現する雑魚一覧を取得
 	var params = this.enemy_appear.get(this.frame_count);
 
@@ -3069,7 +3103,7 @@ State.prototype.updateDisplay = function(){
 
 module.exports = State;
 
-},{"../../../config":1,"../../../enemy/stage1":3,"../../../logic/enemy_appear":5,"../../../util":29,"./base":20}],25:[function(require,module,exports){
+},{"../../../config":1,"../../../constant":2,"../../../enemy/stage1":3,"../../../logic/enemy_appear":5,"../../../util":29,"./base":20}],25:[function(require,module,exports){
 'use strict';
 
 /* タイトル画面 */
