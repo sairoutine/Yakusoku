@@ -50,6 +50,12 @@ Scene.prototype.run = function(){
 			this.game.notifyPrologue2Done();
 		}
 		else {
+			// TODO: DEBUG
+			if(Config.DEBUG) { 
+				this.serif.script = JSON.parse(document.getElementById("prologue2").value);
+			}
+
+
 			// セリフを送る
 			this.serif.next();
 		}
