@@ -1,6 +1,13 @@
 'use strict';
 var EnemiesParams = [ ] ;
 
+var random = function(num) {
+	var rnd = Math.floor( Math.random() * num + 1);
+	console.log(rnd);
+	return rnd;
+}
+
+
 /*
 // テスト敵
 EnemiesParams.push({
@@ -27,6 +34,7 @@ EnemiesParams.push({
 
 for( var i = 0; i < 6 ; i++ ) {
 	EnemiesParams.push({
+		'type': random(3),
 		'appear_frame': 100 + i * 15,
 		'x': 50 + i * 20,
 		'y': 0,

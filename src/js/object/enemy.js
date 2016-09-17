@@ -2,6 +2,9 @@
 
 /* 敵オブジェクト */
 
+// デフォの敵タイプ
+var DEFAULT_ENEMY_TYPE = 3 * 2;
+
 // 基底クラス
 var VectorBaseObject = require('./vector_base');
 var Util = require('../util');
@@ -17,7 +20,7 @@ var Enemy = function(scene) {
 	VectorBaseObject.apply(this, arguments);
 
 	// 敵のスプライト上の位置
-	this.indexX = 0; this.indexY = 0;
+	this.indexX = 0; this.indexY = 2;
 };
 
 // 基底クラスを継承
@@ -46,6 +49,9 @@ Enemy.prototype.init = function(param) {
 
 	// どの弾を撃つ設定を適用するか
 	this.shotCountIndex = 0;
+
+	// 敵の画像種類
+	this.indexY = param.type ? param.type * 2 : DEFAULT_ENEMY_TYPE;
 };
 
 // フレーム処理
