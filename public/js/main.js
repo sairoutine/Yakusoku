@@ -77,8 +77,10 @@ var Config = {
 			volume: 0.40
 		},
 		prologue: {
-			path:   'bgm/prologue.mp3',
-			volume: 0.40
+			path:   'bgm/prologue.ogg',
+			volume: 0.40,
+			loopStart: 7.500,
+			loopEnd: 60 * 2 + 15,
 		},
 		douchu: {
 			path:   'bgm/douchu.wav',
@@ -1534,7 +1536,7 @@ var Enemy = function(scene) {
 	VectorBaseObject.apply(this, arguments);
 
 	// 敵のスプライト上の位置
-	this.indexX = 0; this.indexY = 2;
+	this.indexX = 0; this.indexY = 0;
 };
 
 // 基底クラスを継承
@@ -2267,13 +2269,17 @@ Util.inherit(Scene, BaseScene);
 Scene.prototype.init = function() {
 	BaseScene.prototype.init.apply(this, arguments);
 	this.serif.init();
-
-	this.game.playBGM('prologue');
 };
 
 // フレーム処理
 Scene.prototype.run = function(){
 	BaseScene.prototype.run.apply(this, arguments);
+
+	// BGM 再生
+	if(this.frame_count === 60) {
+		this.game.playBGM('prologue');
+	}
+
 
 	if(this.game.isKeyPush(Constant.BUTTON_Z)) {
 		if(this.serif.is_end()) {
