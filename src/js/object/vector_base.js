@@ -6,7 +6,7 @@ var BaseObject = require('./base');
 var Util = require('../util');
 var Constant = require('../constant');
 
-var VectorBase = function(id, scene) {
+var VectorBase = function(scene) {
 	// 継承元new呼び出し
 	BaseObject.apply(this, arguments);
 };
@@ -61,6 +61,8 @@ VectorBase.prototype.init = function(vectors) {
 			warange: vec.vector.warange || null,
 			// 自機狙いかどうか
 			aimed: vec.aimed,
+			// 回転させるかどうか
+			is_rotate: vec.is_rotate,
 		});
 	}
 
@@ -123,6 +125,10 @@ VectorBase.prototype.run = function(){
 	vec.ra    = this._beInRange( vec.ra,    vec.rarange);
 	vec.wa    = this._beInRange( vec.wa,    vec.warange);
 
+	// 回転
+	if(vec.is_rotate) {
+		this.rotate = this._theta_to_radian(vec.theta + 90);
+	}
 };
 
 VectorBase.prototype._beInRange = function(value, range) {
