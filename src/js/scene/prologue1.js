@@ -13,7 +13,7 @@ var MESSAGE_Y = 150;
 // フォントサイズ(px)
 var FONT_SIZE = 27;
 // 行間
-var FONT_MARGIN = 6;
+var FONT_MARGIN = 12;
 
 
 
