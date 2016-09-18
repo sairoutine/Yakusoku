@@ -92,13 +92,13 @@ var Config = {
 			path:   'bgm/prologue.ogg',
 			volume: 0.40,
 			loopStart: 7.500,
-			loopEnd: 60 * 2 + 15,
+			loopEnd: 60 * 2 + 14.999,
 		},
 		douchu: {
-			path:   'bgm/douchu.wav',
+			path:   'bgm/douchu.ogg',
 			volume: 0.40,
-			loopStart: 60 * 1 + 14.322,
-			loopEnd: 60 * 2 + 53.419,
+			loopStart: 60 * 1 + 39.096,
+			loopEnd: 60 * 3 + 18.193,
 		},
 
 		/*
