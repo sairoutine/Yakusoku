@@ -5,8 +5,8 @@ var Config = {
 	DEBUG: true,
 	IMAGES: {
 		title_bg:  'image/title_bg.png',
-		prologue1_1_bg:  'image/prologue_bg.png',
-		prologue2_bg:  'image/prologue_bg.png',
+		prologue1_bg:  'image/prologue1_bg.png',
+		prologue2_bg:  'image/prologue2_bg.png',
 		logo:  'image/logo.png',
 		side_bar:  'image/side_bar.png',
 		fukidashi_normal:  'image/fukidashi_blue.png',
@@ -2312,12 +2312,12 @@ var MESSAGE = require('../serif/prologue1');
 // メッセージを表示している期間
 var SHOW_MESSAGE_COUNT = 300;
 
-// メッセージウィンドウの上下左右の余白
-var MESSAGE_WINDOW_OUTLINE_MARGIN = 20;
-var MESSAGE_WINDOW_INLINE_MARGIN  = 50;
+// メッセージテキストのx, y
+var MESSAGE_X = 115;
+var MESSAGE_Y = 150;
 
 // フォントサイズ(px)
-var FONT_SIZE = 24;
+var FONT_SIZE = 27;
 // 行間
 var FONT_MARGIN = 6;
 
@@ -2363,8 +2363,6 @@ Scene.prototype.updateDisplay = function(){
 
 	// 背景画像表示
 	this._showBG();
-	// メッセージウィンドウ表示
-	this._showMessageWindow();
 	// メッセージ表示
 	this._showMessage();
 };
@@ -2372,7 +2370,7 @@ Scene.prototype.updateDisplay = function(){
 // 背景画像表示
 Scene.prototype._showBG = function() {
 	var ctx = this.game.surface;
-	var prologue1_bg = this.game.getImage('prologue1_1_bg');
+	var prologue1_bg = this.game.getImage('prologue1_bg');
 
 	ctx.drawImage(prologue1_bg,
 					0,
@@ -2383,22 +2381,6 @@ Scene.prototype._showBG = function() {
 					0,
 					this.game.width,
 					this.game.height);
-};
-// メッセージウィンドウ表示
-Scene.prototype._showMessageWindow = function(){
-	var ctx = this.game.surface;
-	ctx.save();
-
-	ctx.globalAlpha = 0.5;
-	ctx.fillStyle = 'rgb( 0, 0, 0 )';
-	ctx.fillRect(
-		MESSAGE_WINDOW_OUTLINE_MARGIN,
-		MESSAGE_WINDOW_OUTLINE_MARGIN,
-		this.game.width - MESSAGE_WINDOW_OUTLINE_MARGIN * 2,
-		this.game.height - MESSAGE_WINDOW_OUTLINE_MARGIN * 2
-	);
-
-	ctx.restore();
 };
 // 切り替え効果
 Scene.prototype._setTransition = function(){
@@ -2432,7 +2414,7 @@ Scene.prototype._showMessage = function(){
 	// メッセージ表示期間なら
 	if(SHOW_MESSAGE_COUNT > this.frame_count) {
 		ctx.font = FONT_SIZE + "px 'Migu'" ;
-		ctx.textBaseAlign = 'middle' ;
+		ctx.textBaseAlign = 'middle';
 		ctx.fillStyle = 'rgb( 255, 255, 255 )' ;
 
 		// セリフ表示
@@ -2440,10 +2422,10 @@ Scene.prototype._showMessage = function(){
 		var lines = Config.DEBUG ? document.getElementById("prologue1").value.split("\n") : MESSAGE.split("\n");
 		if (lines.length) {
 			// セリフテキストの y 座標初期位置
-			var y = MESSAGE_WINDOW_INLINE_MARGIN;
+			var y = MESSAGE_Y;
 
 			for(var i = 0, len = lines.length; i < len; i++) {
-				ctx.fillText(lines[i], MESSAGE_WINDOW_INLINE_MARGIN, y); // 1行表示
+				ctx.fillText(lines[i], MESSAGE_X, y); // 1行表示
 
 				y+= FONT_SIZE + FONT_MARGIN;
 			}
@@ -3509,7 +3491,13 @@ module.exports = OpeningScene;
 },{"../constant":2,"../util":33,"./base":17}],28:[function(require,module,exports){
 'use strict';
 
-var Serif = ["蝉の鳴き声が聞こえる。","蓮子は湖のほとりにきている。","メリーと湖で涼もうと約束していた。","蓮子は珍しく先に到着した。","携帯情報端末を見ると、","8月31日の午前9時50分を回ったところ。","夜なら星を見れば時間がわかるのだけど。","約束まで、あと10分。","メリーの事だから早めに来るだろう、","と考えていた時に、背後から物音が聞こえる。","メリーだと思い振り向くと、","自分にそっくりな容姿の女の子が立っていた。"].join("\n");
+var Serif = [
+	"私は博麗神社を目指していた。",
+	"「約束を守りなさい」",
+	"耳の奥で彼女の言葉が蘇る。",
+	"落ち着いた、私と瓜二つの声…。",
+	"彼女との出会いは、ほんの15分ほど前のことだった。",
+].join("\n");
 
 module.exports = Serif;
 
