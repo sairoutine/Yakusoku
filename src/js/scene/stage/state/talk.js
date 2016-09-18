@@ -32,7 +32,8 @@ State.prototype.run = function(){
 	BaseState.prototype.run.apply(this, arguments);
 	if(this.game.isKeyPush(Constant.BUTTON_Z)) {
 		if(this.serif.is_end()) {
-			//TODO: ボスstate へ
+			// ボスstate へ
+			this.stage.changeState(Constant.BOSS_STATE);
 		}
 		else {
 			// セリフを送る
