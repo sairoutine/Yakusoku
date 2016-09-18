@@ -6,12 +6,12 @@ var MESSAGE = require('../serif/prologue1');
 // メッセージを表示している期間
 var SHOW_MESSAGE_COUNT = 300;
 
-// メッセージウィンドウの上下左右の余白
-var MESSAGE_WINDOW_OUTLINE_MARGIN = 20;
-var MESSAGE_WINDOW_INLINE_MARGIN  = 50;
+// メッセージテキストのx, y
+var MESSAGE_X = 115;
+var MESSAGE_Y = 150;
 
 // フォントサイズ(px)
-var FONT_SIZE = 24;
+var FONT_SIZE = 27;
 // 行間
 var FONT_MARGIN = 6;
 
@@ -57,8 +57,6 @@ Scene.prototype.updateDisplay = function(){
 
 	// 背景画像表示
 	this._showBG();
-	// メッセージウィンドウ表示
-	this._showMessageWindow();
 	// メッセージ表示
 	this._showMessage();
 };
@@ -66,7 +64,7 @@ Scene.prototype.updateDisplay = function(){
 // 背景画像表示
 Scene.prototype._showBG = function() {
 	var ctx = this.game.surface;
-	var prologue1_bg = this.game.getImage('prologue1_1_bg');
+	var prologue1_bg = this.game.getImage('prologue1_bg');
 
 	ctx.drawImage(prologue1_bg,
 					0,
@@ -77,22 +75,6 @@ Scene.prototype._showBG = function() {
 					0,
 					this.game.width,
 					this.game.height);
-};
-// メッセージウィンドウ表示
-Scene.prototype._showMessageWindow = function(){
-	var ctx = this.game.surface;
-	ctx.save();
-
-	ctx.globalAlpha = 0.5;
-	ctx.fillStyle = 'rgb( 0, 0, 0 )';
-	ctx.fillRect(
-		MESSAGE_WINDOW_OUTLINE_MARGIN,
-		MESSAGE_WINDOW_OUTLINE_MARGIN,
-		this.game.width - MESSAGE_WINDOW_OUTLINE_MARGIN * 2,
-		this.game.height - MESSAGE_WINDOW_OUTLINE_MARGIN * 2
-	);
-
-	ctx.restore();
 };
 // 切り替え効果
 Scene.prototype._setTransition = function(){
@@ -126,7 +108,7 @@ Scene.prototype._showMessage = function(){
 	// メッセージ表示期間なら
 	if(SHOW_MESSAGE_COUNT > this.frame_count) {
 		ctx.font = FONT_SIZE + "px 'Migu'" ;
-		ctx.textBaseAlign = 'middle' ;
+		ctx.textBaseAlign = 'middle';
 		ctx.fillStyle = 'rgb( 255, 255, 255 )' ;
 
 		// セリフ表示
@@ -134,10 +116,10 @@ Scene.prototype._showMessage = function(){
 		var lines = Config.DEBUG ? document.getElementById("prologue1").value.split("\n") : MESSAGE.split("\n");
 		if (lines.length) {
 			// セリフテキストの y 座標初期位置
-			var y = MESSAGE_WINDOW_INLINE_MARGIN;
+			var y = MESSAGE_Y;
 
 			for(var i = 0, len = lines.length; i < len; i++) {
-				ctx.fillText(lines[i], MESSAGE_WINDOW_INLINE_MARGIN, y); // 1行表示
+				ctx.fillText(lines[i], MESSAGE_X, y); // 1行表示
 
 				y+= FONT_SIZE + FONT_MARGIN;
 			}
