@@ -8,7 +8,9 @@ var Config = {
 		prologue2_bg:  'image/prologue_bg.png',
 		logo:  'image/logo.png',
 		side_bar:  'image/side_bar.png',
-		fukidashi_normal:  'image/serif.png',
+		fukidashi_normal:  'image/fukidashi_blue.png',
+		fukidashi_orange:  'image/fukidashi_orange.png',
+		fukidashi_purple:  'image/fukidashi_purple.png',
 		// キャラ立ち絵
 		aya_normal:  'image/aya_normal.png',
 		aya_dissatisfied:  'image/aya_dissatisfied.png',
