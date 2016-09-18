@@ -31,6 +31,8 @@ var GameoverState = require('./stage/state/result');
 var Character = require('../object/character');
 var Shot = require('../object/shot.js');
 var Enemy = require('../object/enemy.js');
+var Boss = require('../object/aya.js');
+var Bullet = require('../object/bullet.js');
 
 
 var Manager = require('../logic/manager');
@@ -57,6 +59,8 @@ var Scene = function(game) {
 	this.character = new Character(this);
 	this.shot_manager = new Manager(Shot, this);
 	this.enemy_manager = new Manager(Enemy, this);
+	this.boss = new Boss(this);
+	this.bullet_manager = new Manager(Bullet, this);
 
 	// シーンが管理するオブジェクト一覧
 	this.objects = [
@@ -166,7 +170,7 @@ Scene.prototype._showText = function(){
 
 	var ctx = this.game.surface;
 	ctx.save();
-	ctx.fillStyle = 'rgb( 255, 151, 151 )';
+	ctx.fillStyle = 'rgb( 6, 40, 255 )';
 	ctx.textAlign = 'left';
 	ctx.font = size1 + "px 'Migu'" ;
 	ctx.fillText("HiScore",   x1, 25);
