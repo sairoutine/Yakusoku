@@ -4,8 +4,8 @@ var Config = {
 	DEBUG: true,
 	IMAGES: {
 		title_bg:  'image/title_bg.png',
-		prologue1_1_bg:  'image/prologue_bg.png',
-		prologue2_bg:  'image/prologue_bg.png',
+		prologue1_bg:  'image/prologue1_bg.png',
+		prologue2_bg:  'image/prologue2_bg.png',
 		logo:  'image/logo.png',
 		side_bar:  'image/side_bar.png',
 		fukidashi_normal:  'image/fukidashi_blue.png',
