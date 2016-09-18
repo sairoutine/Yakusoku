@@ -23,6 +23,9 @@ var ObjectBase = function(scene) {
 	this.x = 0;
 	// y座標(中心)
 	this.y = 0;
+
+	// 回転
+	this.rotate = 0;
 };
 
 // 初期化
@@ -79,22 +82,23 @@ ObjectBase.prototype.run = function(){
 
 // 画面更新
 ObjectBase.prototype.updateDisplay = function(){
-	// スプライトの描画開始座標
-	var sprite_x = Math.round(this.x - this.spriteWidth() / 2);
-	var sprite_y = Math.round(this.y - this.spriteHeight() / 2);
-
 	var image = this.game.getImage(this.spriteImage());
 
 	this.game.surface.save();
-	// オブジェクト描画
+
+	// オブジェクトの位置を指定
+	this.game.surface.translate(this.x, this.y);
+
+	// オブジェクトを回転
+	this.game.surface.rotate(this.rotate);
 
 	this.game.surface.drawImage(image,
 		// スプライトの取得位置
 		this.spriteWidth()  * this.spriteX(), this.spriteHeight() * this.spriteY(),
 		// スプライトのサイズ
 		this.spriteWidth(),                   this.spriteHeight(),
-		// オブジェクトのゲーム上の位置
-		sprite_x,                             sprite_y,
+		// x, yがオブジェクトの真ん中を指定しているので、左上をx, yの始点に変更
+		-this.spriteWidth()/2, -this.spriteHeight()/2,
 		// オブジェクトのゲーム上のサイズ
 		this.spriteWidth(),                   this.spriteHeight()
 	);
