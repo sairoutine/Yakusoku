@@ -1,65 +1,6 @@
 'use strict';
 
 // セリフ
-var Serif= [
-	{
-		serif: null,
-		fukidashi: null,
-		chara: "aya",
-		pos: "right",
-		exp: "normal",
-	},
-	{
-		serif: null,
-		fukidashi: null,
-		chara: "renko",
-		pos: "left",
-		exp: "normal",
-	},
-	{
-
-		serif: "なんだ、ただの迷子ですか。\n記事にもなりませんね。",
-		fukidashi: "normal",
-		chara: "aya",
-		pos: "right",
-		exp: "normal",
-	},
-	{
-		serif: "博麗神社に行きたいの。",
-		fukidashi: "normal",
-		chara: "renko",
-		pos: "left",
-		exp: "normal",
-	},
-	{
-		serif: "神社？この道をダーって行って\nキュって曲がってガーって\n進んでギャーンで直ぐですよ",
-		fukidashi: "normal",
-		chara: "aya",
-		pos: "right",
-		exp: "normal",
-	},
-	{
-		serif: "ダー！キュっ！ガーっ！\nギャーン！ね。ありがとう！",
-		fukidashi: "normal",
-		chara: "renko",
-		pos: "left",
-		exp: "normal",
-	},
-	{
-		serif: "その前に私と一戦",
-		fukidashi: "normal",
-		chara: "aya",
-		pos: "right",
-		exp: "normal",
-	},
-	{
-		serif: "あら？",
-		fukidashi: "normal",
-		chara: "renko",
-		pos: "left",
-		exp: "normal",
-	},
-
-];
+var Serif= [{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"見覚えのない場所に\n来てしまったわ。\n道に迷ったようね。"},{"pos":"right","exp":"smile","chara":"aya","fukidashi":"orange","serif":"あやややや。\n挙動の不審な人間を\n発見しました！"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"あぁ、ちょうど良かったわ。\n博麗神社へはどう行けば…"},{"pos":"right","exp":"smile","chara":"aya","fukidashi":"orange","serif":"早速、取材してみようと\n思います！"},{"pos":"left","exp":"trouble","chara":"renko","fukidashi":"normal","serif":"もしもーし？"}];
 
 module.exports = Serif;
