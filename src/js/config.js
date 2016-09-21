@@ -103,12 +103,12 @@ var Config = {
 			loopEnd: 60 * 3 + 18.193,
 		},
 
-		/*
 		stage1: {
 			path:   'bgm/stage1.mp3',
-			volume: 0.50
+			volume: 0.50,
+			loopStart: 41.586,
+			loopEnd: 60 * 2 + 0.827,
 		},
-	   */
 	},
 	// テキストの typography スピード
 	MESSAGE_SPEED: 10,

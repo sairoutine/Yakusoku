@@ -31,7 +31,7 @@ State.prototype.run = function(){
 
 	// BGM start
 	if (this.frame_count === 60) {
-		// TODO: this.game.playBGM('stage1');
+		this.game.playBGM('stage1');
 	}
 
 	var character = this.stage.character;
