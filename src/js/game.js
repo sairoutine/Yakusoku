@@ -272,6 +272,11 @@ Game.prototype = {
 		// ステージ画面に切り替え
 		this.changeScene(constant.STAGE_SCENE);
 	},
+	// ステージ画面が終わったら
+	notifyStageDone: function() {
+		// タイトル画面に切り替え
+		this.changeScene(constant.TITLE_SCENE);
+	},
 
 };
 

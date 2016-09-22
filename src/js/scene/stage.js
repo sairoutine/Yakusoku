@@ -8,7 +8,7 @@ var DEBUG_COUNT;
 //DEBUG_COUNT = 3400;
 
 var DEBUG_STATE;
-//DEBUG_STATE = Constant.BOSS_STATE;
+//DEBUG_STATE = Constant.TALK2_STATE;
 
 
 // サイドバーの横の長さ
@@ -77,6 +77,9 @@ var Scene = function(game) {
 		this.character,
 		this.enemy_manager,
 	];
+
+
+	this.score = 0;
 };
 
 // 基底クラスを継承
@@ -191,19 +194,19 @@ Scene.prototype._showText = function(){
 	ctx.fillStyle = 'rgb( 6, 40, 255 )';
 	ctx.textAlign = 'left';
 	ctx.font = size1 + "px 'Migu'" ;
-	ctx.fillText("HiScore",   x1, 25);
+	//ctx.fillText("HiScore",   x1, 25);
 	ctx.fillText("Score",     x1, 70);
 	ctx.fillText("Player",    x1, 130);
-	ctx.fillText("Spell",     x1, 175);
+	//ctx.fillText("Spell",     x1, 175);
 	if(Config.DEBUG) {
 		ctx.fillText("Frame",     x1, 235);
 	}
 	ctx.font = size2 + "px 'Migu'" ;
 	// TODO:
-	ctx.fillText("123456789", x2, 50);  // HiScore
-	ctx.fillText("123456789", x2, 95);  // Score
+	//ctx.fillText("123456789", x2, 50);  // HiScore
+	ctx.fillText(this.score, x2, 95);  // Score
 	ctx.fillText("★★★★★",     x2, 155); // Player
-	ctx.fillText("★★★★★",     x2, 200); // Spell
+	//ctx.fillText("★★★★★",     x2, 200); // Spell
 	if(Config.DEBUG) {
 		ctx.fillText(this.frame_count,     x2, 260); // Frame
 	}
