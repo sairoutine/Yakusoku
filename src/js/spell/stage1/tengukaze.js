@@ -31,6 +31,9 @@ Spell.prototype.init = function() {
 Spell.prototype.run = function() {
 	BaseSpell.prototype.run.apply(this, arguments);
 
+	// スペルカード発動演出中
+	if(this.isSpellStarting()) return;
+
 	// 渦巻き弾
 	if(this.frame_count % this.uzumaki_percount === 0) {
 		this.uzumaki_shot1();

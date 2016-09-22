@@ -30,7 +30,7 @@ State.prototype.run = function(){
 	BaseState.prototype.run.apply(this, arguments);
 
 	// BGM start
-	if (this.frame_count === 60) {
+	if (this.frame_count === 1) {
 		this.game.playBGM('stage1');
 	}
 

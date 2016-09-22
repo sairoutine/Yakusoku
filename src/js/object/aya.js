@@ -132,8 +132,10 @@ Boss.prototype.animateNeutral = function(){
 
 // ボスを描画
 Boss.prototype.updateDisplay = function(){
-	// 描画
 	BaseObject.prototype.updateDisplay.apply(this, arguments);
+
+	// スペルカード描画
+	this.currentSpell().updateDisplay();
 };
 
 // 当たり判定サイズ

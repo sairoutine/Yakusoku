@@ -121,7 +121,8 @@ Scene.prototype.run = function(){
 
 	this.currentState().run();
 
-	if(this.frame_count === WAY_END) {
+	// 道中の終了
+	if(this.currentState === Constant.WAY_STATE && this.frame_count === WAY_END) {
 		// ボスとの会話シーンへ
 		this.changeState(Constant.TALK_STATE);
 	}
