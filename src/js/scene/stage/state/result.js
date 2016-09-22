@@ -1,40 +1,76 @@
 'use strict';
 
-/* シーンの基底クラス */
+var BaseState = require('./base');
+var Util = require('../../../util');
+var Config = require('../../../config');
+var Constant = require('../../../constant');
 
-var BaseScene = function(game) {
-	// ゲームインスタンス
-	this.game = game;
+// メッセージを表示する間隔
+var SHOW_MESSAGE_INTERVAL = 50;
 
-	// 経過フレーム数
-	this.frame_count = 0;
+
+
+var State = function(stage) {
+	BaseState.apply(this, arguments);
+
 };
+Util.inherit(State, BaseState);
 
 // 初期化
-BaseScene.prototype.init = function(){
-	// 経過フレーム数初期化
-	this.frame_count = 0;
+State.prototype.init = function(){
+	BaseState.prototype.init.apply(this, arguments);
 };
-
-// キー押下
-BaseScene.prototype.handleKeyDown = function(e){
-};
-
-// キーを離す
-BaseScene.prototype.handleKeyUp = function(e){
-};
-
 
 // フレーム処理
-BaseScene.prototype.run = function(){
-	// 経過フレーム数更新
-	this.frame_count++;
+State.prototype.run = function(){
+	BaseState.prototype.run.apply(this, arguments);
+
+	if(this.game.isKeyPush(Constant.BUTTON_Z)) {
+			this.game.playSound('select');
+			this.game.notifyStageDone();
+	}
 
 };
 
 // 画面更新
-BaseScene.prototype.updateDisplay = function(){
-	console.error("updateDisplay method must be overridden");
+State.prototype.updateDisplay = function(){
+	this._showScoreWindow();
+};
+// スコア結果画面表示
+State.prototype._showScoreWindow = function(){
+	var ctx = this.game.surface;
+
+	ctx.save();
+var RESULT_TRANSITION_COUNT = 100;
+	var alpha = 1.0 ;
+	if(this.frame_count < RESULT_TRANSITION_COUNT) {
+		alpha = this.frame_count / RESULT_TRANSITION_COUNT;
+	}
+	else {
+		alpha = 1.0;
+	}
+
+	ctx.fillStyle = 'rgb( 0, 0, 0 )' ;
+	ctx.globalAlpha = alpha * 0.5; // タイトル背景黒は半透明
+	ctx.fillRect(0, 170, this.stage.width, 100);
+
+	ctx.globalAlpha = alpha; // 文字を表示するので戻す
+	ctx.fillStyle = 'rgb( 255, 255, 255 )';
+	ctx.textAlign = 'left';
+	ctx.font = "16px 'Migu'" ;
+	ctx.fillText( 'Result', 100, 210);
+	ctx.textAlign = 'right' ;
+	ctx.fillText('Score: ' + this.stage.score, 380, 210);
+	// ステージ名とタイトルの間の白い棒線
+	ctx.fillRect(100, 225, 280, 1);
+
+	// N秒ごとにメッセージを点滅
+	if (Math.floor(this.frame_count / SHOW_MESSAGE_INTERVAL) % 2 === 0) {
+		ctx.fillText('Press Z to Quit', 300, 250);
+	}
+
+	ctx.restore();
 };
 
-module.exports = BaseScene;
+
+module.exports = State;
