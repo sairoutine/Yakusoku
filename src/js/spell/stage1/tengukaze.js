@@ -35,6 +35,7 @@ Spell.prototype.run = function() {
 	if(this.frame_count % this.uzumaki_percount === 0) {
 		this.uzumaki_shot1();
 		this.uzumaki_shot2();
+		this.game.playSound('boss_shot_small');
 	}
 
 	// 円形弾
@@ -43,9 +44,34 @@ Spell.prototype.run = function() {
 			this.maru_shot();
 			this.maru_shot_theta += this.maru_shot_pertheta;
 		}
+		this.game.playSound('boss_shot_big');
 	}
 
-	this.frame_count++;
+	// 移動
+	var shot_time = 600;
+	var move_count = this.frame_count % 3600;
+	if(shot_time <= move_count && move_count < shot_time + 60) {
+		this.boss.moveLeft();
+		this.boss.animateLeft();
+	}
+	else if(shot_time * 2 + 60 <= move_count && move_count < shot_time * 2 + 60 * 2) {
+		this.boss.moveRight();
+		this.boss.moveDown();
+		this.boss.animateRight();
+	}
+	else if(shot_time * 3 + 60 * 2 <= move_count && move_count < shot_time * 3 + 60 * 3) {
+		this.boss.moveRight();
+		this.boss.moveUp();
+		this.boss.animateRight();
+	}
+	else if(shot_time * 4 + 60 * 3 <= move_count && move_count < shot_time * 4 + 60 * 4) {
+		this.boss.moveLeft();
+		this.boss.animateLeft();
+	}
+	else {
+		this.boss.animateNeutral();
+	}
+
 };
 
 Spell.prototype.uzumaki_shot1 = function() {
