@@ -8,7 +8,7 @@ var DEBUG_COUNT;
 //DEBUG_COUNT = 3400;
 
 var DEBUG_STATE;
-//DEBUG_STATE = Constant.BOSS_STATE;
+DEBUG_STATE = Constant.BOSS_STATE;
 
 
 // サイドバーの横の長さ
@@ -39,6 +39,9 @@ var Enemy = require('../object/enemy.js');
 var Boss = require('../object/aya.js');
 var Bullet = require('../object/bullet.js');
 
+// セリフ
+var serif_before = require('../serif/stage1_before');
+var serif_after = require('../serif/stage1_after');
 
 var Manager = require('../logic/manager');
 
@@ -52,8 +55,9 @@ var Scene = function(game) {
 	// ステージの状態一覧
 	this.states = [];
 	this.states[ Constant.WAY_STATE ]    = new WayState(this);
-	this.states[ Constant.TALK_STATE ]   = new TalkState(this);
+	this.states[ Constant.TALK1_STATE ]   = new TalkState(this, serif_before);
 	this.states[ Constant.BOSS_STATE ]   = new BossState(this);
+	this.states[ Constant.TALK2_STATE ]   = new TalkState(this, serif_after);
 	this.states[ Constant.RESULT_STATE ] = new ResultState(this);
 	this.states[ Constant.GAMEOVER_STATE ] = new GameoverState(this);
 
@@ -121,10 +125,25 @@ Scene.prototype.run = function(){
 
 	this.currentState().run();
 
+	// TODO: END フラグをstateに持たせよう
+
 	// 道中の終了
 	if(this.state === Constant.WAY_STATE && this.frame_count === WAY_END) {
 		// ボスとの会話シーンへ
-		this.changeState(Constant.TALK_STATE);
+		this.changeState(Constant.TALK1_STATE);
+	}
+	// ボス前会話の終了
+	else if(this.state === Constant.TALK1_STATE && this.currentState().serif.is_end()) {
+		this.changeState(Constant.BOSS_STATE);
+	}
+	// ボス戦の終了
+	else if(this.state === Constant.BOSS_STATE && this.boss.isDead() && !this.boss.hasNextSpell()) {
+		//ボスのスペルカードが全て無くなった
+		this.changeState(Constant.TALK2_STATE);
+	}
+	// ボス後会話の終了
+	else if(this.state === Constant.TALK2_STATE && this.currentState().serif.is_end()) {
+		this.changeState(Constant.RESULT_STATE);
 	}
 };
 

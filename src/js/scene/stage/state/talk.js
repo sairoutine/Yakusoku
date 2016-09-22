@@ -5,11 +5,10 @@ var Util = require('../../../util');
 var Config = require('../../../config');
 var Constant = require('../../../constant');
 
-var serif = require('../../../serif/stage1');
 
 var Serif = require('../../../logic/serif');
 
-var State = function(stage) {
+var State = function(stage, serif) {
 	BaseState.apply(this, arguments);
 	this.serif = new Serif(serif);
 };
@@ -31,11 +30,7 @@ State.prototype.init = function(){
 State.prototype.run = function(){
 	BaseState.prototype.run.apply(this, arguments);
 	if(this.game.isKeyPush(Constant.BUTTON_Z)) {
-		if(this.serif.is_end()) {
-			// ボスstate へ
-			this.stage.changeState(Constant.BOSS_STATE);
-		}
-		else {
+		if(!this.serif.is_end()) {
 			// セリフを送る
 			this.serif.next();
 		}
