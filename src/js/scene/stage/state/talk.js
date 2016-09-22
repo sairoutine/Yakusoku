@@ -8,9 +8,11 @@ var Constant = require('../../../constant');
 
 var Serif = require('../../../logic/serif');
 
-var State = function(stage, serif) {
+var State = function(stage, serif, next_state) {
 	BaseState.apply(this, arguments);
 	this.serif = new Serif(serif);
+
+	this.next_state = next_state; // セリフパート終了後のstate
 };
 Util.inherit(State, BaseState);
 
@@ -20,7 +22,7 @@ State.prototype.init = function(){
 
 	// TODO: DEBUG
 	if(Config.DEBUG) { 
-		this.serif.script = JSON.parse(document.getElementById("stage1_before").value);
+		//this.serif.script = JSON.parse(document.getElementById("stage1_before").value);
 	}
 
 	this.serif.init();
@@ -30,7 +32,10 @@ State.prototype.init = function(){
 State.prototype.run = function(){
 	BaseState.prototype.run.apply(this, arguments);
 	if(this.game.isKeyPush(Constant.BUTTON_Z)) {
-		if(!this.serif.is_end()) {
+		if(this.serif.is_end()) {
+			this.stage.changeState(this.next_state);
+		}
+		else {
 			// セリフを送る
 			this.serif.next();
 		}

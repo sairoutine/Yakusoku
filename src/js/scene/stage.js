@@ -55,9 +55,9 @@ var Scene = function(game) {
 	// ステージの状態一覧
 	this.states = [];
 	this.states[ Constant.WAY_STATE ]    = new WayState(this);
-	this.states[ Constant.TALK1_STATE ]   = new TalkState(this, serif_before);
+	this.states[ Constant.TALK1_STATE ]   = new TalkState(this, serif_before, Constant.BOSS_STATE);
 	this.states[ Constant.BOSS_STATE ]   = new BossState(this);
-	this.states[ Constant.TALK2_STATE ]   = new TalkState(this, serif_after);
+	this.states[ Constant.TALK2_STATE ]   = new TalkState(this, serif_after, Constant.RESULT_STATE);
 	this.states[ Constant.RESULT_STATE ] = new ResultState(this);
 	this.states[ Constant.GAMEOVER_STATE ] = new GameoverState(this);
 
@@ -132,18 +132,10 @@ Scene.prototype.run = function(){
 		// ボスとの会話シーンへ
 		this.changeState(Constant.TALK1_STATE);
 	}
-	// ボス前会話の終了
-	else if(this.state === Constant.TALK1_STATE && this.currentState().serif.is_end()) {
-		this.changeState(Constant.BOSS_STATE);
-	}
 	// ボス戦の終了
 	else if(this.state === Constant.BOSS_STATE && this.boss.isDead() && !this.boss.hasNextSpell()) {
 		//ボスのスペルカードが全て無くなった
 		this.changeState(Constant.TALK2_STATE);
-	}
-	// ボス後会話の終了
-	else if(this.state === Constant.TALK2_STATE && this.currentState().serif.is_end()) {
-		this.changeState(Constant.RESULT_STATE);
 	}
 };
 
