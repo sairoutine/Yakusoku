@@ -134,7 +134,7 @@ Boss.prototype.animateNeutral = function(){
 Boss.prototype.updateDisplay = function(){
 	BaseObject.prototype.updateDisplay.apply(this, arguments);
 
-	// スペルカード処理
+	// スペルカード描画
 	this.currentSpell().updateDisplay();
 };
 
