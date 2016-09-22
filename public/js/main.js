@@ -62,6 +62,19 @@ var Config = {
 			path:   'sound/select.wav',
 			volume: 0.80
 		},
+		boss_shot_small: {
+			id: 0x02,
+			path: 'sound/boss_shot_small.wav',
+			volume: 0.15
+		},
+
+		boss_shot_big: {
+			id: 0x04,
+			path: 'sound/boss_shot_big.wav',
+			volume: 0.15
+		},
+
+
 		/*
 		shot: {
 			id: 0x02,
@@ -1170,8 +1183,10 @@ var TenguKaze = require('../spell/stage1/tengukaze');
 var ANIMATION_SPAN = 6;
 
 // HP
-var VITAL = 60 * 60;
+var VITAL = 60 * 60 * 2; // 2分
 
+// ボスの移動速度
+var SPEED = 2;
 
 // constructor
 var Boss = function(stage) {
@@ -1257,6 +1272,33 @@ Boss.prototype.run = function(){
 		}
 	}
 };
+
+// TODO: aimed で動かしたい
+// 移動
+Boss.prototype.moveLeft = function(){
+	this.x -= SPEED;
+};
+Boss.prototype.moveRight = function(){
+	this.x += SPEED;
+};
+Boss.prototype.moveUp = function(){
+	this.y -= SPEED;
+};
+Boss.prototype.moveDown = function(){
+	this.y += SPEED;
+};
+
+// 移動アニメーション
+Boss.prototype.animateLeft = function(){
+		this.indexY = 1;
+};
+Boss.prototype.animateRight = function(){
+		this.indexY = 2;
+};
+Boss.prototype.animateNeutral = function(){
+		this.indexY = 0;
+};
+
 
 // ボスを描画
 Boss.prototype.updateDisplay = function(){
@@ -1608,13 +1650,13 @@ Character.prototype.moveDown = function(is_slow){
 };
 
 // 移動アニメーション
-Character.prototype.animateLeft = function(is_slow){
+Character.prototype.animateLeft = function(){
 		this.indexY = 1;
 };
-Character.prototype.animateRight = function(is_slow){
+Character.prototype.animateRight = function(){
 		this.indexY = 2;
 };
-Character.prototype.animateNeutral = function(is_slow){
+Character.prototype.animateNeutral = function(){
 		this.indexY = 0;
 };
 
@@ -2310,7 +2352,7 @@ module.exports = LoadingScene;
 var MESSAGE = require('../serif/prologue1');
 
 // メッセージを表示している期間
-var SHOW_MESSAGE_COUNT = 300;
+var SHOW_MESSAGE_COUNT = 900;
 
 // メッセージテキストのx, y
 var MESSAGE_X = 115;
@@ -2684,8 +2726,14 @@ module.exports = Scene;
 
 /* タイトル画面 */
 
+var Constant = require('../constant');
+
 var DEBUG_COUNT;
 //DEBUG_COUNT = 3400;
+
+var DEBUG_STATE;
+//DEBUG_STATE = Constant.BOSS_STATE;
+
 
 // サイドバーの横の長さ
 var SIDE_WIDTH = 160;
@@ -2699,7 +2747,6 @@ var WAY_END = 3500;
 var BaseScene = require('./base');
 
 var Util = require('../util');
-var Constant = require('../constant');
 var Config = require('../config');
 
 // ステージの状態
@@ -2770,8 +2817,9 @@ Scene.prototype.init = function() {
 		this.frame_count = DEBUG_COUNT;
 	}
 
+	// TODO: DEBUG
 	// 道中開始
-	this.changeState(Constant.WAY_STATE);
+	this.changeState(Constant.DEBUG && DEBUG_STATE ? DEBUG_STATE : Constant.WAY_STATE);
 };
 
 // 現在のシーン
@@ -3595,6 +3643,7 @@ Spell.prototype.run = function() {
 	if(this.frame_count % this.uzumaki_percount === 0) {
 		this.uzumaki_shot1();
 		this.uzumaki_shot2();
+		this.game.playSound('boss_shot_small');
 	}
 
 	// 円形弾
@@ -3603,9 +3652,34 @@ Spell.prototype.run = function() {
 			this.maru_shot();
 			this.maru_shot_theta += this.maru_shot_pertheta;
 		}
+		this.game.playSound('boss_shot_big');
 	}
 
-	this.frame_count++;
+	// 移動
+	var shot_time = 600;
+	var move_count = this.frame_count % 3600;
+	if(shot_time <= move_count && move_count < shot_time + 60) {
+		this.boss.moveLeft();
+		this.boss.animateLeft();
+	}
+	else if(shot_time * 2 + 60 <= move_count && move_count < shot_time * 2 + 60 * 2) {
+		this.boss.moveRight();
+		this.boss.moveDown();
+		this.boss.animateRight();
+	}
+	else if(shot_time * 3 + 60 * 2 <= move_count && move_count < shot_time * 3 + 60 * 3) {
+		this.boss.moveRight();
+		this.boss.moveUp();
+		this.boss.animateRight();
+	}
+	else if(shot_time * 4 + 60 * 3 <= move_count && move_count < shot_time * 4 + 60 * 4) {
+		this.boss.moveLeft();
+		this.boss.animateLeft();
+	}
+	else {
+		this.boss.animateNeutral();
+	}
+
 };
 
 Spell.prototype.uzumaki_shot1 = function() {
