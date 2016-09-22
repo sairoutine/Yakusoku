@@ -13,8 +13,10 @@ var TenguKaze = require('../spell/stage1/tengukaze');
 var ANIMATION_SPAN = 6;
 
 // HP
-var VITAL = 60 * 60;
+var VITAL = 60 * 60 * 2; // 2分
 
+// ボスの移動速度
+var SPEED = 2;
 
 // constructor
 var Boss = function(stage) {
@@ -100,6 +102,33 @@ Boss.prototype.run = function(){
 		}
 	}
 };
+
+// TODO: aimed で動かしたい
+// 移動
+Boss.prototype.moveLeft = function(){
+	this.x -= SPEED;
+};
+Boss.prototype.moveRight = function(){
+	this.x += SPEED;
+};
+Boss.prototype.moveUp = function(){
+	this.y -= SPEED;
+};
+Boss.prototype.moveDown = function(){
+	this.y += SPEED;
+};
+
+// 移動アニメーション
+Boss.prototype.animateLeft = function(){
+		this.indexY = 1;
+};
+Boss.prototype.animateRight = function(){
+		this.indexY = 2;
+};
+Boss.prototype.animateNeutral = function(){
+		this.indexY = 0;
+};
+
 
 // ボスを描画
 Boss.prototype.updateDisplay = function(){
