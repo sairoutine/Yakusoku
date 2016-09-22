@@ -98,13 +98,13 @@ Character.prototype.moveDown = function(is_slow){
 };
 
 // 移動アニメーション
-Character.prototype.animateLeft = function(is_slow){
+Character.prototype.animateLeft = function(){
 		this.indexY = 1;
 };
-Character.prototype.animateRight = function(is_slow){
+Character.prototype.animateRight = function(){
 		this.indexY = 2;
 };
-Character.prototype.animateNeutral = function(is_slow){
+Character.prototype.animateNeutral = function(){
 		this.indexY = 0;
 };
 
