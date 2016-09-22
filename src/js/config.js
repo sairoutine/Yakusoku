@@ -66,10 +66,14 @@ var Config = {
 			path: 'sound/boss_shot_small.wav',
 			volume: 0.15
 		},
-
 		boss_shot_big: {
 			id: 0x04,
 			path: 'sound/boss_shot_big.wav',
+			volume: 0.15
+		},
+		spellcard: {
+			id: 0x08,
+			path: 'sound/spellcard.wav',
 			volume: 0.15
 		},
 
