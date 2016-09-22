@@ -822,6 +822,11 @@ Game.prototype = {
 		// ステージ画面に切り替え
 		this.changeScene(constant.STAGE_SCENE);
 	},
+	// ステージ画面が終わったら
+	notifyStageDone: function() {
+		// タイトル画面に切り替え
+		this.changeScene(constant.TITLE_SCENE);
+	},
 
 };
 
@@ -2770,7 +2775,7 @@ var DEBUG_COUNT;
 //DEBUG_COUNT = 3400;
 
 var DEBUG_STATE;
-//DEBUG_STATE = Constant.BOSS_STATE;
+//DEBUG_STATE = Constant.TALK2_STATE;
 
 
 // サイドバーの横の長さ
@@ -2839,6 +2844,9 @@ var Scene = function(game) {
 		this.character,
 		this.enemy_manager,
 	];
+
+
+	this.score = 0;
 };
 
 // 基底クラスを継承
@@ -2953,19 +2961,19 @@ Scene.prototype._showText = function(){
 	ctx.fillStyle = 'rgb( 6, 40, 255 )';
 	ctx.textAlign = 'left';
 	ctx.font = size1 + "px 'Migu'" ;
-	ctx.fillText("HiScore",   x1, 25);
+	//ctx.fillText("HiScore",   x1, 25);
 	ctx.fillText("Score",     x1, 70);
 	ctx.fillText("Player",    x1, 130);
-	ctx.fillText("Spell",     x1, 175);
+	//ctx.fillText("Spell",     x1, 175);
 	if(Config.DEBUG) {
 		ctx.fillText("Frame",     x1, 235);
 	}
 	ctx.font = size2 + "px 'Migu'" ;
 	// TODO:
-	ctx.fillText("123456789", x2, 50);  // HiScore
-	ctx.fillText("123456789", x2, 95);  // Score
+	//ctx.fillText("123456789", x2, 50);  // HiScore
+	ctx.fillText(this.score, x2, 95);  // Score
 	ctx.fillText("★★★★★",     x2, 155); // Player
-	ctx.fillText("★★★★★",     x2, 200); // Spell
+	//ctx.fillText("★★★★★",     x2, 200); // Spell
 	if(Config.DEBUG) {
 		ctx.fillText(this.frame_count,     x2, 260); // Frame
 	}
@@ -3165,46 +3173,82 @@ module.exports = State;
 },{"../../../config":1,"../../../constant":2,"../../../util":35,"./base":22}],24:[function(require,module,exports){
 'use strict';
 
-/* シーンの基底クラス */
+var BaseState = require('./base');
+var Util = require('../../../util');
+var Config = require('../../../config');
+var Constant = require('../../../constant');
 
-var BaseScene = function(game) {
-	// ゲームインスタンス
-	this.game = game;
+// メッセージを表示する間隔
+var SHOW_MESSAGE_INTERVAL = 50;
 
-	// 経過フレーム数
-	this.frame_count = 0;
+
+
+var State = function(stage) {
+	BaseState.apply(this, arguments);
+
 };
+Util.inherit(State, BaseState);
 
 // 初期化
-BaseScene.prototype.init = function(){
-	// 経過フレーム数初期化
-	this.frame_count = 0;
+State.prototype.init = function(){
+	BaseState.prototype.init.apply(this, arguments);
 };
-
-// キー押下
-BaseScene.prototype.handleKeyDown = function(e){
-};
-
-// キーを離す
-BaseScene.prototype.handleKeyUp = function(e){
-};
-
 
 // フレーム処理
-BaseScene.prototype.run = function(){
-	// 経過フレーム数更新
-	this.frame_count++;
+State.prototype.run = function(){
+	BaseState.prototype.run.apply(this, arguments);
+
+	if(this.game.isKeyPush(Constant.BUTTON_Z)) {
+			this.game.playSound('select');
+			this.game.notifyStageDone();
+	}
 
 };
 
 // 画面更新
-BaseScene.prototype.updateDisplay = function(){
-	console.error("updateDisplay method must be overridden");
+State.prototype.updateDisplay = function(){
+	this._showScoreWindow();
+};
+// スコア結果画面表示
+State.prototype._showScoreWindow = function(){
+	var ctx = this.game.surface;
+
+	ctx.save();
+var RESULT_TRANSITION_COUNT = 100;
+	var alpha = 1.0 ;
+	if(this.frame_count < RESULT_TRANSITION_COUNT) {
+		alpha = this.frame_count / RESULT_TRANSITION_COUNT;
+	}
+	else {
+		alpha = 1.0;
+	}
+
+	ctx.fillStyle = 'rgb( 0, 0, 0 )' ;
+	ctx.globalAlpha = alpha * 0.5; // タイトル背景黒は半透明
+	ctx.fillRect(0, 170, this.stage.width, 100);
+
+	ctx.globalAlpha = alpha; // 文字を表示するので戻す
+	ctx.fillStyle = 'rgb( 255, 255, 255 )';
+	ctx.textAlign = 'left';
+	ctx.font = "16px 'Migu'" ;
+	ctx.fillText( 'Result', 100, 210);
+	ctx.textAlign = 'right' ;
+	ctx.fillText('Score: ' + this.stage.score, 380, 210);
+	// ステージ名とタイトルの間の白い棒線
+	ctx.fillRect(100, 225, 280, 1);
+
+	// N秒ごとにメッセージを点滅
+	if (Math.floor(this.frame_count / SHOW_MESSAGE_INTERVAL) % 2 === 0) {
+		ctx.fillText('Press Z to Quit', 300, 250);
+	}
+
+	ctx.restore();
 };
 
-module.exports = BaseScene;
 
-},{}],25:[function(require,module,exports){
+module.exports = State;
+
+},{"../../../config":1,"../../../constant":2,"../../../util":35,"./base":22}],25:[function(require,module,exports){
 'use strict';
 
 var BaseState = require('./base');
