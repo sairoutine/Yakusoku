@@ -847,7 +847,9 @@ var Logic = function(appear_params) {
 	// 敵のパラメータ一一覧
 	this.appear_params = appear_params;
 };
-
+Logic.prototype.init = function() {
+	this.enemy_index = 0;
+};
 // 敵生成
 Logic.prototype.get = function(frame_count) {
 	var params = [];
@@ -2818,6 +2820,7 @@ var Scene = function(game) {
 
 	// ステージの現在の状態
 	this.state = null;
+	this.score = 0;
 
 	// ステージの状態一覧
 	this.states = [];
@@ -2846,7 +2849,6 @@ var Scene = function(game) {
 	];
 
 
-	this.score = 0;
 };
 
 // 基底クラスを継承
@@ -2857,6 +2859,7 @@ Scene.prototype.init = function() {
 	BaseScene.prototype.init.apply(this, arguments);
 
 	this.state = null;
+	this.score = 0;
 
 	for(var i = 0, len = this.objects.length; i < len; i++) {
 		this.objects[i].init();
@@ -3477,6 +3480,7 @@ Util.inherit(State, BaseState);
 // 初期化
 State.prototype.init = function(){
 	BaseState.prototype.init.apply(this, arguments);
+	this.enemy_appear.init();
 };
 
 // フレーム処理
