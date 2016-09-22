@@ -198,10 +198,11 @@ var Constant = {
 	BUTTON_SPACE: 0x80,
 
 	WAY_STATE:    0,
-	TALK_STATE:   1,
+	TALK1_STATE:  1,
 	BOSS_STATE:   2,
-	RESULT_STATE: 3,
-	GAMEOVER_STATE: 4,
+	TALK2_STATE:  3,
+	RESULT_STATE: 4,
+	GAMEOVER_STATE: 5,
 
 	SPELLCARD_START_STATE: 0,
 	SPELLCARD_EXEC_STATE:  1,
@@ -1186,6 +1187,7 @@ var Util = require('../util');
 var Constant = require('../constant');
 
 var TenguKaze = require('../spell/stage1/tengukaze');
+var Konohamai = require('../spell/stage1/konohamai');
 
 // Nフレーム毎にボスをアニメーション
 var ANIMATION_SPAN = 6;
@@ -1211,6 +1213,7 @@ var Boss = function(stage) {
 	this.spells = [
 		null, // 何も発動していない
 		new TenguKaze(this),
+		new Konohamai(this),
 	];
 };
 
@@ -1238,7 +1241,7 @@ Boss.prototype.init = function() {
 	this.vital = VITAL;
 
 	// 発動スペル
-	this.spell = 0;
+	this.spell_index = 0;
 
 	// スペルカード発動！
 	this.executeSpell();
@@ -1246,16 +1249,32 @@ Boss.prototype.init = function() {
 
 // 現在のスペルカード
 Boss.prototype.currentSpell = function(){
-	return this.spells[this.spell];
+	return this.spells[this.spell_index];
 };
 
 // スペルを切り替え
-Boss.prototype.executeSpell = function(state){
+Boss.prototype.executeSpell = function(){
 	// 切り替え
-	this.spell++;
+	this.spell_index++;
 	// 切り替え後の状態を初期化
 	this.currentSpell().init();
 };
+// 次に発動するスペルがあるかどうか
+Boss.prototype.hasNextSpell = function(){
+	return this.spells[this.spell_index + 1] ? true : false;
+};
+
+
+// HPを初期化
+Boss.prototype.resetVital = function(){
+	this.vital = this.max_vital;
+};
+
+// HPを初期化
+Boss.prototype.isDead = function(){
+	return this.vital <= 0;
+};
+
 
 
 // フレーム処理
@@ -1266,7 +1285,16 @@ Boss.prototype.run = function(){
 	this.currentSpell().run();
 
 	// 時間経過でスペルカード発動時間は減っていく
-	this.vital--;
+	if(this.currentSpell().isSpellExecute()) {
+		this.vital -= 1;
+	}
+
+	if(this.isDead() && this.hasNextSpell()) {
+		this.resetVital();
+		// 次のスペルカード発動！
+		this.executeSpell();
+	}
+
 
 	// Nフレーム毎にボスをアニメーション
 	if(this.frame_count % ANIMATION_SPAN === 0) {
@@ -1336,7 +1364,7 @@ Boss.prototype.spriteHeight = function() { return 128; };
 
 module.exports = Boss;
 
-},{"../constant":2,"../spell/stage1/tengukaze":32,"../util":33,"./base":11}],11:[function(require,module,exports){
+},{"../constant":2,"../spell/stage1/konohamai":33,"../spell/stage1/tengukaze":34,"../util":35,"./base":11}],11:[function(require,module,exports){
 'use strict';
 
 /* オブジェクトの基底クラス */
@@ -1559,7 +1587,7 @@ BulletObject.prototype.spriteHeight = function() { return 20; };
 
 module.exports = BulletObject;
 
-},{"../constant":2,"../util":33,"./vector_base":16}],13:[function(require,module,exports){
+},{"../constant":2,"../util":35,"./vector_base":16}],13:[function(require,module,exports){
 'use strict';
 
 /* 自機 */
@@ -1784,7 +1812,7 @@ Character.prototype.spriteHeight = function() { return 48; };
 
 module.exports = Character;
 
-},{"../constant":2,"../util":33,"./base":11}],14:[function(require,module,exports){
+},{"../constant":2,"../util":35,"./base":11}],14:[function(require,module,exports){
 'use strict';
 
 /* 敵オブジェクト */
@@ -1917,7 +1945,7 @@ Enemy.prototype.spriteHeight = function() { return 32; };
 
 module.exports = Enemy;
 
-},{"../constant":2,"../util":33,"./vector_base":16}],15:[function(require,module,exports){
+},{"../constant":2,"../util":35,"./vector_base":16}],15:[function(require,module,exports){
 'use strict';
 
 /* 自機弾オブジェクト */
@@ -1986,7 +2014,7 @@ Shot.prototype.spriteHeight = function() { return 20; };
 
 module.exports = Shot;
 
-},{"../constant":2,"../util":33,"./base":11}],16:[function(require,module,exports){
+},{"../constant":2,"../util":35,"./base":11}],16:[function(require,module,exports){
 'use strict';
 
 /* ベクトルを使って動くオブジェクトの基底クラス */
@@ -2165,7 +2193,7 @@ VectorBase.prototype.calc_moveY = function() {
 
 module.exports = VectorBase;
 
-},{"../constant":2,"../util":33,"./base":11}],17:[function(require,module,exports){
+},{"../constant":2,"../util":35,"./base":11}],17:[function(require,module,exports){
 'use strict';
 
 /* シーンの基底クラス */
@@ -2355,7 +2383,7 @@ LoadingScene.prototype._loadBGM = function(url, successCallback) {
 };
 module.exports = LoadingScene;
 
-},{"../config":1,"../util":33,"./base":17}],19:[function(require,module,exports){
+},{"../config":1,"../util":35,"./base":17}],19:[function(require,module,exports){
 'use strict';
 
 /* プロローグ画面1 */
@@ -2492,7 +2520,7 @@ Scene.prototype._showMessage = function(){
 
 module.exports = Scene;
 
-},{"../config":1,"../constant":2,"../serif/prologue1":28,"../util":33,"./base":17}],20:[function(require,module,exports){
+},{"../config":1,"../constant":2,"../serif/prologue1":28,"../util":35,"./base":17}],20:[function(require,module,exports){
 'use strict';
 
 /* プロローグ画面2 */
@@ -2731,7 +2759,7 @@ Scene.prototype._showMessage = function() {
 
 module.exports = Scene;
 
-},{"../config":1,"../constant":2,"../logic/serif":8,"../serif/prologue2":29,"../util":33,"./base":17}],21:[function(require,module,exports){
+},{"../config":1,"../constant":2,"../logic/serif":8,"../serif/prologue2":29,"../util":35,"./base":17}],21:[function(require,module,exports){
 'use strict';
 
 /* タイトル画面 */
@@ -2773,6 +2801,9 @@ var Enemy = require('../object/enemy.js');
 var Boss = require('../object/aya.js');
 var Bullet = require('../object/bullet.js');
 
+// セリフ
+var serif_before = require('../serif/stage1_before');
+var serif_after = require('../serif/stage1_after');
 
 var Manager = require('../logic/manager');
 
@@ -2786,8 +2817,9 @@ var Scene = function(game) {
 	// ステージの状態一覧
 	this.states = [];
 	this.states[ Constant.WAY_STATE ]    = new WayState(this);
-	this.states[ Constant.TALK_STATE ]   = new TalkState(this);
+	this.states[ Constant.TALK1_STATE ]   = new TalkState(this, serif_before, Constant.BOSS_STATE);
 	this.states[ Constant.BOSS_STATE ]   = new BossState(this);
+	this.states[ Constant.TALK2_STATE ]   = new TalkState(this, serif_after, Constant.RESULT_STATE);
 	this.states[ Constant.RESULT_STATE ] = new ResultState(this);
 	this.states[ Constant.GAMEOVER_STATE ] = new GameoverState(this);
 
@@ -2855,10 +2887,17 @@ Scene.prototype.run = function(){
 
 	this.currentState().run();
 
+	// TODO: END フラグをstateに持たせよう
+
 	// 道中の終了
 	if(this.state === Constant.WAY_STATE && this.frame_count === WAY_END) {
 		// ボスとの会話シーンへ
-		this.changeState(Constant.TALK_STATE);
+		this.changeState(Constant.TALK1_STATE);
+	}
+	// ボス戦の終了
+	else if(this.state === Constant.BOSS_STATE && this.boss.isDead() && !this.boss.hasNextSpell()) {
+		//ボスのスペルカードが全て無くなった
+		this.changeState(Constant.TALK2_STATE);
 	}
 };
 
@@ -2977,7 +3016,7 @@ Scene.prototype._showBG = function() {
 
 module.exports = Scene;
 
-},{"../config":1,"../constant":2,"../logic/manager":7,"../object/aya.js":10,"../object/bullet.js":12,"../object/character":13,"../object/enemy.js":14,"../object/shot.js":15,"../util":33,"./base":17,"./stage/state/boss":23,"./stage/state/result":24,"./stage/state/talk":25,"./stage/state/way":26}],22:[function(require,module,exports){
+},{"../config":1,"../constant":2,"../logic/manager":7,"../object/aya.js":10,"../object/bullet.js":12,"../object/character":13,"../object/enemy.js":14,"../object/shot.js":15,"../serif/stage1_after":30,"../serif/stage1_before":31,"../util":35,"./base":17,"./stage/state/boss":23,"./stage/state/result":24,"./stage/state/talk":25,"./stage/state/way":26}],22:[function(require,module,exports){
 'use strict';
 
 /* ステージ状態の基底クラス */
@@ -3123,7 +3162,7 @@ State.prototype._showVital = function(){
 
 module.exports = State;
 
-},{"../../../config":1,"../../../constant":2,"../../../util":33,"./base":22}],24:[function(require,module,exports){
+},{"../../../config":1,"../../../constant":2,"../../../util":35,"./base":22}],24:[function(require,module,exports){
 'use strict';
 
 /* シーンの基底クラス */
@@ -3173,13 +3212,14 @@ var Util = require('../../../util');
 var Config = require('../../../config');
 var Constant = require('../../../constant');
 
-var serif = require('../../../serif/stage1');
 
 var Serif = require('../../../logic/serif');
 
-var State = function(stage) {
+var State = function(stage, serif, next_state) {
 	BaseState.apply(this, arguments);
 	this.serif = new Serif(serif);
+
+	this.next_state = next_state; // セリフパート終了後のstate
 };
 Util.inherit(State, BaseState);
 
@@ -3189,7 +3229,7 @@ State.prototype.init = function(){
 
 	// TODO: DEBUG
 	if(Config.DEBUG) { 
-		this.serif.script = JSON.parse(document.getElementById("stage1_before").value);
+		//this.serif.script = JSON.parse(document.getElementById("stage1_before").value);
 	}
 
 	this.serif.init();
@@ -3200,8 +3240,7 @@ State.prototype.run = function(){
 	BaseState.prototype.run.apply(this, arguments);
 	if(this.game.isKeyPush(Constant.BUTTON_Z)) {
 		if(this.serif.is_end()) {
-			// ボスstate へ
-			this.stage.changeState(Constant.BOSS_STATE);
+			this.stage.changeState(this.next_state);
 		}
 		else {
 			// セリフを送る
@@ -3372,7 +3411,7 @@ State.prototype._showMessage = function() {
 
 module.exports = State;
 
-},{"../../../config":1,"../../../constant":2,"../../../logic/serif":8,"../../../serif/stage1":30,"../../../util":33,"./base":22}],26:[function(require,module,exports){
+},{"../../../config":1,"../../../constant":2,"../../../logic/serif":8,"../../../util":35,"./base":22}],26:[function(require,module,exports){
 'use strict';
 
 var BaseState = require('./base');
@@ -3460,7 +3499,7 @@ State.prototype.updateDisplay = function(){
 
 module.exports = State;
 
-},{"../../../config":1,"../../../constant":2,"../../../enemy/stage1":3,"../../../logic/enemy_appear":5,"../../../util":33,"./base":22}],27:[function(require,module,exports){
+},{"../../../config":1,"../../../constant":2,"../../../enemy/stage1":3,"../../../logic/enemy_appear":5,"../../../util":35,"./base":22}],27:[function(require,module,exports){
 'use strict';
 
 /* タイトル画面 */
@@ -3547,7 +3586,7 @@ OpeningScene.prototype.updateDisplay = function(){
 
 module.exports = OpeningScene;
 
-},{"../constant":2,"../util":33,"./base":17}],28:[function(require,module,exports){
+},{"../constant":2,"../util":35,"./base":17}],28:[function(require,module,exports){
 'use strict';
 
 var Serif = [
@@ -3571,11 +3610,19 @@ module.exports = Serif;
 'use strict';
 
 // セリフ
-var Serif= [{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"見覚えのない場所に\n来てしまったわ。\n道に迷ったようね。"},{"pos":"right","exp":"smile","chara":"aya","fukidashi":"orange","serif":"あやややや。\n挙動の不審な人間を\n発見しました！"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"あぁ、ちょうど良かったわ。\n博麗神社へはどう行けば…"},{"pos":"right","exp":"smile","chara":"aya","fukidashi":"orange","serif":"早速、取材してみようと\n思います！"},{"pos":"left","exp":"trouble","chara":"renko","fukidashi":"normal","serif":"もしもーし？"}];
+var Serif= [{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":null},{"pos":"right","exp":"dissatisfied","chara":"aya","fukidashi":"normal","serif":"なんだ、ただの迷子ですか。\n記事にもなりませんね。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"博麗神社に行きたいの。"},{"pos":"right","exp":"normal","chara":"aya","fukidashi":"normal","serif":"神社？"},{"pos":"right","exp":"smile","chara":"aya","fukidashi":"orange","serif":"この道をダーって行って\nキュって曲がってギャーン\nって行けばすぐですよ。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"orange","serif":"この道をダーって行って\nキュって曲がってギャーン\nね。ありがとう！"}];
 
 module.exports = Serif;
 
 },{}],31:[function(require,module,exports){
+'use strict';
+
+// セリフ
+var Serif= [{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"見覚えのない場所に\n来てしまったわ。\n道に迷ったようね。"},{"pos":"right","exp":"smile","chara":"aya","fukidashi":"orange","serif":"あやややや。\n挙動の不審な人間を\n発見しました！"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"あぁ、ちょうど良かったわ。\n博麗神社へはどう行けば…"},{"pos":"right","exp":"smile","chara":"aya","fukidashi":"orange","serif":"早速、取材してみようと\n思います！"},{"pos":"left","exp":"trouble","chara":"renko","fukidashi":"normal","serif":"もしもーし？"}];
+
+module.exports = Serif;
+
+},{}],32:[function(require,module,exports){
 'use strict';
 
 /* スペルカードの基底クラス */
@@ -3589,6 +3636,8 @@ var CUTIN_SLOW_SPEED = 1;
 // カットイン画像のY座標
 var CUTIN_Y = 332;
 
+// カットインまでの待ち
+var CUTIN_SLIDEING_WAIT_COUNT = 30;
 // カットインの左から右へスライドする時間
 var CUTIN_SLIDEING_COUNT = 10;
 // カットインの消失まで待つ時間
@@ -3608,8 +3657,6 @@ var SpellBase = function(boss) {
 
 	this.x = 0;
 	this.y = 0;
-	this.image_rate_x = 1.0;
-	this.image_rate_y = 1.0;
 
 	this.state = null;
 };
@@ -3623,15 +3670,8 @@ SpellBase.prototype.init = function() {
 	this.x = 0;
 	this.y = CUTIN_Y;
 
-	// スペルカードエフェクトの縮小率
-	this.image_rate_x = 1.0;
-	this.image_rate_y = 1.0;
-
 	// スペルカード発動開始
 	this.changeState(Constant.SPELLCARD_START_STATE);
-
-	// スペルカード発動音
-	this.game.playSound("spellcard");
 };
 
 // スペルカード発動中
@@ -3654,19 +3694,27 @@ SpellBase.prototype.run = function(){
 	// スペルカード発動開始中のみエフェクト座標の更新
 	if(!this.isSpellStarting()) return;
 
+	// カットイン発動待ち
+	if(this.frame_count < CUTIN_SLIDEING_WAIT_COUNT) {
+
+	}
+	else if(this.frame_count === CUTIN_SLIDEING_WAIT_COUNT) {
+		// スペルカード発動音
+		this.game.playSound("spellcard");
+	}
 	// 左から右へカットイン移動
-	if(this.frame_count <= CUTIN_SLIDEING_COUNT) {
+	else if(CUTIN_SLIDEING_WAIT_COUNT < this.frame_count && this.frame_count <= CUTIN_SLIDEING_WAIT_COUNT + CUTIN_SLIDEING_COUNT) {
 		this.x += CUTIN_FAST_SPEED;
 	}
 	// 待機中はゆったりと移動
-	else if(CUTIN_SLIDEING_COUNT < this.frame_count && this.frame_count <= CUTIN_SLIDEING_COUNT + CUTIN_DISAPPEAR_WAIT_COUNT) {
+	else if(CUTIN_SLIDEING_WAIT_COUNT + CUTIN_SLIDEING_COUNT < this.frame_count &&
+			this.frame_count <= CUTIN_SLIDEING_WAIT_COUNT + CUTIN_SLIDEING_COUNT + CUTIN_DISAPPEAR_WAIT_COUNT) {
 		this.x += CUTIN_SLOW_SPEED;
 	}
 	// カットインを縮尺
-	else if(CUTIN_SLIDEING_COUNT + CUTIN_DISAPPEAR_WAIT_COUNT < this.frame_count &&
-			this.frame_count <= CUTIN_SLIDEING_COUNT + CUTIN_DISAPPEAR_WAIT_COUNT + CUTIN_DISAPPEAR_COUNT) {
-		this.image_rate_x += 1 / CUTIN_DISAPPEAR_COUNT;
-		this.image_rate_y -= 1 / CUTIN_DISAPPEAR_COUNT;
+	else if(CUTIN_SLIDEING_WAIT_COUNT + CUTIN_SLIDEING_COUNT + CUTIN_DISAPPEAR_WAIT_COUNT < this.frame_count &&
+			this.frame_count <= CUTIN_SLIDEING_WAIT_COUNT + CUTIN_SLIDEING_COUNT + CUTIN_DISAPPEAR_WAIT_COUNT + CUTIN_DISAPPEAR_COUNT) {
+		this.x += CUTIN_FAST_SPEED;
 	}
 	// カットイン終わり
 	else {
@@ -3679,14 +3727,17 @@ SpellBase.prototype.updateDisplay = function(){
 	// スペルカード発動開始中のみ描画
 	if(!this.isSpellStarting()) return;
 
+	// カットイン発動待ち
+	if(this.frame_count <= CUTIN_SLIDEING_WAIT_COUNT) return;
+
 	var ctx = this.game.surface;
 	var image = this.game.getImage("aya_normal");
 
 	ctx.save();
 
 	// 画像サイズ
-	var image_width  = image.width * Config.CHARA_SIZE_RATIO * this.image_rate_x;
-	var image_height = image.height * Config.CHARA_SIZE_RATIO * this.image_rate_y;
+	var image_width  = image.width * Config.CHARA_SIZE_RATIO;
+	var image_height = image.height * Config.CHARA_SIZE_RATIO;
 
 	// オブジェクトの位置を指定
 	ctx.translate(this.x, this.y);
@@ -3722,7 +3773,7 @@ SpellBase.prototype.shot = function(x, y, r, theta, sprite_x, sprite_y) {
 
 module.exports = SpellBase;
 
-},{"../../config":1,"../../constant":2}],32:[function(require,module,exports){
+},{"../../config":1,"../../constant":2}],33:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -3839,7 +3890,9 @@ Spell.prototype.name = function() { return "風符「天狗風」"; };
 
 module.exports = Spell;
 
-},{"../../constant":2,"../../util":33,"./base":31}],33:[function(require,module,exports){
+},{"../../constant":2,"../../util":35,"./base":32}],34:[function(require,module,exports){
+arguments[4][33][0].apply(exports,arguments)
+},{"../../constant":2,"../../util":35,"./base":32,"dup":33}],35:[function(require,module,exports){
 'use strict';
 var Util = {
 	inherit: function( child, parent ) {
