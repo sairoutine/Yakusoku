@@ -4,7 +4,7 @@
 var MESSAGE = require('../serif/prologue1');
 
 // メッセージを表示している期間
-var SHOW_MESSAGE_COUNT = 300;
+var SHOW_MESSAGE_COUNT = 900;
 
 // メッセージテキストのx, y
 var MESSAGE_X = 115;
