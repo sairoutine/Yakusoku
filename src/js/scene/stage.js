@@ -51,6 +51,7 @@ var Scene = function(game) {
 
 	// ステージの現在の状態
 	this.state = null;
+	this.score = 0;
 
 	// ステージの状態一覧
 	this.states = [];
@@ -79,7 +80,6 @@ var Scene = function(game) {
 	];
 
 
-	this.score = 0;
 };
 
 // 基底クラスを継承
@@ -90,6 +90,7 @@ Scene.prototype.init = function() {
 	BaseScene.prototype.init.apply(this, arguments);
 
 	this.state = null;
+	this.score = 0;
 
 	for(var i = 0, len = this.objects.length; i < len; i++) {
 		this.objects[i].init();

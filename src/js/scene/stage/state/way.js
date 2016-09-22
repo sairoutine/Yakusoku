@@ -19,6 +19,7 @@ Util.inherit(State, BaseState);
 // 初期化
 State.prototype.init = function(){
 	BaseState.prototype.init.apply(this, arguments);
+	this.enemy_appear.init();
 };
 
 // フレーム処理

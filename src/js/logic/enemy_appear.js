@@ -9,7 +9,9 @@ var Logic = function(appear_params) {
 	// 敵のパラメータ一一覧
 	this.appear_params = appear_params;
 };
-
+Logic.prototype.init = function() {
+	this.enemy_index = 0;
+};
 // 敵生成
 Logic.prototype.get = function(frame_count) {
 	var params = [];
