@@ -67,10 +67,14 @@ var Config = {
 			path: 'sound/boss_shot_small.wav',
 			volume: 0.15
 		},
-
 		boss_shot_big: {
 			id: 0x04,
 			path: 'sound/boss_shot_big.wav',
+			volume: 0.15
+		},
+		spellcard: {
+			id: 0x08,
+			path: 'sound/spellcard.wav',
 			volume: 0.15
 		},
 
@@ -198,6 +202,10 @@ var Constant = {
 	BOSS_STATE:   2,
 	RESULT_STATE: 3,
 	GAMEOVER_STATE: 4,
+
+	SPELLCARD_START_STATE: 0,
+	SPELLCARD_EXEC_STATE:  1,
+
 };
 
 module.exports = Constant;
@@ -1302,8 +1310,10 @@ Boss.prototype.animateNeutral = function(){
 
 // ボスを描画
 Boss.prototype.updateDisplay = function(){
-	// 描画
 	BaseObject.prototype.updateDisplay.apply(this, arguments);
+
+	// スペルカード描画
+	this.currentSpell().updateDisplay();
 };
 
 // 当たり判定サイズ
@@ -2845,7 +2855,8 @@ Scene.prototype.run = function(){
 
 	this.currentState().run();
 
-	if(this.frame_count === WAY_END) {
+	// 道中の終了
+	if(this.currentState === Constant.WAY_STATE && this.frame_count === WAY_END) {
 		// ボスとの会話シーンへ
 		this.changeState(Constant.TALK_STATE);
 	}
@@ -3032,7 +3043,7 @@ State.prototype.run = function(){
 	BaseState.prototype.run.apply(this, arguments);
 
 	// BGM start
-	if (this.frame_count === 60) {
+	if (this.frame_count === 1) {
 		this.game.playBGM('stage1');
 	}
 
@@ -3568,6 +3579,22 @@ module.exports = Serif;
 'use strict';
 
 /* スペルカードの基底クラス */
+var Config = require("../../config");
+var Constant = require("../../constant");
+
+// カットインの左から右への移動スピード(前)
+var CUTIN_FAST_SPEED = 33;
+// カットインの左から右への移動スピード(後)
+var CUTIN_SLOW_SPEED = 1;
+// カットイン画像のY座標
+var CUTIN_Y = 332;
+
+// カットインの左から右へスライドする時間
+var CUTIN_SLIDEING_COUNT = 10;
+// カットインの消失まで待つ時間
+var CUTIN_DISAPPEAR_WAIT_COUNT = 45;
+// カットイン消失時間
+var CUTIN_DISAPPEAR_COUNT = 5;
 
 var SpellBase = function(boss) {
 	this.frame_count = 0;
@@ -3579,19 +3606,109 @@ var SpellBase = function(boss) {
 	// Game インスタンス
 	this.game = boss.stage.game;
 
+	this.x = 0;
+	this.y = 0;
+	this.image_rate_x = 1.0;
+	this.image_rate_y = 1.0;
+
+	this.state = null;
 };
 
 // 初期化
 SpellBase.prototype.init = function() {
 	// 経過フレーム数初期化
 	this.frame_count = 0;
+
+	// スペルカードエフェクトの x, y
+	this.x = 0;
+	this.y = CUTIN_Y;
+
+	// スペルカードエフェクトの縮小率
+	this.image_rate_x = 1.0;
+	this.image_rate_y = 1.0;
+
+	// スペルカード発動開始
+	this.changeState(Constant.SPELLCARD_START_STATE);
+
+	// スペルカード発動音
+	this.game.playSound("spellcard");
+};
+
+// スペルカード発動中
+SpellBase.prototype.isSpellExecute = function(){
+	return this.state === Constant.SPELLCARD_EXEC_STATE ? true : false;
+};
+// スペルカード開始中
+SpellBase.prototype.isSpellStarting = function(){
+	return this.state === Constant.SPELLCARD_START_STATE ? true : false;
+};
+// 状態変更
+SpellBase.prototype.changeState = function(state){
+	this.state = state;
 };
 
 // フレーム処理
 SpellBase.prototype.run = function(){
-	// 経過フレーム数更新
 	this.frame_count++;
+
+	// スペルカード発動開始中のみエフェクト座標の更新
+	if(!this.isSpellStarting()) return;
+
+	// 左から右へカットイン移動
+	if(this.frame_count <= CUTIN_SLIDEING_COUNT) {
+		this.x += CUTIN_FAST_SPEED;
+	}
+	// 待機中はゆったりと移動
+	else if(CUTIN_SLIDEING_COUNT < this.frame_count && this.frame_count <= CUTIN_SLIDEING_COUNT + CUTIN_DISAPPEAR_WAIT_COUNT) {
+		this.x += CUTIN_SLOW_SPEED;
+	}
+	// カットインを縮尺
+	else if(CUTIN_SLIDEING_COUNT + CUTIN_DISAPPEAR_WAIT_COUNT < this.frame_count &&
+			this.frame_count <= CUTIN_SLIDEING_COUNT + CUTIN_DISAPPEAR_WAIT_COUNT + CUTIN_DISAPPEAR_COUNT) {
+		this.image_rate_x += 1 / CUTIN_DISAPPEAR_COUNT;
+		this.image_rate_y -= 1 / CUTIN_DISAPPEAR_COUNT;
+	}
+	// カットイン終わり
+	else {
+		this.changeState(Constant.SPELLCARD_EXEC_STATE);
+	}
 };
+
+// 描画
+SpellBase.prototype.updateDisplay = function(){
+	// スペルカード発動開始中のみ描画
+	if(!this.isSpellStarting()) return;
+
+	var ctx = this.game.surface;
+	var image = this.game.getImage("aya_normal");
+
+	ctx.save();
+
+	// 画像サイズ
+	var image_width  = image.width * Config.CHARA_SIZE_RATIO * this.image_rate_x;
+	var image_height = image.height * Config.CHARA_SIZE_RATIO * this.image_rate_y;
+
+	// オブジェクトの位置を指定
+	ctx.translate(this.x, this.y);
+
+	// 少し透過
+	ctx.globalAlpha = 0.7;
+	ctx.drawImage(image,
+		0,
+		0,
+		image.width,
+		image.height,
+		-image_width/2, // 座標を中央合わせ
+		-image_height/2, // 座標を中央合わせ
+		image_width,
+		image_height
+	);
+	ctx.restore();
+};
+
+
+
+
 
 // スペルカード名
 SpellBase.prototype.name = function() {
@@ -3605,7 +3722,7 @@ SpellBase.prototype.shot = function(x, y, r, theta, sprite_x, sprite_y) {
 
 module.exports = SpellBase;
 
-},{}],32:[function(require,module,exports){
+},{"../../config":1,"../../constant":2}],32:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -3638,6 +3755,9 @@ Spell.prototype.init = function() {
 
 Spell.prototype.run = function() {
 	BaseSpell.prototype.run.apply(this, arguments);
+
+	// スペルカード発動演出中
+	if(this.isSpellStarting()) return;
 
 	// 渦巻き弾
 	if(this.frame_count % this.uzumaki_percount === 0) {
