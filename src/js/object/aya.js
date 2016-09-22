@@ -107,7 +107,7 @@ Boss.prototype.run = function(){
 
 	// 時間経過でスペルカード発動時間は減っていく
 	if(this.currentSpell().isSpellExecute()) {
-		this.vital -= 100;
+		this.vital -= 1;
 	}
 
 	if(this.isDead() && this.hasNextSpell()) {

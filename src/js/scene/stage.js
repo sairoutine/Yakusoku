@@ -8,7 +8,7 @@ var DEBUG_COUNT;
 //DEBUG_COUNT = 3400;
 
 var DEBUG_STATE;
-DEBUG_STATE = Constant.BOSS_STATE;
+//DEBUG_STATE = Constant.BOSS_STATE;
 
 
 // サイドバーの横の長さ
