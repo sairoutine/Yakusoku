@@ -20,7 +20,6 @@ var CUTIN_DISAPPEAR_COUNT = 5;
 
 var SpellBase = function(boss) {
 	this.frame_count = 0;
-	this.spellstart_count = 0; // スペルカード発動経過時間
 
 	// Boss インスタンス
 	this.boss = boss;
@@ -41,7 +40,6 @@ var SpellBase = function(boss) {
 SpellBase.prototype.init = function() {
 	// 経過フレーム数初期化
 	this.frame_count = 0;
-	this.spellstart_count = 0;
 
 	// スペルカードエフェクトの x, y
 	this.x = 0;
@@ -82,7 +80,7 @@ SpellBase.prototype.run = function(){
 	if(this.frame_count <= CUTIN_SLIDEING_COUNT) {
 		this.x += CUTIN_FAST_SPEED;
 	}
-	// 待機中なので何もしない
+	// 待機中はゆったりと移動
 	else if(CUTIN_SLIDEING_COUNT < this.frame_count && this.frame_count <= CUTIN_SLIDEING_COUNT + CUTIN_DISAPPEAR_WAIT_COUNT) {
 		this.x += CUTIN_SLOW_SPEED;
 	}
