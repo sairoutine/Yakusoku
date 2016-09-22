@@ -88,7 +88,9 @@ Boss.prototype.run = function(){
 	this.currentSpell().run();
 
 	// 時間経過でスペルカード発動時間は減っていく
-	this.vital--;
+	if(this.currentSpell().isSpellExecute()) {
+		this.vital--;
+	}
 
 	// Nフレーム毎にボスをアニメーション
 	if(this.frame_count % ANIMATION_SPAN === 0) {

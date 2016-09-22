@@ -11,6 +11,8 @@ var CUTIN_SLOW_SPEED = 1;
 // カットイン画像のY座標
 var CUTIN_Y = 332;
 
+// カットインまでの待ち
+var CUTIN_SLIDEING_WAIT_COUNT = 30;
 // カットインの左から右へスライドする時間
 var CUTIN_SLIDEING_COUNT = 10;
 // カットインの消失まで待つ時間
@@ -30,8 +32,6 @@ var SpellBase = function(boss) {
 
 	this.x = 0;
 	this.y = 0;
-	this.image_rate_x = 1.0;
-	this.image_rate_y = 1.0;
 
 	this.state = null;
 };
@@ -45,15 +45,8 @@ SpellBase.prototype.init = function() {
 	this.x = 0;
 	this.y = CUTIN_Y;
 
-	// スペルカードエフェクトの縮小率
-	this.image_rate_x = 1.0;
-	this.image_rate_y = 1.0;
-
 	// スペルカード発動開始
 	this.changeState(Constant.SPELLCARD_START_STATE);
-
-	// スペルカード発動音
-	this.game.playSound("spellcard");
 };
 
 // スペルカード発動中
@@ -76,19 +69,27 @@ SpellBase.prototype.run = function(){
 	// スペルカード発動開始中のみエフェクト座標の更新
 	if(!this.isSpellStarting()) return;
 
+	// カットイン発動待ち
+	if(this.frame_count < CUTIN_SLIDEING_WAIT_COUNT) {
+
+	}
+	else if(this.frame_count === CUTIN_SLIDEING_WAIT_COUNT) {
+		// スペルカード発動音
+		this.game.playSound("spellcard");
+	}
 	// 左から右へカットイン移動
-	if(this.frame_count <= CUTIN_SLIDEING_COUNT) {
+	else if(CUTIN_SLIDEING_WAIT_COUNT < this.frame_count && this.frame_count <= CUTIN_SLIDEING_WAIT_COUNT + CUTIN_SLIDEING_COUNT) {
 		this.x += CUTIN_FAST_SPEED;
 	}
 	// 待機中はゆったりと移動
-	else if(CUTIN_SLIDEING_COUNT < this.frame_count && this.frame_count <= CUTIN_SLIDEING_COUNT + CUTIN_DISAPPEAR_WAIT_COUNT) {
+	else if(CUTIN_SLIDEING_WAIT_COUNT + CUTIN_SLIDEING_COUNT < this.frame_count &&
+			this.frame_count <= CUTIN_SLIDEING_WAIT_COUNT + CUTIN_SLIDEING_COUNT + CUTIN_DISAPPEAR_WAIT_COUNT) {
 		this.x += CUTIN_SLOW_SPEED;
 	}
 	// カットインを縮尺
-	else if(CUTIN_SLIDEING_COUNT + CUTIN_DISAPPEAR_WAIT_COUNT < this.frame_count &&
-			this.frame_count <= CUTIN_SLIDEING_COUNT + CUTIN_DISAPPEAR_WAIT_COUNT + CUTIN_DISAPPEAR_COUNT) {
-		this.image_rate_x += 1 / CUTIN_DISAPPEAR_COUNT;
-		this.image_rate_y -= 1 / CUTIN_DISAPPEAR_COUNT;
+	else if(CUTIN_SLIDEING_WAIT_COUNT + CUTIN_SLIDEING_COUNT + CUTIN_DISAPPEAR_WAIT_COUNT < this.frame_count &&
+			this.frame_count <= CUTIN_SLIDEING_WAIT_COUNT + CUTIN_SLIDEING_COUNT + CUTIN_DISAPPEAR_WAIT_COUNT + CUTIN_DISAPPEAR_COUNT) {
+		this.x += CUTIN_FAST_SPEED;
 	}
 	// カットイン終わり
 	else {
@@ -101,14 +102,17 @@ SpellBase.prototype.updateDisplay = function(){
 	// スペルカード発動開始中のみ描画
 	if(!this.isSpellStarting()) return;
 
+	// カットイン発動待ち
+	if(this.frame_count <= CUTIN_SLIDEING_WAIT_COUNT) return;
+
 	var ctx = this.game.surface;
 	var image = this.game.getImage("aya_normal");
 
 	ctx.save();
 
 	// 画像サイズ
-	var image_width  = image.width * Config.CHARA_SIZE_RATIO * this.image_rate_x;
-	var image_height = image.height * Config.CHARA_SIZE_RATIO * this.image_rate_y;
+	var image_width  = image.width * Config.CHARA_SIZE_RATIO;
+	var image_height = image.height * Config.CHARA_SIZE_RATIO;
 
 	// オブジェクトの位置を指定
 	ctx.translate(this.x, this.y);
