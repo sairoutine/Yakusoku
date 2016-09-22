@@ -61,6 +61,19 @@ var Config = {
 			path:   'sound/select.wav',
 			volume: 0.80
 		},
+		boss_shot_small: {
+			id: 0x02,
+			path: 'sound/boss_shot_small.wav',
+			volume: 0.15
+		},
+
+		boss_shot_big: {
+			id: 0x04,
+			path: 'sound/boss_shot_big.wav',
+			volume: 0.15
+		},
+
+
 		/*
 		shot: {
 			id: 0x02,
