@@ -35,6 +35,17 @@ SpellBase.prototype.init = function() {
 	this.game.playSound("spellcard");
 };
 
+// スペルカード発動中
+SpellBase.prototype.isSpellExecute = function(){
+	return this.state === Constant.SPELLCARD_EXEC_STATE ? true : false;
+};
+// スペルカード開始中
+SpellBase.prototype.isSpellStarting = function(){
+	return this.state === Constant.SPELLCARD_START_STATE ? true : false;
+};
+
+
+
 // フレーム処理
 SpellBase.prototype.run = function(){
 	// 経過フレーム数更新
@@ -46,9 +57,6 @@ SpellBase.prototype.run = function(){
 	}
 };
 
-SpellBase.prototype.isSpellExecute = function(){
-	return this.state === Constant.SPELLCARD_EXEC_STATE ? true : false;
-};
 // 描画
 SpellBase.prototype.updateDisplay = function(){
 	var ctx = this.game.surface;
