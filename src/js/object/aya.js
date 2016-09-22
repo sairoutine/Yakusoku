@@ -8,6 +8,7 @@ var Util = require('../util');
 var Constant = require('../constant');
 
 var TenguKaze = require('../spell/stage1/tengukaze');
+var Konohamai = require('../spell/stage1/konohamai');
 
 // Nフレーム毎にボスをアニメーション
 var ANIMATION_SPAN = 6;
@@ -33,6 +34,7 @@ var Boss = function(stage) {
 	this.spells = [
 		null, // 何も発動していない
 		new TenguKaze(this),
+		new Konohamai(this),
 	];
 };
 
@@ -60,7 +62,7 @@ Boss.prototype.init = function() {
 	this.vital = VITAL;
 
 	// 発動スペル
-	this.spell = 0;
+	this.spell_index = 0;
 
 	// スペルカード発動！
 	this.executeSpell();
@@ -68,16 +70,32 @@ Boss.prototype.init = function() {
 
 // 現在のスペルカード
 Boss.prototype.currentSpell = function(){
-	return this.spells[this.spell];
+	return this.spells[this.spell_index];
 };
 
 // スペルを切り替え
-Boss.prototype.executeSpell = function(state){
+Boss.prototype.executeSpell = function(){
 	// 切り替え
-	this.spell++;
+	this.spell_index++;
 	// 切り替え後の状態を初期化
 	this.currentSpell().init();
 };
+// 次に発動するスペルがあるかどうか
+Boss.prototype.hasNextSpell = function(){
+	return this.spells[this.spell_index + 1] ? true : false;
+};
+
+
+// HPを初期化
+Boss.prototype.resetVital = function(){
+	this.vital = this.max_vital;
+};
+
+// HPを初期化
+Boss.prototype.isDead = function(){
+	return this.vital <= 0;
+};
+
 
 
 // フレーム処理
@@ -89,8 +107,15 @@ Boss.prototype.run = function(){
 
 	// 時間経過でスペルカード発動時間は減っていく
 	if(this.currentSpell().isSpellExecute()) {
-		this.vital--;
+		this.vital -= 100;
 	}
+
+	if(this.isDead() && this.hasNextSpell()) {
+		this.resetVital();
+		// 次のスペルカード発動！
+		this.executeSpell();
+	}
+
 
 	// Nフレーム毎にボスをアニメーション
 	if(this.frame_count % ANIMATION_SPAN === 0) {
