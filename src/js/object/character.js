@@ -12,7 +12,8 @@ var FAST_SPEED = 4;
 // 自機の移動速度(Z押下時)
 var SLOW_SPEED = 3;
 // Nフレーム毎に自機をアニメーション
-var ANIMATION_SPAN = 6;
+var FRONT_ANIMATION_SPAN = 6; // 正面
+var LR_ANIMATION_SPAN = 4; // 左右移動
 // Nフレーム毎に自機をショット
 var SHOT_SPAN = 5;
 // 死亡時の無敵時間(フレーム)
@@ -118,22 +119,14 @@ Character.prototype.run = function(){
 		this.is_unhittable = false;
 	}
 
+	var span = this.indexY === 0 ? FRONT_ANIMATION_SPAN : LR_ANIMATION_SPAN;
 	// Nフレーム毎に自機をアニメーション
-	if(this.frame_count % ANIMATION_SPAN === 0) {
+	if(this.frame_count % span === 0) {
 		// 次のスプライトに
 		this.indexX++;
 
-		// 自機が未移動状態かつスプライトを全て表示しきったら
-		if(this.indexY === 0 && this.indexX > 2) {
-			// 最初のスプライトに戻る
-			this.indexX = 0;
-		}
-		// TODO: スプライトのspanを変える。最初に戻るのは移動中もかわらん
-		// 自機が移動状態かつスプライトを全て表示しきったら
-		else if((this.indexY === 1 || this.indexY === 2) && this.indexX > 2) {
-			// 移動中を除く最初のスプライトに戻る
-			this.indexX = 0;
-		}
+		// スプライトを全て表示しきったら最初のスプライトに戻る
+		if(this.indexX > 2) { this.indexX = 0; }
 	}
 };
 
