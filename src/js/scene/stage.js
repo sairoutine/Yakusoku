@@ -4,9 +4,6 @@
 
 var Constant = require('../constant');
 
-var DEBUG_COUNT;
-//DEBUG_COUNT = 3400;
-
 var DEBUG_STATE;
 //DEBUG_STATE = Constant.TALK2_STATE;
 
@@ -94,11 +91,6 @@ Scene.prototype.init = function() {
 
 	for(var i = 0, len = this.objects.length; i < len; i++) {
 		this.objects[i].init();
-	}
-
-	// TODO: DEBUG
-	if(Constant.DEBUG && DEBUG_COUNT) {
-		this.frame_count = DEBUG_COUNT;
 	}
 
 	// TODO: DEBUG
