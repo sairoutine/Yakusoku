@@ -75,6 +75,10 @@ State.prototype.run = function(){
 		character.animateNeutral();
 	}
 
+	// 敵弾と自機の衝突判定
+	this.stage.bullet_manager.checkCollisionWithObject(character);
+
+
 
 
 	this.stage.boss.run();
