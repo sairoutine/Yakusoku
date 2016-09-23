@@ -87,9 +87,11 @@ Enemy.prototype.shot = function(){
 		this.game.playSound('shot');
 	}
 };
+*/
 
 // 衝突した時
 Enemy.prototype.notifyCollision = function(obj) {
+	/*
 	// 自機弾と衝突
 	if(obj instanceof Shot) {
 		// 自分を消す
@@ -109,8 +111,8 @@ Enemy.prototype.notifyCollision = function(obj) {
 			this.stage.itemmanager.create(this);
 		}
 	}
+	*/
 };
-*/
 
 // 当たり判定サイズ
 Enemy.prototype.collisionWidth  = function() { return this.spriteWidth();  };
