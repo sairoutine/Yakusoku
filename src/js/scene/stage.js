@@ -31,10 +31,11 @@ var GameoverState = require('./stage/state/result');
 
 // オブジェクト
 var Character = require('../object/character');
-var Shot = require('../object/shot.js');
-var Enemy = require('../object/enemy.js');
-var Boss = require('../object/aya.js');
-var Bullet = require('../object/bullet.js');
+var Shot = require('../object/shot');
+var Enemy = require('../object/enemy');
+var Boss = require('../object/aya');
+var Bullet = require('../object/bullet');
+var Effect = require('../object/effect');
 
 // セリフ
 var serif_before = require('../serif/stage1_before');
