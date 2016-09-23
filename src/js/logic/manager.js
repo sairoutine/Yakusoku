@@ -73,4 +73,19 @@ Manager.prototype.updateDisplay = function(){
 
 };
 
+// Object と Manager の衝突判定
+Manager.prototype.checkCollisionWithObject = function(obj1) {
+	// 衝突判定
+	for(var id in this.objects) {
+		var obj2 = this.objects[id];
+		if(obj1.checkCollision(obj2)) {
+			obj1.notifyCollision(obj2);
+			obj2.notifyCollision(obj1);
+			break;
+		}
+	}
+};
+
+
+
 module.exports = Manager;
