@@ -72,6 +72,10 @@ State.prototype.run = function(){
 		character.animateNeutral();
 	}
 
+	// 敵と自機の衝突判定
+	this.stage.enemy_manager.checkCollisionWithObject(character);
+
+
 	// 今フレームで出現する雑魚一覧を取得
 	var params = this.enemy_appear.get(this.frame_count);
 
