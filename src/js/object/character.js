@@ -7,6 +7,11 @@ var BaseObject = require('./base');
 var Util = require('../util');
 var Constant = require('../constant');
 
+var Aya = require('./aya');
+var Enemy = require('./enemy');
+var Bullet = require('./bullet');
+
+
 // 自機の移動速度(通常時)
 var FAST_SPEED = 4;
 // 自機の移動速度(Z押下時)
