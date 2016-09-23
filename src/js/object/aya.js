@@ -11,7 +11,8 @@ var TenguKaze = require('../spell/stage1/tengukaze');
 var Konohamai = require('../spell/stage1/konohamai');
 
 // Nフレーム毎にボスをアニメーション
-var ANIMATION_SPAN = 6;
+var FRONT_ANIMATION_SPAN = 6;
+var LR_ANIMATION_SPAN = 4;
 
 // HP
 var VITAL = 60 * 60 * 2; // 2分
@@ -116,17 +117,15 @@ Boss.prototype.run = function(){
 		this.executeSpell();
 	}
 
+	var span = this.indexY === 0 ? FRONT_ANIMATION_SPAN : LR_ANIMATION_SPAN;
 
 	// Nフレーム毎にボスをアニメーション
-	if(this.frame_count % ANIMATION_SPAN === 0) {
+	if(this.frame_count % span === 0) {
 		// 次のスプライトに
 		this.indexX++;
 
-		// スプライトを全て表示しきったら
-		if(this.indexX > 2) {
-			// 最初のスプライトに戻る
-			this.indexX = 0;
-		}
+		// スプライトを全て表示しきったら最初のスプライトに戻る
+		if(this.indexX > 2) { this.indexX = 0; }
 	}
 };
 
