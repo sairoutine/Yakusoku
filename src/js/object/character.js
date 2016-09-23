@@ -150,47 +150,44 @@ Character.prototype.updateDisplay = function(){
 	}
 };
 
-/*
 // 衝突判定
 Character.prototype.checkCollision = function(obj) {
 	// 無敵中なら衝突しない
-	if(this.is_unhittable) {
-		return false;
-	}
+	if(this.is_unhittable) return false;
 
 	return BaseObject.prototype.checkCollision.apply(this, arguments);
 };
 
 // 衝突した時
 Character.prototype.notifyCollision = function(obj) {
-	// 敵もしくは敵弾にぶつかったら
-	if(obj instanceof Bullet || obj instanceof Enemy) {
+	// 敵もしくは敵弾もしくはボスにぶつかったら
+	// TODO: Aya -> BossBase
+	if(obj instanceof Bullet || obj instanceof Enemy || obj instanceof Aya) {
 		// 死亡音再生
 		this.game.playSound('dead');
 
 		// 自機死亡エフェクト生成
-		this.stage.effectmanager.create(this);
+		this.stage.effect_manager.create(this.x, this.y);
 
 		// 自機を死亡
 		this.die();
 
 		// 残機がなくなればゲームオーバー画面表示
+		/*
 		if(this.life === 0) {
 			this.stage.notifyCharacterDead();
 		}
+		*/
 	}
 };
-*/
 
-/*
 // 自機を死亡
 Character.prototype.die = function() {
 	// 自機の初期位置に戻す
-	this.x = (this.stage.width / 2);
-	this.y = ( this.stage.height - 100);
+	this.setInitPosition();
 
 	// 自機を減らす
-	this.life -= 1;
+	this.life--;
 
 	// 無敵状態にする
 	this.is_unhittable = true;
