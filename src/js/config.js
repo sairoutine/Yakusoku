@@ -4,6 +4,7 @@ var Config = {
 	DEBUG: true,
 	IMAGES: {
 		title_bg:  'image/title_bg.png',
+		press_z:  'image/press_z.png',
 		prologue1_bg:  'image/prologue1_bg.png',
 		prologue2_bg:  'image/prologue2_bg.png',
 		logo:  'image/logo.png',
