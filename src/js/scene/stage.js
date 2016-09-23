@@ -184,6 +184,22 @@ Scene.prototype._showText = function(){
 	var x1 = this.game.width - SIDE_WIDTH + 10;
 	var x2 = this.game.width - SIDE_WIDTH + 35;
 
+	// 残ライフ
+	var life_star_string;
+	switch(this.character.life) {
+		case 1:
+			life_star_string = "★";
+			break;
+		case 2:
+			life_star_string = "★★";
+			break;
+		case 3:
+			life_star_string = "★★★";
+			break;
+		default:
+			life_star_string = "";
+			break;
+	}
 
 	var ctx = this.game.surface;
 	ctx.save();
@@ -201,7 +217,7 @@ Scene.prototype._showText = function(){
 	// TODO:
 	//ctx.fillText("123456789", x2, 50);  // HiScore
 	ctx.fillText(this.score, x2, 95);  // Score
-	ctx.fillText("★★★★★",     x2, 155); // Player
+	ctx.fillText(life_star_string,     x2, 155); // Player
 	//ctx.fillText("★★★★★",     x2, 200); // Spell
 	if(Config.DEBUG) {
 		ctx.fillText(this.frame_count,     x2, 260); // Frame
