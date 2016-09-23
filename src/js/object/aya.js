@@ -21,7 +21,7 @@ var VITAL = 60 * 60 * 2; // 2分
 var SPEED = 2;
 
 // constructor
-var Boss = function(stage) {
+var Aya = function(stage) {
 	// 継承元new呼び出し
 	BaseObject.apply(this, arguments);
 
@@ -40,19 +40,19 @@ var Boss = function(stage) {
 };
 
 // 基底クラスを継承
-Util.inherit(Boss, BaseObject);
+Util.inherit(Aya, BaseObject);
 
 
 
 // ボスを初期位置に置く
-Boss.prototype.setInitPosition = function() {
+Aya.prototype.setInitPosition = function() {
 	// ボスの初期位置
 	this.x = (this.stage.width / 2);
 	this.y = (this.stage.height - 400);
 };
 
 // 初期化
-Boss.prototype.init = function() {
+Aya.prototype.init = function() {
 	BaseObject.prototype.init.apply(this, arguments);
 
 	// ボスを初期位置に置く
@@ -70,37 +70,37 @@ Boss.prototype.init = function() {
 };
 
 // 現在のスペルカード
-Boss.prototype.currentSpell = function(){
+Aya.prototype.currentSpell = function(){
 	return this.spells[this.spell_index];
 };
 
 // スペルを切り替え
-Boss.prototype.executeSpell = function(){
+Aya.prototype.executeSpell = function(){
 	// 切り替え
 	this.spell_index++;
 	// 切り替え後の状態を初期化
 	this.currentSpell().init();
 };
 // 次に発動するスペルがあるかどうか
-Boss.prototype.hasNextSpell = function(){
+Aya.prototype.hasNextSpell = function(){
 	return this.spells[this.spell_index + 1] ? true : false;
 };
 
 
 // HPを初期化
-Boss.prototype.resetVital = function(){
+Aya.prototype.resetVital = function(){
 	this.vital = this.max_vital;
 };
 
 // HPを初期化
-Boss.prototype.isDead = function(){
+Aya.prototype.isDead = function(){
 	return this.vital <= 0;
 };
 
 
 
 // フレーム処理
-Boss.prototype.run = function(){
+Aya.prototype.run = function(){
 	BaseObject.prototype.run.apply(this, arguments);
 
 	// スペルカード処理
@@ -131,33 +131,33 @@ Boss.prototype.run = function(){
 
 // TODO: aimed で動かしたい
 // 移動
-Boss.prototype.moveLeft = function(){
+Aya.prototype.moveLeft = function(){
 	this.x -= SPEED;
 };
-Boss.prototype.moveRight = function(){
+Aya.prototype.moveRight = function(){
 	this.x += SPEED;
 };
-Boss.prototype.moveUp = function(){
+Aya.prototype.moveUp = function(){
 	this.y -= SPEED;
 };
-Boss.prototype.moveDown = function(){
+Aya.prototype.moveDown = function(){
 	this.y += SPEED;
 };
 
 // 移動アニメーション
-Boss.prototype.animateLeft = function(){
+Aya.prototype.animateLeft = function(){
 		this.indexY = 1;
 };
-Boss.prototype.animateRight = function(){
+Aya.prototype.animateRight = function(){
 		this.indexY = 2;
 };
-Boss.prototype.animateNeutral = function(){
+Aya.prototype.animateNeutral = function(){
 		this.indexY = 0;
 };
 
 
 // ボスを描画
-Boss.prototype.updateDisplay = function(){
+Aya.prototype.updateDisplay = function(){
 	BaseObject.prototype.updateDisplay.apply(this, arguments);
 
 	// スペルカード描画
@@ -165,21 +165,21 @@ Boss.prototype.updateDisplay = function(){
 };
 
 // 当たり判定サイズ
-Boss.prototype.collisionWidth  = function() { return 128; };
-Boss.prototype.collisionHeight = function() { return 128; };
+Aya.prototype.collisionWidth  = function() { return 128; };
+Aya.prototype.collisionHeight = function() { return 128; };
 
 // スプライトの開始位置
-Boss.prototype.spriteX = function() { return this.indexX; };
-Boss.prototype.spriteY = function() { return this.indexY; };
+Aya.prototype.spriteX = function() { return this.indexX; };
+Aya.prototype.spriteY = function() { return this.indexY; };
 
 // スプライト画像
-Boss.prototype.spriteImage = function() { return 'boss_aya'; };
+Aya.prototype.spriteImage = function() { return 'boss_aya'; };
 
 // スプライトのサイズ
-Boss.prototype.spriteWidth  = function() { return 128; };
-Boss.prototype.spriteHeight = function() { return 128; };
+Aya.prototype.spriteWidth  = function() { return 128; };
+Aya.prototype.spriteHeight = function() { return 128; };
 
 
 
 
-module.exports = Boss;
+module.exports = Aya;
