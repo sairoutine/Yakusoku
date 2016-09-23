@@ -7,6 +7,7 @@ var BaseScene = require('./base');
 
 var Util = require('../util');
 var Constant = require('../constant');
+var Config = require('../config');
 
 
 // 画面切り替え効果時間
@@ -56,6 +57,7 @@ OpeningScene.prototype.updateDisplay = function(){
 	}
 
 	var title_bg = this.game.getImage('title_bg');
+	var press_z = this.game.getImage('press_z');
 
 	// 背景画像表示
 	ctx.drawImage(title_bg,
@@ -68,14 +70,14 @@ OpeningScene.prototype.updateDisplay = function(){
 					this.game.width,
 					this.game.height);
 
-	ctx.font = "24px 'Migu'" ;
-	ctx.textAlign = 'center' ;
-	ctx.textBaseAlign = 'middle' ;
-	ctx.fillStyle = 'rgb( 0, 0, 0 )' ;
-
 	// N秒ごとに start メッセージを点滅
 	if (Math.floor(this.frame_count / SHOW_START_MESSAGE_INTERVAL) % 2 === 0) {
-		ctx.fillText('Press Z to Start', 450, 350);
+		ctx.drawImage(press_z,
+			248, //x座標
+			247, //y座標
+			press_z.width * Config.CHARA_SIZE_RATIO,
+			press_z.height * Config.CHARA_SIZE_RATIO
+		);
 	}
 
 	ctx.restore();
