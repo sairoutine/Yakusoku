@@ -198,8 +198,8 @@ Character.prototype.die = function() {
 
 
 // 当たり判定サイズ
-Character.prototype.collisionWidth  = function() { return 12; };
-Character.prototype.collisionHeight = function() { return 12; };
+Character.prototype.collisionWidth  = function() { return 5; };
+Character.prototype.collisionHeight = function() { return 5; };
 
 // スプライトの開始位置
 Character.prototype.spriteX = function() { return this.indexX; };
