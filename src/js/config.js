@@ -77,6 +77,11 @@ var Config = {
 			path: 'sound/spellcard.wav',
 			volume: 0.15
 		},
+		dead: {
+			id: 0x10,
+			path: 'sound/dead.wav',
+			volume: 0.08
+		},
 
 
 		/*
@@ -89,11 +94,6 @@ var Config = {
 			id: 0x04,
 			path: 'sound/enemy_vanish.wav',
 			volume: 0.1
-		},
-		dead: {
-			id: 0x08,
-			path: 'sound/dead.wav',
-			volume: 0.08
 		},
 		graze: {
 			id: 0x10,
