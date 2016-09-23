@@ -193,11 +193,11 @@ Character.prototype.die = function() {
 	// 無敵状態になったフレームを保存
 	this.unhittable_count = this.frame_count;
 };
-*/
+
 
 // 当たり判定サイズ
-Character.prototype.collisionWidth  = function() { return 4; };
-Character.prototype.collisionHeight = function() { return 4; };
+Character.prototype.collisionWidth  = function() { return 12; };
+Character.prototype.collisionHeight = function() { return 12; };
 
 // スプライトの開始位置
 Character.prototype.spriteX = function() { return this.indexX; };
