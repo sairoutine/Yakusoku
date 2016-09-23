@@ -110,8 +110,8 @@ ObjectBase.prototype.checkCollision = function(obj) {
 	if( this.inCollisionArea(obj.getCollisionLeftX(),  obj.getCollisionUpY()) ||
 		this.inCollisionArea(obj.getCollisionLeftX(),  obj.getCollisionBottomY()) ||
 		this.inCollisionArea(obj.getCollisionRightX(), obj.getCollisionUpY()) ||
-		this.inCollisionArea(obj.getCollisionRightX(), obj.getCollisionBottomY())
-		//|| this.inCollisionArea(obj.x,                    obj.y)
+		this.inCollisionArea(obj.getCollisionRightX(), obj.getCollisionBottomY()) ||
+		this.inCollisionArea(obj.x,                    obj.y)
 	  ) {
 		return true ;
 	}
