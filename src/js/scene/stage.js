@@ -53,28 +53,30 @@ var Scene = function(game) {
 
 	// ステージの状態一覧
 	this.states = [];
-	this.states[ Constant.WAY_STATE ]    = new WayState(this);
-	this.states[ Constant.TALK1_STATE ]   = new TalkState(this, serif_before, Constant.BOSS_STATE);
-	this.states[ Constant.BOSS_STATE ]   = new BossState(this);
-	this.states[ Constant.TALK2_STATE ]   = new TalkState(this, serif_after, Constant.RESULT_STATE);
-	this.states[ Constant.RESULT_STATE ] = new ResultState(this);
+	this.states[ Constant.WAY_STATE ]      = new WayState(this);
+	this.states[ Constant.TALK1_STATE ]    = new TalkState(this, serif_before, Constant.BOSS_STATE);
+	this.states[ Constant.BOSS_STATE ]     = new BossState(this);
+	this.states[ Constant.TALK2_STATE ]    = new TalkState(this, serif_after, Constant.RESULT_STATE);
+	this.states[ Constant.RESULT_STATE ]   = new ResultState(this);
 	this.states[ Constant.GAMEOVER_STATE ] = new GameoverState(this);
 
 	// サイドバーを除いたステージの大きさ
 	this.width = this.game.width - SIDE_WIDTH;
 	this.height= this.game.height;
 
-	this.character = new Character(this);
-	this.shot_manager = new Manager(Shot, this);
-	this.enemy_manager = new Manager(Enemy, this);
-	this.boss = new Boss(this);
+	this.character      = new Character(this);
+	this.shot_manager   = new Manager(Shot, this);
+	this.enemy_manager  = new Manager(Enemy, this);
+	this.boss           = new Boss(this);
 	this.bullet_manager = new Manager(Bullet, this);
+	this.effect_manager = new Manager(Effect, this);
 
 	// シーンが管理するオブジェクト一覧
 	this.objects = [
 		this.shot_manager,
 		this.character,
 		this.enemy_manager,
+		this.effect_manager,
 	];
 
 
