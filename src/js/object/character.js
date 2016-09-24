@@ -199,8 +199,8 @@ Character.prototype.notifyCollision = function(obj) {
 
 
 // 当たり判定サイズ
-Character.prototype.collisionWidth  = function() { return 5; };
-Character.prototype.collisionHeight = function() { return 5; };
+Character.prototype.collisionWidth  = function() { return 8; };
+Character.prototype.collisionHeight = function() { return 8; };
 
 // スプライトの開始位置
 Character.prototype.spriteX = function() { return this.indexX; };
