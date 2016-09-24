@@ -158,6 +158,21 @@ Character.prototype.checkCollision = function(obj) {
 	return BaseObject.prototype.checkCollision.apply(this, arguments);
 };
 
+// 自機を死亡
+Character.prototype.die = function() {
+	// 自機の初期位置に戻す
+	this.setInitPosition();
+
+	// 自機を減らす
+	this.life--;
+
+	// 無敵状態にする
+	this.is_unhittable = true;
+
+	// 無敵状態になったフレームを保存
+	this.unhittable_count = this.frame_count;
+};
+
 // 衝突した時
 Character.prototype.notifyCollision = function(obj) {
 	// 敵もしくは敵弾もしくはボスにぶつかったら
@@ -181,20 +196,6 @@ Character.prototype.notifyCollision = function(obj) {
 	}
 };
 
-// 自機を死亡
-Character.prototype.die = function() {
-	// 自機の初期位置に戻す
-	this.setInitPosition();
-
-	// 自機を減らす
-	this.life--;
-
-	// 無敵状態にする
-	this.is_unhittable = true;
-
-	// 無敵状態になったフレームを保存
-	this.unhittable_count = this.frame_count;
-};
 
 
 // 当たり判定サイズ
