@@ -1627,42 +1627,20 @@ ObjectBase.prototype.checkCollisionWithObject = function(obj1) {
 
 // オブジェクトとオブジェクトの衝突判定を行う
 ObjectBase.prototype.checkCollision = function(obj) {
-	if( this.inCollisionArea(obj.getCollisionLeftX(),  obj.getCollisionUpY()) ||
-		this.inCollisionArea(obj.getCollisionLeftX(),  obj.getCollisionBottomY()) ||
-		this.inCollisionArea(obj.getCollisionRightX(), obj.getCollisionUpY()) ||
-		this.inCollisionArea(obj.getCollisionRightX(), obj.getCollisionBottomY()) ||
-		this.inCollisionArea(obj.x,                    obj.y)
-	  ) {
-		return true ;
+	if(Math.abs(this.x - obj.x) < this.collisionWidth()/2 + obj.collisionWidth()/2 &&
+		Math.abs(this.y - obj.y) < this.collisionHeight()/2 + obj.collisionHeight()/2) {
+		return true;
 	}
 
-	return false ;
+	return false;
 };
 
 ObjectBase.prototype.getCollisionLeftX = function() {
 	return this.x - this.collisionWidth() / 2;
 };
 
-
-ObjectBase.prototype.getCollisionRightX = function() {
-	return this.x + this.collisionWidth() / 2;
-};
-
 ObjectBase.prototype.getCollisionUpY = function() {
 	return this.y - this.collisionHeight() / 2;
-};
-
-ObjectBase.prototype.getCollisionBottomY = function() {
-	return this.y + this.collisionHeight() / 2;
-};
-
-ObjectBase.prototype.inCollisionArea = function(x, y) {
-	if(this.getCollisionLeftX() <= x && x <= this.getCollisionRightX() &&
-		this.getCollisionUpY() <= y && y <= this.getCollisionBottomY()) {
-		return true;
-	}
-
-	return false ;
 };
 
 // 画面外に出たかどうかの判定
@@ -1957,8 +1935,8 @@ Character.prototype.notifyCollision = function(obj) {
 
 
 // 当たり判定サイズ
-Character.prototype.collisionWidth  = function() { return 8; };
-Character.prototype.collisionHeight = function() { return 8; };
+Character.prototype.collisionWidth  = function() { return 1; };
+Character.prototype.collisionHeight = function() { return 3; };
 
 // スプライトの開始位置
 Character.prototype.spriteX = function() { return this.indexX; };
@@ -3878,7 +3856,6 @@ State.prototype.run = function(){
 
 // 画面更新
 State.prototype.updateDisplay = function(){
-	BaseState.prototype.updateDisplay.apply(this, arguments);
 	this.stage.bullet_manager.updateDisplay();
 	this.stage.item_manager.updateDisplay();
 };
