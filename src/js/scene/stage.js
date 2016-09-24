@@ -5,7 +5,7 @@
 var Constant = require('../constant');
 
 var DEBUG_STATE;
-//DEBUG_STATE = Constant.TALK2_STATE;
+//DEBUG_STATE = Constant.WAY_STATE;
 
 
 // サイドバーの横の長さ
@@ -76,6 +76,7 @@ var Scene = function(game) {
 		this.shot_manager,
 		this.character,
 		this.enemy_manager,
+		this.bullet_manager,
 		this.effect_manager,
 	];
 
@@ -118,11 +119,12 @@ Scene.prototype.changeState = function(state){
 Scene.prototype.run = function(){
 	BaseScene.prototype.run.apply(this, arguments);
 
+	this.currentState().run();
+
 	for(var i = 0, len = this.objects.length; i < len; i++) {
 		this.objects[i].run();
 	}
 
-	this.currentState().run();
 
 	// TODO: END フラグをstateに持たせよう
 
@@ -145,11 +147,11 @@ Scene.prototype.updateDisplay = function(){
 	// 背景画像表示
 	this._showBG();
 
+	this.currentState().updateDisplay();
+
 	for(var i = 0, len = this.objects.length; i < len; i++) {
 		this.objects[i].updateDisplay();
 	}
-
-	this.currentState().updateDisplay();
 
 	// サイドバー表示
 	this._showSidebar();

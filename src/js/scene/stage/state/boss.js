@@ -19,7 +19,6 @@ State.prototype.init = function(){
 	BaseState.prototype.init.apply(this, arguments);
 
 	this.stage.boss.init();
-	this.stage.bullet_manager.init();
 
 	// 道中曲を止める
 	this.game.stopBGM();
@@ -85,13 +84,11 @@ State.prototype.run = function(){
 
 
 	this.stage.boss.run();
-	this.stage.bullet_manager.run();
 };
 
 // 画面更新
 State.prototype.updateDisplay = function(){
 	this.stage.boss.updateDisplay();
-	this.stage.bullet_manager.updateDisplay();
 
 	// スペルカード残り時間
 	this._showVital();
