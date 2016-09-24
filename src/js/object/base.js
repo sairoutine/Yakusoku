@@ -87,17 +87,18 @@ ObjectBase.prototype.run = function(){
 
 // 画面更新
 ObjectBase.prototype.updateDisplay = function(){
+	var ctx = this.game.surface;
 	var image = this.game.getImage(this.spriteImage());
 
-	this.game.surface.save();
+	ctx.save();
 
 	// オブジェクトの位置を指定
-	this.game.surface.translate(this.x, this.y);
+	ctx.translate(this.x, this.y);
 
 	// オブジェクトを回転
-	this.game.surface.rotate(this.rotate);
+	ctx.rotate(this.rotate);
 
-	this.game.surface.drawImage(image,
+	ctx.drawImage(image,
 		// スプライトの取得位置
 		this.spriteWidth()  * this.spriteX(), this.spriteHeight() * this.spriteY(),
 		// スプライトのサイズ
@@ -164,8 +165,8 @@ ObjectBase.prototype.getCollisionBottomY = function() {
 };
 
 ObjectBase.prototype.inCollisionArea = function(x, y) {
-	if( x >= this.getCollisionLeftX() && x <= this.getCollisionRightX() &&
-		y >= this.getCollisionUpY()  && y <= this.getCollisionBottomY()) {
+	if(this.getCollisionLeftX() <= x && x <= this.getCollisionRightX() &&
+		this.getCollisionUpY() <= y && y <= this.getCollisionBottomY()) {
 		return true;
 	}
 
