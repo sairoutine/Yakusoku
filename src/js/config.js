@@ -124,7 +124,7 @@ var Config = {
 		stage1: {
 			path:   'bgm/stage1.ogg',
 			volume: 0.50,
-			loopStart: 41.586,
+			loopStart: 41.379,
 			loopEnd: 60 * 2 + 0.827,
 		},
 	},
