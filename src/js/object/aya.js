@@ -18,7 +18,7 @@ var FRONT_ANIMATION_SPAN = 6;
 var LR_ANIMATION_SPAN = 4;
 
 // HP
-var VITAL = 60 * 60 * 2; // 2分
+var VITAL = 60 * 60 * 1;
 
 // ボスの移動速度
 var SPEED = 2;
@@ -181,7 +181,7 @@ Aya.prototype.notifyCollision = function(obj) {
 
 // 当たり判定サイズ
 Aya.prototype.collisionWidth  = function() { return 64; };
-Aya.prototype.collisionHeight = function() { return 128; };
+Aya.prototype.collisionHeight = function() { return 100; };
 
 // スプライトの開始位置
 Aya.prototype.spriteX = function() { return this.indexX; };

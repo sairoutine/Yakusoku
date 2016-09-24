@@ -49,8 +49,8 @@ Item.prototype.notifyCollision = function(obj) {
 };
 
 // 当たり判定サイズ
-Item.prototype.collisionWidth  = function() { return 32; };
-Item.prototype.collisionHeight = function() { return 32; };
+Item.prototype.collisionWidth  = function() { return 100; };
+Item.prototype.collisionHeight = function() { return 100; };
 
 // スプライトの開始位置
 Item.prototype.spriteX = function() { return this.indexX; };
