@@ -10,6 +10,9 @@ var VectorBaseObject = require('./vector_base');
 var Util = require('../util');
 var Constant = require('../constant');
 
+
+var bullet_dictionaries = require("../enemy/bullet_dictionaries");
+
 // Nフレーム毎に敵をアニメーション
 var ANIMATION_SPAN = 5;
 
@@ -28,12 +31,13 @@ Util.inherit(Enemy, VectorBaseObject);
 
 // 初期化
 Enemy.prototype.init = function(param) {
-	// ベクトルを設定
-	VectorBaseObject.prototype.init.apply(this, [param.vector]);
-
 	// 敵の初期位置
+	// VectorbaseObject より先に設定しないと aim が効かない
 	this.x = param.x || 0;
 	this.y = param.y || 0;
+
+	// ベクトルを設定
+	VectorBaseObject.prototype.init.apply(this, [param.vector]);
 
 	// 敵の体力
 	this.vital = param.vital;
@@ -48,7 +52,7 @@ Enemy.prototype.init = function(param) {
 	this.shots = param.shot;
 
 	// どの弾を撃つ設定を適用するか
-	this.shotCountIndex = 0;
+	this.shot_index = 0;
 
 	// 敵の画像種類
 	this.indexY = param.type ? param.type * 2 : DEFAULT_ENEMY_TYPE;
@@ -59,10 +63,9 @@ Enemy.prototype.run = function(){
 	// ベクトルに従って移動
 	VectorBaseObject.prototype.run.apply(this, arguments);
 
-	/*
 	// 弾を撃つ
 	this.shot();
-	*/
+
 	// Nフレーム毎に敵をアニメーション
 	if(this.frame_count % ANIMATION_SPAN === 0) {
 		this.indexX++;
@@ -72,22 +75,28 @@ Enemy.prototype.run = function(){
 	}
 
 };
-/*
-// 弾を撃つ
+
+// 敵弾を撃つ
 Enemy.prototype.shot = function(){
-	if(!this.shots) {
-		return;
-	}
+	if(!this.shots) { return; }
 
-	if(this.shots.shotCount[ this.shotCountIndex ] &&
-	   this.shots.shotCount[ this.shotCountIndex ] <= this.frame_count) {
-		this.shotCountIndex++;
 
-		this.stage.bulletmanager.create(this);
-		this.game.playSound('shot');
+	while(this.shots[this.shot_index] && this.shots[this.shot_index].count <= this.frame_count) {
+		var bullet_params = bullet_dictionaries[ this.shots[this.shot_index].bullet ];
+
+		// 敵弾生成
+		for( var i = 0, len = bullet_params.length; i < len; i++) {
+			var param = bullet_params[i];
+
+			this.stage.bullet_manager.create(2, this.x, this.y, param.vector); //type_id: 2
+		}
+
+		// sound
+		this.game.playSound('boss_shot_small');
+
+		this.shot_index++;
 	}
 };
-*/
 
 // 衝突した時
 Enemy.prototype.notifyCollision = function(obj) {
