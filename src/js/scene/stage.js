@@ -36,6 +36,7 @@ var Enemy = require('../object/enemy');
 var Boss = require('../object/aya');
 var Bullet = require('../object/bullet');
 var Effect = require('../object/effect');
+var Item = require('../object/item');
 
 // セリフ
 var serif_before = require('../serif/stage1_before');
@@ -64,11 +65,9 @@ var Scene = function(game) {
 	this.width = this.game.width - SIDE_WIDTH;
 	this.height= this.game.height;
 
-	this.character      = new Character(this);
 	this.shot_manager   = new Manager(Shot, this);
+	this.character      = new Character(this);
 	this.enemy_manager  = new Manager(Enemy, this);
-	this.boss           = new Boss(this);
-	this.bullet_manager = new Manager(Bullet, this);
 	this.effect_manager = new Manager(Effect, this);
 
 	// シーンが管理するオブジェクト一覧
@@ -76,11 +75,13 @@ var Scene = function(game) {
 		this.shot_manager,
 		this.character,
 		this.enemy_manager,
-		this.bullet_manager,
 		this.effect_manager,
 	];
 
-
+	// state の方で動かす
+	this.boss = new Boss(this);
+	this.bullet_manager = new Manager(Bullet, this);
+	this.item_manager = new Manager(Item, this);
 };
 
 // 基底クラスを継承
