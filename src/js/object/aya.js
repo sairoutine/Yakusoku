@@ -10,6 +10,9 @@ var Constant = require('../constant');
 var TenguKaze = require('../spell/stage1/tengukaze');
 var Konohamai = require('../spell/stage1/konohamai');
 
+
+var Shot = require('../object/shot');
+
 // Nフレーム毎にボスをアニメーション
 var FRONT_ANIMATION_SPAN = 6;
 var LR_ANIMATION_SPAN = 4;
@@ -164,8 +167,16 @@ Aya.prototype.updateDisplay = function(){
 	this.currentSpell().updateDisplay();
 };
 
+// 衝突した時
+Aya.prototype.notifyCollision = function(obj) {
+	// 自機弾が当たればボスのHPを減らす
+	if(obj instanceof Shot) { this.vital--; }
+};
+
+
+
 // 当たり判定サイズ
-Aya.prototype.collisionWidth  = function() { return 128; };
+Aya.prototype.collisionWidth  = function() { return 64; };
 Aya.prototype.collisionHeight = function() { return 128; };
 
 // スプライトの開始位置

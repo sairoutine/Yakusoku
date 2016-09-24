@@ -80,8 +80,8 @@ State.prototype.run = function(){
 	// ボスと自機の衝突判定
 	character.checkCollisionWithObject(this.stage.boss);
 
-
-
+	// ボスと自機弾の衝突判定
+	this.stage.shot_manager.checkCollisionWithObject(this.stage.boss);
 
 	this.stage.boss.run();
 };

@@ -35,20 +35,15 @@ Shot.prototype.run = function(){
 	this.y -= SPEED;
 };
 
-/*
 // 衝突した時
 Shot.prototype.notifyCollision = function(obj) {
 	// 自分を消す
-	this.stage.shotmanager.remove(this.id);
+	this.stage.shot_manager.remove(this.id);
 };
-*/
-
-
-
 
 // 当たり判定サイズ
-Shot.prototype.collisionWidth  = function() { return this.spriteWidth();  };
-Shot.prototype.collisionHeight = function() { return this.spriteHeight(); };
+Shot.prototype.collisionWidth  = function() { return 15;  };
+Shot.prototype.collisionHeight = function() { return 15; };
 
 // スプライトの開始位置
 Shot.prototype.spriteX = function() { return 0; };
@@ -60,8 +55,5 @@ Shot.prototype.spriteImage = function() { return 'shot'; };
 // スプライトのサイズ
 Shot.prototype.spriteWidth  = function() { return 20; };
 Shot.prototype.spriteHeight = function() { return 20; };
-
-
-
 
 module.exports = Shot;
