@@ -1948,11 +1948,9 @@ Character.prototype.notifyCollision = function(obj) {
 		this.die();
 
 		// 残機がなくなればゲームオーバー画面表示
-		/*
 		if(this.life === 0) {
 			this.stage.notifyCharacterDead();
 		}
-		*/
 	}
 };
 
@@ -2060,6 +2058,7 @@ var VectorBaseObject = require('./vector_base');
 var Util = require('../util');
 var Constant = require('../constant');
 
+var Shot = require('../object/shot');
 
 var bullet_dictionaries = require("../enemy/bullet_dictionaries");
 
@@ -2150,6 +2149,7 @@ Enemy.prototype.shot = function(){
 
 // 自機弾と衝突
 Enemy.prototype.notifyCollision = function(obj) {
+	if(!(obj instanceof Shot)) { return; }
 
 	// 自分を消す
 	this.stage.enemy_manager.remove(this.id);
@@ -2188,7 +2188,7 @@ Enemy.prototype.spriteHeight = function() { return 32; };
 
 module.exports = Enemy;
 
-},{"../constant":2,"../enemy/bullet_dictionaries":3,"../util":39,"./vector_base":20}],18:[function(require,module,exports){
+},{"../constant":2,"../enemy/bullet_dictionaries":3,"../object/shot":19,"../util":39,"./vector_base":20}],18:[function(require,module,exports){
 'use strict';
 
 /* アイテムオブジェクト */
@@ -3329,6 +3329,11 @@ Scene.prototype._showBG = function() {
 	);
 
 	this.game.surface.restore();
+};
+
+// 自機が死亡
+Scene.prototype.notifyCharacterDead = function() {
+	this.changeState(Constant.RESULT_STATE);
 };
 
 module.exports = Scene;
