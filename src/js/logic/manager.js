@@ -86,6 +86,22 @@ Manager.prototype.checkCollisionWithObject = function(obj1) {
 	}
 };
 
+// Manager と Manager の衝突判定
+Manager.prototype.checkCollisionWithManager = function(manager) {
+	// 衝突判定
+	OUT: for(var obj1_id in this.objects) {
+		for(var obj2_id in manager.objects) {
+			if(this.objects[obj1_id].checkCollision(manager.objects[obj2_id])) {
+				var obj1 = this.objects[obj1_id];
+				var obj2 = manager.objects[obj2_id];
 
+				// 衝突を通知
+				obj1.notifyCollision(obj2);
+				obj2.notifyCollision(obj1);
+				break OUT;
+			}
+		}
+	}
+};
 
 module.exports = Manager;
