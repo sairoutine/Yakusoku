@@ -106,7 +106,7 @@ var Config = {
 	BGMS:{
 		title: {
 			path:   'bgm/title.mp3',
-			volume: 0.40
+			volume: 0.60
 		},
 		prologue: {
 			path:   'bgm/prologue.ogg',

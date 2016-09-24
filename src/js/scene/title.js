@@ -28,7 +28,7 @@ Util.inherit(OpeningScene, BaseScene);
 OpeningScene.prototype.init = function() {
 	BaseScene.prototype.init.apply(this, arguments);
 
-	//TODO: this.game.playBGM('title');
+	this.game.playBGM('title');
 };
 
 // フレーム処理
