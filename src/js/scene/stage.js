@@ -120,12 +120,11 @@ Scene.prototype.changeState = function(state){
 Scene.prototype.run = function(){
 	BaseScene.prototype.run.apply(this, arguments);
 
-	this.currentState().run();
-
 	for(var i = 0, len = this.objects.length; i < len; i++) {
 		this.objects[i].run();
 	}
 
+	this.currentState().run();
 
 	// TODO: END フラグをstateに持たせよう
 
@@ -148,11 +147,11 @@ Scene.prototype.updateDisplay = function(){
 	// 背景画像表示
 	this._showBG();
 
-	this.currentState().updateDisplay();
-
 	for(var i = 0, len = this.objects.length; i < len; i++) {
 		this.objects[i].updateDisplay();
 	}
+
+	this.currentState().updateDisplay();
 
 	// サイドバー表示
 	this._showSidebar();
@@ -228,10 +227,6 @@ Scene.prototype._showText = function(){
 	ctx.restore();
 };
 
-
-
-
-
 // 背景画像表示
 Scene.prototype._showBG = function() {
 	var ctx = this.game.surface;
@@ -267,7 +262,5 @@ Scene.prototype._showBG = function() {
 
 	this.game.surface.restore();
 };
-
-
 
 module.exports = Scene;
