@@ -82,18 +82,16 @@ var Config = {
 			path: 'sound/dead.wav',
 			volume: 0.08
 		},
-
-
+		enemy_vanish: {
+			id: 0x20,
+			path: 'sound/enemy_vanish.mp3',
+			volume: 0.1
+		},
 		/*
 		shot: {
 			id: 0x02,
 			path: 'sound/shot.wav',
 			volume: 0.08
-		},
-		enemy_vanish: {
-			id: 0x04,
-			path: 'sound/enemy_vanish.wav',
-			volume: 0.1
 		},
 		graze: {
 			id: 0x10,
