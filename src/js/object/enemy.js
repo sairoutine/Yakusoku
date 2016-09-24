@@ -98,34 +98,31 @@ Enemy.prototype.shot = function(){
 	}
 };
 
-// 衝突した時
+// 自機弾と衝突
 Enemy.prototype.notifyCollision = function(obj) {
-	/*
-	// 自機弾と衝突
-	if(obj instanceof Shot) {
-		// 自分を消す
-		this.stage.enemymanager.remove(this.id);
 
-		// SEの再生
-		this.game.playSound('enemy_vanish');
+	// 自分を消す
+	this.stage.enemy_manager.remove(this.id);
 
-		// スコアの加算
-		this.stage.score += 100;
+	// SEの再生
+	this.game.playSound('enemy_vanish');
 
-		// 死亡エフェクト再生
-		this.stage.effectmanager.create(this);
+	// スコアの加算
+	this.stage.score += 100;
 
-		// ポイントアイテムの生成
-		if(this.powerItem || this.scoreItem) {
-			this.stage.itemmanager.create(this);
-		}
+	// 死亡エフェクト生成
+	this.stage.effect_manager.create(this.x, this.y);
+
+
+	// ポイントアイテムの生成
+	if(this.powerItem || this.scoreItem) {
+		//this.stage.itemmanager.create(this);
 	}
-	*/
 };
 
 // 当たり判定サイズ
-Enemy.prototype.collisionWidth  = function() { return this.spriteWidth();  };
-Enemy.prototype.collisionHeight = function() { return this.spriteHeight(); };
+Enemy.prototype.collisionWidth  = function() { return 20;  };
+Enemy.prototype.collisionHeight = function() { return 28; };
 
 // スプライトの開始位置
 Enemy.prototype.spriteX = function() { return this.indexX; };
