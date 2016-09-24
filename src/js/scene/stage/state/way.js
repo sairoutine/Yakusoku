@@ -74,6 +74,10 @@ State.prototype.run = function(){
 
 	// 敵と自機の衝突判定
 	this.stage.enemy_manager.checkCollisionWithObject(character);
+	// 敵弾と自機の衝突判定
+	this.stage.bullet_manager.checkCollisionWithObject(character);
+	// 敵と自機弾の衝突判定
+	this.stage.enemy_manager.checkCollisionWithManager(this.stage.shot_manager);
 
 
 	// 今フレームで出現する雑魚一覧を取得
