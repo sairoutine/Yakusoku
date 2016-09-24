@@ -2,6 +2,11 @@
 
 /* オブジェクトの基底クラス */
 
+var Config = require("../config");
+
+var IS_SHOW_COLLISION;
+//IS_SHOW_COLLISION = true;
+
 // ステージ外かどうかの判定の余白
 var EXTRA_OUT_OF_SIZE = 100;
 
@@ -102,7 +107,29 @@ ObjectBase.prototype.updateDisplay = function(){
 		// オブジェクトのゲーム上のサイズ
 		this.spriteWidth(),                   this.spriteHeight()
 	);
-	this.game.surface.restore();
+	ctx.restore();
+
+	// TODO: DEBUG
+	if(Config.DEBUG && IS_SHOW_COLLISION) {
+		ctx.save();
+		ctx.fillStyle = 'rgb( 0, 0, 0 )' ;
+		ctx.globalAlpha = 0.4;
+		ctx.fillRect(this.getCollisionLeftX(), this.getCollisionUpY(), this.collisionWidth(), this.collisionHeight());
+		ctx.restore();
+	}
+};
+
+// Object と Object の衝突判定
+ObjectBase.prototype.checkCollisionWithObject = function(obj1) {
+	// 衝突判定
+	var obj2 = this;
+	if(obj1.checkCollision(obj2)) {
+		obj1.notifyCollision(obj2);
+		obj2.notifyCollision(obj1);
+		return true;
+	}
+
+	return false;
 };
 
 // オブジェクトとオブジェクトの衝突判定を行う
