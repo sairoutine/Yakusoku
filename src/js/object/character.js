@@ -188,11 +188,9 @@ Character.prototype.notifyCollision = function(obj) {
 		this.die();
 
 		// 残機がなくなればゲームオーバー画面表示
-		/*
 		if(this.life === 0) {
 			this.stage.notifyCharacterDead();
 		}
-		*/
 	}
 };
 

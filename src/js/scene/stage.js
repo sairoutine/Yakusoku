@@ -263,4 +263,9 @@ Scene.prototype._showBG = function() {
 	this.game.surface.restore();
 };
 
+// 自機が死亡
+Scene.prototype.notifyCharacterDead = function() {
+	this.changeState(Constant.RESULT_STATE);
+};
+
 module.exports = Scene;
