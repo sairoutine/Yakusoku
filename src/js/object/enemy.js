@@ -10,6 +10,7 @@ var VectorBaseObject = require('./vector_base');
 var Util = require('../util');
 var Constant = require('../constant');
 
+var Shot = require('../object/shot');
 
 var bullet_dictionaries = require("../enemy/bullet_dictionaries");
 
@@ -100,6 +101,7 @@ Enemy.prototype.shot = function(){
 
 // 自機弾と衝突
 Enemy.prototype.notifyCollision = function(obj) {
+	if(!(obj instanceof Shot)) { return; }
 
 	// 自分を消す
 	this.stage.enemy_manager.remove(this.id);
