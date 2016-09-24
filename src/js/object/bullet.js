@@ -66,4 +66,10 @@ Bullet.prototype.spriteImage = function() { return this.image; };
 Bullet.prototype.spriteWidth  = function() { return this.width; };
 Bullet.prototype.spriteHeight = function() { return this.height; };
 
+// 衝突した時
+Bullet.prototype.notifyCollision = function(obj) {
+	// 自分を消す
+	this.stage.bullet_manager.remove(this.id);
+};
+
 module.exports = Bullet;
