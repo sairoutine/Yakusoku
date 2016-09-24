@@ -19,6 +19,8 @@ Util.inherit(State, BaseState);
 // 初期化
 State.prototype.init = function(){
 	BaseState.prototype.init.apply(this, arguments);
+	this.stage.bullet_manager.init();
+	this.stage.item_manager.init();
 	this.enemy_appear.init();
 };
 
@@ -72,6 +74,8 @@ State.prototype.run = function(){
 		character.animateNeutral();
 	}
 
+	// アイテムと自機の衝突判定
+	this.stage.item_manager.checkCollisionWithObject(character);
 	// 敵と自機の衝突判定
 	this.stage.enemy_manager.checkCollisionWithObject(character);
 	// 敵弾と自機の衝突判定
@@ -86,10 +90,16 @@ State.prototype.run = function(){
 	for(var i = 0, len = params.length; i< len; i++) {
 		this.stage.enemy_manager.create(params[i]);
 	}
+
+	this.stage.bullet_manager.run();
+	this.stage.item_manager.run();
 };
 
 // 画面更新
 State.prototype.updateDisplay = function(){
+	BaseState.prototype.updateDisplay.apply(this, arguments);
+	this.stage.bullet_manager.updateDisplay();
+	this.stage.item_manager.updateDisplay();
 };
 
 module.exports = State;
