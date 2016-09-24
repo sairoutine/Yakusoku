@@ -1309,7 +1309,7 @@ var FRONT_ANIMATION_SPAN = 6;
 var LR_ANIMATION_SPAN = 4;
 
 // HP
-var VITAL = 60 * 60 * 2; // 2分
+var VITAL = 60 * 60 * 1;
 
 // ボスの移動速度
 var SPEED = 2;
@@ -1472,7 +1472,7 @@ Aya.prototype.notifyCollision = function(obj) {
 
 // 当たり判定サイズ
 Aya.prototype.collisionWidth  = function() { return 64; };
-Aya.prototype.collisionHeight = function() { return 128; };
+Aya.prototype.collisionHeight = function() { return 100; };
 
 // スプライトの開始位置
 Aya.prototype.spriteX = function() { return this.indexX; };
@@ -2241,8 +2241,8 @@ Item.prototype.notifyCollision = function(obj) {
 };
 
 // 当たり判定サイズ
-Item.prototype.collisionWidth  = function() { return 32; };
-Item.prototype.collisionHeight = function() { return 32; };
+Item.prototype.collisionWidth  = function() { return 100; };
+Item.prototype.collisionHeight = function() { return 100; };
 
 // スプライトの開始位置
 Item.prototype.spriteX = function() { return this.indexX; };
@@ -3912,12 +3912,15 @@ Util.inherit(OpeningScene, BaseScene);
 OpeningScene.prototype.init = function() {
 	BaseScene.prototype.init.apply(this, arguments);
 
-	this.game.playBGM('title');
 };
 
 // フレーム処理
 OpeningScene.prototype.run = function(){
 	BaseScene.prototype.run.apply(this, arguments);
+
+	if(this.frame_count === 60) {
+		this.game.playBGM('title');
+	}
 
 	if(this.game.isKeyPush(Constant.BUTTON_Z)) {
 			this.game.playSound('select');
