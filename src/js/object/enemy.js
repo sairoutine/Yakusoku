@@ -116,7 +116,7 @@ Enemy.prototype.notifyCollision = function(obj) {
 
 	// ポイントアイテムの生成
 	if(this.powerItem || this.scoreItem) {
-		//this.stage.itemmanager.create(this);
+		this.stage.item_manager.create(0, this.x, this.y); // TODO: type_id
 	}
 };
 
