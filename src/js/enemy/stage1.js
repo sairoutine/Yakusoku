@@ -1,6 +1,5 @@
 'use strict';
 var EnemiesParams = [ ] ;
-
 /*
 // テスト敵
 EnemiesParams.push({
@@ -11,20 +10,19 @@ EnemiesParams.push({
 	// 出現位置y座標
 	'y': 100,
 	// 体力
-	'vital': 3,
-	  'powerItem': i % 2 === 0 ? 1 : 0,
-	  'scoreItem': i % 2 === 1 ? 1 : 0,
+	'vital': 1,
+	'powerItem': 0,
+	'scoreItem': 1,
 	// 撃つ弾の設定
 	'shot': [
-		{ 'bullet': 20, 'type': 6, 'count': [ 10 ], 'loop': true },
-		//{ 'bullet': 11, 'type': 6, 'count': [ 100 ], 'loop': true },
-		//{ 'bullet': 8, 'type': 7, 'count': [ 0 ], 'loop': true, 'r': 20 },
+		{ 'bullet': 1, 'count': 0 },
 	],
 	// 動き
-	'v': { 'r': 0,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 },
+	'vector': [
+		{ "count": 0, "vector": { 'r': 0,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } }
+	],
 });
 */
-
 for( var i = 0; i < 6 ; i++ ) {
 	EnemiesParams.push({
 		'appear_frame': 100 + i * 15,
