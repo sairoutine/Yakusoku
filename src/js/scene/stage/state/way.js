@@ -97,7 +97,6 @@ State.prototype.run = function(){
 
 // 画面更新
 State.prototype.updateDisplay = function(){
-	BaseState.prototype.updateDisplay.apply(this, arguments);
 	this.stage.bullet_manager.updateDisplay();
 	this.stage.item_manager.updateDisplay();
 };
