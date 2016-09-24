@@ -85,7 +85,7 @@ Spell.prototype.uzumaki_shot1 = function() {
 	for(var i = 0; i < this.shot_thetas1.length; i++ ) {
 		var theta = this.shot_thetas1[i];
 
-		this.shot(x, y, r, theta, 3, 1);
+		this.shot(0, x, y, {r: r, theta: theta}); // type_id: 0
 		this.shot_thetas1[i] += this.add_shot_theta;
 	}
 };
@@ -97,7 +97,7 @@ Spell.prototype.uzumaki_shot2 = function() {
 	for(var i = 0; i < this.shot_thetas2.length; i++ ) {
 		var theta = this.shot_thetas2[i];
 
-		this.shot(x, y, r, theta, 3, 1);
+		this.shot(0, x, y, {r: r, theta: theta}); // type_id: 0
 		this.shot_thetas2[i] -= this.add_shot_theta;
 	}
 };
@@ -107,7 +107,7 @@ Spell.prototype.maru_shot = function() {
 	var theta = this.maru_shot_theta;
 	var r = this.r;
 
-	this.shot(x, y, r, theta, 0, 1);
+	this.shot(1, x, y, {r: r, theta: theta}); // type_id: 1
 };
 
 Spell.prototype.name = function() { return "風符「天狗風」"; };
