@@ -60,7 +60,7 @@ VectorBase.prototype.init = function(vectors) {
 			// 速度の加速度の加速度の最大値
 			warange: vec.vector.warange || null,
 			// 自機狙いかどうか
-			aimed: vec.aimed,
+			aimed: vec.vector.aimed,
 			// 回転させるかどうか
 			is_rotate: vec.is_rotate,
 		});
@@ -72,7 +72,7 @@ VectorBase.prototype.init = function(vectors) {
 
 // 自機狙いにする
 VectorBase.prototype._calculateAimedVector = function() {
-	for(var i = 0, len = this.vectors; i < len; i++) {
+	for(var i = 0, len = this.vectors.length; i < len; i++) {
 		// 自機狙い設定がされているか確認
 		if( ! this.vectors[i].aimed){ continue; }
 
