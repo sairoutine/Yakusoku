@@ -111,7 +111,8 @@ Aya.prototype.run = function(){
 
 	// 時間経過でスペルカード発動時間は減っていく
 	if(this.currentSpell().isSpellExecute()) {
-		this.vital -= 1;
+		this.vital--;
+		this.stage.score+=10;
 	}
 
 	if(this.isDead() && this.hasNextSpell()) {
@@ -170,7 +171,10 @@ Aya.prototype.updateDisplay = function(){
 // 衝突した時
 Aya.prototype.notifyCollision = function(obj) {
 	// 自機弾が当たればボスのHPを減らす
-	if(obj instanceof Shot) { this.vital--; }
+	if(obj instanceof Shot) {
+		this.vital--;
+		this.stage.score+=10;
+	}
 };
 
 
