@@ -8,6 +8,8 @@ var Constant = require('../../../constant');
 // メッセージを表示する間隔
 var SHOW_MESSAGE_INTERVAL = 50;
 
+// メッセージの黒帯の表示
+var RESULT_TRANSITION_COUNT = 100;
 
 
 var State = function(stage) {
@@ -41,7 +43,7 @@ State.prototype._showScoreWindow = function(){
 	var ctx = this.game.surface;
 
 	ctx.save();
-var RESULT_TRANSITION_COUNT = 100;
+
 	var alpha = 1.0 ;
 	if(this.frame_count < RESULT_TRANSITION_COUNT) {
 		alpha = this.frame_count / RESULT_TRANSITION_COUNT;
