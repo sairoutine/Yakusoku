@@ -43,8 +43,8 @@ Bullet.prototype.init = function(type_id, x, y, vector) {
 	this.width            = type.width;
 	this.height           = type.height;
 	// 当たり判定サイズ
-	this.collision_width  = type.collision_width;
-	this.collision_height = type.collision_height;
+	this.collision_width  = type.collisionWidth;
+	this.collision_height = type.collisionHeight;
 };
 Bullet.prototype.run = function() {
 	// ベクトルに従って移動
