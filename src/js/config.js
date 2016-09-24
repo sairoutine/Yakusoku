@@ -46,6 +46,7 @@ var Config = {
 		character_renko:     'image/character_renko.png',
 		boss_aya:     'image/boss_aya.png',
 		shot:      'image/shot.png',
+		item:      'image/item.png',
 
 		enemy:     'image/enemy.png',
 		/*
@@ -87,17 +88,19 @@ var Config = {
 			path: 'sound/enemy_vanish.mp3',
 			volume: 0.1
 		},
+		graze: {
+			id: 0x40,
+			path: 'sound/graze.wav',
+			volume: 0.2
+		}
+
+
 		/*
 		shot: {
 			id: 0x02,
 			path: 'sound/shot.wav',
 			volume: 0.08
 		},
-		graze: {
-			id: 0x10,
-			path: 'sound/graze.wav',
-			volume: 0.1
-		}
 	   */
 	},
 
