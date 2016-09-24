@@ -23,15 +23,15 @@ var BulletTypes = [
 		'collisionHeight': 20,
 		'is_rotate':       true
 	},
-	// stage1 道中雑魚：赤い円形弾
+	// stage1 道中雑魚：青い円形弾
 	{
 		'image':       'shot',
 		'indexX':           2,
 		'indexY':           0,
 		'width':           20,
 		'height':          20,
-		'collisionWidth':  18,
-		'collisionHeight': 18,
+		'collisionWidth':  16,
+		'collisionHeight': 16,
 		'is_rotate':       false
 	},
 ];
