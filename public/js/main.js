@@ -254,10 +254,10 @@ var BulletTypes = [
 		'image':       'shot',
 		'indexX':           3,
 		'indexY':           1,
-		'width':           13,
+		'width':           14,
 		'height':          20,
 		'collisionWidth':  13,
-		'collisionHeight': 20,
+		'collisionHeight': 13,
 		'is_rotate':       true
 	},
 	// 文：赤い弾
@@ -265,10 +265,10 @@ var BulletTypes = [
 		'image':       'shot',
 		'indexX':           0,
 		'indexY':           1,
-		'width':           13,
+		'width':           14,
 		'height':          20,
 		'collisionWidth':  13,
-		'collisionHeight': 20,
+		'collisionHeight': 13,
 		'is_rotate':       true
 	},
 	// stage1 道中雑魚：青い円形弾
@@ -281,6 +281,17 @@ var BulletTypes = [
 		'collisionWidth':  16,
 		'collisionHeight': 16,
 		'is_rotate':       false
+	},
+	// 文：オレンジっぽい弾
+	{
+		'image':       'shot',
+		'indexX':           7,
+		'indexY':           1,
+		'width':           14,
+		'height':          20,
+		'collisionWidth':  13,
+		'collisionHeight': 13,
+		'is_rotate':       true
 	},
 ];
 
@@ -1423,7 +1434,6 @@ Aya.prototype.run = function(){
 	}
 };
 
-// TODO: aimed で動かしたい
 // 移動
 Aya.prototype.moveLeft = function(){
 	this.x -= SPEED;
@@ -1437,6 +1447,33 @@ Aya.prototype.moveUp = function(){
 Aya.prototype.moveDown = function(){
 	this.y += SPEED;
 };
+
+// TODO: refactor
+// theta値の方向に移動
+Aya.prototype.moveByTheta = function(theta){
+	this.x += this.calc_moveX(theta);
+	this.y += this.calc_moveY(theta);
+};
+
+// θ -> ラジアンに変換
+Aya.prototype._theta_to_radian = function(theta){
+	return (theta / 180 * Math.PI);
+};
+
+// X軸の移動を計算
+Aya.prototype.calc_moveX = function(theta) {
+	var move_x = SPEED * Math.cos(this._theta_to_radian(theta));
+	return move_x;
+};
+
+// Y軸の移動を計算
+Aya.prototype.calc_moveY = function(theta) {
+	var move_y = SPEED * Math.sin(this._theta_to_radian(theta));
+	return move_y;
+} ;
+
+
+
 
 // 移動アニメーション
 Aya.prototype.animateLeft = function(){
@@ -1471,7 +1508,7 @@ Aya.prototype.notifyCollision = function(obj) {
 
 // 当たり判定サイズ
 Aya.prototype.collisionWidth  = function() { return 64; };
-Aya.prototype.collisionHeight = function() { return 100; };
+Aya.prototype.collisionHeight = function() { return 64; };
 
 // スプライトの開始位置
 Aya.prototype.spriteX = function() { return this.indexX; };
@@ -2218,8 +2255,8 @@ Item.prototype.notifyCollision = function(obj) {
 };
 
 // 当たり判定サイズ
-Item.prototype.collisionWidth  = function() { return 100; };
-Item.prototype.collisionHeight = function() { return 100; };
+Item.prototype.collisionWidth  = function() { return 60; };
+Item.prototype.collisionHeight = function() { return 60; };
 
 // スプライトの開始位置
 Item.prototype.spriteX = function() { return this.indexX; };
@@ -3051,7 +3088,7 @@ module.exports = Scene;
 var Constant = require('../constant');
 
 var DEBUG_STATE;
-//DEBUG_STATE = Constant.WAY_STATE;
+//DEBUG_STATE = Constant.BOSS_STATE;
 
 
 // サイドバーの横の長さ
@@ -3458,7 +3495,7 @@ State.prototype._showVital = function(){
 	ctx.fillRect(
 		VITAL_OUTLINE_MARGIN,
 		VITAL_OUTLINE_MARGIN,
-		this.stage.boss.vital / this.stage.boss.max_vital * this.stage.width - VITAL_OUTLINE_MARGIN * 2,
+		this.stage.boss.vital / this.stage.boss.max_vital * (this.stage.width - VITAL_OUTLINE_MARGIN * 2),
 		VITAL_OUTLINE_MARGIN
 	);
 
@@ -4152,17 +4189,16 @@ var Constant = require('../../constant');
 
 var Spell = function(boss) {
 	BaseSpell.apply(this, arguments);
-	this.frame_count = 0;
 	this.shot_thetas1 = [0, 60, 120, 180, 240, 300];
 	this.shot_thetas2 = [0, 60, 120, 180, 240, 300];
 	this.maru_shot_theta = 0;
 
 	// config
-	this.add_shot_theta = 5;
+	this.add_shot_theta = 10;
 	this.r = 1.5;
-	this.uzumaki_percount = 5;
+	this.uzumaki_percount = 15;
 	this.maru_percount    = 75;
-	this.maru_shot_pertheta = 10;
+	this.maru_shot_pertheta = 6;
 
 };
 Util.inherit(Spell, BaseSpell);
@@ -4170,6 +4206,9 @@ Util.inherit(Spell, BaseSpell);
 // 初期化
 Spell.prototype.init = function() {
 	BaseSpell.prototype.init.apply(this, arguments);
+
+	// まずは中央に移動
+	this.is_moving = true;
 };
 
 Spell.prototype.run = function() {
@@ -4178,45 +4217,43 @@ Spell.prototype.run = function() {
 	// スペルカード発動演出中
 	if(this.isSpellStarting()) return;
 
-	// 渦巻き弾
-	if(this.frame_count % this.uzumaki_percount === 0) {
-		this.uzumaki_shot1();
-		this.uzumaki_shot2();
-		this.game.playSound('boss_shot_small');
-	}
+	if(this.is_moving) {
+		// 移動中
+		var ax = this.stage.width/2  - this.boss.x;
+		var ay = this.stage.height/2 - this.boss.y;
 
-	// 円形弾
-	if(this.frame_count % this.maru_percount === 0) {
-		for (var i=0; i< 360 / this.maru_shot_pertheta; i++) {
-			this.maru_shot();
-			this.maru_shot_theta += this.maru_shot_pertheta;
+		var my_theta = this._radian_to_theta(Math.atan2(ay, ax));
+
+		this.boss.animateRight();
+		this.boss.moveByTheta(my_theta);
+
+		if(
+			Math.floor(this.boss.x) === Math.floor(this.stage.width/2) &&
+			Math.floor(this.boss.y) === Math.floor(this.stage.height/2)
+		) {
+			// 移動終了
+			this.is_moving = false;
+			this.boss.animateNeutral();
 		}
-		this.game.playSound('boss_shot_big');
-	}
-
-	// 移動
-	var shot_time = 600;
-	var move_count = this.frame_count % 3600;
-	if(shot_time <= move_count && move_count < shot_time + 60) {
-		this.boss.moveLeft();
-		this.boss.animateLeft();
-	}
-	else if(shot_time * 2 + 60 <= move_count && move_count < shot_time * 2 + 60 * 2) {
-		this.boss.moveRight();
-		this.boss.moveDown();
-		this.boss.animateRight();
-	}
-	else if(shot_time * 3 + 60 * 2 <= move_count && move_count < shot_time * 3 + 60 * 3) {
-		this.boss.moveRight();
-		this.boss.moveUp();
-		this.boss.animateRight();
-	}
-	else if(shot_time * 4 + 60 * 3 <= move_count && move_count < shot_time * 4 + 60 * 4) {
-		this.boss.moveLeft();
-		this.boss.animateLeft();
 	}
 	else {
-		this.boss.animateNeutral();
+		// 渦巻き弾
+		if(this.frame_count % this.uzumaki_percount === 0) {
+			this.uzumaki_shot1();
+			this.uzumaki_shot2();
+			this.game.playSound('boss_shot_small');
+		}
+
+		// 円形弾
+		if(this.frame_count % this.maru_percount === 0) {
+			// 自機狙い
+			this.aimedToChara();
+			for (var i=0; i< 360 / this.maru_shot_pertheta; i++) {
+				this.maru_shot();
+				this.maru_shot_theta += this.maru_shot_pertheta;
+			}
+			this.game.playSound('boss_shot_big');
+		}
 	}
 
 };
@@ -4254,13 +4291,135 @@ Spell.prototype.maru_shot = function() {
 	this.shot(1, x, y, {r: r, theta: theta}); // type_id: 1
 };
 
+// 自機狙いにする
+Spell.prototype.aimedToChara = function() {
+	// 自機
+	var character = this.stage.character;
+
+	var ax = character.x - this.boss.x;
+	var ay = character.y - this.boss.y;
+
+	this.maru_shot_theta = this._radian_to_theta(Math.atan2(ay, ax));
+};
+
+// ラジアン -> θ に変換
+Spell.prototype._radian_to_theta = function(radian) {
+	return (radian * 180 / Math.PI) | 0;
+};
+
 Spell.prototype.name = function() { return "風符「天狗風」"; };
 
 module.exports = Spell;
 
 },{"../../constant":2,"../../util":39,"./base":36}],38:[function(require,module,exports){
-arguments[4][37][0].apply(exports,arguments)
-},{"../../constant":2,"../../util":39,"./base":36,"dup":37}],39:[function(require,module,exports){
+'use strict';
+
+/* スペルカード */
+// TODO: スプライト名もっといい感じに指定できないかな・・・
+var BaseSpell = require('./base');
+var Util = require('../../util');
+var Constant = require('../../constant');
+
+var Spell = function(boss) {
+	BaseSpell.apply(this, arguments);
+	this.maru_shot_theta = 0;
+
+	// config
+	this.r = 1.5;
+	this.maru_percount1    = 100;
+	this.maru_shot_pertheta = 10;
+
+};
+Util.inherit(Spell, BaseSpell);
+
+// 初期化
+Spell.prototype.init = function() {
+	BaseSpell.prototype.init.apply(this, arguments);
+};
+
+Spell.prototype.run = function() {
+	BaseSpell.prototype.run.apply(this, arguments);
+
+	// スペルカード発動演出中
+	if(this.isSpellStarting()) return;
+
+	// 移動
+	var shot_time = 600;
+	var move_count = this.frame_count % 3600;
+	if(shot_time <= move_count && move_count < shot_time + 60) {
+		this.boss.moveLeft();
+		this.boss.animateLeft();
+	}
+	else if(shot_time * 2 + 60 <= move_count && move_count < shot_time * 2 + 60 * 2) {
+		this.boss.moveRight();
+		this.boss.moveDown();
+		this.boss.animateRight();
+	}
+	else if(shot_time * 3 + 60 * 2 <= move_count && move_count < shot_time * 3 + 60 * 3) {
+		this.boss.moveRight();
+		this.boss.moveUp();
+		this.boss.animateRight();
+	}
+	else if(shot_time * 4 + 60 * 3 <= move_count && move_count < shot_time * 4 + 60 * 4) {
+		this.boss.moveLeft();
+		this.boss.animateLeft();
+	}
+	else {
+		// 移動してない時
+
+		// 円形弾
+		if(
+			this.frame_count % this.maru_percount1 === 0  ||
+			this.frame_count % this.maru_percount1 === 10 ||
+			this.frame_count % this.maru_percount1 === 20
+		) {
+			// 自機狙い
+			this.aimedToChara();
+			for (var i=0; i< 360 / this.maru_shot_pertheta; i++) {
+				this.maru_shot();
+				this.maru_shot_theta += this.maru_shot_pertheta;
+			}
+			this.game.playSound('boss_shot_big');
+		}
+
+		this.boss.animateNeutral();
+	}
+
+};
+
+Spell.prototype.maru_shot = function() {
+	var x = this.boss.x;
+	var y = this.boss.y;
+	var theta = this.maru_shot_theta;
+	var r = this.r;
+
+	this.shot(3, x, y, {r: r, theta: theta}); // type_id: 1
+};
+
+// 自機狙いにする
+Spell.prototype.aimedToChara = function() {
+	// 自機
+	var character = this.stage.character;
+
+	var ax = character.x - this.boss.x;
+	var ay = character.y - this.boss.y;
+
+	this.maru_shot_theta = this._radian_to_theta(Math.atan2(ay, ax));
+};
+
+// ラジアン -> θ に変換
+Spell.prototype._radian_to_theta = function(radian) {
+	return (radian * 180 / Math.PI) | 0;
+};
+
+
+
+
+Spell.prototype.name = function() { return "風符「天狗風」"; };
+
+module.exports = Spell;
+
+},{"../../constant":2,"../../util":39,"./base":36}],39:[function(require,module,exports){
 'use strict';
 var Util = {
 	inherit: function( child, parent ) {
