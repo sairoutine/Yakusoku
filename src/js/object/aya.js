@@ -181,7 +181,7 @@ Aya.prototype.notifyCollision = function(obj) {
 
 // 当たり判定サイズ
 Aya.prototype.collisionWidth  = function() { return 64; };
-Aya.prototype.collisionHeight = function() { return 100; };
+Aya.prototype.collisionHeight = function() { return 64; };
 
 // スプライトの開始位置
 Aya.prototype.spriteX = function() { return this.indexX; };
