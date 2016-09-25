@@ -106,7 +106,7 @@ State.prototype._showVital = function(){
 	ctx.fillRect(
 		VITAL_OUTLINE_MARGIN,
 		VITAL_OUTLINE_MARGIN,
-		this.stage.boss.vital / this.stage.boss.max_vital * this.stage.width - VITAL_OUTLINE_MARGIN * 2,
+		this.stage.boss.vital / this.stage.boss.max_vital * (this.stage.width - VITAL_OUTLINE_MARGIN * 2),
 		VITAL_OUTLINE_MARGIN
 	);
 
