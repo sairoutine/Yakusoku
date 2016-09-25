@@ -2,7 +2,7 @@
 'use strict';
 
 var Config = {
-	DEBUG: true,
+	DEBUG: false,
 	IMAGES: {
 		title_bg:  'image/title_bg.png',
 		press_z:  'image/press_z.png',
@@ -293,6 +293,18 @@ var BulletTypes = [
 		'collisionHeight': 13,
 		'is_rotate':       true
 	},
+	// 文：赤いにじゅうまる弾
+	{
+		'image':       'shot',
+		'indexX':           0,
+		'indexY':           4,
+		'width':           23,
+		'height':          23,
+		'collisionWidth':  13,
+		'collisionHeight': 13,
+		'is_rotate':       false
+	},
+
 ];
 
 module.exports = BulletTypes;
@@ -3094,7 +3106,7 @@ var DEBUG_STATE;
 // サイドバーの横の長さ
 var SIDE_WIDTH = 160;
 // 背景画像のスクロールスピード
-var BACKGROUND_SCROLL_SPEED = 2;
+var BACKGROUND_SCROLL_SPEED = 3;
 
 // 道中の終了
 var WAY_END = 3500;
@@ -3281,6 +3293,14 @@ Scene.prototype._showText = function(){
 		case 3:
 			life_star_string = "★★★";
 			break;
+		case 4:
+			life_star_string = "★★★★";
+			break;
+		case 5:
+			life_star_string = "★★★★★";
+			break;
+
+
 		default:
 			life_star_string = "";
 			break;
@@ -4288,7 +4308,7 @@ Spell.prototype.maru_shot = function() {
 	var theta = this.maru_shot_theta;
 	var r = this.r;
 
-	this.shot(1, x, y, {r: r, theta: theta}); // type_id: 1
+	this.shot(4, x, y, {r: r, theta: theta}); // type_id: 1
 };
 
 // 自機狙いにする
