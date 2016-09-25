@@ -11,7 +11,7 @@ var DEBUG_STATE;
 // サイドバーの横の長さ
 var SIDE_WIDTH = 160;
 // 背景画像のスクロールスピード
-var BACKGROUND_SCROLL_SPEED = 2;
+var BACKGROUND_SCROLL_SPEED = 3;
 
 // 道中の終了
 var WAY_END = 3500;
