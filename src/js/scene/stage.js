@@ -5,7 +5,7 @@
 var Constant = require('../constant');
 
 var DEBUG_STATE;
-//DEBUG_STATE = Constant.WAY_STATE;
+//DEBUG_STATE = Constant.BOSS_STATE;
 
 
 // サイドバーの横の長さ
