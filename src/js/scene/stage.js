@@ -198,6 +198,14 @@ Scene.prototype._showText = function(){
 		case 3:
 			life_star_string = "★★★";
 			break;
+		case 4:
+			life_star_string = "★★★★";
+			break;
+		case 5:
+			life_star_string = "★★★★★";
+			break;
+
+
 		default:
 			life_star_string = "";
 			break;
