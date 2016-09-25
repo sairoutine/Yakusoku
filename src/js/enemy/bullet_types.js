@@ -6,10 +6,10 @@ var BulletTypes = [
 		'image':       'shot',
 		'indexX':           3,
 		'indexY':           1,
-		'width':           13,
+		'width':           14,
 		'height':          20,
 		'collisionWidth':  13,
-		'collisionHeight': 20,
+		'collisionHeight': 13,
 		'is_rotate':       true
 	},
 	// 文：赤い弾
@@ -17,10 +17,10 @@ var BulletTypes = [
 		'image':       'shot',
 		'indexX':           0,
 		'indexY':           1,
-		'width':           13,
+		'width':           14,
 		'height':          20,
 		'collisionWidth':  13,
-		'collisionHeight': 20,
+		'collisionHeight': 13,
 		'is_rotate':       true
 	},
 	// stage1 道中雑魚：青い円形弾
@@ -33,6 +33,17 @@ var BulletTypes = [
 		'collisionWidth':  16,
 		'collisionHeight': 16,
 		'is_rotate':       false
+	},
+	// 文：オレンジっぽい弾
+	{
+		'image':       'shot',
+		'indexX':           7,
+		'indexY':           1,
+		'width':           14,
+		'height':          20,
+		'collisionWidth':  13,
+		'collisionHeight': 13,
+		'is_rotate':       true
 	},
 ];
 
