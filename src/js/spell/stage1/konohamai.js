@@ -8,7 +8,6 @@ var Constant = require('../../constant');
 
 var Spell = function(boss) {
 	BaseSpell.apply(this, arguments);
-	this.frame_count = 0;
 	this.shot_thetas1 = [0, 60, 120, 180, 240, 300];
 	this.shot_thetas2 = [0, 60, 120, 180, 240, 300];
 	this.maru_shot_theta = 0;
