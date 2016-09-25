@@ -1799,7 +1799,7 @@ var SHOT_SPAN = 5;
 // 死亡時の無敵時間(フレーム)
 var UNHITTABLE_COUNT = 100;
 // 初期ライフ
-var INIT_LIFE = 3;
+var INIT_LIFE = 5;
 
 // constructor
 var Character = function(stage) {
