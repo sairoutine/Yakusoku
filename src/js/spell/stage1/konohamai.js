@@ -17,7 +17,7 @@ var Spell = function(boss) {
 	this.r = 1.5;
 	this.uzumaki_percount = 15;
 	this.maru_percount    = 75;
-	this.maru_shot_pertheta = 6;
+	this.maru_shot_pertheta = 12;
 
 };
 Util.inherit(Spell, BaseSpell);
