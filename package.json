@@ -4,7 +4,8 @@
   "description": "this is under development",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "electron": "electron ./public/index.js",
+	"build": "cd public && electron-packager ./ Yakusoku --platform=darwin,win32 --arch=x64 --version=0.36.1 --icon=icon.ico"
   },
   "repository": {
     "type": "git",
