@@ -133,7 +133,6 @@ Aya.prototype.run = function(){
 	}
 };
 
-// TODO: aimed で動かしたい
 // 移動
 Aya.prototype.moveLeft = function(){
 	this.x -= SPEED;
@@ -147,6 +146,33 @@ Aya.prototype.moveUp = function(){
 Aya.prototype.moveDown = function(){
 	this.y += SPEED;
 };
+
+// TODO: refactor
+// theta値の方向に移動
+Aya.prototype.moveByTheta = function(theta){
+	this.x += this.calc_moveX(theta);
+	this.y += this.calc_moveY(theta);
+};
+
+// θ -> ラジアンに変換
+Aya.prototype._theta_to_radian = function(theta){
+	return (theta / 180 * Math.PI);
+};
+
+// X軸の移動を計算
+Aya.prototype.calc_moveX = function(theta) {
+	var move_x = SPEED * Math.cos(this._theta_to_radian(theta));
+	return move_x;
+};
+
+// Y軸の移動を計算
+Aya.prototype.calc_moveY = function(theta) {
+	var move_y = SPEED * Math.sin(this._theta_to_radian(theta));
+	return move_y;
+} ;
+
+
+
 
 // 移動アニメーション
 Aya.prototype.animateLeft = function(){
