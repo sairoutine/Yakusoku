@@ -45,6 +45,18 @@ var BulletTypes = [
 		'collisionHeight': 13,
 		'is_rotate':       true
 	},
+	// 文：赤いにじゅうまる弾
+	{
+		'image':       'shot',
+		'indexX':           0,
+		'indexY':           4,
+		'width':           23,
+		'height':          23,
+		'collisionWidth':  13,
+		'collisionHeight': 13,
+		'is_rotate':       false
+	},
+
 ];
 
 module.exports = BulletTypes;
