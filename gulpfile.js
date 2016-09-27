@@ -9,6 +9,10 @@ var appjs = 'main.js';
 // minify後のアプリ名ファイル
 var appminjs = 'main.min.js';
 
+// gulp watch で開く html
+var html_dir = "public";
+var html = "index.html";
+
 var watch      = require('gulp-watch');
 var browserify = require('browserify');
 var gulp       = require('gulp');
@@ -58,8 +62,8 @@ gulp.task('build', function(callback) {
 gulp.task('browser-sync', function() {
 	return browserSync.init({
 		server: {
-			baseDir: "public",
-			index: "index.html"
+			baseDir: html_dir,
+			index: html,
 		}
 	});
 });
