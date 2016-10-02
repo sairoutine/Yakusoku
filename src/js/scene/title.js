@@ -35,17 +35,15 @@ OpeningScene.prototype.init = function() {
 
 	var stage = new cjs.Stage(canvas);
 	stage.addChild(exportRoot);
-	stage.update();
 
-	cjs.Ticker.setFPS(60);
-	cjs.Ticker.addListener(stage);
-
+	this.stage = stage;
 	this.neko = canvas;
 };
 
 // フレーム処理
 OpeningScene.prototype.run = function(){
 	BaseScene.prototype.run.apply(this, arguments);
+	this.stage.update();
 
 	if(this.frame_count === 60) {
 		this.game.playBGM('title');
