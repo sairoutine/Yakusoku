@@ -56,7 +56,9 @@ var Config = {
 		item:      'image/item.png',
 	   */
 	},
-
+	CJS_IMAGES: [
+		{src:"image/neko_walk01.png", id:"neko_walk01"}
+	],
 	SOUNDS: {
 		select: {
 			id: 0x01,
@@ -169,7 +171,6 @@ var Config = {
 };
 
 // 全素材数
-Config.ALL_MATERIAL_NUM = Object.keys(Config.IMAGES).length + Object.keys(Config.SOUNDS).length + Object.keys(Config.BGMS).length;
-
+Config.ALL_MATERIAL_NUM = Object.keys(Config.IMAGES).length + Object.keys(Config.SOUNDS).length + Object.keys(Config.BGMS).length + Config.CJS_IMAGES.length;
 
 module.exports = Config;
