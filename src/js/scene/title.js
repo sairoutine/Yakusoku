@@ -9,6 +9,8 @@ var Util = require('../util');
 var Constant = require('../constant');
 var Config = require('../config');
 
+var neko = require("../createjs/neko");
+var cjs = require("../createjs");
 
 // 画面切り替え効果時間
 var SHOW_TRANSITION_COUNT = 100;
@@ -28,6 +30,17 @@ Util.inherit(OpeningScene, BaseScene);
 OpeningScene.prototype.init = function() {
 	BaseScene.prototype.init.apply(this, arguments);
 
+	var exportRoot = new neko.neko();
+	var canvas = document.createElement('canvas');
+
+	var stage = new cjs.Stage(canvas);
+	stage.addChild(exportRoot);
+	stage.update();
+
+	cjs.Ticker.setFPS(60);
+	cjs.Ticker.addListener(stage);
+
+	this.neko = canvas;
 };
 
 // フレーム処理
@@ -85,6 +98,10 @@ OpeningScene.prototype.updateDisplay = function(){
 
 	ctx.restore();
 
+
+	ctx.save();
+	ctx.drawImage(this.neko, 0, 0);
+	ctx.restore();
 };
 
 module.exports = OpeningScene;
