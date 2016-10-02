@@ -39,3 +39,28 @@ window.onerror = function (msg, file, line, column, err) {
 	window.alert(msg + "\n" + line + ":" + column);
 };
 
+//フルスクリーンに切り替え
+window.enterFullscreen = function () {
+  var x = document.getElementById('mainCanvas');
+  if (x.webkitRequestFullScreen) {
+    x.webkitRequestFullScreen();
+  } else if (x.mozRequestFullScreen) {
+  x.mozRequestFullScreen();
+  } else {
+    x.requestFullScreen();
+  }
+};
+//フルスクリーンを解除
+function exitFullscreen() {
+  if (document.webkitCancelFullScreen) {
+    document.webkitCancelFullScreen();
+  } else if (document.mozCancelFullScreen) {
+    document.mozCancelFullScreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+
+
+
