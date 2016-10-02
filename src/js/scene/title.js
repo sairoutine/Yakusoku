@@ -32,6 +32,7 @@ OpeningScene.prototype.init = function() {
 
 	var exportRoot = new neko.neko();
 	var canvas = document.createElement('canvas');
+	canvas.width = canvas.height = 300;
 
 	var stage = new cjs.Stage(canvas);
 	stage.addChild(exportRoot);
