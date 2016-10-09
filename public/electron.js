@@ -4,6 +4,7 @@ const electron = require('electron');
 const app = electron.app;
 const dialog = electron.dialog;
 const BrowserWindow = electron.BrowserWindow;
+const globalShortcut = electron.globalShortcut;
 
 let mainWindow;
 
@@ -57,12 +58,30 @@ function createWindow () {
 		`, true);
 	}
 
+
+	const ret = globalShortcut.register('Escape', function() {
+		var quit_answer = dialog.showMessageBox({
+			type: 'question',
+			buttons: ['Yes', 'No'],
+			title: '終了',
+			message: 'ゲームを終了しますがよろしいですか？'
+		});
+		if(quit_answer === 0) {
+			app.quit();
+		}
+	});
+
 	mainWindow.on('closed', function () {
 		mainWindow = null;
 	});
 }
 
 app.on('ready', createWindow);
+
+app.on('will-quit', () => {
+	// Unregister all shortcuts.
+	globalShortcut.unregisterAll();
+});
 
 app.on('window-all-closed', function () {
 	if (process.platform !== 'darwin') {
