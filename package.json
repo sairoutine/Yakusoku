@@ -4,7 +4,7 @@
   "description": "this is under development",
   "main": "index.js",
   "scripts": {
-    "electron": "electron ./public/index.js",
+    "start": "electron ./public/electron.js",
 	"build": "cd public && electron-packager ./ Yakusoku --platform=darwin,win32 --arch=x64 --version=0.36.1 --icon=icon.ico"
   },
   "repository": {
