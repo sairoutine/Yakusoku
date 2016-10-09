@@ -15,14 +15,24 @@ body {
 	width:640;
 	height:480;
 }
+#canvasdiv {
+	position:relative;
+	width:640px;
+	height:480px
+}
+#canvasdiv:-webkit-full-screen {
+	width: 100%;
+	height: 100%;
+}
+canvas {
+	width: 100%;
+	height: 100%;
+}
 </style>
 </head>
 <body>
-	<!-- webfont 読み込み -->
-	<div style="font-family: 'Nikumaru';"></div>
-
-	<div id="canvasdiv" style="position:relative; width:640px; height:480px">
-		<canvas id="mainCanvas" width="640" height="480" style="position:absolute;left0px;top0px;"></canvas>
+	<div id="canvasdiv">
+		<canvas id="mainCanvas" width="640" height="480" style="position:absolute;left: 0px;top: 0px;"></canvas>
 	</div>
 <!--
 <table>
