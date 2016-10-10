@@ -25,6 +25,11 @@ window.onload = function() {
 		game.fontLoadingDone();
 	}
 
+	// ゲームパッド
+	if(window.Gamepad && navigator.getGamepads) {
+		game.enableGamePad();
+	}
+
 	// ゲーム起動
 	game.run();
 };
