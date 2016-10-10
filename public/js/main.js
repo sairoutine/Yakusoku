@@ -722,6 +722,9 @@ var Game = function(mainCanvas) {
 
 	// 一つ前のフレームで押下されたキー
 	this.before_keyflag = 0x0;
+
+	// ゲームパッドが接続されているかどうか
+	this.is_connect_gamepad = 0;
 };
 
 Game.prototype = {
@@ -735,6 +738,9 @@ Game.prototype = {
 
 		// 一つ前のフレームで押下されたキー
 		this.before_keyflag = 0x0;
+
+		// ゲームパッドが接続されているかどうか
+		this.is_connect_gamepad = 0;
 
 		// シーンをローディング画面にする
 		this.changeScene(constant.LOADING_SCENE);
@@ -882,6 +888,9 @@ Game.prototype = {
 
 	// ゲーム起動
 	run: function(){
+		// ゲームパッド対応端末なら入力を取得
+		this.handleGamePad();
+
 		// シーン更新
 		this.currentScene().run();
 		this.currentScene().updateDisplay();
@@ -923,11 +932,31 @@ Game.prototype = {
 		// タイトル画面に切り替え
 		this.changeScene(constant.TITLE_SCENE);
 	},
+	handleGamePad: function() {
+		if(!this.is_connect_gamepad) return;
 
+		var pads = navigator.getGamepads();
+		var pad = pads[0]; // 1Pコン
+
+		if(!pad) return;
+
+		this.keyflag = 0x00;
+		this.keyflag |= pad.buttons[1].pressed ? constant.BUTTON_Z:      0x00;// A
+		this.keyflag |= pad.buttons[0].pressed ? constant.BUTTON_X:      0x00;// B
+		this.keyflag |= pad.buttons[2].pressed ? constant.BUTTON_SELECT: 0x00;// SELECT
+		this.keyflag |= pad.buttons[3].pressed ? constant.BUTTON_START:  0x00;// START
+		//this.keyflag |= pad.buttons[8].pressed ? 0x04 : 0x00;// SELECT
+		//this.keyflag |= pad.buttons[9].pressed ? 0x08 : 0x00;// START
+
+		this.keyflag |= pad.axes[1] < -0.5 ? constant.BUTTON_UP:         0x00;// UP
+		this.keyflag |= pad.axes[1] >  0.5 ? constant.BUTTON_DOWN:       0x00;// DOWN
+		this.keyflag |= pad.axes[0] < -0.5 ? constant.BUTTON_LEFT:       0x00;// LEFT
+		this.keyflag |= pad.axes[0] >  0.5 ? constant.BUTTON_RIGHT:      0x00;// RIGHT
+	},
+	enableGamePad: function() {
+		this.is_connect_gamepad = 1;
+	},
 };
-
-
-
 
 module.exports = Game;
 
@@ -1293,6 +1322,11 @@ window.onload = function() {
 	else {
 		// フォントロードに対応してなければ無視
 		game.fontLoadingDone();
+	}
+
+	// ゲームパッド
+	if(window.Gamepad && navigator.getGamepads) {
+		game.enableGamePad();
 	}
 
 	// ゲーム起動
