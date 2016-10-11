@@ -219,7 +219,7 @@ Scene.prototype._showText = function(){
 	//ctx.fillText("HiScore",   x1, 25);
 	ctx.fillText("Score",     x1, 70);
 	ctx.fillText("Player",    x1, 130);
-	//ctx.fillText("Spell",     x1, 175);
+	ctx.fillText("Spell",     x1, 175);
 	if(Config.DEBUG) {
 		ctx.fillText("Frame",     x1, 235);
 	}
@@ -228,7 +228,34 @@ Scene.prototype._showText = function(){
 	//ctx.fillText("123456789", x2, 50);  // HiScore
 	ctx.fillText(this.score, x2, 95);  // Score
 	ctx.fillText(life_star_string,     x2, 155); // Player
-	//ctx.fillText("★★★★★",     x2, 200); // Spell
+
+	// 残ボム数
+	var bomb_star_string;
+	switch(this.character.bombs) {
+		case 1:
+			bomb_star_string = "★";
+			break;
+		case 2:
+			bomb_star_string = "★★";
+			break;
+		case 3:
+			bomb_star_string = "★★★";
+			break;
+		case 4:
+			bomb_star_string = "★★★★";
+			break;
+		case 5:
+			bomb_star_string = "★★★★★";
+			break;
+
+
+		default:
+			bomb_star_string = "";
+			break;
+	}
+
+	ctx.fillText(bomb_star_string,     x2, 200); // Bomb
+
 	if(Config.DEBUG) {
 		ctx.fillText(this.frame_count,     x2, 260); // Frame
 	}
