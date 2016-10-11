@@ -23,8 +23,12 @@ var LR_ANIMATION_SPAN = 4; // 左右移動
 var SHOT_SPAN = 5;
 // 死亡時の無敵時間(フレーム)
 var UNHITTABLE_COUNT = 100;
+// ボム発動時間(フレーム)
+var BOMB_COUNT = 500;
 // 初期ライフ
 var INIT_LIFE = 5;
+// 初期ボム数
+var INIT_BOMB = 5;
 
 // constructor
 var Character = function(stage) {
@@ -56,6 +60,15 @@ Character.prototype.init = function() {
 
 	// 初期ライフ3
 	this.life = INIT_LIFE;
+
+	// 初期ボム数
+	this.bombs = INIT_BOMB;
+
+	// ボム使用中かどうか
+	this.is_using_bomb = false;
+
+	// ボムを使用した際のフレームを保存
+	this.using_bomb_count = 0;
 
 	// ステージ開始直後は無敵状態にする
 	this.is_unhittable = true;
@@ -122,6 +135,10 @@ Character.prototype.run = function(){
 	// 自機が無敵状態なら無敵切れか判定
 	if(this.is_unhittable && this.unhittable_count + UNHITTABLE_COUNT < this.frame_count) {
 		this.is_unhittable = false;
+	}
+	// 自機がボム使用中なら期限切れか判定
+	if(this.is_using_bomb && this.using_bomb_count + BOMB_COUNT < this.frame_count) {
+		this.is_using_bomb = false;
 	}
 
 	var span = this.indexY === 0 ? FRONT_ANIMATION_SPAN : LR_ANIMATION_SPAN;
@@ -193,6 +210,38 @@ Character.prototype.notifyCollision = function(obj) {
 		}
 	}
 };
+
+// ボムの使用
+Character.prototype.useBomb = function() {
+	if(this.bombs <= 0) {
+		return;
+	}
+
+	if(this.is_using_bomb) {
+		return;
+	}
+
+	// ボム所持数を減らす
+	this.bombs--;
+
+	// ボムを使用した際のフレームを保存
+	this.using_bomb_count = this.frame_count;
+
+	// ボム使用中
+	this.is_using_bomb = true;
+
+	// ザコ敵を vanish する
+	// 敵の弾を vanish する
+	// 発生したアイテムを全て Homing 属性をつける
+	// ボムが出現していたらしばらく弾や敵は出現しない
+
+	// スペルカードエフェクトをステージに表示する
+	// ボムを画面に作成する
+	this.spell.init();
+};
+
+
+
 
 
 
