@@ -1,7 +1,7 @@
 'use strict';
 
 var Config = {
-	DEBUG: false,
+	DEBUG: true,
 	IMAGES: {
 		title_bg:  'image/title_bg.png',
 		press_z:  'image/press_z.png',
