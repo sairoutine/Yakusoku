@@ -10,6 +10,7 @@ var Constant = require('../constant');
 var Aya = require('./aya');
 var Enemy = require('./enemy');
 var Bullet = require('./bullet');
+var Spell = require('../spell/renko/spell1');
 
 
 // 自機の移動速度(通常時)
@@ -37,6 +38,8 @@ var Character = function(stage) {
 
 	// 自機のスプライトの位置
 	this.indexX = 0; this.indexY = 0;
+
+	this.spell = new Spell(this);
 };
 
 // 基底クラスを継承
@@ -150,6 +153,10 @@ Character.prototype.run = function(){
 		// スプライトを全て表示しきったら最初のスプライトに戻る
 		if(this.indexX > 2) { this.indexX = 0; }
 	}
+
+	if(this.is_using_bomb) {
+		this.spell.run();
+	}
 };
 
 // 自機を描画
@@ -165,6 +172,11 @@ Character.prototype.updateDisplay = function(){
 	if (this.is_unhittable) {
 		this.game.surface.globalAlpha = 1.0;
 	}
+
+	if(this.is_using_bomb) {
+		this.spell.updateDisplay();
+	}
+
 };
 
 // 衝突判定
