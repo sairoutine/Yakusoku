@@ -12,4 +12,6 @@ Util.inherit(Spell, BaseSpell);
 
 Spell.prototype.name = function() { return "蓮子スペルカード1"; };
 
+Spell.prototype.charaImage = function() { return "renko_normal"; };
+
 module.exports = Spell;

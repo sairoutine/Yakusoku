@@ -106,7 +106,7 @@ SpellBase.prototype.updateDisplay = function(){
 	if(this.frame_count <= CUTIN_SLIDEING_WAIT_COUNT) return;
 
 	var ctx = this.game.surface;
-	var image = this.game.getImage("aya_normal");
+	var image = this.game.getImage(this.charaImage());
 
 	ctx.save();
 
@@ -132,13 +132,14 @@ SpellBase.prototype.updateDisplay = function(){
 	ctx.restore();
 };
 
-
-
-
-
 // スペルカード名
 SpellBase.prototype.name = function() {
 	console.log("Spell's name method must be implemented");
+};
+
+// カットインキャラ画像
+SpellBase.prototype.charaImage = function() {
+	console.log("Spell's charaImage method must be implemented");
 };
 
 // 撃つ

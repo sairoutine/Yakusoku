@@ -128,4 +128,9 @@ Spell.prototype._radian_to_theta = function(radian) {
 
 Spell.prototype.name = function() { return "風符「天狗風」"; };
 
+Spell.prototype.charaImage = function() { return "aya_normal"; };
+
+
+
+
 module.exports = Spell;
