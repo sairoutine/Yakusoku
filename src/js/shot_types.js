@@ -11,6 +11,17 @@ var ShotTypes = [
 		'collisionHeight': 15,
 		'is_rotate':       false,
 	},
+	{
+		'image':       'shot',
+		'indexX':           4,
+		'indexY':           1,
+		'width':           64,
+		'height':          64,
+		'collisionWidth':  64,
+		'collisionHeight': 64,
+		'is_rotate':       false,
+	},
+
 ];
 
 module.exports = ShotTypes;
