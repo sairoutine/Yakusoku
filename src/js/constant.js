@@ -1,8 +1,6 @@
 'use strict';
 
 var Constant = {
-	DEBUG: true,
-
 	LOADING_SCENE:  0,
 	TITLE_SCENE:    1,
 	PROLOGUE1_SCENE:2,

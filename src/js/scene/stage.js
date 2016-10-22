@@ -100,7 +100,7 @@ Scene.prototype.init = function() {
 
 	// TODO: DEBUG
 	// 道中開始
-	this.changeState(Constant.DEBUG && DEBUG_STATE ? DEBUG_STATE : Constant.WAY_STATE);
+	this.changeState(Config.DEBUG && DEBUG_STATE ? DEBUG_STATE : Constant.WAY_STATE);
 };
 
 // 現在のシーン
