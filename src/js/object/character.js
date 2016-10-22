@@ -253,8 +253,6 @@ Character.prototype.useBomb = function() {
 	// 敵の弾を vanish する
 	// 発生したアイテムを全て Homing 属性をつける
 	// ボムが出現していたらしばらく弾や敵は出現しない
-
-	// ボムを画面に作成する
 	this.spell.init();
 };
 
