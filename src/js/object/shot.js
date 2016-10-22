@@ -20,7 +20,7 @@ var Shot = function(stage) {
 Util.inherit(Shot, BaseObject);
 
 // 初期化
-Shot.prototype.init = function(x, y) {
+Shot.prototype.init = function(type_id, x, y) {
 	BaseObject.prototype.init.apply(this, arguments);
 
 	this.x = x;

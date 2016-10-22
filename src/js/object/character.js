@@ -84,7 +84,7 @@ Character.prototype.init = function() {
 Character.prototype.shot = function(){
 	// Nフレーム置きにショットを生成
 	if(this.frame_count % SHOT_SPAN === 0) {
-		this.stage.shot_manager.create(this.x, this.y);
+		this.stage.shot_manager.create(0, this.x, this.y); // type_id: 0
 		//this.game.playSound('shot'); TODO
 	}
 };
