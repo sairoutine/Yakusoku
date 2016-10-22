@@ -1,6 +1,6 @@
 'use strict';
 
-var Constant = require('constant');
+var Constant = require('./constant');
 
 var Config = {
 	DEBUG: true,
