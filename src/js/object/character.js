@@ -25,7 +25,7 @@ var SHOT_SPAN = 5;
 // 死亡時の無敵時間(フレーム)
 var UNHITTABLE_COUNT = 100;
 // ボム発動時間(フレーム)
-var BOMB_COUNT = 500;
+var BOMB_COUNT = 100;
 // 初期ライフ
 var INIT_LIFE = 5;
 // 初期ボム数
@@ -154,6 +154,7 @@ Character.prototype.run = function(){
 		if(this.indexX > 2) { this.indexX = 0; }
 	}
 
+	// ボム使用中ならボムの発動
 	if(this.is_using_bomb) {
 		this.spell.run();
 	}
@@ -173,6 +174,7 @@ Character.prototype.updateDisplay = function(){
 		this.game.surface.globalAlpha = 1.0;
 	}
 
+	// ボム使用中ならスペカカットインを表示
 	if(this.is_using_bomb) {
 		this.spell.updateDisplay();
 	}
@@ -242,12 +244,12 @@ Character.prototype.useBomb = function() {
 	// ボム使用中
 	this.is_using_bomb = true;
 
+	// TODO:
 	// ザコ敵を vanish する
 	// 敵の弾を vanish する
 	// 発生したアイテムを全て Homing 属性をつける
 	// ボムが出現していたらしばらく弾や敵は出現しない
 
-	// スペルカードエフェクトをステージに表示する
 	// ボムを画面に作成する
 	this.spell.init();
 };
