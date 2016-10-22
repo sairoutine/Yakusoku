@@ -30,6 +30,10 @@ var BOMB_COUNT = 100;
 var INIT_LIFE = 5;
 // 初期ボム数
 var INIT_BOMB = 5;
+// 自機弾のベクトル
+var SHOT_VECTOR = { 'r': 8, 'theta': 270 };
+
+
 
 // constructor
 var Character = function(stage) {
@@ -84,7 +88,7 @@ Character.prototype.init = function() {
 Character.prototype.shot = function(){
 	// Nフレーム置きにショットを生成
 	if(this.frame_count % SHOT_SPAN === 0) {
-		this.stage.shot_manager.create(0, this.x, this.y); // type_id: 0
+		this.stage.shot_manager.create(0, this.x, this.y, SHOT_VECTOR); // type_id: 0
 		//this.game.playSound('shot'); TODO
 	}
 };

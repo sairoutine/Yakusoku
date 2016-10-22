@@ -21,7 +21,7 @@ var Shot = function(stage) {
 
 Util.inherit(Shot, VectorBaseObject);
 
-Shot.prototype.init = function(type_id, x, y) {
+Shot.prototype.init = function(type_id, x, y, vector) {
 	// VectorBaseObject.init より先に設定しないと aim が効かない
 	this.x = x;
 	this.y = y;
@@ -32,7 +32,7 @@ Shot.prototype.init = function(type_id, x, y) {
 		[
 			{
 				count: 0,
-				vector: type.vector,
+				vector: vector,
 				is_rotate: type.is_rotate,
 			}
 		]

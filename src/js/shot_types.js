@@ -10,7 +10,6 @@ var ShotTypes = [
 		'collisionWidth':  15,
 		'collisionHeight': 15,
 		'is_rotate':       false,
-		'vector': { 'r': 8, 'theta': 270 },
 	},
 ];
 
