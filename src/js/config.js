@@ -1,7 +1,10 @@
 'use strict';
 
+var Constant = require('constant');
+
 var Config = {
 	DEBUG: true,
+	DEBUG_SCENE: Constant.STAGE_SCENE,
 	IMAGES: {
 		title_bg:  'image/title_bg.png',
 		press_z:  'image/press_z.png',

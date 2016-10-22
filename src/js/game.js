@@ -1,12 +1,7 @@
 'use strict';
 
-var config = require('./config');
+var Config = require('./config');
 var constant = require('./constant');
-
-// TODO: デバッグ(最初に表示するシーン)
-var DEBUG_SCENE;
-//DEBUG_SCENE = constant.STAGE_SCENE;
-
 
 var LoadingScene   = require('./scene/loading');
 var TitleScene     = require('./scene/title');
@@ -188,7 +183,7 @@ Game.prototype = {
 	_createSourceNode: function(key) {
 		var self = this;
 		var arrayBuffer = self.bgms[key];
-		var conf = config.BGMS[key];
+		var conf = Config.BGMS[key];
 
 		var source = self.audio_context.createBufferSource();
 		source.buffer = arrayBuffer;
@@ -208,21 +203,21 @@ Game.prototype = {
 	},
 	// 再生するSEをセット
 	playSound: function(key) {
-		this.soundflag |= config.SOUNDS[key].id;
+		this.soundflag |= Config.SOUNDS[key].id;
 	},
 
 	// セットされたフラグにもとづいてSEを再生
 	runPlaySound: function() {
-		for(var key in config.SOUNDS) {
+		for(var key in Config.SOUNDS) {
 			// フラグが立ってたら
-			if(this.soundflag & config.SOUNDS[key].id) {
+			if(this.soundflag & Config.SOUNDS[key].id) {
 				// 再生
 				this.sounds[key].pause();
 				this.sounds[key].currentTime = 0;
 				this.sounds[key].play();
 
 				// フラグを削除
-				this.soundflag &= ~config.SOUNDS[key].id;
+				this.soundflag &= ~Config.SOUNDS[key].id;
 
 				// 1フレームに1つしか再生しない
 				break;
@@ -264,7 +259,7 @@ Game.prototype = {
 	// ローディング画面が終わったら
 	notifyLoadingDone: function() {
 		// オープニング画面に切り替え
-		this.changeScene(constant.DEBUG && DEBUG_SCENE ? DEBUG_SCENE : constant.TITLE_SCENE);
+		this.changeScene(Config.DEBUG && Config.DEBUG_SCENE ? Config.DEBUG_SCENE : constant.TITLE_SCENE);
 	},
 	// タイトル画面が終わったら
 	notifyTitleDone: function() {
