@@ -18,6 +18,12 @@ Util.inherit(VectorBase, BaseObject);
 VectorBase.prototype.init = function(vectors) {
 	BaseObject.prototype.init.apply(this, arguments);
 
+	// 動きを設定
+	this.setVector(vectors);
+};
+
+// 動きを設定
+VectorBase.prototype.setVector = function(vectors) {
 	// 敵の動き(ベクトル)
 	this.vectors = [];
 
