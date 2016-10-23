@@ -40,8 +40,8 @@ Item.prototype.init = function(type_id, x, y) {
 };
 
 Item.prototype.run = function() {
-	// ホーミング状態なら、キャラに向けて逐一ベクトルを修正
-	if(this.is_homing) {
+	// ボム使用中なら、キャラに向けて逐一ベクトルを修正
+	if(this.stage.character.is_using_bomb) {
 		this.setVector([
 			{
 				count: 0,

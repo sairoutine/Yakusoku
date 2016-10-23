@@ -251,7 +251,6 @@ Character.prototype.useBomb = function() {
 	// TODO:
 	// ザコ敵を vanish する
 	// 敵の弾を vanish する
-	// 発生したアイテムを全て Homing 属性をつける
 	this.spell.init();
 };
 
