@@ -80,23 +80,25 @@ State.prototype.run = function(){
 		character.animateNeutral();
 	}
 
+	// アイテムと自機の衝突判定
+	this.stage.item_manager.checkCollisionWithObject(character);
 	// 敵弾と自機の衝突判定
 	this.stage.bullet_manager.checkCollisionWithObject(character);
-
 	// ボスと自機の衝突判定
 	character.checkCollisionWithObject(this.stage.boss);
-
 	// ボスと自機弾の衝突判定
 	this.stage.shot_manager.checkCollisionWithObject(this.stage.boss);
 
 	this.stage.boss.run();
 	this.stage.bullet_manager.run();
+	this.stage.item_manager.run();
 };
 
 // 画面更新
 State.prototype.updateDisplay = function(){
 	this.stage.boss.updateDisplay();
 	this.stage.bullet_manager.updateDisplay();
+	this.stage.item_manager.updateDisplay();
 
 	// スペルカード残り時間
 	this._showVital();
