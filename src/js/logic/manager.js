@@ -104,4 +104,15 @@ Manager.prototype.checkCollisionWithManager = function(manager) {
 	}
 };
 
+// ボムの使用を通知
+Manager.prototype.notifyUseBomb = function() {
+	for(var id in this.objects) {
+		this.objects[id].notifyUseBomb();
+	}
+};
+
+
+
+
+
 module.exports = Manager;

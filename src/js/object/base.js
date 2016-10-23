@@ -164,4 +164,10 @@ ObjectBase.prototype.isOutOfStage = function( ) {
 	return false;
 };
 
+// ボムの使用を通知
+ObjectBase.prototype.notifyUseBomb = function() {
+};
+
+
+
 module.exports = ObjectBase;

@@ -248,9 +248,13 @@ Character.prototype.useBomb = function() {
 	// ボム使用中
 	this.is_using_bomb = true;
 
-	// TODO:
 	// ザコ敵を vanish する
+	this.stage.enemy_manager.notifyUseBomb();
+
 	// 敵の弾を vanish する
+	this.stage.bullet_manager.notifyUseBomb();
+
+	// ボムを生成
 	this.spell.init();
 };
 
