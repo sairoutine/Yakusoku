@@ -103,28 +103,16 @@ Enemy.prototype.shot = function(){
 Enemy.prototype.notifyCollision = function(obj) {
 	if(!(obj instanceof Shot)) { return; }
 
-	// 自分を消す
-	this.stage.enemy_manager.remove(this.id);
-
-	// SEの再生
-	this.game.playSound('enemy_vanish');
-
-	// スコアの加算
-	this.stage.score += 100;
-
-	// 死亡エフェクト生成
-	this.stage.effect_manager.create(this.x, this.y);
-
-
-	// ポイントアイテムの生成
-	if(this.powerItem || this.scoreItem) {
-		this.stage.item_manager.create(0, this.x, this.y); // TODO: type_id
-	}
+	this.die();
 };
 
-// TODO: notifyUseBomb と notifyCollision の処理をまとめる
 // ボムの使用を通知
 Enemy.prototype.notifyUseBomb = function() {
+	this.die();
+};
+
+// 敵死亡
+Enemy.prototype.die = function() {
 	// 自分を消す
 	this.stage.enemy_manager.remove(this.id);
 
@@ -136,6 +124,7 @@ Enemy.prototype.notifyUseBomb = function() {
 
 	// 死亡エフェクト生成
 	this.stage.effect_manager.create(this.x, this.y);
+
 
 	// ポイントアイテムの生成
 	if(this.powerItem || this.scoreItem) {
