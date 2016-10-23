@@ -40,7 +40,7 @@ State.prototype.run = function(){
 		character.shot();
 	}
 
-	// Xが押下されていればショット生成
+	// Xが押下されていればボム生成
 	if(this.game.isKeyPush(Constant.BUTTON_X)) {
 		character.useBomb();
 	}
