@@ -40,6 +40,11 @@ State.prototype.run = function(){
 		character.shot();
 	}
 
+	// Xが押下されていればボム生成
+	if(this.game.isKeyPush(Constant.BUTTON_X)) {
+		character.useBomb();
+	}
+
 	// Z押しっぱで低速移動
 	var is_slow = this.game.isKeyDown(Constant.BUTTON_Z);
 

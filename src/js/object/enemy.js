@@ -103,6 +103,16 @@ Enemy.prototype.shot = function(){
 Enemy.prototype.notifyCollision = function(obj) {
 	if(!(obj instanceof Shot)) { return; }
 
+	this.die();
+};
+
+// ボムの使用を通知
+Enemy.prototype.notifyUseBomb = function() {
+	this.die();
+};
+
+// 敵死亡
+Enemy.prototype.die = function() {
 	// 自分を消す
 	this.stage.enemy_manager.remove(this.id);
 

@@ -36,6 +36,20 @@ Item.prototype.init = function(type_id, x, y) {
 	this.indexX = 0; this.indexY = 0;
 };
 
+Item.prototype.run = function() {
+	// ボム使用中なら、キャラに向けて逐一ベクトルを修正
+	if(this.stage.character.is_using_bomb) {
+		this.setVector([
+			{
+				count: 0,
+				'vector': { 'r': 10, aimed: true },
+			}
+		]);
+	}
+
+	VectorBaseObject.prototype.run.apply(this, arguments);
+};
+
 // 衝突した時
 Item.prototype.notifyCollision = function(obj) {
 	// 獲得したアイテムを消す

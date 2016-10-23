@@ -45,10 +45,24 @@ Bullet.prototype.init = function(type_id, x, y, vector) {
 	// 当たり判定サイズ
 	this.collision_width  = type.collisionWidth;
 	this.collision_height = type.collisionHeight;
+}
+;
+// 衝突した時
+Bullet.prototype.notifyCollision = function(obj) {
+	// 自分を消す
+	this.stage.bullet_manager.remove(this.id);
 };
-Bullet.prototype.run = function() {
-	// ベクトルに従って移動
-	VectorBaseObject.prototype.run.apply(this, arguments);
+
+// ボムの使用を通知
+Bullet.prototype.notifyUseBomb = function() {
+	// 自分を消す
+	this.stage.bullet_manager.remove(this.id);
+
+	// スコアの加算
+	this.stage.score += 100;
+
+	// ポイントアイテムの生成
+	this.stage.item_manager.create(0, this.x, this.y); // TODO: type_id
 };
 
 // 当たり判定サイズ
@@ -65,11 +79,5 @@ Bullet.prototype.spriteImage = function() { return this.image; };
 // スプライトのサイズ
 Bullet.prototype.spriteWidth  = function() { return this.width; };
 Bullet.prototype.spriteHeight = function() { return this.height; };
-
-// 衝突した時
-Bullet.prototype.notifyCollision = function(obj) {
-	// 自分を消す
-	this.stage.bullet_manager.remove(this.id);
-};
 
 module.exports = Bullet;
