@@ -187,6 +187,12 @@ Character.prototype.updateDisplay = function(){
 
 // 衝突判定
 Character.prototype.checkCollision = function(obj) {
+	// 無敵中 or ボム使用中なら敵or 敵弾 or ボスに衝突しても無視
+	// TODO: Aya -> BossBase
+	if(obj instanceof Bullet || obj instanceof Enemy || obj instanceof Aya) {
+		if(this.is_unhittable || this.is_using_bomb) return false;
+	}
+
 	return BaseObject.prototype.checkCollision.apply(this, arguments);
 };
 
@@ -207,9 +213,6 @@ Character.prototype.die = function() {
 
 // 衝突した時
 Character.prototype.notifyCollision = function(obj) {
-	// 無敵中 or ボム使用中なら衝突しても無視
-	if(this.is_unhittable || this.is_using_bomb) return;
-
 	// 敵もしくは敵弾もしくはボスにぶつかったら
 	// TODO: Aya -> BossBase
 	if(obj instanceof Bullet || obj instanceof Enemy || obj instanceof Aya) {
