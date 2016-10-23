@@ -34,6 +34,23 @@ Item.prototype.init = function(type_id, x, y) {
 
 	// 弾のスプライト上の位置
 	this.indexX = 0; this.indexY = 0;
+
+	// キャラに向かうかどうか
+	this.is_homing = true;
+};
+
+Item.prototype.run = function() {
+	// ホーミング状態なら、キャラに向けて逐一ベクトルを修正
+	if(this.is_homing) {
+		this.setVector([
+			{
+				count: 0,
+				'vector': { 'r': 10, aimed: true },
+			}
+		]);
+	}
+
+	VectorBaseObject.prototype.run.apply(this, arguments);
 };
 
 // 衝突した時
