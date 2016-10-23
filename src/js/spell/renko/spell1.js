@@ -36,6 +36,8 @@ Spell.prototype.run = function() {
 				{ 'r': 0, 'theta': ((360 / BOMB_NUM) | 0) * i, 'ra': 0.05, 'raa': 0.01 }
 			);
 		}
+
+		this.game.playSound('boss_shot_big');
 	}
 };
 
