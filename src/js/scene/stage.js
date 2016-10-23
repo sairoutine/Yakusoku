@@ -2,11 +2,6 @@
 
 /* タイトル画面 */
 
-var Constant = require('../constant');
-
-var DEBUG_STATE;
-//DEBUG_STATE = Constant.BOSS_STATE;
-
 
 // サイドバーの横の長さ
 var SIDE_WIDTH = 160;
@@ -21,6 +16,7 @@ var BaseScene = require('./base');
 
 var Util = require('../util');
 var Config = require('../config');
+var Constant = require('../constant');
 
 // ステージの状態
 var WayState = require('./stage/state/way');
@@ -100,7 +96,7 @@ Scene.prototype.init = function() {
 
 	// TODO: DEBUG
 	// 道中開始
-	this.changeState(Config.DEBUG && DEBUG_STATE ? DEBUG_STATE : Constant.WAY_STATE);
+	this.changeState(Config.DEBUG && Config.DEBUG_STATE ? Config.DEBUG_STATE : Constant.WAY_STATE);
 };
 
 // 現在のシーン
