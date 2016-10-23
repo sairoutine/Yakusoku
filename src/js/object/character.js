@@ -252,7 +252,6 @@ Character.prototype.useBomb = function() {
 	// ザコ敵を vanish する
 	// 敵の弾を vanish する
 	// 発生したアイテムを全て Homing 属性をつける
-	// ボムが出現していたらしばらく弾や敵は出現しない
 	this.spell.init();
 };
 

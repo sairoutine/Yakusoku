@@ -48,6 +48,9 @@ Shot.prototype.init = function(type_id, x, y, vector) {
 	// 当たり判定サイズ
 	this.collision_width  = type.collisionWidth;
 	this.collision_height = type.collisionHeight;
+
+	// 敵と接触しても消滅しないかどうか
+	this.is_penetration = type.is_penetration;
 };
 Shot.prototype.run = function() {
 	// ベクトルに従って移動
@@ -71,6 +74,9 @@ Shot.prototype.spriteHeight = function() { return this.height; };
 
 // 衝突した時
 Shot.prototype.notifyCollision = function(obj) {
+	// 貫通する弾なら消えない
+	if(this.is_penetration) return;
+
 	// 自分を消す
 	this.stage.shot_manager.remove(this.id);
 };
