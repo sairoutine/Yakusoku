@@ -166,6 +166,9 @@ Game.prototype = {
 	playBGM: function(key) {
 		var self = this;
 
+		// DEBUG
+		if(Config.DEBUG_MUSIC_OFF) return;
+
 		// 現在のBGM再生をストップ
 		self.stopBGM();
 
