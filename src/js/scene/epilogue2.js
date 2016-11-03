@@ -32,6 +32,10 @@ Scene.prototype.init = function() {
 // フレーム処理
 Scene.prototype.run = function(){
 	BaseScene.prototype.run.apply(this, arguments);
+
+	if (SHOW_MESSAGE_COUNT + 300 < this.frame_count) {
+		//TODO: this.game.notifyEpilogue2Done();
+	}
 };
 
 // 画面更新
@@ -67,7 +71,6 @@ Scene.prototype._showBG = function() {
 	}
 	else {
 		var epilogue2_2_bg = this.game.getImage('epilogue2_2_bg');
-
 		ctx.drawImage(epilogue2_2_bg,
 						0,
 						0,
