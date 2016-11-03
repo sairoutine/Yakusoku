@@ -3,8 +3,8 @@
 var Constant = require('./constant');
 
 var Config = {
-	DEBUG: false,
-	//DEBUG_SCENE: Constant.STAGE_SCENE,
+	DEBUG: true,
+	//DEBUG_SCENE: Constant.EPILOGUE1_SCENE,
 	//DEBUG_STATE: Constant.BOSS_STATE,
 	//DEBUG_MUSIC_OFF: true,
 	IMAGES: {
@@ -54,6 +54,11 @@ var Config = {
 		item:      'image/item.png',
 
 		enemy:     'image/enemy.png',
+
+
+		epilogue1_bg: 'image/epilogue1_bg.png',
+		epilogue2_1_bg: 'image/epilogue2_1_bg.jpg',
+		epilogue2_2_bg: 'image/epilogue2_2_bg.jpg',
 		/*
 		reimu:     'image/reimu.png',
 		shot:      'image/shot.png',
@@ -132,6 +137,11 @@ var Config = {
 			loopStart: 41.379,
 			loopEnd: 60 * 2 + 0.827,
 		},
+		epilogue: {
+			path:   'bgm/epilogue.mp3',
+			volume: 1.00
+		},
+
 	},
 	// テキストの typography スピード
 	MESSAGE_SPEED: 10,
