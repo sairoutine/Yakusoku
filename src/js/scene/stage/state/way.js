@@ -42,7 +42,7 @@ State.prototype.run = function(){
 
 	// Xが押下されていればボム生成
 	if(this.game.isKeyPush(Constant.BUTTON_X)) {
-		character.useBomb();
+		//TODO: character.useBomb();
 	}
 
 	// Z押しっぱで低速移動
