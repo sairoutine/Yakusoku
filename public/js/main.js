@@ -929,8 +929,9 @@ Game.prototype = {
 	},
 	// タイトル画面が終わったら
 	notifyTitleDone: function() {
+		var debug_scene = document.getElementById("scene").value;
 		// プロローグ画面に切り替え
-		this.changeScene(constant.PROLOGUE1_SCENE);
+		this.changeScene(Config.DEBUG && debug_scene ? debug_scene : constant.PROLOGUE1_SCENE);
 	},
 	// プロローグ画面1が終わったら
 	notifyPrologue1Done: function() {
