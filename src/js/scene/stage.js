@@ -215,7 +215,7 @@ Scene.prototype._showText = function(){
 	//ctx.fillText("HiScore",   x1, 25);
 	ctx.fillText("Score",     x1, 70);
 	ctx.fillText("Player",    x1, 130);
-	ctx.fillText("Spell",     x1, 175);
+	//ctx.fillText("Spell",     x1, 175);
 	if(Config.DEBUG) {
 		ctx.fillText("Frame",     x1, 235);
 	}
@@ -250,7 +250,7 @@ Scene.prototype._showText = function(){
 			break;
 	}
 
-	ctx.fillText(bomb_star_string,     x2, 200); // Bomb
+	//ctx.fillText(bomb_star_string,     x2, 200); // Bomb
 
 	if(Config.DEBUG) {
 		ctx.fillText(this.frame_count,     x2, 260); // Frame

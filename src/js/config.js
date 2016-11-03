@@ -3,7 +3,7 @@
 var Constant = require('./constant');
 
 var Config = {
-	DEBUG: true,
+	DEBUG: false,
 	//DEBUG_SCENE: Constant.STAGE_SCENE,
 	//DEBUG_STATE: Constant.BOSS_STATE,
 	//DEBUG_MUSIC_OFF: true,
