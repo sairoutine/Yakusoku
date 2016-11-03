@@ -10,9 +10,8 @@ var Prologue2Scene = require('./scene/prologue2');
 var StageScene    = require('./scene/stage');
 var Epilogue1Scene = require('./scene/epilogue1');
 var Epilogue2Scene = require('./scene/epilogue2');
-/*
 var EndingScene   = require('./scene/ending');
-*/
+
 var Game = function(mainCanvas) {
 	// メインCanvas
 	this.surface = mainCanvas.getContext('2d');
@@ -44,15 +43,12 @@ var Game = function(mainCanvas) {
 	this.scenes[ constant.PROLOGUE2_SCENE ] = new Prologue2Scene(this);
 	// ステージ
 	this.scenes[ constant.STAGE_SCENE ] = new StageScene(this);
-
 	// エピローグ画面1
 	this.scenes[ constant.EPILOGUE1_SCENE ]  = new Epilogue1Scene(this);
 	// エピローグ画面2
 	this.scenes[ constant.EPILOGUE2_SCENE ]  = new Epilogue2Scene(this);
-	/*
 	// エンディング画面
-	this.scenes[ this.ENDING_SCENE ]  = null;
-	*/
+	this.scenes[ constant.ENDING_SCENE ]  = new EndingScene(this);
 
 	// 画像一覧
 	this.images = {};
