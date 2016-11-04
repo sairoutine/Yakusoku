@@ -294,6 +294,10 @@ Game.prototype = {
 		// エンディングに切り替え
 		this.changeScene(constant.ENDING_SCENE);
 	},
+	// ゲームオーバー
+	notifyGameOver: function() {
+		this.changeScene(constant.TITLE_SCENE);
+	},
 	handleGamePad: function() {
 		if(!this.is_connect_gamepad) return;
 

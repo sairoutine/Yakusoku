@@ -29,7 +29,7 @@ State.prototype.run = function(){
 
 	if(this.game.isKeyPush(Constant.BUTTON_Z)) {
 			this.game.playSound('select');
-			this.game.notifyStageDone();
+			this.game.notifyGameOver();
 	}
 
 };
