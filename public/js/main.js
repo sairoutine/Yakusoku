@@ -954,6 +954,10 @@ Game.prototype = {
 		// エンディングに切り替え
 		this.changeScene(constant.ENDING_SCENE);
 	},
+	// ゲームオーバー
+	notifyGameOver: function() {
+		this.changeScene(constant.TITLE_SCENE);
+	},
 	handleGamePad: function() {
 		if(!this.is_connect_gamepad) return;
 
@@ -1157,6 +1161,20 @@ Manager.prototype.notifyUseBomb = function() {
 		this.objects[id].notifyUseBomb();
 	}
 };
+
+// Object と Manager のグレイズ判定
+Manager.prototype.checkGrazeWithObject = function(obj1) {
+	// 衝突判定
+	for(var id in this.objects) {
+		var obj2 = this.objects[id];
+		if(obj1.checkGraze(obj2)) {
+			obj1.notifyGraze(obj2);
+			obj2.notifyGraze(obj1);
+			break;
+		}
+	}
+};
+
 
 
 
@@ -1662,6 +1680,17 @@ ObjectBase.prototype.collisionWidth = function() {
 	console.error('collisionWidth method must be overridden.');
 };
 
+// グレイズ判定サイズ
+ObjectBase.prototype.grazeHeight = function() {
+	console.error('grazeHeight method must be overridden.');
+};
+
+// グレイズ判定サイズ
+ObjectBase.prototype.grazeWidth = function() {
+	console.error('grazeWidth method must be overridden.');
+};
+
+
 // スプライトの開始位置
 ObjectBase.prototype.spriteX = function() {
 	console.error('spriteX method must be overridden.');
@@ -1759,6 +1788,19 @@ ObjectBase.prototype.getCollisionUpY = function() {
 	return this.y - this.collisionHeight() / 2;
 };
 
+// グレイズしたかどうか
+ObjectBase.prototype.checkGraze = function(obj) {
+	if(Math.abs(this.x - obj.x) < this.grazeWidth()/2 + obj.grazeWidth()/2 &&
+		Math.abs(this.y - obj.y) < this.grazeHeight()/2 + obj.grazeHeight()/2) {
+		return true;
+	}
+
+	return false;
+};
+
+
+
+
 // 画面外に出たかどうかの判定
 ObjectBase.prototype.isOutOfStage = function( ) {
 	if(this.x + EXTRA_OUT_OF_SIZE < 0 ||
@@ -1776,7 +1818,9 @@ ObjectBase.prototype.isOutOfStage = function( ) {
 ObjectBase.prototype.notifyUseBomb = function() {
 };
 
-
+// グレイズしたことを通知
+ObjectBase.prototype.notifyGraze = function() {
+};
 
 module.exports = ObjectBase;
 
@@ -1828,12 +1872,21 @@ Bullet.prototype.init = function(type_id, x, y, vector) {
 	// 当たり判定サイズ
 	this.collision_width  = type.collisionWidth;
 	this.collision_height = type.collisionHeight;
+
+	// 自機とグレイズ済かどうか
+	this.is_graze = false;
 }
 ;
 // 衝突した時
 Bullet.prototype.notifyCollision = function(obj) {
 	// 自分を消す
 	this.stage.bullet_manager.remove(this.id);
+};
+
+// グレイズした時
+Bullet.prototype.notifyGraze = function(obj) {
+	// この弾は既にグレイズ済
+	this.is_graze = true;
 };
 
 // ボムの使用を通知
@@ -1851,6 +1904,10 @@ Bullet.prototype.notifyUseBomb = function() {
 // 当たり判定サイズ
 Bullet.prototype.collisionWidth  = function() { return this.collision_width; };
 Bullet.prototype.collisionHeight = function() { return this.collision_height; };
+
+// グレイズ判定サイズ
+Bullet.prototype.grazeHeight  = function() { return this.width; };
+Bullet.prototype.grazeWidth = function() { return this.height; };
 
 // スプライトの開始位置
 Bullet.prototype.spriteX = function() { return this.indexX; };
@@ -2129,14 +2186,24 @@ Character.prototype.useBomb = function() {
 	this.spell.init();
 };
 
+// グレイズしたことを通知
+Character.prototype.notifyGraze = function(obj) {
+	if(!(obj instanceof Bullet)) return; // 弾のみグレイズするとスコア加算する
 
+	if(obj.is_graze) return; // 既にグレイズ済の弾は判定しない
 
+	this.game.playSound('graze');
 
-
+	this.stage.score += 100;
+};
 
 // 当たり判定サイズ
 Character.prototype.collisionWidth  = function() { return 1; };
 Character.prototype.collisionHeight = function() { return 3; };
+
+// グレイズ判定サイズ
+Character.prototype.grazeHeight  = function() { return 48; };
+Character.prototype.grazeWidth = function() { return 48; };
 
 // スプライトの開始位置
 Character.prototype.spriteX = function() { return this.indexX; };
@@ -2405,7 +2472,7 @@ Item.prototype.init = function(type_id, x, y) {
 		[
 			{
 				count: 0,
-				'vector': { 'r': 4, 'theta': 270, 'w': 0, 'ra':-0.1, 'wa': 0 },
+				'vector': { 'r': 4, 'theta': 270, 'ra': -0.1, rrange: {min: -3}, },
 				is_rotate: false,
 			}
 		]
@@ -2413,11 +2480,15 @@ Item.prototype.init = function(type_id, x, y) {
 
 	// 弾のスプライト上の位置
 	this.indexX = 0; this.indexY = 0;
+
+	// 自機とグレイズ済かどうか
+	this.is_graze = false;
 };
 
 Item.prototype.run = function() {
-	// ボム使用中なら、キャラに向けて逐一ベクトルを修正
-	if(this.stage.character.is_using_bomb) {
+	// 自機とグレイズ済あるいは
+	// 時期がボム使用中なら、キャラに向けて逐一ベクトルを修正
+	if(this.is_graze || this.stage.character.is_using_bomb) {
 		this.setVector([
 			{
 				count: 0,
@@ -2441,9 +2512,19 @@ Item.prototype.notifyCollision = function(obj) {
 	this.stage.score += 1000;
 };
 
+// グレイズした時
+Item.prototype.notifyGraze = function(obj) {
+	// このアイテムは既にグレイズ済
+	this.is_graze = true;
+};
+
 // 当たり判定サイズ
 Item.prototype.collisionWidth  = function() { return 60; };
 Item.prototype.collisionHeight = function() { return 60; };
+
+// グレイズ判定サイズ
+Item.prototype.grazeHeight = function() { return 100; };
+Item.prototype.grazeWidth  = function() { return 100; };
 
 // スプライトの開始位置
 Item.prototype.spriteX = function() { return this.indexX; };
@@ -2591,22 +2672,20 @@ VectorBase.prototype.setVector = function(vectors) {
 			r: vec.vector.r,
 			// ベクトルの角度(方向)
 			theta: vec.vector.theta || 0,
-			// 加速度
-			w: vec.vector.w || 0,
-
 			// 角度の加速度
+			w: vec.vector.w || 0,
+			// 速度の加速度
 			ra: vec.vector.ra || 0,
-			// 加速度の加速度
-			wa: vec.vector.wa || 0,
-
 			// 角度の加速度の加速度
+			wa: vec.vector.wa || 0,
+			// 速度の加速度の加速度
 			raa: vec.vector.raa || 0,
-			// 加速度の加速度の加速度
+			// 角度の加速度の加速度の加速度
 			waa: vec.vector.waa || 0,
 
-			// 速度の最大値
-			trange: vec.vector.trange || null,
 			// 角度の最大値
+			trange: vec.vector.trange || null,
+			// 速度の最大値
 			rrange: vec.vector.rrange || null,
 			// 速度の加速度の最大値
 			wrange: vec.vector.wrange || null,
@@ -4124,6 +4203,9 @@ State.prototype.run = function(){
 	character.checkCollisionWithObject(this.stage.boss);
 	// ボスと自機弾の衝突判定
 	this.stage.shot_manager.checkCollisionWithObject(this.stage.boss);
+	// 敵弾と自機のグレイズ判定
+	this.stage.bullet_manager.checkGrazeWithObject(character);
+
 
 	this.stage.boss.run();
 	this.stage.bullet_manager.run();
@@ -4192,7 +4274,7 @@ State.prototype.run = function(){
 
 	if(this.game.isKeyPush(Constant.BUTTON_Z)) {
 			this.game.playSound('select');
-			this.game.notifyStageDone();
+			this.game.notifyGameOver();
 	}
 
 };
@@ -4537,7 +4619,10 @@ State.prototype.run = function(){
 	this.stage.bullet_manager.checkCollisionWithObject(character);
 	// 敵と自機弾の衝突判定
 	this.stage.enemy_manager.checkCollisionWithManager(this.stage.shot_manager);
-
+	// 敵弾と自機のグレイズ判定
+	this.stage.bullet_manager.checkGrazeWithObject(character);
+	// アイテムと自機のグレイズ判定
+	this.stage.item_manager.checkGrazeWithObject(character);
 
 	// 今フレームで出現する雑魚一覧を取得
 	var params = this.enemy_appear.get(this.frame_count);
