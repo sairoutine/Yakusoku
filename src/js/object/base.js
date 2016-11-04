@@ -54,6 +54,17 @@ ObjectBase.prototype.collisionWidth = function() {
 	console.error('collisionWidth method must be overridden.');
 };
 
+// グレイズ判定サイズ
+ObjectBase.prototype.grazeHeight = function() {
+	console.error('grazeHeight method must be overridden.');
+};
+
+// グレイズ判定サイズ
+ObjectBase.prototype.grazeWidth = function() {
+	console.error('grazeWidth method must be overridden.');
+};
+
+
 // スプライトの開始位置
 ObjectBase.prototype.spriteX = function() {
 	console.error('spriteX method must be overridden.');
@@ -151,6 +162,19 @@ ObjectBase.prototype.getCollisionUpY = function() {
 	return this.y - this.collisionHeight() / 2;
 };
 
+// グレイズしたかどうか
+ObjectBase.prototype.checkGraze = function(obj) {
+	if(Math.abs(this.x - obj.x) < this.grazeWidth()/2 + obj.grazeWidth()/2 &&
+		Math.abs(this.y - obj.y) < this.grazeHeight()/2 + obj.grazeHeight()/2) {
+		return true;
+	}
+
+	return false;
+};
+
+
+
+
 // 画面外に出たかどうかの判定
 ObjectBase.prototype.isOutOfStage = function( ) {
 	if(this.x + EXTRA_OUT_OF_SIZE < 0 ||
@@ -168,6 +192,8 @@ ObjectBase.prototype.isOutOfStage = function( ) {
 ObjectBase.prototype.notifyUseBomb = function() {
 };
 
-
+// グレイズしたことを通知
+ObjectBase.prototype.notifyGraze = function() {
+};
 
 module.exports = ObjectBase;
