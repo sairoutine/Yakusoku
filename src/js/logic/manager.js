@@ -111,6 +111,20 @@ Manager.prototype.notifyUseBomb = function() {
 	}
 };
 
+// Object と Manager のグレイズ判定
+Manager.prototype.checkGrazeWithObject = function(obj1) {
+	// 衝突判定
+	for(var id in this.objects) {
+		var obj2 = this.objects[id];
+		if(obj1.checkGraze(obj2)) {
+			obj1.notifyGraze(obj2);
+			obj2.notifyGraze(obj1);
+			break;
+		}
+	}
+};
+
+
 
 
 
