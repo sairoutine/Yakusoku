@@ -261,14 +261,22 @@ Character.prototype.useBomb = function() {
 	this.spell.init();
 };
 
+// グレイズしたことを通知
+Character.prototype.notifyGraze = function(obj) {
+	if(obj.is_graze) return; // 既にグレイズ済の弾は判定しない
 
+	this.game.playSound('graze');
 
-
-
+	this.stage.score += 100;
+};
 
 // 当たり判定サイズ
 Character.prototype.collisionWidth  = function() { return 1; };
 Character.prototype.collisionHeight = function() { return 3; };
+
+// グレイズ判定サイズ
+Character.prototype.grazeHeight  = function() { return 48; };
+Character.prototype.grazeWidth = function() { return 48; };
 
 // スプライトの開始位置
 Character.prototype.spriteX = function() { return this.indexX; };

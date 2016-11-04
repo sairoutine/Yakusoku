@@ -45,12 +45,21 @@ Bullet.prototype.init = function(type_id, x, y, vector) {
 	// 当たり判定サイズ
 	this.collision_width  = type.collisionWidth;
 	this.collision_height = type.collisionHeight;
+
+	// 自機とグレイズ済かどうか
+	this.is_graze = false;
 }
 ;
 // 衝突した時
 Bullet.prototype.notifyCollision = function(obj) {
 	// 自分を消す
 	this.stage.bullet_manager.remove(this.id);
+};
+
+// グレイズした時
+Bullet.prototype.notifyGraze = function(obj) {
+	// この弾は既にグレイズ済
+	this.is_graze = true;
 };
 
 // ボムの使用を通知
@@ -68,6 +77,10 @@ Bullet.prototype.notifyUseBomb = function() {
 // 当たり判定サイズ
 Bullet.prototype.collisionWidth  = function() { return this.collision_width; };
 Bullet.prototype.collisionHeight = function() { return this.collision_height; };
+
+// グレイズ判定サイズ
+Bullet.prototype.grazeHeight  = function() { return this.width; };
+Bullet.prototype.grazeWidth = function() { return this.height; };
 
 // スプライトの開始位置
 Bullet.prototype.spriteX = function() { return this.indexX; };
