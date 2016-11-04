@@ -41,22 +41,20 @@ VectorBase.prototype.setVector = function(vectors) {
 			r: vec.vector.r,
 			// ベクトルの角度(方向)
 			theta: vec.vector.theta || 0,
-			// 加速度
-			w: vec.vector.w || 0,
-
 			// 角度の加速度
+			w: vec.vector.w || 0,
+			// 速度の加速度
 			ra: vec.vector.ra || 0,
-			// 加速度の加速度
-			wa: vec.vector.wa || 0,
-
 			// 角度の加速度の加速度
+			wa: vec.vector.wa || 0,
+			// 速度の加速度の加速度
 			raa: vec.vector.raa || 0,
-			// 加速度の加速度の加速度
+			// 角度の加速度の加速度の加速度
 			waa: vec.vector.waa || 0,
 
-			// 速度の最大値
-			trange: vec.vector.trange || null,
 			// 角度の最大値
+			trange: vec.vector.trange || null,
+			// 速度の最大値
 			rrange: vec.vector.rrange || null,
 			// 速度の加速度の最大値
 			wrange: vec.vector.wrange || null,
