@@ -89,7 +89,8 @@ State.prototype.run = function(){
 	this.stage.enemy_manager.checkCollisionWithManager(this.stage.shot_manager);
 	// 敵弾と自機のグレイズ判定
 	this.stage.bullet_manager.checkGrazeWithObject(character);
-
+	// アイテムと自機のグレイズ判定
+	this.stage.item_manager.checkGrazeWithObject(character);
 
 	// 今フレームで出現する雑魚一覧を取得
 	var params = this.enemy_appear.get(this.frame_count);

@@ -263,6 +263,8 @@ Character.prototype.useBomb = function() {
 
 // グレイズしたことを通知
 Character.prototype.notifyGraze = function(obj) {
+	if(!(obj instanceof Bullet)) return; // 弾のみグレイズするとスコア加算する
+
 	if(obj.is_graze) return; // 既にグレイズ済の弾は判定しない
 
 	this.game.playSound('graze');
