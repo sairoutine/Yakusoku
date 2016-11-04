@@ -88,6 +88,9 @@ State.prototype.run = function(){
 	character.checkCollisionWithObject(this.stage.boss);
 	// ボスと自機弾の衝突判定
 	this.stage.shot_manager.checkCollisionWithObject(this.stage.boss);
+	// 敵弾と自機のグレイズ判定
+	this.stage.bullet_manager.checkGrazeWithObject(character);
+
 
 	this.stage.boss.run();
 	this.stage.bullet_manager.run();
