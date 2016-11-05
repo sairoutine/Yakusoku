@@ -82,10 +82,13 @@ State.prototype.run = function(){
 
 	// アイテムと自機の衝突判定
 	this.stage.item_manager.checkCollisionWithObject(character);
-	// 敵弾と自機の衝突判定
-	this.stage.bullet_manager.checkCollisionWithObject(character);
-	// ボスと自機の衝突判定
-	character.checkCollisionWithObject(this.stage.boss);
+
+	if(Number(document.getElementById("invincible").value) === 0) { // TODO: DEBUG
+		// 敵弾と自機の衝突判定
+		this.stage.bullet_manager.checkCollisionWithObject(character);
+		// ボスと自機の衝突判定
+		character.checkCollisionWithObject(this.stage.boss);
+	}
 	// ボスと自機弾の衝突判定
 	this.stage.shot_manager.checkCollisionWithObject(this.stage.boss);
 	// 敵弾と自機のグレイズ判定
