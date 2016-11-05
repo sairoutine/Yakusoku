@@ -9,7 +9,7 @@ var Util = require('../util');
 var Constant = require('../constant');
 var Config = require('../config');
 
-var neko = require("../createjs/neko");
+var boss_appearance = require("../createjs/boss_appearance");
 var cjs = require("../createjs");
 
 // 画面切り替え効果時間
@@ -30,9 +30,10 @@ Util.inherit(OpeningScene, BaseScene);
 OpeningScene.prototype.init = function() {
 	BaseScene.prototype.init.apply(this, arguments);
 
-	var exportRoot = new neko.neko();
+	var exportRoot = new boss_appearance.boss_appearance();
 	var canvas = document.createElement('canvas');
-	canvas.width = canvas.height = 300;
+	canvas.width = this.game.width;
+	canvas.height = this.game.height;
 
 	var stage = new cjs.Stage(canvas);
 	stage.addChild(exportRoot);

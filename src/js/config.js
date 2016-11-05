@@ -57,7 +57,9 @@ var Config = {
 	   */
 	},
 	CJS_IMAGES: [
-		{src:"image/neko_walk01.png", id:"neko_walk01"}
+		{src:"image/circle.png", id:"circle"},
+		{src:"image/dot.png", id:"dot"},
+		{src:"image/emlight.png", id:"emlight"}
 	],
 	SOUNDS: {
 		select: {
