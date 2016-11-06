@@ -1,4 +1,7 @@
 'use strict';
+var cjs = require("../createjs");
+var images = require("../image_store");
+
 
 /* ローディング画面 */
 var Util = require('../util');
@@ -14,6 +17,8 @@ var LoadingScene = function(game) {
 	this.loadedSoundNum = 0;
 	// 読み込んだBGMの数
 	this.loadedBGMNum = 0;
+	// 読み込んだcreatejs用画像の数
+	this.loadedCjsImageNum = 0;
 
 	// フォントの読み込みが完了したか
 	this.fontLoadingDone = false;
@@ -26,6 +31,8 @@ Util.inherit(LoadingScene, BaseScene);
 LoadingScene.prototype.init = function() {
 	// ゲームで使う画像の読み込み
 	this._loadImages();
+	// createjsで使う画像の読み込み
+	this._loadCjsImages();
 	// SE の読み込み
 	this._loadSounds();
 	// BGM の読み込み
@@ -34,7 +41,7 @@ LoadingScene.prototype.init = function() {
 
 // 読み込んだ素材数
 LoadingScene.prototype.loaded_material_num = function() {
-	return this.loadedImageNum + this.loadedSoundNum + this.loadedBGMNum;
+	return this.loadedImageNum + this.loadedSoundNum + this.loadedBGMNum + this.loadedCjsImageNum;
 };
 // フォントの読み込み完了
 LoadingScene.prototype.notifyFontLoadingDone = function () {
@@ -82,6 +89,21 @@ LoadingScene.prototype._loadImages = function() {
 	}
 
 };
+
+LoadingScene.prototype._loadCjsImages = function() {
+	var self = this;
+
+	var loader = new cjs.PreloadJS(false);
+	loader.onFileLoad = function(o) {
+		if (o.type === "image") {
+			images[o.id] = o.result;
+			self.loadedCjsImageNum++;
+		}
+	};
+	//loader.onComplete = handleComplete;
+	loader.loadManifest(Config.CJS_IMAGES);
+};
+
 
 LoadingScene.prototype._loadSounds = function() {
 	var self = this;

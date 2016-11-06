@@ -13,6 +13,10 @@ var Konohamai = require('../spell/stage1/konohamai');
 
 var Shot = require('../object/shot');
 
+var boss_appearance = require("../createjs/boss_appearance");
+var cjs = require("../createjs");
+
+
 // Nフレーム毎にボスをアニメーション
 var FRONT_ANIMATION_SPAN = 6;
 var LR_ANIMATION_SPAN = 4;
@@ -70,6 +74,15 @@ Aya.prototype.init = function() {
 
 	// スペルカード発動！
 	this.executeSpell();
+
+	// ボス出現エフェクト
+	var exportRoot = new boss_appearance.boss_appearance();
+	var canvas = document.createElement('canvas');
+	canvas.width  = 960;
+	canvas.height = 960;
+	var cjs_stage = new cjs.Stage(canvas);
+	cjs_stage.addChild(exportRoot);
+	this.boss_appearance = {stage: cjs_stage, canvas: canvas};
 };
 
 // 現在のスペルカード
@@ -131,6 +144,8 @@ Aya.prototype.run = function(){
 		// スプライトを全て表示しきったら最初のスプライトに戻る
 		if(this.indexX > 2) { this.indexX = 0; }
 	}
+
+	this.boss_appearance.stage.update();
 };
 
 // 移動
@@ -188,6 +203,14 @@ Aya.prototype.animateNeutral = function(){
 
 // ボスを描画
 Aya.prototype.updateDisplay = function(){
+	var ctx = this.game.surface;
+	ctx.save();
+	// オブジェクトの位置を指定
+	ctx.translate(this.x, this.y);
+	ctx.drawImage(this.boss_appearance.canvas, (-this.boss_appearance.canvas.width/2), (-this.boss_appearance.canvas.height/2));
+	ctx.restore();
+
+	// ボス描画
 	BaseObject.prototype.updateDisplay.apply(this, arguments);
 
 	// スペルカード描画
