@@ -4,9 +4,9 @@ var Constant = require('./constant');
 
 var Config = {
 	DEBUG: true,
-	DEBUG_SCENE: Constant.EPILOGUE1_SCENE,
+	//DEBUG_SCENE: Constant.STAGE_SCENE,
 	//DEBUG_STATE: Constant.BOSS_STATE,
-	DEBUG_MUSIC_OFF: true,
+	//DEBUG_MUSIC_OFF: true,
 	IMAGES: {
 		title_bg:  'image/title_bg.png',
 		press_z:  'image/press_z.png',
