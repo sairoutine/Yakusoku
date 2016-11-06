@@ -57,6 +57,14 @@ Shot.prototype.run = function() {
 	VectorBaseObject.prototype.run.apply(this, arguments);
 };
 
+Shot.prototype.updateDisplay = function(){
+	// 自機弾は透過して表示する
+	this.game.surface.globalAlpha = 0.7;
+	VectorBaseObject.prototype.updateDisplay.apply(this, arguments);
+	this.game.surface.globalAlpha = 1.0;
+};
+
+
 // 当たり判定サイズ
 Shot.prototype.collisionWidth  = function() { return this.collision_width; };
 Shot.prototype.collisionHeight = function() { return this.collision_height; };
