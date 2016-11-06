@@ -51,6 +51,7 @@ var Config = {
 		character_renko:     'image/character_renko.png',
 		boss_aya:     'image/boss_aya.png',
 		shot:      'image/shot.png',
+		shot2:      'image/shot2.png',
 		item:      'image/item.png',
 
 		enemy:     'image/enemy.png',
