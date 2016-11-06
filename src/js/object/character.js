@@ -60,9 +60,6 @@ Character.prototype.setInitPosition = function() {
 	// 自機の初期位置
 	this.x = (this.stage.width / 2);
 	this.y = (this.stage.height - 100);
-
-	this.power = 0; // パワーアップアイテムで獲得したパワー
-	this.level = 0; // 自機のレベル
 };
 
 // 初期化
@@ -90,8 +87,8 @@ Character.prototype.init = function() {
 	// 無敵状態になったフレームを保存
 	this.unhittable_count = 0;
 
-	this.option_manager.create(this, 20, 0);
-	this.option_manager.create(this, -20, 0);
+	this.power = 0; // パワーアップアイテムで獲得したパワー
+	this.level = 0; // 自機のレベル
 };
 
 // 撃つ
@@ -173,8 +170,70 @@ Character.prototype.run = function(){
 		this.spell.run();
 	}
 
+	// レベルアップ判定
+	this._checkLevelUp();
+
 	// オプション
 	this.option_manager.run();
+};
+
+// レベルアップ判定
+Character.prototype._checkLevelUp = function () {
+	var before_level = this.level;
+	var after_level = this._calcLevelUp();
+
+	if(after_level > before_level) {
+		this.level = after_level;
+		this._actionLevelUp();
+	}
+};
+
+// 現在のレベルをpower から計算
+Character.prototype._calcLevelUp = function () {
+	var power = this.power;
+	if(8 > power) {
+		return 0;
+	}
+	else if(32 > power) {
+		return 1;
+	}
+	else if(64 > power) {
+		return 2;
+	}
+	else if(96 > power) {
+		return 3;
+	}
+	else if(128 > power) {
+		return 4;
+	}
+};
+
+// レベルアップした時の処理
+Character.prototype._actionLevelUp = function () {
+	this.game.playSound('powerup');
+
+	switch (this.level) {
+
+		case 1:
+			// 3way 弾になる
+			break;
+		case 2:
+			// オプションが2つに
+			this.option_manager.create(this, 20, 0);
+			this.option_manager.create(this, -20, 0);
+			break;
+		case 3:
+			// オプションが4つに
+			this.option_manager.removeAll();
+			this.option_manager.create(this, 20, -10);
+			this.option_manager.create(this, -20, -10);
+			this.option_manager.create(this, 30, 0);
+			this.option_manager.create(this, -30, 0);
+			break;
+		case 4:
+			// オプションの弾を撃つ感覚が速くなる
+			break;
+	}
 };
 
 // 自機を描画
