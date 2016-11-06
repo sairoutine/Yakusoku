@@ -10,7 +10,9 @@ var Constant = require('../constant');
 var Aya = require('./aya');
 var Enemy = require('./enemy');
 var Bullet = require('./bullet');
+var Option = require('./option');
 var Spell = require('../spell/renko/spell1');
+var Manager = require('../logic/manager');
 
 
 // 自機の移動速度(通常時)
@@ -44,6 +46,8 @@ var Character = function(stage) {
 	this.indexX = 0; this.indexY = 0;
 
 	this.spell = new Spell(this);
+
+	this.option_manager = new Manager(Option, stage);
 };
 
 // 基底クラスを継承
@@ -56,6 +60,9 @@ Character.prototype.setInitPosition = function() {
 	// 自機の初期位置
 	this.x = (this.stage.width / 2);
 	this.y = (this.stage.height - 100);
+
+	this.power = 0; // パワーアップアイテムで獲得したパワー
+	this.level = 0; // 自機のレベル
 };
 
 // 初期化
@@ -82,6 +89,9 @@ Character.prototype.init = function() {
 
 	// 無敵状態になったフレームを保存
 	this.unhittable_count = 0;
+
+	this.option_manager.create(this, 20, 0);
+	this.option_manager.create(this, -20, 0);
 };
 
 // 撃つ
@@ -162,6 +172,9 @@ Character.prototype.run = function(){
 	if(this.is_using_bomb) {
 		this.spell.run();
 	}
+
+	// オプション
+	this.option_manager.run();
 };
 
 // 自機を描画
@@ -183,6 +196,8 @@ Character.prototype.updateDisplay = function(){
 		this.spell.updateDisplay();
 	}
 
+	// オプションの描画
+	this.option_manager.updateDisplay();
 };
 
 // 衝突判定
