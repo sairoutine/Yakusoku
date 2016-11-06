@@ -9,8 +9,6 @@ var Util = require('../util');
 var Constant = require('../constant');
 var Config = require('../config');
 
-var boss_appearance = require("../createjs/boss_appearance");
-var cjs = require("../createjs");
 
 // 画面切り替え効果時間
 var SHOW_TRANSITION_COUNT = 100;
@@ -30,22 +28,11 @@ Util.inherit(OpeningScene, BaseScene);
 OpeningScene.prototype.init = function() {
 	BaseScene.prototype.init.apply(this, arguments);
 
-	var exportRoot = new boss_appearance.boss_appearance();
-	var canvas = document.createElement('canvas');
-	canvas.width = this.game.width;
-	canvas.height = this.game.height;
-
-	var stage = new cjs.Stage(canvas);
-	stage.addChild(exportRoot);
-
-	this.stage = stage;
-	this.neko = canvas;
 };
 
 // フレーム処理
 OpeningScene.prototype.run = function(){
 	BaseScene.prototype.run.apply(this, arguments);
-	this.stage.update();
 
 	if(this.frame_count === 60) {
 		this.game.playBGM('title');
@@ -98,10 +85,6 @@ OpeningScene.prototype.updateDisplay = function(){
 
 	ctx.restore();
 
-
-	ctx.save();
-	ctx.drawImage(this.neko, 0, 0);
-	ctx.restore();
 };
 
 module.exports = OpeningScene;
