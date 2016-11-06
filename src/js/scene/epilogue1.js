@@ -3,8 +3,7 @@
 /* エピローグ画面1 */
 
 var epilogue = require("../createjs/epilogue");
-var cjs = require("../createjs");
-
+var CreateJS = require("../logic/createjs");
 
 // 基底クラス
 var BaseScene = require('./base');
@@ -22,13 +21,8 @@ Util.inherit(Scene, BaseScene);
 // 初期化
 Scene.prototype.init = function() {
 	BaseScene.prototype.init.apply(this, arguments);
-	var exportRoot = new epilogue.epilogue();
-	var canvas = document.createElement('canvas');
-	canvas.width  = 640;
-	canvas.height = 480;
-	var cjs_stage = new cjs.Stage(canvas);
-	cjs_stage.addChild(exportRoot);
-	this.epilogue = {stage: cjs_stage, canvas: canvas};
+
+	this.epilogue = new CreateJS(new epilogue.epilogue(), 640, 480);
 	this.game.playBGM('epilogue');
 };
 
@@ -36,7 +30,7 @@ Scene.prototype.init = function() {
 Scene.prototype.run = function(){
 	BaseScene.prototype.run.apply(this, arguments);
 
-	this.epilogue.stage.update();
+	this.epilogue.update();
 };
 
 // 画面更新
