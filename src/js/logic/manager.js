@@ -54,6 +54,13 @@ Manager.prototype.run = function(){
 	this.removeOutOfStageObjects();
 };
 
+// オブジェクトを全て消去する
+Manager.prototype.removeAll = function() {
+	for(var id in this.objects) {
+		this.remove(id);
+	}
+};
+
 // 画面外に出たオブジェクトを消去する
 Manager.prototype.removeOutOfStageObjects = function() {
 	// オブジェクトが画面外に出たかどうか判定
