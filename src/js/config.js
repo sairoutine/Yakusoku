@@ -57,9 +57,9 @@ var Config = {
 	   */
 	},
 	CJS_IMAGES: [
-		{src:"image/circle.png", id:"circle"},
-		{src:"image/dot.png", id:"dot"},
-		{src:"image/emlight.png", id:"emlight"}
+		{src:"image/createjs/boss_appearance/circle.png", id:"circle"},
+		{src:"image/createjs/boss_appearance/dot.png", id:"dot"},
+		{src:"image/createjs/boss_appearance/emlight.png", id:"emlight"}
 	],
 	SOUNDS: {
 		select: {
