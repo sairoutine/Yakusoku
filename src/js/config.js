@@ -133,6 +133,11 @@ var Config = {
 			id: 0x40,
 			path: 'sound/graze.wav',
 			volume: 0.2
+		},
+		powerup: {
+			id: 0x80,
+			path: 'sound/powerup.wav',
+			volume: 0.4
 		}
 
 
