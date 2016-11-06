@@ -12,27 +12,35 @@ var Option = function(id, scene) {
 // 基底クラスを継承
 Util.inherit(Option, BaseObject);
 
-Option.prototype.init = function(character) {
+// 自機のポジションに移動
+Option.prototype.setCharacterPosition = function() {
+	this.y = this.character.y + this.local_y;
+	this.x = this.character.x + this.local_x;
+};
+
+Option.prototype.init = function(character, x, y) {
 	this.character = character;
+	this.local_x = x;
+	this.local_y = y;
+	this.setCharacterPosition();
+
 };
 
 Option.prototype.run = function() {
+	this.setCharacterPosition();
 	BaseObject.prototype.run.apply(this, arguments);
+
 };
 
-// 当たり判定サイズ
-Option.prototype.collisionWidth  = function() { return 60; };
-Option.prototype.collisionHeight = function() { return 60; };
-
 // スプライトの開始位置
-Option.prototype.spriteX = function() { return this.indexX; };
-Option.prototype.spriteY = function() { return this.indexY; };
+Option.prototype.spriteX = function() { return 7; };
+Option.prototype.spriteY = function() { return 16; };
 
 // スプライト画像
 Option.prototype.spriteImage = function() { return 'shot2'; };
 
 // スプライトのサイズ
-Option.prototype.spriteWidth  = function() { return 16; };
-Option.prototype.spriteHeight = function() { return 16; };
+Option.prototype.spriteWidth  = function() { return 20; };
+Option.prototype.spriteHeight = function() { return 20; };
 
 module.exports = Option;
