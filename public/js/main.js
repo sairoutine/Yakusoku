@@ -5,9 +5,9 @@ var Constant = require('./constant');
 
 var Config = {
 	DEBUG: true,
-	DEBUG_SCENE: Constant.EPILOGUE1_SCENE,
+	//DEBUG_SCENE: Constant.STAGE_SCENE,
 	//DEBUG_STATE: Constant.BOSS_STATE,
-	DEBUG_MUSIC_OFF: true,
+	//DEBUG_MUSIC_OFF: true,
 	IMAGES: {
 		title_bg:  'image/title_bg.png',
 		press_z:  'image/press_z.png',
@@ -264,7 +264,7 @@ var cjs = window.createjs;
 
 module.exports = cjs;
 
-},{"easeljs":48,"movieclipjs":49,"preloadjs":50,"tweenjs":51}],4:[function(require,module,exports){
+},{"easeljs":49,"movieclipjs":50,"preloadjs":51,"tweenjs":52}],4:[function(require,module,exports){
 'use strict';
 var createjs = require("../createjs");
 var images = require("../image_store");
@@ -1748,10 +1748,31 @@ Game.prototype = {
 
 module.exports = Game;
 
-},{"./config":1,"./constant":2,"./scene/ending":26,"./scene/epilogue1":27,"./scene/loading":28,"./scene/prologue1":29,"./scene/prologue2":30,"./scene/stage":31,"./scene/title":37}],10:[function(require,module,exports){
+},{"./config":1,"./constant":2,"./scene/ending":27,"./scene/epilogue1":28,"./scene/loading":29,"./scene/prologue1":30,"./scene/prologue2":31,"./scene/stage":32,"./scene/title":38}],10:[function(require,module,exports){
 module.exports = {};
 
 },{}],11:[function(require,module,exports){
+'use strict';
+
+var cjs = require("../createjs");
+
+var CreateJS = function(cjs_obj, width, height) {
+	this.canvas = document.createElement('canvas');
+	this.canvas.width  = width;
+	this.canvas.height = height;
+
+	this.stage = new cjs.Stage(this.canvas);
+	this.stage.addChild(cjs_obj);
+};
+
+CreateJS.prototype.update = function() {
+	this.stage.update();
+};
+
+
+module.exports = CreateJS;
+
+},{"../createjs":3}],12:[function(require,module,exports){
 'use strict';
 
 /* 雑魚敵の出現管理クラス */
@@ -1785,7 +1806,7 @@ Logic.prototype.get = function(frame_count) {
 
 module.exports = Logic;
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 var Factory = function(Class, stage) {
@@ -1813,7 +1834,7 @@ Factory.prototype.free = function(id) {
 
 module.exports = Factory;
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 var Factory = require("./factory");
@@ -1947,7 +1968,7 @@ Manager.prototype.checkGrazeWithObject = function(obj1) {
 
 module.exports = Manager;
 
-},{"./factory":12}],14:[function(require,module,exports){
+},{"./factory":13}],15:[function(require,module,exports){
 'use strict';
 
 /* セリフを扱うクラス */
@@ -2112,7 +2133,7 @@ Logic.prototype.lines = function () {
 
 module.exports = Logic;
 
-},{"../config":1}],15:[function(require,module,exports){
+},{"../config":1}],16:[function(require,module,exports){
 'use strict';
 var Game = require('./game');
 
@@ -2160,7 +2181,7 @@ window.onerror = function (msg, file, line, column, err) {
 };
 
 
-},{"./game":9}],16:[function(require,module,exports){
+},{"./game":9}],17:[function(require,module,exports){
 'use strict';
 
 /* 射命丸文 */
@@ -2177,7 +2198,7 @@ var Konohamai = require('../spell/stage1/konohamai');
 var Shot = require('../object/shot');
 
 var boss_appearance = require("../createjs/boss_appearance");
-var cjs = require("../createjs");
+var CreateJS = require("../logic/createjs");
 
 
 // Nフレーム毎にボスをアニメーション
@@ -2239,13 +2260,7 @@ Aya.prototype.init = function() {
 	this.executeSpell();
 
 	// ボス出現エフェクト
-	var exportRoot = new boss_appearance.boss_appearance();
-	var canvas = document.createElement('canvas');
-	canvas.width  = 960;
-	canvas.height = 960;
-	var cjs_stage = new cjs.Stage(canvas);
-	cjs_stage.addChild(exportRoot);
-	this.boss_appearance = {stage: cjs_stage, canvas: canvas};
+	this.boss_appearance = new CreateJS(new boss_appearance.boss_appearance(), 960, 960);
 };
 
 // 現在のスペルカード
@@ -2308,7 +2323,8 @@ Aya.prototype.run = function(){
 		if(this.indexX > 2) { this.indexX = 0; }
 	}
 
-	this.boss_appearance.stage.update();
+	// ボス出現エフェクト
+	this.boss_appearance.update();
 };
 
 // 移動
@@ -2367,8 +2383,9 @@ Aya.prototype.animateNeutral = function(){
 // ボスを描画
 Aya.prototype.updateDisplay = function(){
 	var ctx = this.game.surface;
+
+	// ボス出現エフェクト
 	ctx.save();
-	// オブジェクトの位置を指定
 	ctx.translate(this.x, this.y);
 	ctx.drawImage(this.boss_appearance.canvas, (-this.boss_appearance.canvas.width/2), (-this.boss_appearance.canvas.height/2));
 	ctx.restore();
@@ -2411,7 +2428,7 @@ Aya.prototype.spriteHeight = function() { return 128; };
 
 module.exports = Aya;
 
-},{"../constant":2,"../createjs":3,"../createjs/boss_appearance":4,"../object/shot":23,"../spell/stage1/konohamai":45,"../spell/stage1/tengukaze":46,"../util":47,"./base":17}],17:[function(require,module,exports){
+},{"../constant":2,"../createjs/boss_appearance":4,"../logic/createjs":11,"../object/shot":24,"../spell/stage1/konohamai":46,"../spell/stage1/tengukaze":47,"../util":48,"./base":18}],18:[function(require,module,exports){
 'use strict';
 
 /* オブジェクトの基底クラス */
@@ -2612,7 +2629,7 @@ ObjectBase.prototype.notifyGraze = function() {
 
 module.exports = ObjectBase;
 
-},{"../config":1}],18:[function(require,module,exports){
+},{"../config":1}],19:[function(require,module,exports){
 'use strict';
 
 /* 敵弾オブジェクト */
@@ -2710,7 +2727,7 @@ Bullet.prototype.spriteHeight = function() { return this.height; };
 
 module.exports = Bullet;
 
-},{"../constant":2,"../enemy/bullet_types":7,"../util":47,"./vector_base":24}],19:[function(require,module,exports){
+},{"../constant":2,"../enemy/bullet_types":7,"../util":48,"./vector_base":25}],20:[function(require,module,exports){
 'use strict';
 
 /* 自機 */
@@ -3009,7 +3026,7 @@ Character.prototype.spriteHeight = function() { return 48; };
 
 module.exports = Character;
 
-},{"../constant":2,"../spell/renko/spell1":43,"../util":47,"./aya":16,"./base":17,"./bullet":18,"./enemy":21}],20:[function(require,module,exports){
+},{"../constant":2,"../spell/renko/spell1":44,"../util":48,"./aya":17,"./base":18,"./bullet":19,"./enemy":22}],21:[function(require,module,exports){
 'use strict';
 
 /* エフェクトオブジェクト */
@@ -3078,7 +3095,7 @@ Effect.prototype.updateDisplay = function() {
 
 module.exports = Effect;
 
-},{"../constant":2,"../util":47,"./base":17}],21:[function(require,module,exports){
+},{"../constant":2,"../util":48,"./base":18}],22:[function(require,module,exports){
 'use strict';
 
 /* 敵オブジェクト */
@@ -3231,7 +3248,7 @@ Enemy.prototype.spriteHeight = function() { return 32; };
 
 module.exports = Enemy;
 
-},{"../constant":2,"../enemy/bullet_dictionaries":6,"../object/shot":23,"../util":47,"./vector_base":24}],22:[function(require,module,exports){
+},{"../constant":2,"../enemy/bullet_dictionaries":6,"../object/shot":24,"../util":48,"./vector_base":25}],23:[function(require,module,exports){
 'use strict';
 
 /* アイテムオブジェクト */
@@ -3330,7 +3347,7 @@ Item.prototype.spriteHeight = function() { return 16; };
 
 module.exports = Item;
 
-},{"../util":47,"./vector_base":24}],23:[function(require,module,exports){
+},{"../util":48,"./vector_base":25}],24:[function(require,module,exports){
 'use strict';
 
 /* 自機弾オブジェクト */
@@ -3416,7 +3433,7 @@ Shot.prototype.notifyCollision = function(obj) {
 
 module.exports = Shot;
 
-},{"../constant":2,"../shot_types":42,"../util":47,"./vector_base":24}],24:[function(require,module,exports){
+},{"../constant":2,"../shot_types":43,"../util":48,"./vector_base":25}],25:[function(require,module,exports){
 'use strict';
 
 /* ベクトルを使って動くオブジェクトの基底クラス */
@@ -3599,7 +3616,7 @@ VectorBase.prototype.calc_moveY = function() {
 
 module.exports = VectorBase;
 
-},{"../constant":2,"../util":47,"./base":17}],25:[function(require,module,exports){
+},{"../constant":2,"../util":48,"./base":18}],26:[function(require,module,exports){
 'use strict';
 
 /* シーンの基底クラス */
@@ -3640,7 +3657,7 @@ BaseScene.prototype.onunload = function(){
 
 module.exports = BaseScene;
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 'use strict';
 
 /* エンディング画面 */
@@ -3698,14 +3715,13 @@ Scene.prototype._showBG = function() {
 
 module.exports = Scene;
 
-},{"../config":1,"../constant":2,"../util":47,"./base":25}],27:[function(require,module,exports){
+},{"../config":1,"../constant":2,"../util":48,"./base":26}],28:[function(require,module,exports){
 'use strict';
 
 /* エピローグ画面1 */
 
 var epilogue = require("../createjs/epilogue");
-var cjs = require("../createjs");
-
+var CreateJS = require("../logic/createjs");
 
 // 基底クラス
 var BaseScene = require('./base');
@@ -3723,13 +3739,8 @@ Util.inherit(Scene, BaseScene);
 // 初期化
 Scene.prototype.init = function() {
 	BaseScene.prototype.init.apply(this, arguments);
-	var exportRoot = new epilogue.epilogue();
-	var canvas = document.createElement('canvas');
-	canvas.width  = 640;
-	canvas.height = 480;
-	var cjs_stage = new cjs.Stage(canvas);
-	cjs_stage.addChild(exportRoot);
-	this.epilogue = {stage: cjs_stage, canvas: canvas};
+
+	this.epilogue = new CreateJS(new epilogue.epilogue(), 640, 480);
 	this.game.playBGM('epilogue');
 };
 
@@ -3737,7 +3748,7 @@ Scene.prototype.init = function() {
 Scene.prototype.run = function(){
 	BaseScene.prototype.run.apply(this, arguments);
 
-	this.epilogue.stage.update();
+	this.epilogue.update();
 };
 
 // 画面更新
@@ -3750,7 +3761,7 @@ Scene.prototype.updateDisplay = function(){
 
 module.exports = Scene;
 
-},{"../config":1,"../constant":2,"../createjs":3,"../createjs/epilogue":5,"../util":47,"./base":25}],28:[function(require,module,exports){
+},{"../config":1,"../constant":2,"../createjs/epilogue":5,"../logic/createjs":11,"../util":48,"./base":26}],29:[function(require,module,exports){
 'use strict';
 var cjs = require("../createjs");
 var images = require("../image_store");
@@ -3921,7 +3932,7 @@ LoadingScene.prototype._loadBGM = function(url, successCallback) {
 };
 module.exports = LoadingScene;
 
-},{"../config":1,"../createjs":3,"../image_store":10,"../util":47,"./base":25}],29:[function(require,module,exports){
+},{"../config":1,"../createjs":3,"../image_store":10,"../util":48,"./base":26}],30:[function(require,module,exports){
 'use strict';
 
 /* プロローグ画面1 */
@@ -4058,7 +4069,7 @@ Scene.prototype._showMessage = function(){
 
 module.exports = Scene;
 
-},{"../config":1,"../constant":2,"../serif/prologue1":38,"../util":47,"./base":25}],30:[function(require,module,exports){
+},{"../config":1,"../constant":2,"../serif/prologue1":39,"../util":48,"./base":26}],31:[function(require,module,exports){
 'use strict';
 
 /* プロローグ画面2 */
@@ -4297,7 +4308,7 @@ Scene.prototype._showMessage = function() {
 
 module.exports = Scene;
 
-},{"../config":1,"../constant":2,"../logic/serif":14,"../serif/prologue2":39,"../util":47,"./base":25}],31:[function(require,module,exports){
+},{"../config":1,"../constant":2,"../logic/serif":15,"../serif/prologue2":40,"../util":48,"./base":26}],32:[function(require,module,exports){
 'use strict';
 
 /* タイトル画面 */
@@ -4601,7 +4612,7 @@ Scene.prototype.notifyCharacterDead = function() {
 
 module.exports = Scene;
 
-},{"../config":1,"../constant":2,"../logic/manager":13,"../object/aya":16,"../object/bullet":18,"../object/character":19,"../object/effect":20,"../object/enemy":21,"../object/item":22,"../object/shot":23,"../serif/stage1_after":40,"../serif/stage1_before":41,"../util":47,"./base":25,"./stage/state/boss":33,"./stage/state/result":34,"./stage/state/talk":35,"./stage/state/way":36}],32:[function(require,module,exports){
+},{"../config":1,"../constant":2,"../logic/manager":14,"../object/aya":17,"../object/bullet":19,"../object/character":20,"../object/effect":21,"../object/enemy":22,"../object/item":23,"../object/shot":24,"../serif/stage1_after":41,"../serif/stage1_before":42,"../util":48,"./base":26,"./stage/state/boss":34,"./stage/state/result":35,"./stage/state/talk":36,"./stage/state/way":37}],33:[function(require,module,exports){
 'use strict';
 
 /* ステージ状態の基底クラス */
@@ -4634,7 +4645,7 @@ BaseState.prototype.updateDisplay = function(){
 
 module.exports = BaseState;
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 'use strict';
 
 var BaseState = require('./base');
@@ -4767,7 +4778,7 @@ State.prototype._showVital = function(){
 
 module.exports = State;
 
-},{"../../../config":1,"../../../constant":2,"../../../util":47,"./base":32}],34:[function(require,module,exports){
+},{"../../../config":1,"../../../constant":2,"../../../util":48,"./base":33}],35:[function(require,module,exports){
 'use strict';
 
 var BaseState = require('./base');
@@ -4847,7 +4858,7 @@ State.prototype._showScoreWindow = function(){
 
 module.exports = State;
 
-},{"../../../config":1,"../../../constant":2,"../../../util":47,"./base":32}],35:[function(require,module,exports){
+},{"../../../config":1,"../../../constant":2,"../../../util":48,"./base":33}],36:[function(require,module,exports){
 'use strict';
 
 var BaseState = require('./base');
@@ -5054,7 +5065,7 @@ State.prototype._showMessage = function() {
 
 module.exports = State;
 
-},{"../../../config":1,"../../../constant":2,"../../../logic/serif":14,"../../../util":47,"./base":32}],36:[function(require,module,exports){
+},{"../../../config":1,"../../../constant":2,"../../../logic/serif":15,"../../../util":48,"./base":33}],37:[function(require,module,exports){
 'use strict';
 
 var BaseState = require('./base');
@@ -5170,7 +5181,7 @@ State.prototype.updateDisplay = function(){
 
 module.exports = State;
 
-},{"../../../config":1,"../../../constant":2,"../../../enemy/stage1":8,"../../../logic/enemy_appear":11,"../../../util":47,"./base":32}],37:[function(require,module,exports){
+},{"../../../config":1,"../../../constant":2,"../../../enemy/stage1":8,"../../../logic/enemy_appear":12,"../../../util":48,"./base":33}],38:[function(require,module,exports){
 'use strict';
 
 /* タイトル画面 */
@@ -5262,7 +5273,7 @@ OpeningScene.prototype.updateDisplay = function(){
 
 module.exports = OpeningScene;
 
-},{"../config":1,"../constant":2,"../util":47,"./base":25}],38:[function(require,module,exports){
+},{"../config":1,"../constant":2,"../util":48,"./base":26}],39:[function(require,module,exports){
 'use strict';
 
 var Serif = [
@@ -5276,14 +5287,14 @@ var Serif = [
 
 module.exports = Serif;
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict';
 
 // セリフ
 var Serif = [{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":null},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"早朝の散歩も良いものね。"},{"pos":"right","exp":null,"chara":null,"fukidashi":"normal","serif":"…約束を守りなさい。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"ん…誰？\n誰かいるの？"},{"pos":"right","exp":"normal","chara":"hatena","fukidashi":null,"serif":"　"},{"pos":"right","exp":"owata","chara":"hatena","fukidashi":"orange","serif":"わたしです"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"なんだ私か。"},{"pos":"right","exp":"normal","chara":"hatena","fukidashi":"normal","serif":"え…。\nちょっとは驚きなさいよ。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"驚いたわよ。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"で、貴方誰なの？\n見たところ、私に\nそっくりだけど。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"orange","serif":"…ひょっとして、\nドッペルゲンガーってやつ？"},{"pos":"right","exp":"normal","chara":"ganger","fukidashi":"normal","serif":"そのようなものね。\nそんなことより、\n貴方に大事な話があるの。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"なにかしら。"},{"pos":"right","exp":"normal","chara":"ganger","fukidashi":"normal","serif":"約束を守りなさい。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"約束？\n何か約束してたっけ。"},{"pos":"right","exp":"normal","chara":"ganger","fukidashi":"normal","serif":"ほら、博麗神社に…。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"orange","serif":"あぁ、そういえば前に\nメリーと約束してたわ。"},{"pos":"right","exp":null,"chara":null,"fukidashi":null,"serif":null},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"博麗神社の入り口を\n調べようって。\nそのことかしら？"},{"pos":"right","exp":"normal","chara":"merry","fukidashi":"orange","serif":"蓮子？\nこんなところで何してるの？"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"orange","serif":"あ、噂をすれば。\nメリー、見て！\n私のドッペルゲンガーが…"},{"pos":"right","exp":"normal","chara":null,"fukidashi":"normal","serif":null},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"あれ？いない…。"},{"pos":"right","exp":"normal","chara":"merry","fukidashi":"normal","serif":"どうしたの？"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"それが、\nかくかくしかじかで。"},{"pos":"right","exp":"normal","chara":"merry","fukidashi":"normal","serif":"ふーん。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"覚えてる？前に博霊神社の\n入り口を調べようって\n約束してたこと。"},{"pos":"right","exp":"normal","chara":"merry","fukidashi":"normal","serif":"そうだっけ？"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"orange","serif":"ねえ、今から行ってみない？"},{"pos":"right","exp":"trouble","chara":"merry","fukidashi":"normal","serif":"今から？面倒だわ…。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"なんだか気になるのよ。"},{"pos":"right","exp":"disappointed","chara":"merry","fukidashi":"normal","serif":"うっ…急にめまいと頭痛が。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"絶対嘘でしょ、それ。"},{"pos":"right","exp":"disappointed","chara":"merry","fukidashi":"normal","serif":"全身の骨が折れてるかも。"},{"pos":"left","exp":"surprised","chara":"renko","fukidashi":"purple","serif":"さっきまで\n元気だったじゃない！"},{"pos":"right","exp":"trouble","chara":"merry","fukidashi":"normal","serif":"うーん、気が進まないわ。"},{"pos":"left","exp":"disappointed","chara":"renko","fukidashi":"normal","serif":"はぁ…。そんなに嫌なら\n仕方ないわね。\n私一人で行ってくるわ。"}];
 module.exports = Serif;
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 'use strict';
 
 // セリフ
@@ -5291,7 +5302,7 @@ var Serif= [{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","s
 
 module.exports = Serif;
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 'use strict';
 
 // セリフ
@@ -5299,7 +5310,7 @@ var Serif= [{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","ser
 
 module.exports = Serif;
 
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 'use strict';
 
 var ShotTypes = [
@@ -5330,7 +5341,7 @@ var ShotTypes = [
 
 module.exports = ShotTypes;
 
-},{}],43:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 'use strict';
 
 /* 自機スペルカード */
@@ -5380,7 +5391,7 @@ Spell.prototype.charaImage = function() { return "renko_normal"; };
 
 module.exports = Spell;
 
-},{"../../util":47,"../stage1/base":44}],44:[function(require,module,exports){
+},{"../../util":48,"../stage1/base":45}],45:[function(require,module,exports){
 'use strict';
 
 /* スペルカードの基底クラス */
@@ -5532,7 +5543,7 @@ SpellBase.prototype.shot = function(x, y, r, theta, sprite_x, sprite_y) {
 
 module.exports = SpellBase;
 
-},{"../../config":1,"../../constant":2}],45:[function(require,module,exports){
+},{"../../config":1,"../../constant":2}],46:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -5670,7 +5681,7 @@ Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 module.exports = Spell;
 
-},{"../../constant":2,"../../util":47,"./base":44}],46:[function(require,module,exports){
+},{"../../constant":2,"../../util":48,"./base":45}],47:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -5776,7 +5787,7 @@ Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 module.exports = Spell;
 
-},{"../../constant":2,"../../util":47,"./base":44}],47:[function(require,module,exports){
+},{"../../constant":2,"../../util":48,"./base":45}],48:[function(require,module,exports){
 'use strict';
 var Util = {
 	inherit: function( child, parent ) {
@@ -5794,7 +5805,7 @@ var Util = {
 
 module.exports = Util;
 
-},{}],48:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*
@@ -5925,7 +5936,7 @@ function(b,a,c,h,d){b.__touch.pointers[a]&&b._handlePointerMove(a,c,h,d)};c._han
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],49:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*
@@ -5952,7 +5963,7 @@ c.length-1;b>=0;b--)a=c[b].id,this._managed[a]==1&&(this.removeChildAt(b),delete
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],50:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /**
@@ -6006,7 +6017,7 @@ a.src,true);if(createjs.PreloadJS.isBinary(a.type))this._request.responseType="a
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],51:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*
@@ -6047,4 +6058,4 @@ function(a,b){var h=Math.PI*2;return function(c){if(c==0||c==1)return c;var e=b/
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[15]);
+},{}]},{},[16]);
