@@ -4,9 +4,9 @@ var Constant = require('./constant');
 
 var Config = {
 	DEBUG: true,
-	//DEBUG_SCENE: Constant.EPILOGUE1_SCENE,
+	DEBUG_SCENE: Constant.EPILOGUE1_SCENE,
 	//DEBUG_STATE: Constant.BOSS_STATE,
-	//DEBUG_MUSIC_OFF: true,
+	DEBUG_MUSIC_OFF: true,
 	IMAGES: {
 		title_bg:  'image/title_bg.png',
 		press_z:  'image/press_z.png',
@@ -56,9 +56,6 @@ var Config = {
 		enemy:     'image/enemy.png',
 
 
-		epilogue1_bg: 'image/epilogue1_bg.png',
-		epilogue2_1_bg: 'image/epilogue2_1_bg.jpg',
-		epilogue2_2_bg: 'image/epilogue2_2_bg.jpg',
 		/*
 		reimu:     'image/reimu.png',
 		shot:      'image/shot.png',
