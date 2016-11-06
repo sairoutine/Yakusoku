@@ -3,7 +3,7 @@
 var ShotTypes = [
 	{
 		'image':           'shot',
-		'indexX':          0,
+		'indexX':          6,
 		'indexY':          2,
 		'width':           20,
 		'height':          20,
