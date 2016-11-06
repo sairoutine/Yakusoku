@@ -2,6 +2,10 @@
 
 /* エピローグ画面1 */
 
+var epilogue = require("../createjs/epilogue");
+var cjs = require("../createjs");
+
+
 // 基底クラス
 var BaseScene = require('./base');
 
@@ -30,16 +34,20 @@ Scene.prototype.init = function() {
 		this.serif.script = JSON.parse(document.getElementById("epilogue1").value);
 	}
 	this.serif.init();
+
+	var exportRoot = new epilogue.epilogue();
+	var canvas = document.createElement('canvas');
+	canvas.width  = 640;
+	canvas.height = 480;
+	var cjs_stage = new cjs.Stage(canvas);
+	cjs_stage.addChild(exportRoot);
+	this.epilogue = {stage: cjs_stage, canvas: canvas};
+	this.game.playBGM('epilogue');
 };
 
 // フレーム処理
 Scene.prototype.run = function(){
 	BaseScene.prototype.run.apply(this, arguments);
-
-	// BGM 再生
-	if(this.frame_count === 60) {
-		this.game.playBGM('epilogue');
-	}
 
 	if(this.game.isKeyPush(Constant.BUTTON_Z)) {
 		if(this.serif.is_end()) {
@@ -50,41 +58,15 @@ Scene.prototype.run = function(){
 			this.serif.next();
 		}
 	}
+	this.epilogue.stage.update();
 };
 
 // 画面更新
 Scene.prototype.updateDisplay = function(){
-	this.game.clearCanvas();
 	var ctx = this.game.surface;
-
-	// 背景画像表示
-	this._showBG();
-
-	if(this.serif.right_image()) {
-		// キャラ表示
-		this._showRightChara();
-	}
-	if (this.serif.right_name()) {
-		// 名前表示
-		this._showName(this.serif.right_name(), Config.PROLOGUE2_RIGHT_NAME_WINDOW_X, Config.PROLOGUE2_RIGHT_NAME_WINDOW_Y);
-	}
-
-	if(this.serif.left_image()) {
-		// キャラ表示
-		this._showLeftChara();
-	}
-	if (this.serif.left_name()) {
-		// 名前表示
-		this._showName(this.serif.left_name(), Config.PROLOGUE2_LEFT_NAME_WINDOW_X, Config.PROLOGUE2_LEFT_NAME_WINDOW_Y);
-	}
-
-	// セリフウィンドウ表示
-	if(this.serif.serif_window()) {
-		this._showMessageWindow();
-	}
-
-	// セリフ表示
-	this._showMessage();
+	ctx.save();
+	ctx.drawImage(this.epilogue.canvas, 0, 0);
+	ctx.restore();
 };
 
 // 背景画像表示
