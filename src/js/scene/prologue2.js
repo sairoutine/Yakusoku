@@ -113,8 +113,9 @@ Scene.prototype._showRightChara = function(){
 	var y = Config.PROLOGUE2_RIGHT_Y;
 
 	if(!this.serif.is_right_talking()) {
+		// TODO: delete
 		// 喋ってない方のキャラは薄くなる
-		ctx.globalAlpha = 0.5;
+		//ctx.globalAlpha = 0.5;
 	}
 	else {
 		// 喋ってる方のキャラは真ん中に寄る
@@ -144,7 +145,8 @@ Scene.prototype._showLeftChara = function () {
 
 	// 喋ってない方のキャラは薄くなる
 	if(!this.serif.is_left_talking()) {
-		ctx.globalAlpha = 0.5;
+		// TODO: delete
+		//ctx.globalAlpha = 0.5;
 	}
 	else {
 		// 喋ってる方のキャラは真ん中に寄る
