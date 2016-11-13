@@ -219,7 +219,7 @@ Character.prototype._calcLevelUp = function () {
 	else if(96 > power) {
 		return 3;
 	}
-	else if(128 > power) {
+	else {
 		return 4;
 	}
 };
@@ -252,6 +252,16 @@ Character.prototype._actionLevelUp = function () {
 	}
 };
 
+// パワーを加算
+Character.prototype.addPower = function(power){
+	if(this.power > 128) return;
+
+	this.power += power;
+
+	if(this.power > 128) {
+		this.power = 128;
+	}
+};
 // 自機を描画
 Character.prototype.updateDisplay = function(){
 	// 無敵状態ならば半透明に
