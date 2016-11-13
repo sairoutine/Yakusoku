@@ -9,6 +9,7 @@ var BOMB_NUM = 12;
 var BOMB_PER_COUNT = 45;
 
 var BaseSpell = require('../stage1/base');
+var Constant = require('../../constant');
 var Util = require('../../util');
 
 var Spell = function(boss) {
@@ -30,7 +31,7 @@ Spell.prototype.run = function() {
 	// ボム生成
 	if(this.frame_count % BOMB_PER_COUNT === 0) {
 		for(var i = 0; i < BOMB_NUM; i++) {
-			this.stage.shot_manager.create(1, // type_id: 1
+			this.stage.shot_manager.create(Constant.SHOT_BOMB_TYPE,
 				this.stage.character.x,
 				this.stage.character.y,
 				{ 'r': 0, 'theta': ((360 / BOMB_NUM) | 0) * i, 'ra': 0.05, 'raa': 0.01 }
