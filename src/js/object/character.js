@@ -32,8 +32,15 @@ var BOMB_COUNT = 500;
 var INIT_LIFE = 5;
 // 初期ボム数
 var INIT_BOMB = 5;
-// 自機弾のベクトル
-var SHOT_VECTOR = { 'r': 8, 'theta': 270 };
+
+// 自機弾のベクトル(初期)
+var SHOT_VECTOR_0 = { 'r': 8, 'theta': 270 };
+// 自機弾のベクトル(1強化後)
+var SHOT_VECTOR_1_1 = { 'r': 8, 'theta': 265 };
+var SHOT_VECTOR_1_2 = { 'r': 8, 'theta': 270 };
+var SHOT_VECTOR_1_3 = { 'r': 8, 'theta': 275 };
+
+
 
 
 
@@ -95,8 +102,17 @@ Character.prototype.init = function() {
 Character.prototype.shot = function(){
 	// Nフレーム置きにショットを生成
 	if(this.frame_count % SHOT_SPAN === 0) {
-		this.stage.shot_manager.create(0, this.x, this.y, SHOT_VECTOR); // type_id: 0
-		//this.game.playSound('shot'); TODO
+
+		// レベルアップ後
+		if (this.level >= 1) {
+			this.stage.shot_manager.create(Constant.SHOT_NORMAL_TYPE, this.x, this.y, SHOT_VECTOR_1_1);
+			this.stage.shot_manager.create(Constant.SHOT_NORMAL_TYPE, this.x, this.y, SHOT_VECTOR_1_2);
+			this.stage.shot_manager.create(Constant.SHOT_NORMAL_TYPE, this.x, this.y, SHOT_VECTOR_1_3);
+		}
+		// レベルアップ前
+		else {
+			this.stage.shot_manager.create(Constant.SHOT_NORMAL_TYPE, this.x, this.y, SHOT_VECTOR_0);
+		}
 	}
 };
 
