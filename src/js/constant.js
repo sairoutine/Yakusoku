@@ -28,6 +28,8 @@ var Constant = {
 	SPELLCARD_START_STATE: 0,
 	SPELLCARD_EXEC_STATE:  1,
 
+	ITEM_POWER_TYPE: 0,
+	ITEM_SCORE_TYPE:  1,
 };
 
 module.exports = Constant;
