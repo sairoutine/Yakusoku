@@ -127,8 +127,11 @@ Enemy.prototype.die = function() {
 
 
 	// ポイントアイテムの生成
-	if(this.powerItem || this.scoreItem) {
-		this.stage.item_manager.create(0, this.x, this.y); // TODO: type_id
+	if(this.powerItem) {
+		this.stage.item_manager.create(Constant.ITEM_POWER_TYPE, this.x, this.y);
+	}
+	else if(this.scoreItem) {
+		this.stage.item_manager.create(Constant.ITEM_SCORE_TYPE, this.x, this.y);
 	}
 };
 

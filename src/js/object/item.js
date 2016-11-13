@@ -5,6 +5,7 @@
 // 基底クラス
 var VectorBaseObject = require('./vector_base');
 var Util = require('../util');
+var Constant = require('../constant');
 
 var Item = function(id, scene) {
 	VectorBaseObject.apply(this, arguments);
@@ -32,8 +33,16 @@ Item.prototype.init = function(type_id, x, y) {
 		]
 	]);
 
-	// 弾のスプライト上の位置
-	this.indexX = 0; this.indexY = 0;
+	this.type_id = type_id;
+
+	if(this.isPower()) {
+		// 弾のスプライト上の位置
+		this.indexX = 4; this.indexY = 0;
+	}
+	else if(this.isScore()) {
+		// 弾のスプライト上の位置
+		this.indexX = 0; this.indexY = 0;
+	}
 
 	// 自機とグレイズ済かどうか
 	this.is_graze = false;
@@ -41,7 +50,7 @@ Item.prototype.init = function(type_id, x, y) {
 
 Item.prototype.run = function() {
 	// 自機とグレイズ済あるいは
-	// 時期がボム使用中なら、キャラに向けて逐一ベクトルを修正
+	// 自機がボム使用中なら、キャラに向けて逐一ベクトルを修正
 	if(this.is_graze || this.stage.character.is_using_bomb) {
 		this.setVector([
 			{
@@ -62,8 +71,23 @@ Item.prototype.notifyCollision = function(obj) {
 	// グレイズSEの再生
 	this.game.playSound('graze');
 
-	// TODO: スコアアイテムとパワーアップアイテムで処理を分ける
-	this.stage.score += 1000;
+	if(this.isPower()) {
+		this.stage.score += 100;
+
+		this.stage.character.power += 1;
+	}
+	else if(this.isScore()) {
+		this.stage.score += 1000;
+	}
+
+};
+
+Item.prototype.isScore = function() {
+	return(this.type_id === Constant.ITEM_SCORE_TYPE ? true : false);
+};
+
+Item.prototype.isPower = function() {
+	return(this.type_id === Constant.ITEM_POWER_TYPE ? true : false);
 };
 
 // グレイズした時
@@ -88,8 +112,8 @@ Item.prototype.spriteY = function() { return this.indexY; };
 Item.prototype.spriteImage = function() { return 'item'; };
 
 // スプライトのサイズ
-Item.prototype.spriteWidth  = function() { return 16; };
-Item.prototype.spriteHeight = function() { return 16; };
+Item.prototype.spriteWidth  = function() { return 17; };
+Item.prototype.spriteHeight = function() { return 17; };
 
 
 
