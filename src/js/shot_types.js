@@ -23,7 +23,17 @@ var ShotTypes = [
 		'is_rotate':       false,
 		'is_penetration':  true,
 	},
-
+	{
+		'image':           'shot2',
+		'indexX':          6,
+		'indexY':          16,
+		'width':           20,
+		'height':          20,
+		'collisionWidth':  20,
+		'collisionHeight': 20,
+		'is_rotate':       false,
+		'is_penetration':  false,
+	},
 ];
 
 module.exports = ShotTypes;
