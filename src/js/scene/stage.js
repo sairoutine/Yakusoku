@@ -27,16 +27,21 @@ var GameoverState = require('./stage/state/result');
 
 // オブジェクト
 var Character = require('../object/character');
+
 var Shot = require('../object/shot');
 var Enemy = require('../object/enemy');
-var Boss = require('../object/boss/aya');
 var Bullet = require('../object/bullet');
 var Effect = require('../object/effect');
 var Item = require('../object/item');
 
+var Stage1Boss = require('../object/boss/aya');
+
 // セリフ
-var serif_before = require('../serif/stage1/before');
-var serif_after = require('../serif/stage1/after');
+var stage1_serif_before = require('../serif/stage1/before');
+var stage1_serif_after = require('../serif/stage1/after');
+
+// 敵の出現情報
+var stage1_appear = require('../enemy/stage1');
 
 var Manager = require('../logic/manager');
 
@@ -50,10 +55,10 @@ var Scene = function(game) {
 
 	// ステージの状態一覧
 	this.states = [];
-	this.states[ Constant.WAY_STATE ]      = new WayState(this);
-	this.states[ Constant.TALK1_STATE ]    = new TalkState(this, serif_before, Constant.BOSS_STATE);
-	this.states[ Constant.BOSS_STATE ]     = new BossState(this);
-	this.states[ Constant.TALK2_STATE ]    = new TalkState(this, serif_after, Constant.RESULT_STATE);
+	this.states[ Constant.WAY_STATE ]      = new WayState(this, stage1_appear);
+	this.states[ Constant.TALK1_STATE ]    = new TalkState(this, stage1_serif_before, Constant.BOSS_STATE);
+	this.states[ Constant.BOSS_STATE ]     = new BossState(this, 'stage1');
+	this.states[ Constant.TALK2_STATE ]    = new TalkState(this, stage1_serif_after, Constant.RESULT_STATE);
 	this.states[ Constant.RESULT_STATE ]   = new ResultState(this);
 	this.states[ Constant.GAMEOVER_STATE ] = new GameoverState(this);
 
@@ -75,7 +80,7 @@ var Scene = function(game) {
 	];
 
 	// state の方で動かす
-	this.boss = new Boss(this);
+	this.boss = new Stage1Boss(this);
 	this.bullet_manager = new Manager(Bullet, this);
 	this.item_manager = new Manager(Item, this);
 };
