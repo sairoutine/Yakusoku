@@ -8,9 +8,11 @@ var Constant = require('../../../constant');
 // スペルカード残り時間のスペース
 var VITAL_OUTLINE_MARGIN = 5;
 
-var State = function(stage) {
+var State = function(stage, bgm) {
 	BaseState.apply(this, arguments);
 
+	// BGM
+	this.bgm = bgm;
 };
 Util.inherit(State, BaseState);
 
@@ -31,7 +33,7 @@ State.prototype.run = function(){
 
 	// BGM start
 	if (this.frame_count === 1) {
-		this.game.playBGM('stage1');
+		this.game.playBGM(this.bgm);
 	}
 
 	var character = this.stage.character;
