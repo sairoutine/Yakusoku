@@ -6,13 +6,12 @@ var Config = require('../../../config');
 var Constant = require('../../../constant');
 
 var EnemyAppear = require('../../../logic/enemy_appear');
-var stage1_appear = require('../../../enemy/stage1');
 
-var State = function(stage) {
+var State = function(stage, stage_appear) {
 	BaseState.apply(this, arguments);
 
 	// 雑魚敵の出現
-	this.enemy_appear = new EnemyAppear(stage1_appear);
+	this.enemy_appear = new EnemyAppear(stage_appear);
 };
 Util.inherit(State, BaseState);
 
