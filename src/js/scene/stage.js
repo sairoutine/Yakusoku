@@ -29,14 +29,14 @@ var GameoverState = require('./stage/state/result');
 var Character = require('../object/character');
 var Shot = require('../object/shot');
 var Enemy = require('../object/enemy');
-var Boss = require('../object/aya');
+var Boss = require('../object/boss/aya');
 var Bullet = require('../object/bullet');
 var Effect = require('../object/effect');
 var Item = require('../object/item');
 
 // セリフ
-var serif_before = require('../serif/stage1_before');
-var serif_after = require('../serif/stage1_after');
+var serif_before = require('../serif/stage1/before');
+var serif_after = require('../serif/stage1/after');
 
 var Manager = require('../logic/manager');
 

@@ -7,7 +7,7 @@ var BaseObject = require('./base');
 var Util = require('../util');
 var Constant = require('../constant');
 
-var Aya = require('./aya');
+var Aya = require('./boss/aya');
 var Enemy = require('./enemy');
 var Bullet = require('./bullet');
 var Option = require('./option');
