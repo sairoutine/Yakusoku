@@ -3,18 +3,18 @@
 /* 射命丸文 */
 
 // 基底クラス
-var BaseObject = require('./base');
-var Util = require('../util');
-var Constant = require('../constant');
+var BaseObject = require('../base');
+var Util = require('../../util');
+var Constant = require('../../constant');
 
-var TenguKaze = require('../spell/stage1/tengukaze');
-var Konohamai = require('../spell/stage1/konohamai');
+var TenguKaze = require('../../spell/stage1/tengukaze');
+var Konohamai = require('../../spell/stage1/konohamai');
 
 
-var Shot = require('../object/shot');
+var Shot = require('../../object/shot');
 
-var boss_appearance = require("../createjs/boss_appearance");
-var CreateJS = require("../logic/createjs");
+var boss_appearance = require("../../createjs/boss_appearance");
+var CreateJS = require("../../logic/createjs");
 
 
 // Nフレーム毎にボスをアニメーション
