@@ -17,7 +17,7 @@ Util.inherit(State, BaseState);
 State.prototype.init = function(){
 	BaseState.prototype.init.apply(this, arguments);
 
-	this.stage.boss.init();
+	this.stage.currentStageBoss().init();
 	this.stage.bullet_manager.init();
 
 	// 道中曲を止める
@@ -34,7 +34,7 @@ State.prototype.run = function(){
 	}
 
 	// ボス戦の終了
-	if(this.stage.boss.isDead() && !this.stage.boss.hasNextSpell()) {
+	if(this.stage.currentStageBoss().isDead() && !this.stage.currentStageBoss().hasNextSpell()) {
 		//ボスのスペルカードが全て無くなった
 		this.stage.notifyBossEnd();
 	}
@@ -92,22 +92,22 @@ State.prototype.run = function(){
 		// 敵弾と自機の衝突判定
 		this.stage.bullet_manager.checkCollisionWithObject(character);
 		// ボスと自機の衝突判定
-		character.checkCollisionWithObject(this.stage.boss);
+		character.checkCollisionWithObject(this.stage.currentStageBoss());
 	}
 	// ボスと自機弾の衝突判定
-	this.stage.shot_manager.checkCollisionWithObject(this.stage.boss);
+	this.stage.shot_manager.checkCollisionWithObject(this.stage.currentStageBoss());
 	// 敵弾と自機のグレイズ判定
 	this.stage.bullet_manager.checkGrazeWithObject(character);
 
 
-	this.stage.boss.run();
+	this.stage.currentStageBoss().run();
 	this.stage.bullet_manager.run();
 	this.stage.item_manager.run();
 };
 
 // 画面更新
 State.prototype.updateDisplay = function(){
-	this.stage.boss.updateDisplay();
+	this.stage.currentStageBoss().updateDisplay();
 	this.stage.bullet_manager.updateDisplay();
 	this.stage.item_manager.updateDisplay();
 
@@ -124,7 +124,7 @@ State.prototype._showVital = function(){
 	ctx.fillRect(
 		VITAL_OUTLINE_MARGIN,
 		VITAL_OUTLINE_MARGIN,
-		this.stage.boss.vital / this.stage.boss.max_vital * (this.stage.width - VITAL_OUTLINE_MARGIN * 2),
+		this.stage.currentStageBoss().vital / this.stage.currentStageBoss().max_vital * (this.stage.width - VITAL_OUTLINE_MARGIN * 2),
 		VITAL_OUTLINE_MARGIN
 	);
 

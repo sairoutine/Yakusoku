@@ -65,15 +65,14 @@ var Scene = function(game) {
 	this.width = this.game.width - SIDE_WIDTH;
 	this.height= this.game.height;
 
+	// state の方で動かすオブジェクト
+	this.bullet_manager = new Manager(Bullet, this);
+	this.item_manager = new Manager(Item, this);
+
 	this.shot_manager   = new Manager(Shot, this);
 	this.character      = new Character(this);
 	this.enemy_manager  = new Manager(Enemy, this);
 	this.effect_manager = new Manager(Effect, this);
-
-	// state の方で動かす
-	this.boss = new Stage1Boss(this);
-	this.bullet_manager = new Manager(Bullet, this);
-	this.item_manager = new Manager(Item, this);
 
 	// シーンが管理するオブジェクト一覧
 	this.objects = [
@@ -91,6 +90,15 @@ var Scene = function(game) {
 	this.states[ Constant.TALK2_STATE ]    = new TalkStateAfter(this);
 	this.states[ Constant.RESULT_STATE ]   = new ResultState(this);
 	this.states[ Constant.GAMEOVER_STATE ] = new GameoverState(this);
+
+	// ボス一覧
+	this.bosses = [
+		new Stage1Boss(this),
+		new Stage2Boss(this),
+		new Stage3Boss(this),
+		new Stage4Boss(this),
+		new Stage5Boss(this),
+	];
 
 	// 敵の出現情報
 	this.enemy_info_list = [
@@ -184,6 +192,11 @@ Scene.prototype.currentStageSerifAfter = function() {
 // 現在のステージのボスBGM
 Scene.prototype.currentStageBossBGM = function() {
 	return this.boss_bgms[this.stage];
+};
+
+// 現在のボス インスタンス
+Scene.prototype.currentStageBoss = function() {
+	return this.bosses[this.stage];
 };
 
 
