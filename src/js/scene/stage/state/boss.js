@@ -30,7 +30,7 @@ State.prototype.run = function(){
 
 	// BGM start
 	if (this.frame_count === 1) {
-		this.game.playBGM(this.stage.currentStageBossBGM());
+		this.game.playBGM(this.stage.currentStageBoss().bgm());
 	}
 
 	// ボス戦の終了

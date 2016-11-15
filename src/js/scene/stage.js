@@ -127,15 +127,6 @@ var Scene = function(game) {
 		stage5_serif_after,
 	];
 
-	// ボスのBGM
-	this.boss_bgms = [
-		'stage1',
-		'stage1',
-		'stage1',
-		'stage1',
-		'stage1',
-	];
-
 	this.score = 0; // スコア
 	this.state = null; // ステージの現在の状態
 	this.stage = 0; // 現在のステージ
@@ -187,11 +178,6 @@ Scene.prototype.currentStageSerifBefore = function() {
 // 現在のステージのボス後のセリフ
 Scene.prototype.currentStageSerifAfter = function() {
 	return this.serif_after_list[this.stage];
-};
-
-// 現在のステージのボスBGM
-Scene.prototype.currentStageBossBGM = function() {
-	return this.boss_bgms[this.stage];
 };
 
 // 現在のボス インスタンス

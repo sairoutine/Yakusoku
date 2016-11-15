@@ -239,6 +239,9 @@ Aya.prototype.spriteImage = function() { return 'boss_aya'; };
 Aya.prototype.spriteWidth  = function() { return 128; };
 Aya.prototype.spriteHeight = function() { return 128; };
 
+// BGM
+Aya.prototype.bgm = function() { return 'stage1'; };
+
 
 
 
