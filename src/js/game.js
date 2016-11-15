@@ -7,7 +7,7 @@ var LoadingScene   = require('./scene/loading');
 var TitleScene     = require('./scene/title');
 var Prologue1Scene = require('./scene/prologue1');
 var Prologue2Scene = require('./scene/prologue2');
-var StageScene    = require('./scene/stage/1');
+var StageScene    = require('./scene/stage');
 var Epilogue1Scene = require('./scene/epilogue1');
 var EndingScene   = require('./scene/ending');
 
