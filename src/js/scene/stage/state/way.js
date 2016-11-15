@@ -10,14 +10,8 @@ var Constant = require('../../../constant');
 
 var EnemyAppear = require('../../../logic/enemy_appear');
 
-var State = function(stage, stage_appear, way_end_time) {
+var State = function(stage) {
 	BaseState.apply(this, arguments);
-
-	// 雑魚敵の出現
-	this.enemy_appear = new EnemyAppear(stage_appear);
-
-	// 何フレーム経過すると道中が終了するか
-	this.way_end_time = way_end_time;
 };
 Util.inherit(State, BaseState);
 
@@ -26,6 +20,9 @@ State.prototype.init = function(){
 	BaseState.prototype.init.apply(this, arguments);
 	this.stage.bullet_manager.init();
 	this.stage.item_manager.init();
+
+	// 雑魚敵の出現
+	this.enemy_appear = new EnemyAppear(this.stage.currentStageEnemyInfo());
 	this.enemy_appear.init();
 };
 
