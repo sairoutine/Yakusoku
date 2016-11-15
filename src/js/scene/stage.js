@@ -2,35 +2,64 @@
 
 /* ステージ画面 */
 
-
 // サイドバーの横の長さ
 var SIDE_WIDTH = 160;
 // 背景画像のスクロールスピード
 var BACKGROUND_SCROLL_SPEED = 3;
 
 // 基底クラス
-var BaseScene = require('../base');
+var BaseScene = require('./base');
 
-var Util = require('../../util');
-var Config = require('../../config');
-var Constant = require('../../constant');
+var Util = require('../util');
+var Config = require('../config');
+var Constant = require('../constant');
+
+var Manager = require('../logic/manager');
 
 // オブジェクト
-var Character = require('../../object/character');
-var Shot = require('../../object/shot');
-var Enemy = require('../../object/enemy');
-var Bullet = require('../../object/bullet');
-var Effect = require('../../object/effect');
-var Item = require('../../object/item');
+var Character = require('../object/character');
+var Shot = require('../object/shot');
+var Enemy = require('../object/enemy');
+var Bullet = require('../object/bullet');
+var Effect = require('../object/effect');
+var Item = require('../object/item');
 
-var Stage1Boss = require('../../object/boss/aya');
+// ステージの状態
+var WayState = require('./stage/state/way');
+var TalkStateBefore = require('./stage/state/talk_before');
+var TalkStateAfter = require('./stage/state/talk_after');
+var BossState = require('./stage/state/boss');
+var ResultState = require('./stage/state/result');
+var GameoverState = require('./stage/state/result');
 
-var Manager = require('../../logic/manager');
+// ボス
+var Stage1Boss = require('../object/boss/aya');
+var Stage2Boss = require('../object/boss/aya');
+var Stage3Boss = require('../object/boss/aya');
+var Stage4Boss = require('../object/boss/aya');
+var Stage5Boss = require('../object/boss/aya');
+
+// セリフ
+var stage1_serif_before = require('../serif/stage1/before');
+var stage1_serif_after  = require('../serif/stage1/after');
+var stage2_serif_before = require('../serif/stage1/before');
+var stage2_serif_after  = require('../serif/stage1/after');
+var stage3_serif_before = require('../serif/stage1/before');
+var stage3_serif_after  = require('../serif/stage1/after');
+var stage4_serif_before = require('../serif/stage1/before');
+var stage4_serif_after  = require('../serif/stage1/after');
+var stage5_serif_before = require('../serif/stage1/before');
+var stage5_serif_after  = require('../serif/stage1/after');
+
+// 敵の出現情報
+var stage1_enemy_info = require('../enemy/stage1');
+var stage2_enemy_info = require('../enemy/stage1');
+var stage3_enemy_info = require('../enemy/stage1');
+var stage4_enemy_info = require('../enemy/stage1');
+var stage5_enemy_info = require('../enemy/stage1');
 
 var Scene = function(game) {
 	BaseScene.apply(this, arguments);
-
-	this.score = 0;
 
 	// サイドバーを除いたステージの大きさ
 	this.width = this.game.width - SIDE_WIDTH;
@@ -56,25 +85,65 @@ var Scene = function(game) {
 
 	// ステージの現在の状態
 	this.state = null;
+	this.states = [];
+	this.states[ Constant.WAY_STATE ]      = new WayState(this);
+	this.states[ Constant.TALK1_STATE ]    = new TalkStateBefore(this);
+	this.states[ Constant.BOSS_STATE ]     = new BossState(this);
+	this.states[ Constant.TALK2_STATE ]    = new TalkStateAfter(this);
+	this.states[ Constant.RESULT_STATE ]   = new ResultState(this);
+	this.states[ Constant.GAMEOVER_STATE ] = new GameoverState(this);
 
-	// ステージの状態一覧を作成
-	this.createStateInstances();
+	// 敵の出現情報
+	this.enemy_info_list = [
+		stage1_enemy_info,
+		stage2_enemy_info,
+		stage3_enemy_info,
+		stage4_enemy_info,
+		stage5_enemy_info,
+	];
+
+	// ボス前のセリフ情報
+	this.serif_before_list = [
+		stage1_serif_before,
+		stage2_serif_before,
+		stage3_serif_before,
+		stage4_serif_before,
+		stage5_serif_before,
+	];
+
+	// ボス後のセリフ情報
+	this.serif_after_list = [
+		stage1_serif_after,
+		stage2_serif_after,
+		stage3_serif_after,
+		stage4_serif_after,
+		stage5_serif_after,
+	];
+
+	// ボスのBGM
+	this.boss_bgms = [
+		'stage1',
+		'stage1',
+		'stage1',
+		'stage1',
+		'stage1',
+	];
+
+
+	this.score = 0; // スコア
+	this.stage = 0; // 現在のステージ
 };
 
 // 基底クラスを継承
 Util.inherit(Scene, BaseScene);
-
-// ステージの状態一覧を作成
-Scene.prototype.createStateInstances = function() {
-	console.error('createStateInstances method must be overridden.');
-};
 
 // 初期化
 Scene.prototype.init = function() {
 	BaseScene.prototype.init.apply(this, arguments);
 
 	this.state = null;
-	this.score = 0;
+	this.score = 0; // スコア
+	this.stage = 0; // 現在のステージ
 
 	for(var i = 0, len = this.objects.length; i < len; i++) {
 		this.objects[i].init();
@@ -97,6 +166,29 @@ Scene.prototype.changeState = function(state){
 	// 切り替え後の状態を初期化
 	this.currentState().init();
 };
+
+// 現在のステージの敵の出現情報
+Scene.prototype.currentStageEnemyInfo = function() {
+	return this.enemy_info_list[this.stage];
+};
+
+// 現在のステージのボス前のセリフ
+Scene.prototype.currentStageSerifBefore = function() {
+	return this.serif_before_list[this.stage];
+};
+
+// 現在のステージのボス後のセリフ
+Scene.prototype.currentStageSerifAfter = function() {
+	return this.serif_after_list[this.stage];
+};
+
+// 現在のステージのボスBGM
+Scene.prototype.currentStageBossBGM = function() {
+	return this.boss_bgms[this.stage];
+};
+
+
+
 
 // フレーム処理
 Scene.prototype.run = function(){
@@ -282,6 +374,12 @@ Scene.prototype.notifyWayEnd = function() {
 Scene.prototype.notifyBossEnd = function() {
 	// ボスとの会話シーンへ
 	this.changeState(Constant.TALK2_STATE);
+};
+
+// リザルト画面の終了
+Scene.prototype.notifyResultEnd = function() {
+	// ボスとの会話シーンへ
+	this.goNextStage();
 };
 
 
