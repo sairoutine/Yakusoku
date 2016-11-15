@@ -83,8 +83,7 @@ var Scene = function(game) {
 		this.effect_manager,
 	];
 
-	// ステージの現在の状態
-	this.state = null;
+	// ステージの状態一覧
 	this.states = [];
 	this.states[ Constant.WAY_STATE ]      = new WayState(this);
 	this.states[ Constant.TALK1_STATE ]    = new TalkStateBefore(this);
@@ -129,8 +128,8 @@ var Scene = function(game) {
 		'stage1',
 	];
 
-
 	this.score = 0; // スコア
+	this.state = null; // ステージの現在の状態
 	this.stage = 0; // 現在のステージ
 };
 
@@ -141,8 +140,8 @@ Util.inherit(Scene, BaseScene);
 Scene.prototype.init = function() {
 	BaseScene.prototype.init.apply(this, arguments);
 
-	this.state = null;
 	this.score = 0; // スコア
+	this.state = null; // ステージの現在の状態
 	this.stage = 0; // 現在のステージ
 
 	for(var i = 0, len = this.objects.length; i < len; i++) {
