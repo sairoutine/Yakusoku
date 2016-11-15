@@ -1,5 +1,8 @@
 'use strict';
 
+// 敵生成終了から次のシーンまでの間隔
+var END_MARGIN_COUNT = 500;
+
 var BaseState = require('./base');
 var Util = require('../../../util');
 var Config = require('../../../config');
@@ -36,7 +39,8 @@ State.prototype.run = function(){
 	}
 
 	// 道中の終了
-	if(this.frame_count === this.way_end_time) {
+	if(this.enemy_appear.isEnd() &&
+		this.enemy_appear.getLastEnemyAppearCount() + END_MARGIN_COUNT < this.frame_count) {
 		this.stage.notifyWayEnd();
 	}
 
