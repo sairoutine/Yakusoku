@@ -8,11 +8,8 @@ var Constant = require('../../../constant');
 
 var Serif = require('../../../logic/serif');
 
-var State = function(stage, serif, next_state) {
+var State = function(stage) {
 	BaseState.apply(this, arguments);
-	this.serif = new Serif(serif);
-
-	this.next_state = next_state; // セリフパート終了後のstate
 };
 Util.inherit(State, BaseState);
 
@@ -21,10 +18,11 @@ State.prototype.init = function(){
 	BaseState.prototype.init.apply(this, arguments);
 
 	// TODO: DEBUG
-	if(Config.DEBUG) { 
+	if(Config.DEBUG) {
 		//this.serif.script = JSON.parse(document.getElementById("stage1_before").value);
 	}
 
+	this.serif = new Serif(this.serifInfo());
 	this.serif.init();
 };
 
@@ -33,7 +31,7 @@ State.prototype.run = function(){
 	BaseState.prototype.run.apply(this, arguments);
 	if(this.game.isKeyPush(Constant.BUTTON_Z)) {
 		if(this.serif.is_end()) {
-			this.stage.changeState(this.next_state);
+			this.stage.changeState(this.nextState());
 		}
 		else {
 			// セリフを送る
@@ -197,11 +195,14 @@ State.prototype._showMessage = function() {
 	ctx.restore();
 };
 
+// セリフ情報
+State.prototype.serifInfo = function(){
+	console.error("serifInfo method must be overridden");
+};
 
-
-
-
-
-
+// このシーンの次に遷移するシーン
+State.prototype.nextState = function () {
+	console.error("nextState method must be overridden");
+};
 
 module.exports = State;
