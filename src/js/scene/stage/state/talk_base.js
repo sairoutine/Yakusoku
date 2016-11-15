@@ -31,7 +31,7 @@ State.prototype.run = function(){
 	BaseState.prototype.run.apply(this, arguments);
 	if(this.game.isKeyPush(Constant.BUTTON_Z)) {
 		if(this.serif.is_end()) {
-			this.stage.changeState(this.nextState());
+			this.notifyTalkEnd();
 		}
 		else {
 			// セリフを送る
@@ -200,9 +200,9 @@ State.prototype.serifInfo = function(){
 	console.error("serifInfo method must be overridden");
 };
 
-// このシーンの次に遷移するシーン
-State.prototype.nextState = function () {
-	console.error("nextState method must be overridden");
+// セリフパートが終了した
+State.prototype.notifyTalkEnd = function () {
+	console.error("notifyTalkEnd method must be overridden");
 };
 
 module.exports = State;

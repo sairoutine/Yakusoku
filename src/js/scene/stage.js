@@ -187,7 +187,11 @@ Scene.prototype.currentStageBoss = function() {
 
 
 
-
+// 次のステージへ
+Scene.prototype.goNextStage = function(){
+	// TODO:
+	window.alert("done!");
+};
 // フレーム処理
 Scene.prototype.run = function(){
 	BaseScene.prototype.run.apply(this, arguments);
@@ -359,7 +363,7 @@ Scene.prototype._showBG = function() {
 
 // 自機が死亡
 Scene.prototype.notifyCharacterDead = function() {
-	this.changeState(Constant.RESULT_STATE);
+	this.changeState(Constant.GAMEOVER_STATE);
 };
 
 // 道中の終了
@@ -367,13 +371,20 @@ Scene.prototype.notifyWayEnd = function() {
 	// ボスとの会話シーンへ
 	this.changeState(Constant.TALK1_STATE);
 };
+// ボス前セリフが終了した
+Scene.prototype.notifyBeforeTalkEnd = function () {
+	this.changeState(Constant.BOSS_STATE);
+};
 
 // ボス戦の終了
 Scene.prototype.notifyBossEnd = function() {
 	// ボスとの会話シーンへ
 	this.changeState(Constant.TALK2_STATE);
 };
-
+// ボス後セリフが終了した
+Scene.prototype.notifyAfterTalkEnd = function () {
+	this.changeState(Constant.RESULT_STATE);
+};
 // リザルト画面の終了
 Scene.prototype.notifyResultEnd = function() {
 	// ボスとの会話シーンへ

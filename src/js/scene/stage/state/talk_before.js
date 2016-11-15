@@ -11,11 +11,14 @@ var TalkState = function(stage) {
 };
 Util.inherit(TalkState, BaseState);
 
+// セリフ情報
 TalkState.prototype.serifInfo = function(){
 	return this.stage.currentStageSerifBefore();
 };
-TalkState.prototype.nextState = function () {
-	return Constant.BOSS_STATE;
+
+// セリフパートが終了した
+TalkState.prototype.notifyTalkEnd = function () {
+	this.stage.notifyBeforeTalkEnd();
 };
 
 module.exports = TalkState;
