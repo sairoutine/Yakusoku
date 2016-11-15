@@ -107,13 +107,6 @@ Scene.prototype.run = function(){
 	}
 
 	this.currentState().run();
-
-	// TODO: END フラグをstateに持たせよう
-	// ボス戦の終了
-	if(this.state === Constant.BOSS_STATE && this.boss.isDead() && !this.boss.hasNextSpell()) {
-		//ボスのスペルカードが全て無くなった
-		this.changeState(Constant.TALK2_STATE);
-	}
 };
 
 // 画面更新
@@ -284,6 +277,13 @@ Scene.prototype.notifyWayEnd = function() {
 	// ボスとの会話シーンへ
 	this.changeState(Constant.TALK1_STATE);
 };
+
+// ボス戦の終了
+Scene.prototype.notifyBossEnd = function() {
+	// ボスとの会話シーンへ
+	this.changeState(Constant.TALK2_STATE);
+};
+
 
 
 

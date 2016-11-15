@@ -36,6 +36,12 @@ State.prototype.run = function(){
 		this.game.playBGM(this.bgm);
 	}
 
+	// ボス戦の終了
+	if(this.stage.boss.isDead() && !this.stage.boss.hasNextSpell()) {
+		//ボスのスペルカードが全て無くなった
+		this.stage.notifyBossEnd();
+	}
+
 	var character = this.stage.character;
 
 	// Zが押下されていればショット生成
