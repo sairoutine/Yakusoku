@@ -1,6 +1,6 @@
 'use strict';
 
-/* タイトル画面 */
+/* ステージ画面 */
 
 
 // サイドバーの横の長さ
@@ -12,39 +12,23 @@ var BACKGROUND_SCROLL_SPEED = 3;
 var WAY_END = 3500;
 
 // 基底クラス
-var BaseScene = require('./base');
+var BaseScene = require('../base');
 
-var Util = require('../util');
-var Config = require('../config');
-var Constant = require('../constant');
-
-// ステージの状態
-var WayState = require('./stage/state/way');
-var TalkState = require('./stage/state/talk');
-var BossState = require('./stage/state/boss');
-var ResultState = require('./stage/state/result');
-var GameoverState = require('./stage/state/result');
+var Util = require('../../util');
+var Config = require('../../config');
+var Constant = require('../../constant');
 
 // オブジェクト
-var Character = require('../object/character');
+var Character = require('../../object/character');
+var Shot = require('../../object/shot');
+var Enemy = require('../../object/enemy');
+var Bullet = require('../../object/bullet');
+var Effect = require('../../object/effect');
+var Item = require('../../object/item');
 
-var Shot = require('../object/shot');
-var Enemy = require('../object/enemy');
-var Bullet = require('../object/bullet');
-var Effect = require('../object/effect');
-var Item = require('../object/item');
+var Stage1Boss = require('../../object/boss/aya');
 
-var Stage1Boss = require('../object/boss/aya');
-
-// セリフ
-var stage1_serif_before = require('../serif/stage1/before');
-var stage1_serif_after = require('../serif/stage1/after');
-
-// 敵の出現情報
-var stage1_appear = require('../enemy/stage1');
-
-var Manager = require('../logic/manager');
-
+var Manager = require('../../logic/manager');
 
 var Scene = function(game) {
 	BaseScene.apply(this, arguments);
@@ -60,6 +44,11 @@ var Scene = function(game) {
 	this.enemy_manager  = new Manager(Enemy, this);
 	this.effect_manager = new Manager(Effect, this);
 
+	// state の方で動かす
+	this.boss = new Stage1Boss(this);
+	this.bullet_manager = new Manager(Bullet, this);
+	this.item_manager = new Manager(Item, this);
+
 	// シーンが管理するオブジェクト一覧
 	this.objects = [
 		this.shot_manager,
@@ -68,26 +57,20 @@ var Scene = function(game) {
 		this.effect_manager,
 	];
 
-	// state の方で動かす
-	this.boss = new Stage1Boss(this);
-	this.bullet_manager = new Manager(Bullet, this);
-	this.item_manager = new Manager(Item, this);
-
 	// ステージの現在の状態
 	this.state = null;
 
-	// ステージの状態一覧
-	this.states = [];
-	this.states[ Constant.WAY_STATE ]      = new WayState(this, stage1_appear);
-	this.states[ Constant.TALK1_STATE ]    = new TalkState(this, stage1_serif_before, Constant.BOSS_STATE);
-	this.states[ Constant.BOSS_STATE ]     = new BossState(this, 'stage1');
-	this.states[ Constant.TALK2_STATE ]    = new TalkState(this, stage1_serif_after, Constant.RESULT_STATE);
-	this.states[ Constant.RESULT_STATE ]   = new ResultState(this);
-	this.states[ Constant.GAMEOVER_STATE ] = new GameoverState(this);
+	// ステージの状態一覧を作成
+	this.createStateInstances();
 };
 
 // 基底クラスを継承
 Util.inherit(Scene, BaseScene);
+
+// ステージの状態一覧を作成
+Scene.prototype.createStateInstances = function() {
+	console.error('createStateInstances method must be overridden.');
+};
 
 // 初期化
 Scene.prototype.init = function() {
