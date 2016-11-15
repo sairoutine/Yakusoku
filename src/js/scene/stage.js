@@ -29,8 +29,8 @@ var WayState = require('./stage/state/way');
 var TalkStateBefore = require('./stage/state/talk_before');
 var TalkStateAfter = require('./stage/state/talk_after');
 var BossState = require('./stage/state/boss');
-var ResultState = require('./stage/state/result');
-var GameoverState = require('./stage/state/result');
+var ClearState = require('./stage/state/result_clear');
+var GameoverState = require('./stage/state/result_gameover');
 
 // ボス
 var Stage1Boss = require('../object/boss/aya');
@@ -88,7 +88,7 @@ var Scene = function(game) {
 	this.states[ Constant.TALK1_STATE ]    = new TalkStateBefore(this);
 	this.states[ Constant.BOSS_STATE ]     = new BossState(this);
 	this.states[ Constant.TALK2_STATE ]    = new TalkStateAfter(this);
-	this.states[ Constant.RESULT_STATE ]   = new ResultState(this);
+	this.states[ Constant.CLEAR_STATE ]   = new ClearState(this);
 	this.states[ Constant.GAMEOVER_STATE ] = new GameoverState(this);
 
 	// ボス一覧
@@ -366,6 +366,13 @@ Scene.prototype.notifyCharacterDead = function() {
 	this.changeState(Constant.GAMEOVER_STATE);
 };
 
+// ゲームオーバーのリザルト終了後
+Scene.prototype.notifyGameOverEnd = function() {
+	this.game.notifyGameOver();
+};
+
+
+
 // 道中の終了
 Scene.prototype.notifyWayEnd = function() {
 	// ボスとの会話シーンへ
@@ -383,11 +390,11 @@ Scene.prototype.notifyBossEnd = function() {
 };
 // ボス後セリフが終了した
 Scene.prototype.notifyAfterTalkEnd = function () {
-	this.changeState(Constant.RESULT_STATE);
+	this.changeState(Constant.CLEAR_STATE);
 };
 // リザルト画面の終了
 Scene.prototype.notifyResultEnd = function() {
-	// ボスとの会話シーンへ
+	// 次のステージへ
 	this.goNextStage();
 };
 

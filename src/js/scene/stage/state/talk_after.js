@@ -4,7 +4,6 @@
 
 var BaseState = require('./talk_base');
 var Util = require('../../../util');
-var Constant = require('../../../constant');
 
 var TalkState = function(stage) {
 	BaseState.apply(this, arguments);

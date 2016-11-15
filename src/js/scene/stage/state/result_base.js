@@ -1,5 +1,6 @@
 'use strict';
 
+/* 結果画面基底クラス */
 var BaseState = require('./base');
 var Util = require('../../../util');
 var Config = require('../../../config');
@@ -29,7 +30,7 @@ State.prototype.run = function(){
 
 	if(this.game.isKeyPush(Constant.BUTTON_Z)) {
 			this.game.playSound('select');
-			this.game.notifyGameOver();
+			this.notifyResultEnd();
 	}
 
 };
@@ -72,6 +73,11 @@ State.prototype._showScoreWindow = function(){
 	}
 
 	ctx.restore();
+};
+
+// リザルト画面終了
+State.prototype.notifyResultEnd = function(){
+	console.error("notifyResultEnd method must be overridden");
 };
 
 
