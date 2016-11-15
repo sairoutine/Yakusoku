@@ -34,29 +34,29 @@ var GameoverState = require('./stage/state/result');
 
 // ボス
 var Stage1Boss = require('../object/boss/aya');
-var Stage2Boss = require('../object/boss/aya');
-var Stage3Boss = require('../object/boss/aya');
-var Stage4Boss = require('../object/boss/aya');
-var Stage5Boss = require('../object/boss/aya');
+var Stage2Boss = require('../object/boss/sanae');
+var Stage3Boss = require('../object/boss/yuka');
+var Stage4Boss = require('../object/boss/yukari');
+var Stage5Boss = require('../object/boss/merry');
 
 // セリフ
 var stage1_serif_before = require('../serif/stage1/before');
 var stage1_serif_after  = require('../serif/stage1/after');
-var stage2_serif_before = require('../serif/stage1/before');
-var stage2_serif_after  = require('../serif/stage1/after');
-var stage3_serif_before = require('../serif/stage1/before');
-var stage3_serif_after  = require('../serif/stage1/after');
-var stage4_serif_before = require('../serif/stage1/before');
-var stage4_serif_after  = require('../serif/stage1/after');
-var stage5_serif_before = require('../serif/stage1/before');
-var stage5_serif_after  = require('../serif/stage1/after');
+var stage2_serif_before = require('../serif/stage2/before');
+var stage2_serif_after  = require('../serif/stage2/after');
+var stage3_serif_before = require('../serif/stage3/before');
+var stage3_serif_after  = require('../serif/stage3/after');
+var stage4_serif_before = require('../serif/stage4/before');
+var stage4_serif_after  = require('../serif/stage4/after');
+var stage5_serif_before = require('../serif/stage5/before');
+var stage5_serif_after  = require('../serif/stage5/after');
 
 // 敵の出現情報
 var stage1_enemy_info = require('../enemy/stage1');
-var stage2_enemy_info = require('../enemy/stage1');
-var stage3_enemy_info = require('../enemy/stage1');
-var stage4_enemy_info = require('../enemy/stage1');
-var stage5_enemy_info = require('../enemy/stage1');
+var stage2_enemy_info = require('../enemy/stage2');
+var stage3_enemy_info = require('../enemy/stage3');
+var stage4_enemy_info = require('../enemy/stage4');
+var stage5_enemy_info = require('../enemy/stage5');
 
 var Scene = function(game) {
 	BaseScene.apply(this, arguments);
