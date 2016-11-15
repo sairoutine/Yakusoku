@@ -23,6 +23,10 @@ var stage1_serif_after = require('../../serif/stage1/after');
 // 敵の出現情報
 var stage1_appear = require('../../enemy/stage1');
 
+// 道中の終了
+var WAY_END = 3500;
+
+
 var SceneStage = function(game) {
 	BaseStage.apply(this, arguments);
 };
@@ -33,7 +37,7 @@ Util.inherit(SceneStage, BaseStage);
 // ステージの状態一覧を作成
 SceneStage.prototype.createStateInstances = function() {
 	this.states = [];
-	this.states[ Constant.WAY_STATE ]      = new WayState(this, stage1_appear);
+	this.states[ Constant.WAY_STATE ]      = new WayState(this, stage1_appear, WAY_END);
 	this.states[ Constant.TALK1_STATE ]    = new TalkState(this, stage1_serif_before, Constant.BOSS_STATE);
 	this.states[ Constant.BOSS_STATE ]     = new BossState(this, 'stage1');
 	this.states[ Constant.TALK2_STATE ]    = new TalkState(this, stage1_serif_after, Constant.RESULT_STATE);

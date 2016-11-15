@@ -7,11 +7,14 @@ var Constant = require('../../../constant');
 
 var EnemyAppear = require('../../../logic/enemy_appear');
 
-var State = function(stage, stage_appear) {
+var State = function(stage, stage_appear, way_end_time) {
 	BaseState.apply(this, arguments);
 
 	// 雑魚敵の出現
 	this.enemy_appear = new EnemyAppear(stage_appear);
+
+	// 何フレーム経過すると道中が終了するか
+	this.way_end_time = way_end_time;
 };
 Util.inherit(State, BaseState);
 
@@ -30,6 +33,11 @@ State.prototype.run = function(){
 	// BGM start
 	if (this.frame_count === 60) {
 		this.game.playBGM('douchu');
+	}
+
+	// 道中の終了
+	if(this.frame_count === this.way_end_time) {
+		this.stage.notifyWayEnd();
 	}
 
 	var character = this.stage.character;

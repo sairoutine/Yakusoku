@@ -8,9 +8,6 @@ var SIDE_WIDTH = 160;
 // 背景画像のスクロールスピード
 var BACKGROUND_SCROLL_SPEED = 3;
 
-// 道中の終了
-var WAY_END = 3500;
-
 // 基底クラス
 var BaseScene = require('../base');
 
@@ -112,14 +109,8 @@ Scene.prototype.run = function(){
 	this.currentState().run();
 
 	// TODO: END フラグをstateに持たせよう
-
-	// 道中の終了
-	if(this.state === Constant.WAY_STATE && this.frame_count === WAY_END) {
-		// ボスとの会話シーンへ
-		this.changeState(Constant.TALK1_STATE);
-	}
 	// ボス戦の終了
-	else if(this.state === Constant.BOSS_STATE && this.boss.isDead() && !this.boss.hasNextSpell()) {
+	if(this.state === Constant.BOSS_STATE && this.boss.isDead() && !this.boss.hasNextSpell()) {
 		//ボスのスペルカードが全て無くなった
 		this.changeState(Constant.TALK2_STATE);
 	}
@@ -287,5 +278,14 @@ Scene.prototype._showBG = function() {
 Scene.prototype.notifyCharacterDead = function() {
 	this.changeState(Constant.RESULT_STATE);
 };
+
+// 道中の終了
+Scene.prototype.notifyWayEnd = function() {
+	// ボスとの会話シーンへ
+	this.changeState(Constant.TALK1_STATE);
+};
+
+
+
 
 module.exports = Scene;
