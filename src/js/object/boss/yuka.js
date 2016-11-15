@@ -1,6 +1,6 @@
 'use strict';
 
-/* ステージ1ボス 射命丸文 */
+/* ステージ3ボス 風見幽香 */
 
 // 基底クラス
 var BaseObject = require('../base');
