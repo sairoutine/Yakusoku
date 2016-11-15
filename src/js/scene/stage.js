@@ -49,18 +49,7 @@ var Manager = require('../logic/manager');
 var Scene = function(game) {
 	BaseScene.apply(this, arguments);
 
-	// ステージの現在の状態
-	this.state = null;
 	this.score = 0;
-
-	// ステージの状態一覧
-	this.states = [];
-	this.states[ Constant.WAY_STATE ]      = new WayState(this, stage1_appear);
-	this.states[ Constant.TALK1_STATE ]    = new TalkState(this, stage1_serif_before, Constant.BOSS_STATE);
-	this.states[ Constant.BOSS_STATE ]     = new BossState(this, 'stage1');
-	this.states[ Constant.TALK2_STATE ]    = new TalkState(this, stage1_serif_after, Constant.RESULT_STATE);
-	this.states[ Constant.RESULT_STATE ]   = new ResultState(this);
-	this.states[ Constant.GAMEOVER_STATE ] = new GameoverState(this);
 
 	// サイドバーを除いたステージの大きさ
 	this.width = this.game.width - SIDE_WIDTH;
@@ -83,6 +72,18 @@ var Scene = function(game) {
 	this.boss = new Stage1Boss(this);
 	this.bullet_manager = new Manager(Bullet, this);
 	this.item_manager = new Manager(Item, this);
+
+	// ステージの現在の状態
+	this.state = null;
+
+	// ステージの状態一覧
+	this.states = [];
+	this.states[ Constant.WAY_STATE ]      = new WayState(this, stage1_appear);
+	this.states[ Constant.TALK1_STATE ]    = new TalkState(this, stage1_serif_before, Constant.BOSS_STATE);
+	this.states[ Constant.BOSS_STATE ]     = new BossState(this, 'stage1');
+	this.states[ Constant.TALK2_STATE ]    = new TalkState(this, stage1_serif_after, Constant.RESULT_STATE);
+	this.states[ Constant.RESULT_STATE ]   = new ResultState(this);
+	this.states[ Constant.GAMEOVER_STATE ] = new GameoverState(this);
 };
 
 // 基底クラスを継承
