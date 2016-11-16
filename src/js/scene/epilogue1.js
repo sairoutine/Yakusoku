@@ -30,7 +30,13 @@ Scene.prototype.init = function() {
 Scene.prototype.run = function(){
 	BaseScene.prototype.run.apply(this, arguments);
 
-	this.epilogue.update();
+	// エピローグ終了
+	if(this.frame_count > 7700) {
+		this.game.notifyEpilogue1Done();
+	}
+	else {
+		this.epilogue.update();
+	}
 };
 
 // 画面更新
