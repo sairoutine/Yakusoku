@@ -13,6 +13,7 @@ var SHOW_MESSAGE_INTERVAL = 50;
 var RESULT_TRANSITION_COUNT = 100;
 
 
+
 var State = function(stage) {
 	BaseState.apply(this, arguments);
 
@@ -22,22 +23,59 @@ Util.inherit(State, BaseState);
 // 初期化
 State.prototype.init = function(){
 	BaseState.prototype.init.apply(this, arguments);
+
+	this.transitionStartFrame = 0;
 };
 
 // フレーム処理
 State.prototype.run = function(){
 	BaseState.prototype.run.apply(this, arguments);
 
-	if(this.game.isKeyPush(Constant.BUTTON_Z)) {
-			this.game.playSound('select');
+	if(this.isTransitionEnd()) {
 			this.notifyResultEnd();
 	}
+	else {
+		if(this.game.isKeyPush(Constant.BUTTON_Z)) {
+				this.game.playSound('select');
 
+				this.setTransition();
+		}
+	}
 };
+
+State.prototype.isInTransition = function(){
+	return this.transitionStartFrame ? true : false;
+};
+State.prototype.isTransitionEnd = function(){
+	return this.isInTransition() && (this.transitionStartFrame + RESULT_TRANSITION_COUNT < this.frame_count);
+};
+State.prototype.setTransition = function(){
+	this.transitionStartFrame = this.frame_count;
+};
+
 
 // 画面更新
 State.prototype.updateDisplay = function(){
+	var ctx = this.game.surface;
+
 	this._showScoreWindow();
+
+	if(this.isInTransition()) {
+		ctx.save();
+		var alpha = 1.0 ;
+		if(this.transitionStartFrame + RESULT_TRANSITION_COUNT >= this.frame_count) {
+			alpha = (this.frame_count - this.transitionStartFrame) / RESULT_TRANSITION_COUNT;
+		}
+		else {
+			alpha = 1.0;
+		}
+		ctx.fillStyle = 'rgb( 0, 0, 0 )' ;
+		ctx.globalAlpha = alpha;
+		ctx.fillRect(0, 0, this.stage.width, this.stage.height);
+
+		ctx.restore();
+	}
+
 };
 // スコア結果画面表示
 State.prototype._showScoreWindow = function(){
