@@ -4,8 +4,8 @@ var Constant = require('./constant');
 
 var Config = {
 	DEBUG: true,
-	//DEBUG_SCENE: Constant.STAGE_SCENE,
-	//DEBUG_STATE: Constant.BOSS_STATE,
+	//DEBUG_SCENE: Constant.ENDING_SCENE,
+	//DEBUG_STATE: Constant.CLEAR_STATE,
 	//DEBUG_MUSIC_OFF: true,
 	IMAGES: {
 		title_bg:  'image/title_bg.png',
@@ -96,7 +96,16 @@ var Config = {
 		{src:"image/createjs/epilogue/voice1.png", id:"voice1"},
 		{src:"image/createjs/epilogue/voice3.png", id:"voice3"},
 		{src:"image/createjs/epilogue/WO.png", id:"WO"},
-
+		{src:"image/createjs/ending/bg.png", id:"bg"},
+		{src:"image/createjs/ending/BO.png", id:"BO"},
+		{src:"image/createjs/ending/last.png", id:"last"},
+		{src:"image/createjs/ending/renko_d.png", id:"renko_d"},
+		{src:"image/createjs/ending/renko_d_sil.png", id:"renko_d_sil"},
+		{src:"image/createjs/ending/s1.png", id:"s1_e"},
+		{src:"image/createjs/ending/s2.png", id:"s2_e"},
+		{src:"image/createjs/ending/s3.png", id:"s3_e"},
+		{src:"image/createjs/ending/s4.png", id:"s4_e"},
+		{src:"image/createjs/ending/WO.png", id:"WO"}
 	],
 	SOUNDS: {
 		select: {
@@ -174,6 +183,10 @@ var Config = {
 			loopEnd: 60 * 2 + 0.827,
 		},
 		epilogue: {
+			path:   'bgm/epilogue.mp3',
+			volume: 1.00
+		},
+		ending: {
 			path:   'bgm/epilogue.mp3',
 			volume: 1.00
 		},
