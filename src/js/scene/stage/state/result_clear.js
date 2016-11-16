@@ -12,6 +12,6 @@ Util.inherit(ResultState, BaseState);
 
 // リザルト画面が終了した
 ResultState.prototype.notifyResultEnd = function () {
-	this.stage.goNextStage();
+	this.stage.notifyClearEnd();
 };
 module.exports = ResultState;
