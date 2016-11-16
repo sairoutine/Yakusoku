@@ -286,6 +286,9 @@ Game.prototype = {
 		// エンディングに切り替え
 		this.changeScene(constant.ENDING_SCENE);
 	},
+	notifyEndingDone: function() {
+		this.changeScene(constant.TITLE_SCENE);
+	},
 	// ゲームオーバー
 	notifyGameOver: function() {
 		this.changeScene(constant.TITLE_SCENE);
