@@ -5,7 +5,7 @@ var Constant = require('./constant');
 
 var Config = {
 	DEBUG: true,
-	//DEBUG_SCENE: Constant.ENDING_SCENE,
+	//DEBUG_SCENE: Constant.EPILOGUE1_SCENE,
 	//DEBUG_STATE: Constant.CLEAR_STATE,
 	//DEBUG_MUSIC_OFF: true,
 	IMAGES: {
@@ -188,10 +188,9 @@ var Config = {
 			volume: 1.00
 		},
 		ending: {
-			path:   'bgm/epilogue.mp3',
+			path:   'bgm/mute.wav',
 			volume: 1.00
 		},
-
 	},
 	// テキストの typography スピード
 	MESSAGE_SPEED: 10,
@@ -1897,7 +1896,7 @@ Game.prototype = {
 		var source = self.audio_context.createBufferSource();
 		source.buffer = arrayBuffer;
 
-		source.loop = true;
+		if(conf.loopStart || conf.loopEnd) { source.loop = true; }
 		if(conf.loopStart) { source.loopStart = conf.loopStart; }
 		if(conf.loopEnd)   { source.loopEnd = conf.loopEnd; }
 		if(conf.volume)    { self.audio_gain.gain.value = conf.volume; }
@@ -1995,6 +1994,9 @@ Game.prototype = {
 	notifyEpilogue1Done: function() {
 		// エンディングに切り替え
 		this.changeScene(constant.ENDING_SCENE);
+	},
+	notifyEndingDone: function() {
+		this.changeScene(constant.TITLE_SCENE);
 	},
 	// ゲームオーバー
 	notifyGameOver: function() {
@@ -5185,7 +5187,14 @@ Scene.prototype.init = function() {
 Scene.prototype.run = function(){
 	BaseScene.prototype.run.apply(this, arguments);
 
-	this.ending.update();
+	// エンディング終了
+	if(this.frame_count > 3600) {
+		this.game.notifyEndingDone();
+	}
+	else {
+		this.ending.update();
+	}
+
 };
 
 // 画面更新
@@ -5231,7 +5240,13 @@ Scene.prototype.init = function() {
 Scene.prototype.run = function(){
 	BaseScene.prototype.run.apply(this, arguments);
 
-	this.epilogue.update();
+	// エピローグ終了
+	if(this.frame_count > 7700) {
+		this.game.notifyEpilogue1Done();
+	}
+	else {
+		this.epilogue.update();
+	}
 };
 
 // 画面更新
