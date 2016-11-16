@@ -4,7 +4,7 @@ var Constant = require('./constant');
 
 var Config = {
 	DEBUG: true,
-	//DEBUG_SCENE: Constant.ENDING_SCENE,
+	//DEBUG_SCENE: Constant.EPILOGUE1_SCENE,
 	//DEBUG_STATE: Constant.CLEAR_STATE,
 	//DEBUG_MUSIC_OFF: true,
 	IMAGES: {
@@ -187,10 +187,9 @@ var Config = {
 			volume: 1.00
 		},
 		ending: {
-			path:   'bgm/epilogue.mp3',
+			path:   'bgm/mute.wav',
 			volume: 1.00
 		},
-
 	},
 	// テキストの typography スピード
 	MESSAGE_SPEED: 10,
