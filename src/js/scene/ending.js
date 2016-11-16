@@ -30,7 +30,14 @@ Scene.prototype.init = function() {
 Scene.prototype.run = function(){
 	BaseScene.prototype.run.apply(this, arguments);
 
-	this.ending.update();
+	// エンディング終了
+	if(this.frame_count > 3600) {
+		this.game.notifyEndingDone();
+	}
+	else {
+		this.ending.update();
+	}
+
 };
 
 // 画面更新
