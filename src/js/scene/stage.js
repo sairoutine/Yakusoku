@@ -189,9 +189,21 @@ Scene.prototype.currentStageBoss = function() {
 
 // 次のステージへ
 Scene.prototype.goNextStage = function(){
-	// TODO:
-	window.alert("done!");
+	// ステージ切り替え
+	this.stage++;
+
+	// 次のステージの道中開始
+	this.changeState(Constant.WAY_STATE);
+
+	// 自機を初期位置に
+	this.character.setInitPosition();
 };
+
+// 次のステージがあるかどうか
+Scene.prototype.hasNextStage = function(){
+	return this.enemy_info_list[this.stage + 1] ? true : false;
+};
+
 // フレーム処理
 Scene.prototype.run = function(){
 	BaseScene.prototype.run.apply(this, arguments);
@@ -371,8 +383,6 @@ Scene.prototype.notifyGameOverEnd = function() {
 	this.game.notifyGameOver();
 };
 
-
-
 // 道中の終了
 Scene.prototype.notifyWayEnd = function() {
 	// ボスとの会話シーンへ
@@ -393,9 +403,15 @@ Scene.prototype.notifyAfterTalkEnd = function () {
 	this.changeState(Constant.CLEAR_STATE);
 };
 // リザルト画面の終了
-Scene.prototype.notifyResultEnd = function() {
-	// 次のステージへ
-	this.goNextStage();
+Scene.prototype.notifyClearEnd = function() {
+	if(this.hasNextStage()) {
+		// 次のステージへ
+		this.goNextStage();
+	}
+	else {
+		// ステージ全クリアした
+		this.game.notifyStageDone();
+	}
 };
 
 
