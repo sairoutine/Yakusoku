@@ -187,7 +187,7 @@ Game.prototype = {
 		var source = self.audio_context.createBufferSource();
 		source.buffer = arrayBuffer;
 
-		source.loop = true;
+		if(conf.loopStart || conf.loopEnd) { source.loop = true; }
 		if(conf.loopStart) { source.loopStart = conf.loopStart; }
 		if(conf.loopEnd)   { source.loopEnd = conf.loopEnd; }
 		if(conf.volume)    { self.audio_gain.gain.value = conf.volume; }
