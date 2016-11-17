@@ -7,8 +7,8 @@ var BaseObject = require('../base');
 var Util = require('../../util');
 var Constant = require('../../constant');
 
-var TenguKaze = require('../../spell/stage1/tengukaze');
-var Konohamai = require('../../spell/stage1/konohamai');
+var Spell1 = require('../../spell/stage1/spell1');
+var Spell2 = require('../../spell/stage1/spell2');
 
 
 var Shot = require('../../object/shot');
@@ -41,8 +41,8 @@ var Aya = function(stage) {
 	// スペルカード一覧
 	this.spells = [
 		null, // 何も発動していない
-		new TenguKaze(this),
-		new Konohamai(this),
+		new Spell1(this),
+		new Spell2(this),
 	];
 };
 
