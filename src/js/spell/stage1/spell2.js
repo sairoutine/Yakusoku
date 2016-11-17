@@ -32,18 +32,25 @@ Spell.prototype.init = function() {
 
 Spell.prototype.runInSpellExecute = function() {
 	if(this.is_moving) {
+		var x = this.stage.width  / 2;
+		var y = this.stage.height / 2;
+
+		var boss_x = this.boss.x;
+		var boss_y = this.boss.y;
+
 		// 移動中
-		var ax = this.stage.width/2  - this.boss.x;
-		var ay = this.stage.height/2 - this.boss.y;
+		var ax = x - boss_x;
+		var ay = y - boss_y;
 
 		var my_theta = this._radian_to_theta(Math.atan2(ay, ax));
-
-		this.boss.animateRight();
 		this.boss.moveByTheta(my_theta);
 
+		this.boss.animateRight();
+
+		// x,yが小数点の可能性もあるのでおおまかに到達していれば
 		if(
-			Math.floor(this.boss.x) === Math.floor(this.stage.width/2) &&
-			Math.floor(this.boss.y) === Math.floor(this.stage.height/2)
+			x + 1 > boss_x && boss_x > x - 1 &&
+			y + 1 > boss_y && boss_y > y - 1
 		) {
 			// 移動終了
 			this.is_moving = false;
@@ -124,8 +131,5 @@ Spell.prototype._radian_to_theta = function(radian) {
 Spell.prototype.name = function() { return "風符「天狗風」"; };
 
 Spell.prototype.charaImage = function() { return "aya_normal"; };
-
-
-
 
 module.exports = Spell;
