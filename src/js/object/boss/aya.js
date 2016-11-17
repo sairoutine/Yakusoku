@@ -41,8 +41,8 @@ var Aya = function(stage) {
 	// スペルカード一覧
 	this.spells = [
 		null, // 何も発動していない
-		new Spell1(this),
 		new Spell2(this),
+		new Spell1(this),
 	];
 };
 
@@ -113,6 +113,9 @@ Aya.prototype.isDead = function(){
 Aya.prototype.run = function(){
 	BaseObject.prototype.run.apply(this, arguments);
 
+	// 移動
+	this.moveTo();
+
 	// スペルカード処理
 	this.currentSpell().run();
 
@@ -159,30 +162,22 @@ Aya.prototype.moveDown = function(){
 
 // TODO: refactor
 // theta値の方向に移動
-Aya.prototype.moveByTheta = function(theta){
-	this.x += this.calc_moveX(theta);
-	this.y += this.calc_moveY(theta);
-};
-
-// θ -> ラジアンに変換
-Aya.prototype._theta_to_radian = function(theta){
-	return (theta / 180 * Math.PI);
+Aya.prototype.moveByRadian = function(radian){
+	this.x += this.calcMoveXByRadian(radian);
+	this.y += this.calcMoveYByRadian(radian);
 };
 
 // X軸の移動を計算
-Aya.prototype.calc_moveX = function(theta) {
-	var move_x = SPEED * Math.cos(this._theta_to_radian(theta));
+Aya.prototype.calcMoveXByRadian = function(radian) {
+	var move_x = SPEED * Math.cos(radian);
 	return move_x;
 };
 
 // Y軸の移動を計算
-Aya.prototype.calc_moveY = function(theta) {
-	var move_y = SPEED * Math.sin(this._theta_to_radian(theta));
+Aya.prototype.calcMoveYByRadian = function(radian) {
+	var move_y = SPEED * Math.sin(radian);
 	return move_y;
-} ;
-
-
-
+};
 
 // 移動アニメーション
 Aya.prototype.animateLeft = function(){
@@ -194,6 +189,52 @@ Aya.prototype.animateRight = function(){
 Aya.prototype.animateNeutral = function(){
 		this.indexY = 0;
 };
+
+
+// 移動中かどうか
+Aya.prototype.isMoving = function(){
+	return this.is_moving;
+};
+// 指定のx,y座標に移動を設定
+Aya.prototype.setMoveTo = function(x, y){
+	this.is_moving = true;
+	this.move_to_x = x;
+	this.move_to_y = y;
+};
+
+// 指定のx,y座標に移動
+Aya.prototype.moveTo = function(){
+	if(!this.is_moving) return;
+
+	var x = this.move_to_x;
+	var y = this.move_to_y;
+
+	var boss_x = this.x;
+	var boss_y = this.y;
+
+	var ax = x - boss_x;
+	var ay = y - boss_y;
+
+	var radian = Math.atan2(ay, ax);
+
+	this.moveByRadian(radian);
+
+	if(Math.cos(radian) > 0) {
+		this.animateRight();
+	}
+	else {
+		this.animateLeft();
+	}
+
+	// x,yが小数点の可能性もあるのでおおまかに到達していれば
+	if( x + 1 > boss_x && boss_x > x - 1 &&
+		y + 1 > boss_y && boss_y > y - 1) {
+		// 移動終了
+		this.is_moving = false;
+		this.animateNeutral();
+	}
+};
+
 
 
 // ボスを描画

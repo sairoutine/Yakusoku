@@ -27,54 +27,28 @@ Spell.prototype.init = function() {
 	BaseSpell.prototype.init.apply(this, arguments);
 
 	// まずは中央に移動
-	this.is_moving = true;
+	this.boss.setMoveTo(this.stage.width / 2, this.stage.height / 2);
 };
 
 Spell.prototype.runInSpellExecute = function() {
-	if(this.is_moving) {
-		var x = this.stage.width  / 2;
-		var y = this.stage.height / 2;
+	if(this.boss.isMoving()) return;
 
-		var boss_x = this.boss.x;
-		var boss_y = this.boss.y;
-
-		// 移動中
-		var ax = x - boss_x;
-		var ay = y - boss_y;
-
-		var my_theta = this._radian_to_theta(Math.atan2(ay, ax));
-		this.boss.moveByTheta(my_theta);
-
-		this.boss.animateRight();
-
-		// x,yが小数点の可能性もあるのでおおまかに到達していれば
-		if(
-			x + 1 > boss_x && boss_x > x - 1 &&
-			y + 1 > boss_y && boss_y > y - 1
-		) {
-			// 移動終了
-			this.is_moving = false;
-			this.boss.animateNeutral();
-		}
+	// 渦巻き弾
+	if(this.frame_count % this.uzumaki_percount === 0) {
+		this.uzumaki_shot1();
+		this.uzumaki_shot2();
+		this.game.playSound('boss_shot_small');
 	}
-	else {
-		// 渦巻き弾
-		if(this.frame_count % this.uzumaki_percount === 0) {
-			this.uzumaki_shot1();
-			this.uzumaki_shot2();
-			this.game.playSound('boss_shot_small');
-		}
 
-		// 円形弾
-		if(this.frame_count % this.maru_percount === 0) {
-			// 自機狙い
-			this.aimedToChara();
-			for (var i=0; i< 360 / this.maru_shot_pertheta; i++) {
-				this.maru_shot();
-				this.maru_shot_theta += this.maru_shot_pertheta;
-			}
-			this.game.playSound('boss_shot_big');
+	// 円形弾
+	if(this.frame_count % this.maru_percount === 0) {
+		// 自機狙い
+		this.aimedToChara();
+		for (var i=0; i< 360 / this.maru_shot_pertheta; i++) {
+			this.maru_shot();
+			this.maru_shot_theta += this.maru_shot_pertheta;
 		}
+		this.game.playSound('boss_shot_big');
 	}
 
 };
