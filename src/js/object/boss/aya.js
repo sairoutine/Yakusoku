@@ -41,8 +41,8 @@ var Aya = function(stage) {
 	// スペルカード一覧
 	this.spells = [
 		null, // 何も発動していない
-		new Spell2(this),
 		new Spell1(this),
+		new Spell2(this),
 	];
 };
 
