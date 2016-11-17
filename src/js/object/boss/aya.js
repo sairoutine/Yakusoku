@@ -113,14 +113,15 @@ Aya.prototype.isDead = function(){
 Aya.prototype.run = function(){
 	BaseObject.prototype.run.apply(this, arguments);
 
-	// 移動
-	this.moveTo();
-
 	// スペルカード処理
 	this.currentSpell().run();
 
-	// 時間経過でスペルカード発動時間は減っていく
+	// スペルカード実行中ならば
 	if(this.currentSpell().isSpellExecute()) {
+		// 移動が設定されてるなら移動
+		this.moveTo();
+
+		// 時間経過でスペルカード発動時間は減っていく
 		this.vital--;
 		this.stage.score+=10;
 	}
