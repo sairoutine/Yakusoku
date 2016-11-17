@@ -141,19 +141,24 @@ SpellBase.prototype.updateDisplay = function(){
 	ctx.restore();
 };
 
+// 撃つ
+SpellBase.prototype.shot = function(x, y, r, theta, sprite_x, sprite_y) {
+	this.stage.bullet_manager.create(x, y, r, theta, sprite_x, sprite_y);
+};
+
 // スペルカード名
 SpellBase.prototype.name = function() {
-	console.log("Spell's name method must be implemented");
+	console.error("Spell's name method must be implemented");
 };
 
 // カットインキャラ画像
 SpellBase.prototype.charaImage = function() {
-	console.log("Spell's charaImage method must be implemented");
+	console.error("Spell's charaImage method must be implemented");
 };
 
-// 撃つ
-SpellBase.prototype.shot = function(x, y, r, theta, sprite_x, sprite_y) {
-	this.stage.bullet_manager.create(x, y, r, theta, sprite_x, sprite_y);
+// スペカ実行
+SpellBase.prototype.runInSpellExecute = function(){
+	console.error("Spell's runInSpellExecute method must be implemented");
 };
 
 module.exports = SpellBase;
