@@ -23,12 +23,8 @@ Spell.prototype.init = function() {
 	BaseSpell.prototype.init.apply(this, arguments);
 };
 
-Spell.prototype.run = function() {
-	BaseSpell.prototype.run.apply(this, arguments);
 
-	// スペルカード発動演出中
-	if(this.isSpellStarting()) return;
-
+Spell.prototype.runInSpellExecute = function() {
 	// 移動
 	var shot_time = 600;
 	var move_count = this.frame_count % 3600;

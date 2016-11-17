@@ -66,9 +66,18 @@ SpellBase.prototype.changeState = function(state){
 SpellBase.prototype.run = function(){
 	this.frame_count++;
 
-	// スペルカード発動開始中のみエフェクト座標の更新
-	if(!this.isSpellStarting()) return;
+	if(this.isSpellStarting()) {
+		// スペカ発動演出
+		this.runInSpellStarting();
+	}
+	else {
+		// スペカ実行
+		this.runInSpellExecute();
+	}
+};
 
+// スペル発動演出
+SpellBase.prototype.runInSpellStarting = function(){
 	// カットイン発動待ち
 	if(this.frame_count < CUTIN_SLIDEING_WAIT_COUNT) {
 

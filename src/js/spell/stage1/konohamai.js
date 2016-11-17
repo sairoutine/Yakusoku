@@ -30,12 +30,7 @@ Spell.prototype.init = function() {
 	this.is_moving = true;
 };
 
-Spell.prototype.run = function() {
-	BaseSpell.prototype.run.apply(this, arguments);
-
-	// スペルカード発動演出中
-	if(this.isSpellStarting()) return;
-
+Spell.prototype.runInSpellExecute = function() {
 	if(this.is_moving) {
 		// 移動中
 		var ax = this.stage.width/2  - this.boss.x;

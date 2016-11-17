@@ -22,12 +22,7 @@ Spell.prototype.init = function() {
 	BaseSpell.prototype.init.apply(this, arguments);
 };
 
-Spell.prototype.run = function() {
-	BaseSpell.prototype.run.apply(this, arguments);
-
-	// スペルカード発動演出中
-	if(this.isSpellStarting()) return;
-
+Spell.prototype.runInSpellExecute = function() {
 	// ボム生成
 	if(this.frame_count % BOMB_PER_COUNT === 0) {
 		for(var i = 0; i < BOMB_NUM; i++) {
