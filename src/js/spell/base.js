@@ -1,8 +1,8 @@
 'use strict';
 
 /* スペルカードの基底クラス */
-var Config = require("../../config");
-var Constant = require("../../constant");
+var Config = require("../config");
+var Constant = require("../constant");
 
 // カットインの左から右への移動スピード(前)
 var CUTIN_FAST_SPEED = 33;

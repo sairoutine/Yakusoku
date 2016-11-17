@@ -8,7 +8,7 @@ var BOMB_NUM = 12;
 // 何フレーム毎にボムをばらまくか
 var BOMB_PER_COUNT = 45;
 
-var BaseSpell = require('../stage1/base');
+var BaseSpell = require('../base');
 var Constant = require('../../constant');
 var Util = require('../../util');
 

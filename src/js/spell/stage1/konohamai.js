@@ -2,7 +2,7 @@
 
 /* スペルカード */
 // TODO: スプライト名もっといい感じに指定できないかな・・・
-var BaseSpell = require('./base');
+var BaseSpell = require('../base');
 var Util = require('../../util');
 var Constant = require('../../constant');
 
