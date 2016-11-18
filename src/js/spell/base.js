@@ -3,6 +3,7 @@
 /* スペルカードの基底クラス */
 var Config = require("../config");
 var Constant = require("../constant");
+var Util = require("../util");
 
 // カットインの左から右への移動スピード(前)
 var CUTIN_FAST_SPEED = 33;
@@ -142,8 +143,19 @@ SpellBase.prototype.updateDisplay = function(){
 };
 
 // 撃つ
-SpellBase.prototype.shot = function(x, y, r, theta, sprite_x, sprite_y) {
-	this.stage.bullet_manager.create(x, y, r, theta, sprite_x, sprite_y);
+SpellBase.prototype.shot = function(type_id, x, y, vector) {
+	return this.stage.bullet_manager.create(type_id, x, y, vector);
+};
+
+// 自機狙いのtheta を返す
+SpellBase.prototype.calcThetaAimedToChara = function() {
+	// 自機
+	var character = this.stage.character;
+
+	var ax = character.x - this.boss.x;
+	var ay = character.y - this.boss.y;
+
+	return Util.radianToTheta(Math.atan2(ay, ax));
 };
 
 // スペルカード名
