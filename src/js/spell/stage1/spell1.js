@@ -1,7 +1,6 @@
 'use strict';
 
 /* スペルカード */
-// TODO: スプライト名もっといい感じに指定できないかな・・・
 var BaseSpell = require('../base');
 var Util = require('../../util');
 var Constant = require('../../constant');
@@ -86,12 +85,7 @@ Spell.prototype.aimedToChara = function() {
 	var ax = character.x - this.boss.x;
 	var ay = character.y - this.boss.y;
 
-	this.maru_shot_theta = this._radian_to_theta(Math.atan2(ay, ax));
-};
-
-// ラジアン -> θ に変換
-Spell.prototype._radian_to_theta = function(radian) {
-	return (radian * 180 / Math.PI) | 0;
+	this.maru_shot_theta = Util.radianToTheta(Math.atan2(ay, ax));
 };
 
 Spell.prototype.name = function() { return "風符「天狗風」"; };
