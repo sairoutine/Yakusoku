@@ -1,7 +1,7 @@
 'use strict';
 
 var BulletTypes = [
-	// 文：黄色い弾
+	// 0;文：黄色い弾
 	{
 		'image':       'shot',
 		'indexX':           3,
@@ -12,7 +12,7 @@ var BulletTypes = [
 		'collisionHeight': 13,
 		'is_rotate':       true
 	},
-	// 文：赤い弾
+	// 1:文：赤い弾
 	{
 		'image':       'shot',
 		'indexX':           0,
@@ -23,7 +23,7 @@ var BulletTypes = [
 		'collisionHeight': 13,
 		'is_rotate':       true
 	},
-	// stage1 道中雑魚：青い円形弾
+	// 2: stage1 道中雑魚：青い円形弾
 	{
 		'image':       'shot',
 		'indexX':           2,
@@ -34,7 +34,7 @@ var BulletTypes = [
 		'collisionHeight': 16,
 		'is_rotate':       false
 	},
-	// 文：オレンジっぽい弾
+	// 3: 文：オレンジっぽい弾
 	{
 		'image':       'shot',
 		'indexX':           7,
@@ -45,7 +45,7 @@ var BulletTypes = [
 		'collisionHeight': 13,
 		'is_rotate':       true
 	},
-	// 文：赤いにじゅうまる弾
+	// 4: 文：赤いにじゅうまる弾
 	{
 		'image':       'shot',
 		'indexX':           0,
@@ -54,6 +54,17 @@ var BulletTypes = [
 		'height':          23,
 		'collisionWidth':  13,
 		'collisionHeight': 13,
+		'is_rotate':       false
+	},
+	// 5: 文：デカイ赤い弾
+	{
+		'image':       'shot',
+		'indexX':           4,
+		'indexY':           1,
+		'width':           64,
+		'height':          64,
+		'collisionWidth':  48,
+		'collisionHeight': 48,
 		'is_rotate':       false
 	},
 
