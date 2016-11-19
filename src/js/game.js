@@ -207,6 +207,9 @@ Game.prototype = {
 
 	// セットされたフラグにもとづいてSEを再生
 	runPlaySound: function() {
+		// DEBUG
+		if(Config.DEBUG_MUSIC_OFF) return;
+
 		for(var key in Config.SOUNDS) {
 			// フラグが立ってたら
 			if(this.soundflag & Config.SOUNDS[key].id) {
