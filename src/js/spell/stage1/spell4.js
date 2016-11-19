@@ -1,0 +1,167 @@
+'use strict';
+
+/* スペルカード */
+var BaseSpell = require('../base');
+var Util = require('../../util');
+var Constant = require('../../constant');
+
+var Spell = function(boss) {
+	BaseSpell.apply(this, arguments);
+
+	this.param = this._makeBossParam();
+
+};
+Util.inherit(Spell, BaseSpell);
+
+// 初期化
+Spell.prototype.init = function() {
+	BaseSpell.prototype.init.apply(this, arguments);
+
+	// 移動先
+	this.boss.setMoveTo(this.param.x, this.param.y);
+
+	var shots = this.param.s;
+
+
+	this.shots = shots;
+
+	this.shotIndices = [];
+
+	for( var i = 0; i < this.shots.length; i++ ) {
+		this.shotIndices.push( 0 );
+	}
+
+	this.reserved = [];
+};
+
+
+Spell.prototype.runInSpellExecute = function() {
+	this._shot();
+
+	this._shotReserved();
+
+	// reserved shot の各 count 追加
+	for(var i = 0; i < this.reserved.length; i++) {
+		this.reserved[ i ].count++;
+	}
+};
+
+Spell.prototype.name = function() { return "風符「蝉しぐれ」"; };
+Spell.prototype.charaImage = function() { return "aya_normal"; };
+
+
+
+
+Spell.prototype._shot = function( ) {
+	var offset = 90; // カットイン時間
+
+	for( var i = 0, len=this.shots.length; i < len; i++ ) {
+		var count = this.frame_count - offset;
+
+		// baseCount 経過でループする
+		if(this.shots[ i ].baseCount) {
+			count = count % this.shots[ i ].baseCount;
+		}
+
+		// shotIndex 初期化
+		if( count === 0 ) {
+			this.shotIndices[ i ] = 0 ;
+		}
+
+		// TODO: ?
+		if( this.shotIndices[ i ] >= this.shots[ i ].shotCount.length ) {
+			continue ;
+		}
+
+		if( count >= this.shots[ i ].shotCount[ this.shotIndices[ i ] ] ) {
+			this.__shot(this.shots[ i ]);
+			this.shotIndices[ i ]++ ;
+		}
+	}
+};
+
+
+Spell.prototype.__shot = function( ) {
+	//var bullet_params = bullet_dictionaries[ this.shots[this.shot_index].bullet ];
+	var bullet_params = this._makeBulletsParam();
+
+
+	if(bullet_params[0].count !== void 0) {
+		var r = {};
+		//r.enemy = enemy ;
+		r.index = 0 ;
+		r.count = 0 ;
+		//r.shot  = shot ;
+		r.array = bullet_params;
+		this.reserved.push(r);
+	}
+	else {
+		// 敵弾生成
+		for( var i = 0, len = bullet_params.length; i < len; i++) {
+			var param = bullet_params[i];
+
+			this.stage.bullet_manager.create(6, this.boss.x + param.x, this.boss.y + param.y, param.vector); //type_id: 2
+		}
+
+		// sound
+		this.game.playSound('boss_shot_small');
+	}
+};
+
+Spell.prototype._shotReserved = function( ) {
+	for( var i = 0; i < this.reserved.length; i++ ) {
+		while( this.reserved[ i ].index < this.reserved[ i ].array.length &&
+			this.reserved[ i ].count >= this.reserved[ i ].array[ this.reserved[ i ].index ].count ) {
+
+			var param = this.reserved[ i ].array[ this.reserved[ i ].index ];
+			this.stage.bullet_manager.create(6, this.boss.x + param.x, this.boss.y + param.y, param.vector); //type_id: 2
+			this.reserved[ i ].index++ ;
+		}
+	}
+} ;
+
+
+
+
+
+Spell.prototype._makeBulletsParam = function( ) {
+  var array = [ ] ;
+  var r = 30 ;
+  for( var i = 0; i < 36; i++ ) {
+    var count = i * 1;
+    var theta = ( ( i * 10 ) + 90 ) % 360 ;
+    var v = { 'x': r * Math.cos( this._calculateRadian( theta ) ),
+              'y': r * Math.sin( this._calculateRadian( theta ) ),
+              'count': count,
+              'vector': { 'r': 2 + ( i / 50 ), 'theta': theta }
+            } ;
+    array.push( v ) ;
+  }
+  return array ;
+} ;
+
+
+Spell.prototype._makeBossParam = function( ) {
+	return {
+        'x': 240,
+        'y': 150,
+        's': [
+          { 'bullet': 14, 'type': 8, 'shotCount': [  10,  20,  30,  40 ], 'baseCount': 300 },
+          { 'bullet': 14, 'type': 8, 'shotCount': [ 160, 170, 180, 190 ], 'baseCount': 300 },
+        ],
+	};
+};
+
+Spell.prototype._calculateRadian = function( theta ) {
+  return theta * Math.PI / 180 ;
+} ;
+
+
+Spell.prototype._calculateTheta = function( radian ) {
+  return parseInt( radian * 180 / Math.PI ) ;
+} ;
+
+
+
+
+module.exports = Spell;
