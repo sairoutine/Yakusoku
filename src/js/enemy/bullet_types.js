@@ -67,6 +67,17 @@ var BulletTypes = [
 		'collisionHeight': 48,
 		'is_rotate':       false
 	},
+	// 6: 文：クナイみたいな赤い弾
+	{
+		'image':       'shot',
+		'indexX':           0,
+		'indexY':           7,
+		'width':           15,
+		'height':          20,
+		'collisionWidth':  14,
+		'collisionHeight': 14,
+		'is_rotate':       true
+	},
 
 ];
 
