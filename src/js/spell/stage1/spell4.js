@@ -5,6 +5,8 @@ var BaseSpell = require('../base');
 var Util = require('../../util');
 var Constant = require('../../constant');
 
+var bullet_dictionaries = require('../bullet_dictionaries');
+
 var Spell = function(boss) {
 	BaseSpell.apply(this, arguments);
 };
@@ -76,17 +78,15 @@ Spell.prototype._shot = function( ) {
 		}
 
 		if( count >= this.shots[ i ].count[ this.shotIndices[ i ] ] ) {
-			this.__shot(this.shots[i].type);
+			this.__shot(this.shots[i].bullet, this.shots[i].type);
 			this.shotIndices[ i ]++ ;
 		}
 	}
 };
 
 
-Spell.prototype.__shot = function(type) {
-	//var bullet_params = bullet_dictionaries[ this.shots[this.shot_index].bullet ];
-	var bullet_params = this._makeBulletsParam();
-
+Spell.prototype.__shot = function(bullet, type) {
+	var bullet_params = bullet_dictionaries[bullet];
 
 	if(bullet_params[0].count !== void 0) {
 		var r = {};
@@ -143,28 +143,11 @@ Spell.prototype._move = function( ) {
 
 
 
-Spell.prototype._makeBulletsParam = function( ) {
-	var array = [ ] ;
-	var r = 30 ;
-	for( var i = 0; i < 36; i++ ) {
-		var count = i * 1;
-		var theta = ( ( i * 10 ) + 90 ) % 360 ;
-		var v = { 'x': r * Math.cos( Util.thetaToRadian( theta ) ),
-			'y': r * Math.sin( Util.thetaToRadian( theta ) ),
-			'count': count,
-			'vector': { 'r': 2 + ( i / 50 ), 'theta': theta }
-		};
-		array.push( v ) ;
-	}
-	return array ;
-} ;
-
-
 Spell.prototype.shotParam = function( ) {
 	return [
-		{ 'bullet': 14, 'type': 0, 'count': [  10,  20,  30,  40 ], 'baseCount': 600 },
-		{ 'bullet': 14, 'type': 1, 'count': [ 210, 220, 230, 240 ], 'baseCount': 600 },
-		{ 'bullet': 14, 'type': 0, 'count': [ 410, 420, 430, 440 ], 'baseCount': 600 },
+		{ 'bullet': 0, 'type': 0, 'count': [  10,  20,  30,  40 ], 'baseCount': 600 },
+		{ 'bullet': 0, 'type': 1, 'count': [ 210, 220, 230, 240 ], 'baseCount': 600 },
+		{ 'bullet': 0, 'type': 0, 'count': [ 410, 420, 430, 440 ], 'baseCount': 600 },
 	];
 };
 Spell.prototype.moveParam = function( ) {
