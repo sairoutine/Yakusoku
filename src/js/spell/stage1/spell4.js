@@ -79,14 +79,14 @@ Spell.prototype._shot = function( ) {
 		}
 
 		if( count >= this.shots[ i ].shotCount[ this.shotIndices[ i ] ] ) {
-			this.__shot(this.shots[ i ]);
+			this.__shot(this.shots[i].type);
 			this.shotIndices[ i ]++ ;
 		}
 	}
 };
 
 
-Spell.prototype.__shot = function( ) {
+Spell.prototype.__shot = function(type) {
 	//var bullet_params = bullet_dictionaries[ this.shots[this.shot_index].bullet ];
 	var bullet_params = this._makeBulletsParam();
 
@@ -96,7 +96,7 @@ Spell.prototype.__shot = function( ) {
 		//r.enemy = enemy ;
 		r.index = 0 ;
 		r.count = 0 ;
-		//r.shot  = shot ;
+		r.type  = type;
 		r.array = bullet_params;
 		this.reserved.push(r);
 	}
@@ -105,7 +105,7 @@ Spell.prototype.__shot = function( ) {
 		for( var i = 0, len = bullet_params.length; i < len; i++) {
 			var param = bullet_params[i];
 
-			this.stage.bullet_manager.create(6, this.boss.x + param.x, this.boss.y + param.y, param.vector); //type_id: 2
+			this.stage.bullet_manager.create(param.type, this.boss.x + param.x, this.boss.y + param.y, param.vector); //type_id: 2
 		}
 
 		// sound
@@ -119,7 +119,8 @@ Spell.prototype._shotReserved = function( ) {
 			this.reserved[ i ].count >= this.reserved[ i ].array[ this.reserved[ i ].index ].count ) {
 
 			var param = this.reserved[ i ].array[ this.reserved[ i ].index ];
-			this.stage.bullet_manager.create(6, this.boss.x + param.x, this.boss.y + param.y, param.vector); //type_id: 2
+				console.log(this.reserved[i].type);
+			this.stage.bullet_manager.create(this.reserved[i].type, this.boss.x + param.x, this.boss.y + param.y, param.vector); //type_id: 2
 			this.reserved[ i ].index++ ;
 		}
 	}
@@ -164,14 +165,15 @@ Spell.prototype._makeBulletsParam = function( ) {
 } ;
 
 
+			//{ 'bullet': 0, 'count': 40+(i%2)*20 },
 Spell.prototype._makeBossParam = function( ) {
 	return {
 		'x': 240,
 		'y': 100,
 		'shot': [
-			{ 'bullet': 14, 'type': 8, 'shotCount': [  10,  20,  30,  40 ], 'baseCount': 600 },
-			{ 'bullet': 14, 'type': 8, 'shotCount': [ 210, 220, 230, 240 ], 'baseCount': 600 },
-			{ 'bullet': 14, 'type': 8, 'shotCount': [ 410, 420, 430, 440 ], 'baseCount': 600 },
+			{ 'bullet': 14, 'type': 0, 'shotCount': [  10,  20,  30,  40 ], 'baseCount': 600 },
+			{ 'bullet': 14, 'type': 1, 'shotCount': [ 210, 220, 230, 240 ], 'baseCount': 600 },
+			{ 'bullet': 14, 'type': 0, 'shotCount': [ 410, 420, 430, 440 ], 'baseCount': 600 },
 		],
 		'move': [
 			{ x: 140, y: 200, startCount: 100, moveCount: 100,  baseCount: 600 },
