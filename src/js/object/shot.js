@@ -27,16 +27,21 @@ Shot.prototype.init = function(type_id, x, y, vector) {
 	this.y = y;
 
 	var type = shot_types[type_id];
-	// TODO: リファクタ
-	VectorBaseObject.prototype.init.apply(this, [
-		[
+
+	// vector はスカラー or 配列を受け取ることができる
+	if(!(vector instanceof Array)) {
+		// 配列でなければ配列化してあげる
+		vector = [
 			{
 				count: 0,
 				vector: vector,
 				is_rotate: type.is_rotate,
 			}
-		]
-	]);
+		];
+	}
+
+	// TODO: リファクタ
+	VectorBaseObject.prototype.init.apply(this, [vector]);
 	// 画像の種類
 	this.image            = type.image;
 	// スプライト開始位置
