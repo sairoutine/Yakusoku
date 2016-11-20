@@ -18,10 +18,13 @@ Spell.prototype.init = function() {
 	BaseSpell.prototype.init.apply(this, arguments);
 
 	// 移動先
-	this.boss.setMoveTo(this.param.x, this.param.y);
+	this.boss.setMoveTo(this.param.x, this.param.y, 40);
 
-	var shots = this.param.s;
+	// move 設定
+	this.moves = this.param.move;
 
+	// shot 設定
+	var shots = this.param.shot;
 
 	this.shots = shots;
 
@@ -36,9 +39,11 @@ Spell.prototype.init = function() {
 
 
 Spell.prototype.runInSpellExecute = function() {
+	this._move();
 	this._shot();
 
 	this._shotReserved();
+
 
 	// reserved shot の各 count 追加
 	for(var i = 0; i < this.reserved.length; i++) {
@@ -120,35 +125,59 @@ Spell.prototype._shotReserved = function( ) {
 	}
 } ;
 
+Spell.prototype._move = function( ) {
+	var offset = 90; // カットイン時間
+
+	for( var i = 0, len=this.moves.length; i < len; i++ ) {
+		var count = this.frame_count - offset;
+
+		// baseCount 経過でループする
+		if(this.moves[ i ].baseCount) {
+			count = count % this.moves[ i ].baseCount;
+		}
+
+		if( count === this.moves[ i ].startCount) {
+			this.boss.setMoveTo(this.moves[ i ].x, this.moves[ i ].y, this.moves[ i ].moveCount);
+		}
+	}
+};
+
+
 
 
 
 
 Spell.prototype._makeBulletsParam = function( ) {
-  var array = [ ] ;
-  var r = 30 ;
-  for( var i = 0; i < 36; i++ ) {
-    var count = i * 1;
-    var theta = ( ( i * 10 ) + 90 ) % 360 ;
-    var v = { 'x': r * Math.cos( this._calculateRadian( theta ) ),
-              'y': r * Math.sin( this._calculateRadian( theta ) ),
-              'count': count,
-              'vector': { 'r': 2 + ( i / 50 ), 'theta': theta }
-            } ;
-    array.push( v ) ;
-  }
-  return array ;
+	var array = [ ] ;
+	var r = 30 ;
+	for( var i = 0; i < 36; i++ ) {
+		var count = i * 1;
+		var theta = ( ( i * 10 ) + 90 ) % 360 ;
+		var v = { 'x': r * Math.cos( this._calculateRadian( theta ) ),
+			'y': r * Math.sin( this._calculateRadian( theta ) ),
+			'count': count,
+			'vector': { 'r': 2 + ( i / 50 ), 'theta': theta }
+		};
+		array.push( v ) ;
+	}
+	return array ;
 } ;
 
 
 Spell.prototype._makeBossParam = function( ) {
 	return {
-        'x': 240,
-        'y': 150,
-        's': [
-          { 'bullet': 14, 'type': 8, 'shotCount': [  10,  20,  30,  40 ], 'baseCount': 300 },
-          { 'bullet': 14, 'type': 8, 'shotCount': [ 160, 170, 180, 190 ], 'baseCount': 300 },
-        ],
+		'x': 240,
+		'y': 100,
+		'shot': [
+			{ 'bullet': 14, 'type': 8, 'shotCount': [  10,  20,  30,  40 ], 'baseCount': 600 },
+			{ 'bullet': 14, 'type': 8, 'shotCount': [ 210, 220, 230, 240 ], 'baseCount': 600 },
+			{ 'bullet': 14, 'type': 8, 'shotCount': [ 410, 420, 430, 440 ], 'baseCount': 600 },
+		],
+		'move': [
+			{ x: 140, y: 200, startCount: 100, moveCount: 100,  baseCount: 600 },
+			{ x: 340, y: 200, startCount: 300, moveCount: 100, baseCount: 600 },
+			{ x: 240, y: 100, startCount: 500, moveCount: 100, baseCount: 600 },
+		]
 	};
 };
 
