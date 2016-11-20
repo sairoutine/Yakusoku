@@ -18,6 +18,7 @@ Spell.prototype.init = function() {
 
 	// move 設定
 	this.moves = this.moveParam();
+	this.move_index = 0;
 
 	this.shots = this.shotParam();
 	this.shotIndices = [];
@@ -31,7 +32,10 @@ Spell.prototype.init = function() {
 
 
 Spell.prototype.runInSpellExecute = function() {
-	this._move();
+	// パラメータから移動を設定
+	this._setMoveByParam();
+
+
 	this._shot();
 
 	this._shotReserved();
@@ -88,26 +92,13 @@ Spell.prototype._shot = function( ) {
 Spell.prototype.__shot = function(bullet, type) {
 	var bullet_params = bullet_dictionaries[bullet];
 
-	if(bullet_params[0].count !== void 0) {
-		var r = {};
-		//r.enemy = enemy ;
-		r.index = 0 ;
-		r.count = 0 ;
-		r.type  = type;
-		r.array = bullet_params;
-		this.reserved.push(r);
-	}
-	else {
-		// 敵弾生成
-		for( var i = 0, len = bullet_params.length; i < len; i++) {
-			var param = bullet_params[i];
-
-			this.stage.bullet_manager.create(param.type, this.boss.x + param.x, this.boss.y + param.y, param.vector); //type_id: 2
-		}
-
-		// sound
-		this.game.playSound('boss_shot_small');
-	}
+	var r = {};
+	//r.enemy = enemy ;
+	r.index = 0 ;
+	r.count = 0 ;
+	r.type  = type;
+	r.array = bullet_params;
+	this.reserved.push(r);
 };
 
 Spell.prototype._shotReserved = function( ) {
@@ -117,23 +108,29 @@ Spell.prototype._shotReserved = function( ) {
 
 			var param = this.reserved[ i ].array[ this.reserved[ i ].index ];
 			this.stage.bullet_manager.create(this.reserved[i].type, this.boss.x + param.x, this.boss.y + param.y, param.vector); //type_id: 2
+			this.game.playSound('boss_shot_small');
 			this.reserved[ i ].index++ ;
 		}
 	}
 } ;
 
-Spell.prototype._move = function( ) {
+Spell.prototype._setMoveByParam = function( ) {
 	var count = this.frameCountStartedBySpellExec();
 
-	for( var i = 0, len=this.moves.length; i < len; i++ ) {
+	var move = this.moves[ this.move_index ];
 
-		// baseCount 経過でループする
-		if(this.moves[ i ].baseCount) {
-			count = count % this.moves[ i ].baseCount;
-		}
+	// baseCount 経過でループする
+	if(move.baseCount) {
+		count = count % move.baseCount;
+	}
 
-		if( count === this.moves[ i ].startCount) {
-			this.boss.setMoveTo(this.moves[ i ].x, this.moves[ i ].y, this.moves[ i ].moveCount);
+	if(count === move.startCount) {
+		this.boss.setMoveTo(move.x, move.y, move.moveCount);
+
+		this.move_index++;
+
+		if(this.move_index >= this.moves.length) {
+			this.move_index = 0;
 		}
 	}
 };
