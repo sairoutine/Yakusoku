@@ -10,6 +10,8 @@ var Constant = require('../../constant');
 var Spell1 = require('../../spell/stage1/spell1');
 var Spell2 = require('../../spell/stage1/spell2');
 var Spell3 = require('../../spell/stage1/spell3');
+var Spell4 = require('../../spell/stage1/spell4');
+var Spell5 = require('../../spell/stage1/spell5');
 
 
 var Shot = require('../../object/shot');
@@ -42,9 +44,11 @@ var Aya = function(stage) {
 	// スペルカード一覧
 	this.spells = [
 		null, // 何も発動していない
+		new Spell5(this),
 		new Spell1(this),
 		new Spell2(this),
 		new Spell3(this),
+		new Spell4(this),
 	];
 };
 
