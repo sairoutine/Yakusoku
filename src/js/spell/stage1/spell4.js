@@ -16,16 +16,10 @@ Util.inherit(Spell, BaseSpell);
 Spell.prototype.init = function() {
 	BaseSpell.prototype.init.apply(this, arguments);
 
-	// move 設定
-	this.moves = this.moveParam();
+	// 現在適用している move
 	this.move_index = 0;
 
-	this.shots = this.shotParam();
-	this.shotIndices = [];
-
-	for( var i = 0; i < this.shots.length; i++ ) {
-		this.shotIndices.push( 0 );
-	}
+	this.shots = this.createShotParamSplitedByCount(this.shotParam());
 
 	this.reserved = [];
 };
@@ -47,6 +41,60 @@ Spell.prototype.runInSpellExecute = function() {
 	}
 };
 
+// パラメータから移動を設定
+Spell.prototype._setMoveByParam = function( ) {
+	var count = this.frameCountStartedBySpellExec();
+
+	var move_param = this.moveParam();
+
+	var move = move_param[ this.move_index ];
+
+	// baseCount 経過でループする
+	if(move.baseCount) {
+		count = count % move.baseCount;
+	}
+
+	if(count === move.startCount) {
+		this.boss.setMoveTo(move.x, move.y, move.moveCount);
+
+		this.move_index++;
+
+		if(this.move_index >= move_param.length) {
+			this.move_index = 0;
+		}
+	}
+};
+
+// shotParam のcount 配列をスカラーに分解する
+Spell.prototype.createShotParamSplitedByCount = function(shotParam) {
+	var newShotParam = [];
+	for( var i = 0, len=shotParam.length; i < len; i++ ) {
+		var param = shotParam[i];
+		if(param.count instanceof Array) {
+			for( var j = 0, c_len=param.count.length; j < c_len; j++ ) {
+				newShotParam.push({
+					bullet:    param.bullet,
+					type:      param.type,
+					count:     param.count[j],
+					baseCount: param.baseCount,
+				});
+			}
+		}
+		else {
+			newShotParam.push(param);
+		}
+	}
+	// count 昇順にソート
+	newShotParam.sort(function(a, b) {
+		return a.count - b.count;
+	});
+
+	return newShotParam;
+};
+
+
+
+
 Spell.prototype.name = function() { return "風符「蝉しぐれ」"; };
 Spell.prototype.charaImage = function() { return "aya_normal"; };
 
@@ -58,8 +106,20 @@ Spell.prototype.initY = function( ) {
 	return 100;
 };
 
-
-
+Spell.prototype.shotParam = function( ) {
+	return [
+		{ 'bullet': 0, 'type': 0, 'count': [  10,  20,  30,  40 ], 'baseCount': 600 },
+		{ 'bullet': 0, 'type': 1, 'count': [ 210, 220, 230, 240 ], 'baseCount': 600 },
+		{ 'bullet': 0, 'type': 0, 'count': [ 410, 420, 430, 440 ], 'baseCount': 600 },
+	];
+};
+Spell.prototype.moveParam = function( ) {
+	return [
+		{ x: 140, y: 200, startCount: 100, moveCount: 100, baseCount: 600 },
+		{ x: 340, y: 200, startCount: 300, moveCount: 100, baseCount: 600 },
+		{ x: 240, y: 100, startCount: 500, moveCount: 100, baseCount: 600 },
+	];
+};
 
 Spell.prototype._shot = function( ) {
 	var count = this.frameCountStartedBySpellExec();
@@ -71,19 +131,8 @@ Spell.prototype._shot = function( ) {
 			count = count % this.shots[ i ].baseCount;
 		}
 
-		// shotIndex 初期化
-		if( count === 0 ) {
-			this.shotIndices[ i ] = 0 ;
-		}
-
-		// TODO: ?
-		if( this.shotIndices[ i ] >= this.shots[ i ].count.length ) {
-			continue ;
-		}
-
-		if( count >= this.shots[ i ].count[ this.shotIndices[ i ] ] ) {
+		if( count === this.shots[ i ].count) {
 			this.__shot(this.shots[i].bullet, this.shots[i].type);
-			this.shotIndices[ i ]++ ;
 		}
 	}
 };
@@ -114,44 +163,4 @@ Spell.prototype._shotReserved = function( ) {
 	}
 } ;
 
-Spell.prototype._setMoveByParam = function( ) {
-	var count = this.frameCountStartedBySpellExec();
-
-	var move = this.moves[ this.move_index ];
-
-	// baseCount 経過でループする
-	if(move.baseCount) {
-		count = count % move.baseCount;
-	}
-
-	if(count === move.startCount) {
-		this.boss.setMoveTo(move.x, move.y, move.moveCount);
-
-		this.move_index++;
-
-		if(this.move_index >= this.moves.length) {
-			this.move_index = 0;
-		}
-	}
-};
-
-
-
-
-
-
-Spell.prototype.shotParam = function( ) {
-	return [
-		{ 'bullet': 0, 'type': 0, 'count': [  10,  20,  30,  40 ], 'baseCount': 600 },
-		{ 'bullet': 0, 'type': 1, 'count': [ 210, 220, 230, 240 ], 'baseCount': 600 },
-		{ 'bullet': 0, 'type': 0, 'count': [ 410, 420, 430, 440 ], 'baseCount': 600 },
-	];
-};
-Spell.prototype.moveParam = function( ) {
-	return [
-		{ x: 140, y: 200, startCount: 100, moveCount: 100, baseCount: 600 },
-		{ x: 340, y: 200, startCount: 300, moveCount: 100, baseCount: 600 },
-		{ x: 240, y: 100, startCount: 500, moveCount: 100, baseCount: 600 },
-	];
-};
 module.exports = Spell;
