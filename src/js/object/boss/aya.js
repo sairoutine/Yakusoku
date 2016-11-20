@@ -50,6 +50,13 @@ var Aya = function(stage) {
 		new Spell3(this),
 		new Spell4(this),
 	];
+
+	// 移動関連
+	this.is_moving = false;// 移動中か否か
+	this.to_x      = null; // 移動先 x座標
+	this.to_y      = null; // 移動先 y座標
+	this.to_radian = null; // 移動方向
+	this.to_speed  = null; // 移動速度
 };
 
 // 基底クラスを継承
@@ -67,6 +74,9 @@ Aya.prototype.setInitPosition = function() {
 // 初期化
 Aya.prototype.init = function() {
 	BaseObject.prototype.init.apply(this, arguments);
+
+	// 移動を初期化
+	this.clearMoveTo();
 
 	// ボスを初期位置に置く
 	this.setInitPosition();
