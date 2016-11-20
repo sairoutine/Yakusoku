@@ -7,9 +7,6 @@ var Constant = require('../../constant');
 
 var Spell = function(boss) {
 	BaseSpell.apply(this, arguments);
-
-	this.param = this._makeBossParam();
-
 };
 Util.inherit(Spell, BaseSpell);
 
@@ -18,13 +15,9 @@ Spell.prototype.init = function() {
 	BaseSpell.prototype.init.apply(this, arguments);
 
 	// move 設定
-	this.moves = this.param.move;
+	this.moves = this.moveParam();
 
-	// shot 設定
-	var shots = this.param.shot;
-
-	this.shots = shots;
-
+	this.shots = this.shotParam();
 	this.shotIndices = [];
 
 	for( var i = 0; i < this.shots.length; i++ ) {
@@ -167,19 +160,18 @@ Spell.prototype._makeBulletsParam = function( ) {
 } ;
 
 
-Spell.prototype._makeBossParam = function( ) {
-	return {
-		'shot': [
-			{ 'bullet': 14, 'type': 0, 'count': [  10,  20,  30,  40 ], 'baseCount': 600 },
-			{ 'bullet': 14, 'type': 1, 'count': [ 210, 220, 230, 240 ], 'baseCount': 600 },
-			{ 'bullet': 14, 'type': 0, 'count': [ 410, 420, 430, 440 ], 'baseCount': 600 },
-		],
-		'move': [
-			{ x: 140, y: 200, startCount: 100, moveCount: 100,  baseCount: 600 },
-			{ x: 340, y: 200, startCount: 300, moveCount: 100, baseCount: 600 },
-			{ x: 240, y: 100, startCount: 500, moveCount: 100, baseCount: 600 },
-		]
-	};
+Spell.prototype.shotParam = function( ) {
+	return [
+		{ 'bullet': 14, 'type': 0, 'count': [  10,  20,  30,  40 ], 'baseCount': 600 },
+		{ 'bullet': 14, 'type': 1, 'count': [ 210, 220, 230, 240 ], 'baseCount': 600 },
+		{ 'bullet': 14, 'type': 0, 'count': [ 410, 420, 430, 440 ], 'baseCount': 600 },
+	];
 };
-
+Spell.prototype.moveParam = function( ) {
+	return [
+		{ x: 140, y: 200, startCount: 100, moveCount: 100, baseCount: 600 },
+		{ x: 340, y: 200, startCount: 300, moveCount: 100, baseCount: 600 },
+		{ x: 240, y: 100, startCount: 500, moveCount: 100, baseCount: 600 },
+	];
+};
 module.exports = Spell;
