@@ -16,6 +16,9 @@ var Util = {
 	radianToTheta: function(radian) {
 		return (radian * 180 / Math.PI) | 0;
 	},
+	thetaToRadian: function(theta) {
+		return theta * Math.PI / 180;
+	},
 };
 
 module.exports = Util;

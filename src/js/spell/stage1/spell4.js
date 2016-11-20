@@ -154,8 +154,8 @@ Spell.prototype._makeBulletsParam = function( ) {
 	for( var i = 0; i < 36; i++ ) {
 		var count = i * 1;
 		var theta = ( ( i * 10 ) + 90 ) % 360 ;
-		var v = { 'x': r * Math.cos( this._calculateRadian( theta ) ),
-			'y': r * Math.sin( this._calculateRadian( theta ) ),
+		var v = { 'x': r * Math.cos( Util.thetaToRadian( theta ) ),
+			'y': r * Math.sin( Util.thetaToRadian( theta ) ),
 			'count': count,
 			'vector': { 'r': 2 + ( i / 50 ), 'theta': theta }
 		};
@@ -182,17 +182,5 @@ Spell.prototype._makeBossParam = function( ) {
 		]
 	};
 };
-
-Spell.prototype._calculateRadian = function( theta ) {
-  return theta * Math.PI / 180 ;
-} ;
-
-
-Spell.prototype._calculateTheta = function( radian ) {
-  return parseInt( radian * 180 / Math.PI ) ;
-} ;
-
-
-
 
 module.exports = Spell;
