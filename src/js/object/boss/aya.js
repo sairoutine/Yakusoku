@@ -26,7 +26,7 @@ var LR_ANIMATION_SPAN = 4;
 var VITAL = 60 * 60 * 1;
 
 // ボスの移動速度
-var SPEED = 2;
+var DEFAULT_SPEED = 2;
 
 // constructor
 var Aya = function(stage) {
@@ -151,35 +151,16 @@ Aya.prototype.run = function(){
 
 // 移動
 Aya.prototype.moveLeft = function(){
-	this.x -= SPEED;
+	this.x -= DEFAULT_SPEED;
 };
 Aya.prototype.moveRight = function(){
-	this.x += SPEED;
+	this.x += DEFAULT_SPEED;
 };
 Aya.prototype.moveUp = function(){
-	this.y -= SPEED;
+	this.y -= DEFAULT_SPEED;
 };
 Aya.prototype.moveDown = function(){
-	this.y += SPEED;
-};
-
-// TODO: refactor
-// theta値の方向に移動
-Aya.prototype.moveByRadian = function(radian){
-	this.x += this.calcMoveXByRadian(radian);
-	this.y += this.calcMoveYByRadian(radian);
-};
-
-// X軸の移動を計算
-Aya.prototype.calcMoveXByRadian = function(radian) {
-	var move_x = SPEED * Math.cos(radian);
-	return move_x;
-};
-
-// Y軸の移動を計算
-Aya.prototype.calcMoveYByRadian = function(radian) {
-	var move_y = SPEED * Math.sin(radian);
-	return move_y;
+	this.y += DEFAULT_SPEED;
 };
 
 // 移動アニメーション
@@ -199,41 +180,52 @@ Aya.prototype.isMoving = function(){
 	return this.is_moving;
 };
 // 指定のx,y座標に移動を設定
-Aya.prototype.setMoveTo = function(x, y){
+Aya.prototype.setMoveTo = function(x, y, frame_count){
 	this.is_moving = true;
-	this.move_to_x = x;
-	this.move_to_y = y;
+	this.to_x = x;
+	this.to_y = y;
+
+	var ax = x - this.x;
+	var ay = y - this.y;
+
+	this.to_radian = Math.atan2(ay, ax);
+	if(frame_count) {
+		this.to_speed = Math.sqrt(Math.pow(ay, 2) + Math.pow(ax, 2)) / frame_count;
+	}
+	else {
+		this.to_speed = DEFAULT_SPEED;
+	}
 };
+// 指定の座標に移動しているのを解除
+Aya.prototype.clearMoveTo = function(){
+	this.is_moving = false;
+	this.to_x = null;
+	this.to_y = null;
+	this.to_radian = null;
+	this.to_speed = null;
+};
+
 
 // 指定のx,y座標に移動
 Aya.prototype.moveTo = function(){
 	if(!this.is_moving) return;
 
-	var x = this.move_to_x;
-	var y = this.move_to_y;
+	var cos = Math.cos(this.to_radian);
+	var sin = Math.sin(this.to_radian);
 
-	var boss_x = this.x;
-	var boss_y = this.y;
+	this.x += this.to_speed * cos;
+	this.y += this.to_speed * sin;
 
-	var ax = x - boss_x;
-	var ay = y - boss_y;
-
-	var radian = Math.atan2(ay, ax);
-
-	this.moveByRadian(radian);
-
-	if(Math.cos(radian) > 0) {
+	if(cos > 0) {
 		this.animateRight();
 	}
 	else {
 		this.animateLeft();
 	}
 
-	// x,yが小数点の可能性もあるのでおおまかに到達していれば
-	if( x + 1 > boss_x && boss_x > x - 1 &&
-		y + 1 > boss_y && boss_y > y - 1) {
-		// 移動終了
-		this.is_moving = false;
+	if( this.to_x + 1 > this.x && this.x > this.to_x - 1 &&
+		this.to_y + 1 > this.y && this.y > this.to_y - 1) {
+		this.clearMoveTo();
 		this.animateNeutral();
 	}
 };
