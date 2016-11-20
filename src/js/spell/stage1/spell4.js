@@ -37,8 +37,8 @@ Spell.prototype._shotByParam = function( ) {
 		var count = this.frameCountStartedBySpellExec();
 
 		// baseCount 経過でループする
-		if(shot.baseCount){
-			count = count % shot.baseCount;
+		if(this.baseCount()){
+			count = count % this.baseCount();
 		}
 
 		// 今撃つ弾でなければ撃たない
@@ -67,8 +67,8 @@ Spell.prototype._setMoveByParam = function( ) {
 		var move = move_param[ this.move_index ];
 
 		// baseCount 経過でループする
-		if(move.baseCount) {
-			count = count % move.baseCount;
+		if(this.baseCount()) {
+			count = count % this.baseCount();
 		}
 
 		if(count !== move.startCount) break;
@@ -96,7 +96,6 @@ Spell.prototype.createShotParamSplitedByCount = function(shotParam) {
 					bullet:    param.bullet,
 					type:      param.type,
 					count:     param.count[j],
-					baseCount: param.baseCount,
 				});
 			}
 		}
@@ -130,7 +129,6 @@ Spell.prototype.createShotParamByBulletDictionary = function(shotParam) {
 				vector:    bullet_param.vector,
 				type:      param.type,
 				count:     param.count + bullet_param.count,
-				baseCount: param.baseCount,
 			});
 		}
 	}
@@ -166,12 +164,15 @@ Spell.prototype.shotParam = function( ) {
 };
 Spell.prototype.moveParam = function( ) {
 	return [
-		{ x: 140, y: 200, startCount: 100, moveCount: 100, baseCount: 600 },
-		{ x: 340, y: 200, startCount: 300, moveCount: 100, baseCount: 600 },
-		{ x: 240, y: 100, startCount: 500, moveCount: 100, baseCount: 600 },
+		{ x: 140, y: 200, startCount: 100, moveCount: 100},
+		{ x: 340, y: 200, startCount: 300, moveCount: 100},
+		{ x: 240, y: 100, startCount: 500, moveCount: 100},
 	];
 };
 
+Spell.prototype.baseCount = function( ) {
+	return 600;
+};
 Spell.prototype.bulletDictionary = function( ) {
 	var createAyaSpell4 = function( ) {
 		var array = [ ] ;
