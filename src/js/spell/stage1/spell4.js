@@ -5,10 +5,12 @@ var BaseSpell = require('../base');
 var Util = require('../../util');
 var Constant = require('../../constant');
 
-var bullet_dictionaries = require('../bullet_dictionaries');
 
 var Spell = function(boss) {
 	BaseSpell.apply(this, arguments);
+
+	// 弾を撃つ時間や種類のパラメータ
+	this.shots = this.createShotParamByBulletDictionary(this.createShotParamSplitedByCount(this.shotParam()));
 };
 Util.inherit(Spell, BaseSpell);
 
@@ -18,26 +20,41 @@ Spell.prototype.init = function() {
 
 	// 現在適用している move
 	this.move_index = 0;
-
-	this.shots = this.createShotParamSplitedByCount(this.shotParam());
-
-	this.reserved = [];
+	// 現在適用している shot
+	this.shot_index = 0;
 };
 
 
 Spell.prototype.runInSpellExecute = function() {
-	// パラメータから移動を設定
 	this._setMoveByParam();
+	this._shotByParam();
+};
 
 
-	this._shot();
+Spell.prototype._shotByParam = function( ) {
+	while(this.shots[this.shot_index]) {
+		var shot = this.shots[this.shot_index];
+		var count = this.frameCountStartedBySpellExec();
 
-	this._shotReserved();
+		if(shot.baseCount){
+			count = count % shot.baseCount;
+		}
 
+		// 今撃つ弾でなければ撃たない
+		if(shot.count !== count) break;
 
-	// reserved shot の各 count 追加
-	for(var i = 0; i < this.reserved.length; i++) {
-		this.reserved[ i ].count++;
+		// shot
+		this.stage.bullet_manager.create(shot.type, this.boss.x + shot.x, this.boss.y + shot.y, shot.vector); //type_id:
+
+		// sound
+		this.game.playSound('boss_shot_small');
+
+		this.shot_index++;
+	}
+
+	// 設定されている弾を撃ちきったら最初に戻る
+	if(this.shot_index >= this.shots.length) {
+		this.shot_index = 0;
 	}
 };
 
@@ -92,6 +109,37 @@ Spell.prototype.createShotParamSplitedByCount = function(shotParam) {
 	return newShotParam;
 };
 
+// shotParam と bullet_dictionaries からプログラムが扱いやすい弾幕パターンを生成
+Spell.prototype.createShotParamByBulletDictionary = function(shotParam) {
+	var newShotParam = [];
+
+	var bullet_dictionaries = this.bulletDictionary();
+
+	for (var i = 0, len=shotParam.length; i < len; i++) {
+		var param = shotParam[i];
+		var bullet = bullet_dictionaries[param.bullet];
+
+		for (var j = 0, b_len=bullet.length; j < b_len; j++) {
+			var bullet_param = bullet[j];
+			newShotParam.push({
+				x:         bullet_param.x,
+				y:         bullet_param.y,
+				vector:    bullet_param.vector,
+				type:      param.type,
+				count:     param.count + bullet_param.count,
+				baseCount: param.baseCount,
+			});
+		}
+	}
+
+	// count 昇順にソート
+	newShotParam.sort(function(a, b) {
+		return a.count - b.count;
+	});
+
+	return newShotParam;
+};
+
 
 
 
@@ -121,46 +169,26 @@ Spell.prototype.moveParam = function( ) {
 	];
 };
 
-Spell.prototype._shot = function( ) {
-	var count = this.frameCountStartedBySpellExec();
-
-	for( var i = 0, len=this.shots.length; i < len; i++ ) {
-
-		// baseCount 経過でループする
-		if(this.shots[ i ].baseCount) {
-			count = count % this.shots[ i ].baseCount;
+Spell.prototype.bulletDictionary = function( ) {
+	var createAyaSpell4 = function( ) {
+		var array = [ ] ;
+		var r = 30 ;
+		for( var i = 0; i < 36; i++ ) {
+			var count = i * 1;
+			var theta = ( ( i * 10 ) + 90 ) % 360 ;
+			var v = { 'x': r * Math.cos( Util.thetaToRadian( theta ) ),
+				'y': r * Math.sin( Util.thetaToRadian( theta ) ),
+				'count': count,
+				'vector': { 'r': 2 + ( i / 50 ), 'theta': theta }
+			};
+			array.push( v ) ;
 		}
+		return array ;
+	} ;
 
-		if( count === this.shots[ i ].count) {
-			this.__shot(this.shots[i].bullet, this.shots[i].type);
-		}
-	}
+	var BulletDictionaries = [];
+	BulletDictionaries[0] = createAyaSpell4();
+	return BulletDictionaries;
 };
-
-
-Spell.prototype.__shot = function(bullet, type) {
-	var bullet_params = bullet_dictionaries[bullet];
-
-	var r = {};
-	//r.enemy = enemy ;
-	r.index = 0 ;
-	r.count = 0 ;
-	r.type  = type;
-	r.array = bullet_params;
-	this.reserved.push(r);
-};
-
-Spell.prototype._shotReserved = function( ) {
-	for( var i = 0; i < this.reserved.length; i++ ) {
-		while( this.reserved[ i ].index < this.reserved[ i ].array.length &&
-			this.reserved[ i ].count >= this.reserved[ i ].array[ this.reserved[ i ].index ].count ) {
-
-			var param = this.reserved[ i ].array[ this.reserved[ i ].index ];
-			this.stage.bullet_manager.create(this.reserved[i].type, this.boss.x + param.x, this.boss.y + param.y, param.vector); //type_id: 2
-			this.game.playSound('boss_shot_small');
-			this.reserved[ i ].index++ ;
-		}
-	}
-} ;
 
 module.exports = Spell;
