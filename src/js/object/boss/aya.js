@@ -132,11 +132,11 @@ Aya.prototype.run = function(){
 	// スペルカード処理
 	this.currentSpell().run();
 
+	// 移動が設定されてるなら移動
+	this._moveTo();
+
 	// スペルカード実行中ならば
 	if(this.currentSpell().isSpellExecute()) {
-		// 移動が設定されてるなら移動
-		this.moveTo();
-
 		// 時間経過でスペルカード発動時間は減っていく
 		this.vital--;
 		this.stage.score+=10;
@@ -221,7 +221,7 @@ Aya.prototype.clearMoveTo = function(){
 
 
 // 指定のx,y座標に移動
-Aya.prototype.moveTo = function(){
+Aya.prototype._moveTo = function(){
 	if(!this.is_moving) return;
 
 	var cos = Math.cos(this.to_radian);
