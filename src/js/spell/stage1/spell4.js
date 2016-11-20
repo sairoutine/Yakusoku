@@ -74,11 +74,11 @@ Spell.prototype._shot = function( ) {
 		}
 
 		// TODO: ?
-		if( this.shotIndices[ i ] >= this.shots[ i ].shotCount.length ) {
+		if( this.shotIndices[ i ] >= this.shots[ i ].count.length ) {
 			continue ;
 		}
 
-		if( count >= this.shots[ i ].shotCount[ this.shotIndices[ i ] ] ) {
+		if( count >= this.shots[ i ].count[ this.shotIndices[ i ] ] ) {
 			this.__shot(this.shots[i].type);
 			this.shotIndices[ i ]++ ;
 		}
@@ -171,9 +171,9 @@ Spell.prototype._makeBossParam = function( ) {
 		'x': 240,
 		'y': 100,
 		'shot': [
-			{ 'bullet': 14, 'type': 0, 'shotCount': [  10,  20,  30,  40 ], 'baseCount': 600 },
-			{ 'bullet': 14, 'type': 1, 'shotCount': [ 210, 220, 230, 240 ], 'baseCount': 600 },
-			{ 'bullet': 14, 'type': 0, 'shotCount': [ 410, 420, 430, 440 ], 'baseCount': 600 },
+			{ 'bullet': 14, 'type': 0, 'count': [  10,  20,  30,  40 ], 'baseCount': 600 },
+			{ 'bullet': 14, 'type': 1, 'count': [ 210, 220, 230, 240 ], 'baseCount': 600 },
+			{ 'bullet': 14, 'type': 0, 'count': [ 410, 420, 430, 440 ], 'baseCount': 600 },
 		],
 		'move': [
 			{ x: 140, y: 200, startCount: 100, moveCount: 100,  baseCount: 600 },
