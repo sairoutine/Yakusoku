@@ -36,6 +36,7 @@ Spell.prototype._shotByParam = function( ) {
 		var shot = this.shots[this.shot_index];
 		var count = this.frameCountStartedBySpellExec();
 
+		// baseCount 経過でループする
 		if(shot.baseCount){
 			count = count % shot.baseCount;
 		}
@@ -45,8 +46,6 @@ Spell.prototype._shotByParam = function( ) {
 
 		// shot
 		this.stage.bullet_manager.create(shot.type, this.boss.x + shot.x, this.boss.y + shot.y, shot.vector); //type_id:
-
-		// sound
 		this.game.playSound('boss_shot_small');
 
 		this.shot_index++;
@@ -64,21 +63,25 @@ Spell.prototype._setMoveByParam = function( ) {
 
 	var move_param = this.moveParam();
 
-	var move = move_param[ this.move_index ];
+	while(move_param[this.move_index]) {
+		var move = move_param[ this.move_index ];
 
-	// baseCount 経過でループする
-	if(move.baseCount) {
-		count = count % move.baseCount;
-	}
+		// baseCount 経過でループする
+		if(move.baseCount) {
+			count = count % move.baseCount;
+		}
 
-	if(count === move.startCount) {
+		if(count !== move.startCount) break;
+
+		// move
 		this.boss.setMoveTo(move.x, move.y, move.moveCount);
 
 		this.move_index++;
 
-		if(this.move_index >= move_param.length) {
-			this.move_index = 0;
-		}
+	}
+
+	if(this.move_index >= move_param.length) {
+		this.move_index = 0;
 	}
 };
 
