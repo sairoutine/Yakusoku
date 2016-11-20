@@ -157,9 +157,9 @@ Spell.prototype.initY = function( ) {
 
 Spell.prototype.shotParam = function( ) {
 	return [
-		{ 'bullet': 0, 'type': 0, 'count': [  10,  20,  30,  40 ], 'baseCount': 600 },
-		{ 'bullet': 0, 'type': 1, 'count': [ 210, 220, 230, 240 ], 'baseCount': 600 },
-		{ 'bullet': 0, 'type': 0, 'count': [ 410, 420, 430, 440 ], 'baseCount': 600 },
+		{ 'bullet': 0, 'type': 0, 'count': [  10,  20,  30,  40 ]},
+		{ 'bullet': 1, 'type': 1, 'count': [ 210, 220, 230, 240 ]},
+		{ 'bullet': 0, 'type': 0, 'count': [ 410, 420, 430, 440 ]},
 	];
 };
 Spell.prototype.moveParam = function( ) {
@@ -174,7 +174,7 @@ Spell.prototype.baseCount = function( ) {
 	return 600;
 };
 Spell.prototype.bulletDictionary = function( ) {
-	var createAyaSpell4 = function( ) {
+	var createAyaSpell4_1 = function( ) {
 		var array = [ ] ;
 		var r = 30 ;
 		for( var i = 0; i < 36; i++ ) {
@@ -189,9 +189,25 @@ Spell.prototype.bulletDictionary = function( ) {
 		}
 		return array ;
 	} ;
+	var createAyaSpell4_2 = function( ) {
+		var array = [ ] ;
+		var r = 30 ;
+		for( var i = 0; i < 36; i++ ) {
+			var count = i * 1 ;
+			var t = ( ( i * -10 ) + 450 ) % 360 ;
+			var v = { 'x': r * Math.cos( Util.thetaToRadian( t ) ),
+				'y': r * Math.sin( Util.thetaToRadian( t ) ),
+				'count': count,
+				'vector': { 'r': 2 + ( i / 50 ), 'theta': t }
+			} ;
+			array.push( v ) ;
+		}
+		return array ;
+	};
 
 	var BulletDictionaries = [];
-	BulletDictionaries[0] = createAyaSpell4();
+	BulletDictionaries[0] = createAyaSpell4_1();
+	BulletDictionaries[1] = createAyaSpell4_2();
 	return BulletDictionaries;
 };
 
