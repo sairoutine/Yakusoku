@@ -32,7 +32,8 @@ State.prototype.run = function(){
 	BaseState.prototype.run.apply(this, arguments);
 
 	if(this.isTransitionEnd()) {
-			this.notifyResultEnd();
+		this.game.stopBGM();
+		this.notifyResultEnd();
 	}
 	else {
 		if(this.game.isKeyPush(Constant.BUTTON_Z)) {
