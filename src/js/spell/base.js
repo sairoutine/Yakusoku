@@ -21,6 +21,7 @@ var CUTIN_DISAPPEAR_WAIT_COUNT = 45;
 // カットイン消失時間
 var CUTIN_DISAPPEAR_COUNT = 5;
 
+
 var SpellBase = function(boss) {
 	this.frame_count = 0;
 
@@ -35,6 +36,9 @@ var SpellBase = function(boss) {
 	this.y = 0;
 
 	this.state = null;
+
+	// スペカの実行開始時間
+	this.frame_count_exec_start = null;
 };
 
 // 初期化
@@ -46,17 +50,29 @@ SpellBase.prototype.init = function() {
 	this.x = 0;
 	this.y = CUTIN_Y;
 
+	// スペカの実行開始時間
+	this.frame_count_exec_start = 0;
+
 	// スペルカード発動開始
 	this.changeState(Constant.SPELLCARD_START_STATE);
 };
 
+// スペカ実行開始からのフレーム数
+SpellBase.prototype.frameCountStartedBySpellExec = function(){
+	return this.frame_count - this.frame_count_exec_start;
+};
+
+// スペルカード開始中
+SpellBase.prototype.isSpellStarting = function(){
+	return this.state === Constant.SPELLCARD_START_STATE ? true : false;
+};
 // スペルカード発動中
 SpellBase.prototype.isSpellExecute = function(){
 	return this.state === Constant.SPELLCARD_EXEC_STATE ? true : false;
 };
-// スペルカード開始中
-SpellBase.prototype.isSpellStarting = function(){
-	return this.state === Constant.SPELLCARD_START_STATE ? true : false;
+// ボス移動中
+SpellBase.prototype.isBossMoving = function(){
+	return this.state === Constant.SPELLCARD_BOSSMOVE_STATE ? true : false;
 };
 // 状態変更
 SpellBase.prototype.changeState = function(state){
@@ -70,6 +86,10 @@ SpellBase.prototype.run = function(){
 	if(this.isSpellStarting()) {
 		// スペカ発動演出
 		this.runInSpellStarting();
+	}
+	else if(this.isBossMoving()) {
+		// ボス移動中
+		this.runInBossMoving();
 	}
 	else {
 		// スペカ実行
@@ -103,6 +123,29 @@ SpellBase.prototype.runInSpellStarting = function(){
 	}
 	// カットイン終わり
 	else {
+		if(this.initX() !== void 0 && this.initY() !== void 0) { // 初期位置がセットされていれば
+			// ボスを初期位置へ移動
+			this.boss.setMoveTo(this.initX(), this.initY());
+
+			this.changeState(Constant.SPELLCARD_BOSSMOVE_STATE);
+		}
+		else {
+			// スペカ実行開始時のフレームを保存
+			this.frame_count_exec_start = this.frame_count;
+
+			// スペカ実行
+			this.changeState(Constant.SPELLCARD_EXEC_STATE);
+		}
+	}
+};
+
+// ボス移動中
+SpellBase.prototype.runInBossMoving = function(){
+	// 移動が終了したらスペカ実行モードへ
+	if(!this.boss.isMoving()) {
+		// スペカ実行開始時のフレームを保存
+		this.frame_count_exec_start = this.frame_count;
+
 		this.changeState(Constant.SPELLCARD_EXEC_STATE);
 	}
 };
@@ -171,6 +214,12 @@ SpellBase.prototype.charaImage = function() {
 // スペカ実行
 SpellBase.prototype.runInSpellExecute = function(){
 	console.error("Spell's runInSpellExecute method must be implemented");
+};
+
+// 初期 x, y 座標
+SpellBase.prototype.initX = function( ) {
+};
+SpellBase.prototype.initY = function( ) {
 };
 
 module.exports = SpellBase;

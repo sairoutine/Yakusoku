@@ -17,9 +17,6 @@ Util.inherit(Spell, BaseSpell);
 Spell.prototype.init = function() {
 	BaseSpell.prototype.init.apply(this, arguments);
 
-	// 移動先
-	this.boss.setMoveTo(this.param.x, this.param.y, 40);
-
 	// move 設定
 	this.moves = this.param.move;
 
@@ -54,14 +51,21 @@ Spell.prototype.runInSpellExecute = function() {
 Spell.prototype.name = function() { return "風符「蝉しぐれ」"; };
 Spell.prototype.charaImage = function() { return "aya_normal"; };
 
+// 初期 x, y 座標
+Spell.prototype.initX = function( ) {
+	return 240;
+};
+Spell.prototype.initY = function( ) {
+	return 100;
+};
+
 
 
 
 Spell.prototype._shot = function( ) {
-	var offset = 90; // カットイン時間
+	var count = this.frameCountStartedBySpellExec();
 
 	for( var i = 0, len=this.shots.length; i < len; i++ ) {
-		var count = this.frame_count - offset;
 
 		// baseCount 経過でループする
 		if(this.shots[ i ].baseCount) {
@@ -119,7 +123,6 @@ Spell.prototype._shotReserved = function( ) {
 			this.reserved[ i ].count >= this.reserved[ i ].array[ this.reserved[ i ].index ].count ) {
 
 			var param = this.reserved[ i ].array[ this.reserved[ i ].index ];
-				console.log(this.reserved[i].type);
 			this.stage.bullet_manager.create(this.reserved[i].type, this.boss.x + param.x, this.boss.y + param.y, param.vector); //type_id: 2
 			this.reserved[ i ].index++ ;
 		}
@@ -127,10 +130,9 @@ Spell.prototype._shotReserved = function( ) {
 } ;
 
 Spell.prototype._move = function( ) {
-	var offset = 90; // カットイン時間
+	var count = this.frameCountStartedBySpellExec();
 
 	for( var i = 0, len=this.moves.length; i < len; i++ ) {
-		var count = this.frame_count - offset;
 
 		// baseCount 経過でループする
 		if(this.moves[ i ].baseCount) {
@@ -165,11 +167,8 @@ Spell.prototype._makeBulletsParam = function( ) {
 } ;
 
 
-			//{ 'bullet': 0, 'count': 40+(i%2)*20 },
 Spell.prototype._makeBossParam = function( ) {
 	return {
-		'x': 240,
-		'y': 100,
 		'shot': [
 			{ 'bullet': 14, 'type': 0, 'count': [  10,  20,  30,  40 ], 'baseCount': 600 },
 			{ 'bullet': 14, 'type': 1, 'count': [ 210, 220, 230, 240 ], 'baseCount': 600 },
