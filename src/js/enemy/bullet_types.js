@@ -78,7 +78,17 @@ var BulletTypes = [
 		'collisionHeight': 14,
 		'is_rotate':       true
 	},
-
+	// 7: 文：黄色ビーム
+	{
+		'image':       'beam',
+		'indexX':           1,
+		'indexY':           0,
+		'width':           20,
+		'height':          256,
+		'collisionWidth':  18,
+		'collisionHeight': 248,
+		'is_rotate':       true
+	},
 ];
 
 module.exports = BulletTypes;
