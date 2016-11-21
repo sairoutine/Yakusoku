@@ -26,7 +26,12 @@ Bullet.prototype.init = function(type_id, x, y, vector) {
 	var type = bullet_types[type_id];
 
 	// vector はスカラー or 配列を受け取ることができる
-	if(!(vector instanceof Array)) {
+	if(vector instanceof Array) {
+		for(var i=0, len=vector.length; i<len; i++) {
+			vector[i].is_rotate = type.is_rotate;
+		}
+	}
+	else {
 		// 配列でなければ配列化してあげる
 		vector = [
 			{
@@ -37,7 +42,6 @@ Bullet.prototype.init = function(type_id, x, y, vector) {
 		];
 	}
 
-	// TODO: リファクタ
 	VectorBaseObject.prototype.init.apply(this, [vector]);
 
 	// 画像の種類
