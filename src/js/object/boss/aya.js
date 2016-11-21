@@ -57,19 +57,13 @@ var Aya = function(stage) {
 	this.to_y      = null; // 移動先 y座標
 	this.to_radian = null; // 移動方向
 	this.to_speed  = null; // 移動速度
+
+	// ボスを描画するかどうか
+	this.is_show = true;
 };
 
 // 基底クラスを継承
 Util.inherit(Aya, BaseObject);
-
-
-
-// ボスを初期位置に置く
-Aya.prototype.setInitPosition = function() {
-	// ボスの初期位置
-	this.x = (this.stage.width / 2);
-	this.y = (this.stage.height - 400);
-};
 
 // 初期化
 Aya.prototype.init = function() {
@@ -93,6 +87,16 @@ Aya.prototype.init = function() {
 
 	// ボス出現エフェクト
 	this.boss_appearance = new CreateJS(new boss_appearance.boss_appearance(), 960, 960);
+
+	// ボスを描画するかどうか
+	this.is_show = true;
+};
+
+// ボスを初期位置に置く
+Aya.prototype.setInitPosition = function() {
+	// ボスの初期位置
+	this.x = (this.stage.width / 2);
+	this.y = (this.stage.height - 400);
 };
 
 // 現在のスペルカード
@@ -250,14 +254,16 @@ Aya.prototype._moveTo = function(){
 Aya.prototype.updateDisplay = function(){
 	var ctx = this.game.surface;
 
-	// ボス出現エフェクト
-	ctx.save();
-	ctx.translate(this.x, this.y);
-	ctx.drawImage(this.boss_appearance.canvas, (-this.boss_appearance.canvas.width/2), (-this.boss_appearance.canvas.height/2));
-	ctx.restore();
+	if(this.is_show) {
+		// ボス出現エフェクト
+		ctx.save();
+		ctx.translate(this.x, this.y);
+		ctx.drawImage(this.boss_appearance.canvas, (-this.boss_appearance.canvas.width/2), (-this.boss_appearance.canvas.height/2));
+		ctx.restore();
 
-	// ボス描画
-	BaseObject.prototype.updateDisplay.apply(this, arguments);
+		// ボス描画
+		BaseObject.prototype.updateDisplay.apply(this, arguments);
+	}
 
 	// スペルカード描画
 	this.currentSpell().updateDisplay();

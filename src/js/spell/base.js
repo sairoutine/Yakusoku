@@ -152,9 +152,22 @@ SpellBase.prototype.runInBossMoving = function(){
 
 // 描画
 SpellBase.prototype.updateDisplay = function(){
-	// スペルカード発動開始中のみ描画
-	if(!this.isSpellStarting()) return;
+	if(this.isSpellStarting()) {
+		// スペカ発動演出
+		this.updateDisplayInSpellStarting();
+	}
+	else if(this.isBossMoving()) {
+		// ボス移動中
+		this.updateDisplayInBossMoving();
+	}
+	else {
+		// スペカ実行
+		this.updateDisplayInSpellExecute();
+	}
+};
 
+// スペルカード発動中のカットイン
+SpellBase.prototype.updateDisplayInSpellStarting = function () {
 	// カットイン発動待ち
 	if(this.frame_count <= CUTIN_SLIDEING_WAIT_COUNT) return;
 
@@ -183,6 +196,14 @@ SpellBase.prototype.updateDisplay = function(){
 		image_height
 	);
 	ctx.restore();
+};
+
+// ボス移動中の描画
+SpellBase.prototype.updateDisplayInBossMoving = function () {
+};
+
+// スペカ実行の描画
+SpellBase.prototype.updateDisplayInSpellExecute = function () {
 };
 
 // 撃つ
