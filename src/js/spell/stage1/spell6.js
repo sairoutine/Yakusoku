@@ -1,5 +1,12 @@
 'use strict';
 
+/* TODO:
+文の移動にいい感じのsoundをつけたいな
+ビームに貫通属性つけたいな(フラグで一度自分にぶつかったら判定しないのも入れる)
+ビームの矩形判定ガバガバ(矩形の回転に対応していない)
+文に当たり判定が残りっぱなし
+*/
+
 /* スペルカード */
 var BaseSpell = require('../base');
 var Util = require('../../util');
@@ -21,17 +28,29 @@ Spell.prototype.runInSpellExecute = function() {
 	var vector2 = {r: 10, theta: -10.5 * 360 / 10, ra: 1, rrange: {max: 20}};
 	if(this.boss.vital >= 10 && this.boss.is_show) {
 		this.boss.is_show = false;
-		this.shot(7, this.boss.x, this.boss.y, vector2); //type_id
+		this.me = this.shot(7, this.boss.x, this.boss.y, vector2); //type_id
 	}
 	else {
 		if(this.frame_count % 50 === 0) {
-			this.shot(7, this.stage.width, this.stage.height/3, vector); //type_id
+			this.me = this.shot(7, this.stage.width, this.stage.height/3, vector); //type_id
 		}
 		if((this.frame_count+25) % 50 === 0) {
-			this.shot(7, 0, this.stage.height/3, vector2); //type_id
+			this.me = this.shot(7, 0, this.stage.height/3, vector2); //type_id
 		}
-
 	}
+
+
+	var r =  this._getRandomValue({ 'min': 2, 'max': 3 }) ;
+	var theta = this._getRandomValue({ 'min': 0, 'max': 360 });
+
+	this.shot(0, this.me.x, this.me.y, [
+		{
+			count: 0,
+			vector: {r: r, theta: theta},
+		},
+
+
+	]); //type_id
 
 
 	if(this.boss.vital < 10) {
@@ -45,6 +64,10 @@ Spell.prototype.charaImage = function() { return "aya_normal"; };
 //Spell.prototype.initX = function() { return 240; };
 //Spell.prototype.initY = function() { return 150; };
 
+Spell.prototype._getRandomValue = function( range ) {
+  var differ = range.max - range.min ;
+  return ((Math.random() * differ) | 0) + range.min ;
+} ;
 
 // 初期 x, y 座標
 
