@@ -5,6 +5,7 @@
 ビームに貫通属性つけたいな(フラグで一度自分にぶつかったら判定しないのも入れる)
 ビームの矩形判定ガバガバ(矩形の回転に対応していない)
 文に当たり判定が残りっぱなし
+rand は組み込みのrandにしたくないね
 */
 
 /* スペルカード */
@@ -46,10 +47,8 @@ Spell.prototype.runInSpellExecute = function() {
 	this.shot(0, this.me.x, this.me.y, [
 		{
 			count: 0,
-			vector: {r: r, theta: theta},
-		},
-
-
+			vector: {r: r, theta: theta}
+		}
 	]); //type_id
 
 
