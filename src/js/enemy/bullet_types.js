@@ -89,6 +89,30 @@ var BulletTypes = [
 		'collisionHeight': 248,
 		'is_rotate':       true
 	},
+
+	// 8; 米びつ黄緑弾
+	{
+		'image':       'shot',
+		'indexX':           1,
+		'indexY':           1,
+		'width':           14,
+		'height':          20,
+		'collisionWidth':  13,
+		'collisionHeight': 13,
+		'is_rotate':       true
+	},
+	// 9: 米びつ青弾
+	{
+		'image':       'shot',
+		'indexX':           2,
+		'indexY':           1,
+		'width':           14,
+		'height':          20,
+		'collisionWidth':  13,
+		'collisionHeight': 13,
+		'is_rotate':       true
+	},
+
 ];
 
 module.exports = BulletTypes;
