@@ -7,10 +7,11 @@ var BaseObject = require('../base');
 var Util = require('../../util');
 var Constant = require('../../constant');
 
+var Spell1 = require('../../spell/stage2/spell1');
 var Spell2 = require('../../spell/stage2/spell2');
-var Spell4 = require('../../spell/stage2/spell4');
-var Spell5 = require('../../spell/stage2/spell5');
-var Spell7 = require('../../spell/stage2/spell7');
+var Spell3 = require('../../spell/stage2/spell3');
+//var Spell7 = require('../../spell/stage2/spell7');
+//var Spell2 = require('../../spell/stage2/spell2');
 
 
 var Shot = require('../../object/shot');
@@ -43,8 +44,9 @@ var Aya = function(stage) {
 	// スペルカード一覧
 	this.spells = [
 		null, // 何も発動していない
-		new Spell4(this), // 簡単 文じゃなくてもよい
-		new Spell5(this), // 星。早苗さん用
+		new Spell2(this),// 常識にとらわれてはいけない　
+		new Spell1(this), // 簡単 文じゃなくてもよい
+		new Spell3(this), // 星。早苗さん用
 
 		//new Spell7(this), // 文あるいは早苗じゃなくても良い どはで
 		//new Spell2(this),// 文あるいは早苗じゃなくてもよい。結構どはで
