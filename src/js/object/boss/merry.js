@@ -8,7 +8,6 @@ var Util = require('../../util');
 var Constant = require('../../constant');
 
 var Spell1 = require('../../spell/stage1/spell1');
-var Spell2 = require('../../spell/stage1/spell2');
 
 
 var Shot = require('../../object/shot');
@@ -42,7 +41,6 @@ var Aya = function(stage) {
 	this.spells = [
 		null, // 何も発動していない
 		new Spell1(this),
-		new Spell2(this),
 	];
 };
 
