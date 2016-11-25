@@ -35,7 +35,7 @@ var GameoverState = require('./stage/state/result_gameover');
 // ボス
 var Stage1Boss = require('../object/boss/aya');
 var Stage2Boss = require('../object/boss/sanae');
-var Stage3Boss = require('../object/boss/yuka');
+var Stage3Boss = require('../object/boss/yuuka');
 var Stage4Boss = require('../object/boss/yukari');
 var Stage5Boss = require('../object/boss/merry');
 
