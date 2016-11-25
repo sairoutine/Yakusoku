@@ -3,7 +3,6 @@
 var Constant = require('../constant');
 
 var BulletTypes = [];
-
 // 2: stage1 道中雑魚：青い円形弾
 BulletTypes[Constant.BULLET_BALL_BLUE] = {
 	'image':       'shot',
@@ -81,8 +80,8 @@ BulletTypes[Constant.BULLET_DOUBLEBALL_RED] = {
 	'collisionHeight': 13,
 	'is_rotate':       false
 };
-// 5: 文：デカイ赤い弾
-BulletTypes[Constant.BULLET_BIG_RED] = {
+// 5: 文：デカイオレンジ弾
+BulletTypes[Constant.BULLET_BIG_ORANGE] = {
 	'image':       'shot',
 	'indexX':           4,
 	'indexY':           1,
@@ -113,6 +112,30 @@ BulletTypes[Constant.BULLET_BEAM_YELLOW] = {
 	'collisionWidth':  18,
 	'collisionHeight': 248,
 	'is_rotate':       true
+};
+
+// 10: 緑大玉
+BulletTypes[Constant.BULLET_BIG_LIMEGREEN] = {
+	'image':       'shot',
+	'indexX':           6,
+	'indexY':           0,
+	'width':           64,
+	'height':          64,
+	'collisionWidth':  48,
+	'collisionHeight': 48,
+	'is_rotate':       false
+};
+
+// 11: 道中雑魚：緑円形弾
+BulletTypes[Constant.BULLET_BALL_LIMEGREEN] = {
+	'image':       'shot',
+	'indexX':           1,
+	'indexY':           0,
+	'width':           20,
+	'height':          20,
+	'collisionWidth':  16,
+	'collisionHeight': 16,
+	'is_rotate':       false
 };
 
 module.exports = BulletTypes;
