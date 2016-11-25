@@ -74,7 +74,7 @@ Spell.prototype.maru_shot = function() {
 	var theta = this.maru_shot_theta;
 	var r = this.r;
 
-	this.shot(3, x, y, {r: r, theta: theta}); // type_id: 1
+	this.shot(Constant.BULLET_TINY_ORANGE, x, y, {r: r, theta: theta});
 };
 
 // 自機狙いにする

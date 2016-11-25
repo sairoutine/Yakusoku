@@ -60,7 +60,7 @@ Spell.prototype.uzumaki_shot1 = function() {
 	for(var i = 0; i < this.shot_thetas1.length; i++ ) {
 		var theta = this.shot_thetas1[i];
 
-		this.shot(0, x, y, {r: r, theta: theta}); // type_id: 0
+		this.shot(Constant.BULLET_TINY_YELLOW, x, y, {r: r, theta: theta});
 		this.shot_thetas1[i] += this.add_shot_theta;
 	}
 };
@@ -72,7 +72,7 @@ Spell.prototype.uzumaki_shot2 = function() {
 	for(var i = 0; i < this.shot_thetas2.length; i++ ) {
 		var theta = this.shot_thetas2[i];
 
-		this.shot(0, x, y, {r: r, theta: theta}); // type_id: 0
+		this.shot(Constant.BULLET_TINY_YELLOW, x, y, {r: r, theta: theta});
 		this.shot_thetas2[i] -= this.add_shot_theta;
 	}
 };
@@ -82,7 +82,7 @@ Spell.prototype.maru_shot = function() {
 	var theta = this.maru_shot_theta;
 	var r = this.r;
 
-	this.shot(4, x, y, {r: r, theta: theta}); // type_id: 1
+	this.shot(Constant.BULLET_DOUBLEBALL_RED, x, y, {r: r, theta: theta});
 };
 
 // 自機狙いにする

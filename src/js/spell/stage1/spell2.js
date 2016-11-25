@@ -26,8 +26,8 @@ Spell.prototype.runInSpellExecute = function() {
 
 	var vector2 = {r: r2, theta: theta2};
 
-	this.shot(0, this.boss.x, this.boss.y, vector); //type_id
-	this.shot(1, this.boss.x, this.boss.y, vector2); //type_id
+	this.shot(Constant.BULLET_TINY_YELLOW, this.boss.x, this.boss.y, vector);
+	this.shot(Constant.BULLET_TINY_RED,    this.boss.x, this.boss.y, vector2);
 };
 
 Spell.prototype.name = function() { return "風符「天狗風」"; };

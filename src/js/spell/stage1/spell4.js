@@ -29,14 +29,14 @@ Spell.prototype.runInSpellExecute = function() {
 	var vector2 = {r: 10, theta: -10.5 * 360 / 10, ra: 1, rrange: {max: 20}};
 	if(this.boss.vital >= 10 && this.boss.is_show) {
 		this.boss.is_show = false;
-		this.me = this.shot(7, this.boss.x, this.boss.y, vector2); //type_id
+		this.me = this.shot(Constant.BULLET_BEAM_YELLOW, this.boss.x, this.boss.y, vector2);
 	}
 	else {
 		if(this.frame_count % 50 === 0) {
-			this.me = this.shot(7, this.stage.width, this.stage.height/3, vector); //type_id
+			this.me = this.shot(Constant.BULLET_BEAM_YELLOW, this.stage.width, this.stage.height/3, vector);
 		}
 		if((this.frame_count+25) % 50 === 0) {
-			this.me = this.shot(7, 0, this.stage.height/3, vector2); //type_id
+			this.me = this.shot(Constant.BULLET_BEAM_YELLOW, 0, this.stage.height/3, vector2);
 		}
 	}
 
@@ -44,12 +44,12 @@ Spell.prototype.runInSpellExecute = function() {
 	var r =  this._getRandomValue({ 'min': 2, 'max': 3 }) ;
 	var theta = this._getRandomValue({ 'min': 0, 'max': 360 });
 
-	this.shot(0, this.me.x, this.me.y, [
+	this.shot(Constant.BULLET_TINY_YELLOW, this.me.x, this.me.y, [
 		{
 			count: 0,
 			vector: {r: r, theta: theta}
 		}
-	]); //type_id
+	]);
 
 
 	if(this.boss.vital < 10) {

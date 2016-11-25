@@ -32,7 +32,7 @@ Spell.prototype.baseCount = function( ) { return 100; };
 
 Spell.prototype.shotParam = function( ) {
 	return [
-		{ 'bullet':0, 'type': 2, 'count': [ 20 ]},
+		{ 'bullet':0, 'type': Constant.BULLET_BALL_BLUE, 'count': [ 20 ]},
 	];
 };
 

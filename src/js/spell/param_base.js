@@ -45,7 +45,7 @@ BaseParamSpell.prototype._shotByParam = function( ) {
 		if(shot.count !== count) break;
 
 		// shot
-		this.stage.bullet_manager.create(shot.type, this.boss.x + shot.x, this.boss.y + shot.y, shot.vector); //type_id:
+		this.stage.bullet_manager.create(shot.type, this.boss.x + shot.x, this.boss.y + shot.y, shot.vector);
 		this.game.playSound('boss_shot_small');
 
 		this.shot_index++;

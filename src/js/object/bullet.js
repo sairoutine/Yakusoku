@@ -81,7 +81,7 @@ Bullet.prototype.notifyUseBomb = function() {
 	this.stage.score += 100;
 
 	// ポイントアイテムの生成
-	this.stage.item_manager.create(0, this.x, this.y); // TODO: type_id
+	this.stage.item_manager.create(Constant.ITEM_SCORE_TYPE, this.x, this.y);
 };
 
 // 当たり判定サイズ

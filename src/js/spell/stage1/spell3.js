@@ -27,8 +27,8 @@ Spell.prototype.runInSpellExecute = function() {
 	if(this.frame_count % 40 === 0) {
 		this.game.playSound('boss_shot_small');
 		for(var i = 0; i <= kankaku; i++) {
-			this.shot(0, (this.stage.width/kankaku * i), 0, vec); // type_id:
-			this.shot(0, this.stage.width, (this.stage.height/kankaku * i), vec); // type_id:
+			this.shot(Constant.BULLET_TINY_YELLOW, (this.stage.width/kankaku * i), 0, vec);
+			this.shot(Constant.BULLET_TINY_YELLOW, this.stage.width, (this.stage.height/kankaku * i), vec);
 		}
 	}
 
@@ -36,7 +36,7 @@ Spell.prototype.runInSpellExecute = function() {
 		this.game.playSound('boss_shot_big');
 		var theta = this.calcThetaAimedToChara();
 		for (var j = 0; j < 10; j++) {
-			this.shot(5, this.boss.x, this.boss.y, {r: 0.1, theta: theta + j * 360 / 10, ra: 0.05, rrange: {max: 10}}); // type_id:
+			this.shot(Constant.BULLET_BIG_ORANGE, this.boss.x, this.boss.y, {r: 0.1, theta: theta + j * 360 / 10, ra: 0.05, rrange: {max: 10}});
 		}
 	}
 };
