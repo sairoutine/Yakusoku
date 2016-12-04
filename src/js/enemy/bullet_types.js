@@ -138,4 +138,81 @@ BulletTypes[Constant.BULLET_BALL_LIMEGREEN] = {
 	'is_rotate':       false
 };
 
+BulletTypes[Constant.BULLET_BUTTERFLY_ORANGE] = {
+	'image':       'shot',
+	'indexX':           8,
+	'indexY':           4,
+	'width':           30,
+	'height':          32,
+	'collisionWidth':  16,
+	'collisionHeight': 16,
+	'is_rotate':       true
+};
+
+BulletTypes[Constant.BULLET_BUTTERFLY_AQUA] = {
+	'image':       'shot',
+	'indexX':          10,
+	'indexY':           4,
+	'width':           31,
+	'height':          32,
+	'collisionWidth':  16,
+	'collisionHeight': 16,
+	'is_rotate':       true
+};
+
+BulletTypes[Constant.BULLET_BUTTERFLY_PURPLE] = {
+	'image':       'shot',
+	'indexX':          11,
+	'indexY':           4,
+	'width':           31,
+	'height':          32,
+	'collisionWidth':  16,
+	'collisionHeight': 16,
+	'is_rotate':       true
+};
+
+BulletTypes[Constant.BULLET_BUTTERFLY_YELLOW] = {
+	'image':       'shot',
+	'indexX':          12,
+	'indexY':           4,
+	'width':           31,
+	'height':          32,
+	'collisionWidth':  16,
+	'collisionHeight': 16,
+	'is_rotate':       true
+};
+
+BulletTypes[Constant.BULLET_BUTTERFLY_BLUE] = {
+	'image':       'shot',
+	'indexX':          13,
+	'indexY':           4,
+	'width':           31,
+	'height':          32,
+	'collisionWidth':  16,
+	'collisionHeight': 16,
+	'is_rotate':       true
+};
+
+BulletTypes[Constant.BULLET_BUTTERFLY_LIMEGREEN] = {
+	'image':       'shot',
+	'indexX':          14,
+	'indexY':           4,
+	'width':           32,
+	'height':          32,
+	'collisionWidth':  16,
+	'collisionHeight': 16,
+	'is_rotate':       true
+};
+
+BulletTypes[Constant.BULLET_BUTTERFLY_RED] = {
+	'image':       'shot',
+	'indexX':          15,
+	'indexY':           4,
+	'width':           32,
+	'height':          32,
+	'collisionWidth':  16,
+	'collisionHeight': 16,
+	'is_rotate':       true
+};
+
 module.exports = BulletTypes;
