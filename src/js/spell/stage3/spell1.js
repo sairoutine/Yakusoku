@@ -8,6 +8,20 @@ var VectorBaseObject = require('../../object/vector_base');
 var Util = require('../../util');
 var Constant = require('../../constant');
 
+// 蝶の種類
+var TYPE_IDS = [
+	Constant.BULLET_BUTTERFLY_ORANGE,
+	Constant.BULLET_BUTTERFLY_AQUA,
+	Constant.BULLET_BUTTERFLY_PURPLE,
+	Constant.BULLET_BUTTERFLY_YELLOW,
+	Constant.BULLET_BUTTERFLY_BLUE,
+	Constant.BULLET_BUTTERFLY_LIMEGREEN,
+	Constant.BULLET_BUTTERFLY_RED,
+];
+
+
+
+
 var ButterFlyGenerator = function(scene) {
 	VectorBaseObject.apply(this, arguments);
 };
@@ -49,7 +63,7 @@ ButterFlyGenerator.prototype.run = function() {
 	BULLET_BUTTERFLY_RED:       20,
 */
 		for (var i = 0; i < 10; i++) {
-			var type_id = this._getRandomValue({max: 20, min: 14});
+			var type_id = TYPE_IDS[this._getRandomValue({max: TYPE_IDS.length, min: 0})];
 			var theta = i * 36;
 
 			var r = 20;
