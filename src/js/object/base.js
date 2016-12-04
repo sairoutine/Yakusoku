@@ -90,6 +90,12 @@ ObjectBase.prototype.spriteHeight = function() {
 	console.error('spriteHeight method must be overridden.');
 };
 
+// サイズの拡縮
+ObjectBase.prototype.scale = function() { return 1; };
+
+
+
+
 // フレーム処理
 ObjectBase.prototype.run = function(){
 	// 経過フレーム数更新
@@ -109,15 +115,18 @@ ObjectBase.prototype.updateDisplay = function(){
 	// オブジェクトを回転
 	ctx.rotate(this.rotate);
 
+	var width  = this.spriteWidth()  * this.scale();
+	var height = this.spriteHeight() * this.scale();
+
 	ctx.drawImage(image,
 		// スプライトの取得位置
 		this.spriteWidth()  * this.spriteX(), this.spriteHeight() * this.spriteY(),
 		// スプライトのサイズ
 		this.spriteWidth(),                   this.spriteHeight(),
 		// x, yがオブジェクトの真ん中を指定しているので、左上をx, yの始点に変更
-		-this.spriteWidth()/2, -this.spriteHeight()/2,
+		-width/2,                             -height/2,
 		// オブジェクトのゲーム上のサイズ
-		this.spriteWidth(),                   this.spriteHeight()
+		width,                                height
 	);
 	ctx.restore();
 
