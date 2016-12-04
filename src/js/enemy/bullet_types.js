@@ -69,6 +69,19 @@ BulletTypes[Constant.BULLET_TINY_BLUE] = {
 	'collisionHeight': 13,
 	'is_rotate':       true
 };
+
+BulletTypes[Constant.BULLET_TINY_AQUA] = {
+	'image':       'shot',
+	'indexX':           5,
+	'indexY':           1,
+	'width':           14,
+	'height':          20,
+	'collisionWidth':  13,
+	'collisionHeight': 13,
+	'is_rotate':       true
+};
+
+
 // 4: 文：赤いにじゅうまる弾
 BulletTypes[Constant.BULLET_DOUBLEBALL_RED] = {
 	'image':       'shot',
