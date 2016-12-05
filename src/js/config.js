@@ -63,6 +63,7 @@ var Config = {
 		enemy:     'image/enemy.png',
 
 
+		magic_circle:     'image/magic_circle.png',
 		/*
 		reimu:     'image/reimu.png',
 		shot:      'image/shot.png',
