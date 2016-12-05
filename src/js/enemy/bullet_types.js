@@ -87,7 +87,17 @@ BulletTypes[Constant.BULLET_DOUBLEBALL_RED] = {
 	'image':       'shot',
 	'indexX':           0,
 	'indexY':           4,
-	'width':           23,
+	'width':           22,
+	'height':          23,
+	'collisionWidth':  13,
+	'collisionHeight': 13,
+	'is_rotate':       false
+};
+BulletTypes[Constant.BULLET_DOUBLEBALL_PURPLE] = {
+	'image':       'shot',
+	'indexX':           4,
+	'indexY':           4,
+	'width':           22,
 	'height':          23,
 	'collisionWidth':  13,
 	'collisionHeight': 13,
@@ -104,6 +114,18 @@ BulletTypes[Constant.BULLET_BIG_ORANGE] = {
 	'collisionHeight': 48,
 	'is_rotate':       false
 };
+
+BulletTypes[Constant.BULLET_BIG_PURPLE] = {
+	'image':       'shot',
+	'indexX':           6,
+	'indexY':           1,
+	'width':           64,
+	'height':          64,
+	'collisionWidth':  48,
+	'collisionHeight': 48,
+	'is_rotate':       false
+};
+
 // 6: 文：クナイみたいな赤い弾
 BulletTypes[Constant.BULLET_KUNAI_RED] = {
 	'image':       'shot',
