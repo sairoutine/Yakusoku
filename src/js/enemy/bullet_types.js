@@ -109,12 +109,25 @@ BulletTypes[Constant.BULLET_KUNAI_RED] = {
 	'image':       'shot',
 	'indexX':           0,
 	'indexY':           7,
-	'width':           15,
+	'width':           14,
 	'height':          20,
-	'collisionWidth':  14,
+	'collisionWidth':  12,
 	'collisionHeight': 14,
 	'is_rotate':       true
 };
+
+// クナイみたいな紫弾
+BulletTypes[Constant.BULLET_KUNAI_PURPLE] = {
+	'image':       'shot',
+	'indexX':           4,
+	'indexY':           7,
+	'width':           14,
+	'height':          20,
+	'collisionWidth':  12,
+	'collisionHeight': 14,
+	'is_rotate':       true
+};
+
 // 7: 文：黄色ビーム
 BulletTypes[Constant.BULLET_BEAM_YELLOW] = {
 	'image':       'beam',
