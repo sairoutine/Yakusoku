@@ -127,6 +127,17 @@ var Scene = function(game) {
 		stage5_serif_after,
 	];
 
+	// ステージ背景
+	this.bg_images = [
+		'stage1_bg',
+		'stage2_bg',
+		'stage3_bg',
+		'stage4_bg',
+		'stage5_bg',
+	];
+
+
+
 	this.score = 0; // スコア
 	this.state = null; // ステージの現在の状態
 	this.stage = 0; // 現在のステージ
@@ -185,7 +196,10 @@ Scene.prototype.currentStageBoss = function() {
 	return this.bosses[this.stage];
 };
 
-
+// 現在のステージ背景画像
+Scene.prototype.currentStageBackGround = function() {
+	return this.bg_images[this.stage];
+};
 
 // 次のステージへ
 Scene.prototype.goNextStage = function(){
@@ -347,23 +361,23 @@ Scene.prototype._showBG = function() {
 	ctx.save();
 
 	// 2枚つなげてスクロールさせる
-	var stage1_bg = this.game.getImage('stage1_bg');
-	this.game.surface.drawImage(stage1_bg,
+	var stage_bg = this.game.getImage(this.currentStageBackGround());
+	this.game.surface.drawImage(stage_bg,
 		0,
 		0,
-		stage1_bg.width,
-		stage1_bg.height,
+		stage_bg.width,
+		stage_bg.height,
 		x,
 		y,
 		this.game.width - SIDE_WIDTH,
 		this.game.height
 	);
 
-	this.game.surface.drawImage(stage1_bg,
+	this.game.surface.drawImage(stage_bg,
 		0,
 		0,
-		stage1_bg.width,
-		stage1_bg.height,
+		stage_bg.width,
+		stage_bg.height,
 		x,
 		y - this.game.height,
 		this.game.width - SIDE_WIDTH,
