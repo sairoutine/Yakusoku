@@ -6,7 +6,9 @@
 var BaseObject = require('./base');
 var Util = require('../../util');
 
-var Spell1 = require('../../spell/stage1/spell1');
+var Spell1 = require('../../spell/stage3/spell1');
+var Spell2 = require('../../spell/stage3/spell2');
+var Spell3 = require('../../spell/stage3/spell3');
 
 // constructor
 var Yuuka = function(stage) {
@@ -15,6 +17,8 @@ var Yuuka = function(stage) {
 
 	this.setSpells([
 		new Spell1(this),
+		new Spell2(this),
+		new Spell3(this),
 	]);
 };
 
