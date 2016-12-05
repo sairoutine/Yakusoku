@@ -205,6 +205,11 @@ BossBase.prototype.setMoveTo = function(x, y, frame_count){
 	else {
 		this.to_speed = DEFAULT_SPEED;
 	}
+
+	// 既に指定のx,y座標に居たら、移動設定を解除
+	if(this.isArrivedAtPoint()) {
+		this.clearMoveTo();
+	}
 };
 // 指定の座標に移動しているのを解除
 BossBase.prototype.clearMoveTo = function(){
@@ -233,14 +238,22 @@ BossBase.prototype._moveTo = function(){
 		this.animateLeft();
 	}
 
-	if( this.to_x + 1 > this.x && this.x > this.to_x - 1 &&
-		this.to_y + 1 > this.y && this.y > this.to_y - 1) {
+	// 目的地に到達したかどうか
+	if(this.isArrivedAtPoint()) {
 		this.clearMoveTo();
 		this.animateNeutral();
 	}
 };
 
+// 目的地に到達したかどうか
+BossBase.prototype.isArrivedAtPoint = function(){
+	if( this.to_x + 1 > this.x && this.x > this.to_x - 1 &&
+		this.to_y + 1 > this.y && this.y > this.to_y - 1) {
+		return true;
+	}
 
+	return false;
+};
 
 // ボスを描画
 BossBase.prototype.updateDisplay = function(){
