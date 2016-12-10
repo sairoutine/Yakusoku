@@ -89,7 +89,9 @@ Enemy.prototype.shot = function(){
 		for( var i = 0, len = bullet_params.length; i < len; i++) {
 			var param = bullet_params[i];
 
-			this.stage.bullet_manager.create(Constant.BULLET_BALL_BLUE, this.x, this.y, param.vector);
+			var type_id = param.type === void 0 ? Constant.BULLET_BALL_BLUE : param.type;
+
+			this.stage.bullet_manager.create(type_id, this.x, this.y, param.vector);
 		}
 
 		// sound
