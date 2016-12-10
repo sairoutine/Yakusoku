@@ -85,11 +85,13 @@ Enemy.prototype.shot = function(){
 	while(this.shots[this.shot_index] && this.shots[this.shot_index].count <= this.frame_count) {
 		var bullet_params = bullet_dictionaries[ this.shots[this.shot_index].bullet ];
 
+		var type_id = this.shots[this.shot_index].type;
+
+		type_id = (type_id === void 0 ? Constant.BULLET_BALL_BLUE : type_id);
+
 		// 敵弾生成
 		for( var i = 0, len = bullet_params.length; i < len; i++) {
 			var param = bullet_params[i];
-
-			var type_id = param.type === void 0 ? Constant.BULLET_BALL_BLUE : param.type;
 
 			this.stage.bullet_manager.create(type_id, this.x, this.y, param.vector);
 		}
