@@ -5,7 +5,7 @@ var Constant = require('./constant');
 var Config = {
 	DEBUG: true,
 	//DEBUG_SCENE: Constant.STAGE_SCENE,
-	//DEBUG_STATE: Constant.BOSS_STATE,
+	//DEBUG_STATE: Constant.WAY_STATE,
 	//DEBUG_BOSS: 3,
 	//DEBUG_MUSIC_OFF: true,
 	IMAGES: {
@@ -51,7 +51,7 @@ var Config = {
 		stage1_bg: 'image/stage1_bg.png',
 		stage2_bg: 'image/stage2_bg.png',
 		stage3_bg: 'image/stage3_bg.png',
-		stage4_bg: 'image/stage1_bg.png',
+		stage4_bg: 'image/stage4_bg.png',
 		stage5_bg: 'image/stage1_bg.png',
 		character_renko:     'image/character_renko.png',
 		boss_aya:     'image/boss_aya.png',
