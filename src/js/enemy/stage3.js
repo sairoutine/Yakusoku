@@ -1,4 +1,6 @@
 'use strict';
+var Constant = require('../constant');
+
 var EnemiesParams = [ ] ;
 /*
 // テスト敵
@@ -29,8 +31,12 @@ for( var i = 0; i < 6 ; i++ ) {
 		'x': 50 + i * 20,
 		'y': 0,
 		'vital': 1,
+		'type': Constant.ENEMY_GREEN_NEUTRAL_TYPE,
 		'powerItem': i % 2 === 0 ? 1 : 0,
 		'scoreItem': i % 2 === 1 ? 1 : 0,
+		'shot': [
+			{ 'bullet': 3, 'count': 40+(i%2)*20 },
+		],
 		'vector': [
 			{ 'count':   0,  'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':    0 } },
 			{ 'count':  50,  'vector': { 'r': 2,               'w':    0, 'ra': 0, 'wa': 0.01, 'trange': { 'max': 135 }, 'wrange': { 'max': 0.5 } } },

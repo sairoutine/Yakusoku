@@ -1,4 +1,5 @@
 'use strict';
+var Constant = require('../constant');
 var EnemiesParams = [ ] ;
 var __randomizer = 
 	{
