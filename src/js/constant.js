@@ -65,6 +65,11 @@ var Constant = {
 
 	ITEM_POWER_TYPE: 0,
 	ITEM_SCORE_TYPE:  1,
+
+	ENEMY_PURPLE_NEUTRAL_TYPE: 1,
+	ENEMY_RED_NEUTRAL_TYPE:    2,
+	ENEMY_BLUE_NEUTRAL_TYPE:   3,
+	ENEMY_GREEN_NEUTRAL_TYPE:  4,
 };
 
 module.exports = Constant;
