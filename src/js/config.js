@@ -52,7 +52,7 @@ var Config = {
 		stage2_bg: 'image/stage2_bg.png',
 		stage3_bg: 'image/stage3_bg.png',
 		stage4_bg: 'image/stage4_bg.png',
-		stage5_bg: 'image/stage1_bg.png',
+		stage5_bg: 'image/stage5_bg.png',
 		character_renko:     'image/character_renko.png',
 		boss_aya:     'image/boss_aya.png',
 		shot:      'image/shot.png',
