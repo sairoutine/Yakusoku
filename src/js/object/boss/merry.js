@@ -31,7 +31,7 @@ Merry.prototype.spriteX = function() { return this.indexX; };
 Merry.prototype.spriteY = function() { return this.indexY; };
 
 // スプライト画像
-Merry.prototype.spriteImage = function() { return 'boss_aya'; };
+Merry.prototype.spriteImage = function() { return 'boss_merry'; };
 
 // スプライトのサイズ
 Merry.prototype.spriteWidth  = function() { return 128; };

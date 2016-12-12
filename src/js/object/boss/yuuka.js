@@ -35,7 +35,7 @@ Yuuka.prototype.spriteX = function() { return this.indexX; };
 Yuuka.prototype.spriteY = function() { return this.indexY; };
 
 // スプライト画像
-Yuuka.prototype.spriteImage = function() { return 'boss_aya'; };
+Yuuka.prototype.spriteImage = function() { return 'boss_yuuka'; };
 
 // スプライトのサイズ
 Yuuka.prototype.spriteWidth  = function() { return 128; };

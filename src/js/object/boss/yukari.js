@@ -35,7 +35,7 @@ Yukari.prototype.spriteX = function() { return this.indexX; };
 Yukari.prototype.spriteY = function() { return this.indexY; };
 
 // スプライト画像
-Yukari.prototype.spriteImage = function() { return 'boss_aya'; };
+Yukari.prototype.spriteImage = function() { return 'boss_yukari'; };
 
 // スプライトのサイズ
 Yukari.prototype.spriteWidth  = function() { return 128; };

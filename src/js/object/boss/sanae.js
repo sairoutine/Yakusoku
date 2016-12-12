@@ -37,7 +37,7 @@ Sanae.prototype.spriteX = function() { return this.indexX; };
 Sanae.prototype.spriteY = function() { return this.indexY; };
 
 // スプライト画像
-Sanae.prototype.spriteImage = function() { return 'boss_aya'; };
+Sanae.prototype.spriteImage = function() { return 'boss_sanae'; };
 
 // スプライトのサイズ
 Sanae.prototype.spriteWidth  = function() { return 128; };
