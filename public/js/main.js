@@ -53,9 +53,13 @@ var Config = {
 		stage2_bg: 'image/stage2_bg.png',
 		stage3_bg: 'image/stage3_bg.png',
 		stage4_bg: 'image/stage4_bg.png',
-		stage5_bg: 'image/stage1_bg.png',
-		character_renko:     'image/character_renko.png',
-		boss_aya:     'image/boss_aya.png',
+		stage5_bg: 'image/stage5_bg.png',
+		character_renko: 'image/character_renko.png',
+		boss_aya:        'image/boss_aya.png',
+		boss_sanae:      'image/boss_sanae.png',
+		boss_yuuka:      'image/boss_yuuka.png',
+		boss_yukari:     'image/boss_yukari.png',
+		boss_merry:      'image/boss_merry.png',
 		shot:      'image/shot.png',
 		shot2:      'image/shot2.png',
 		beam:      'image/beam.png',
@@ -331,7 +335,7 @@ var cjs = window.createjs;
 
 module.exports = cjs;
 
-},{"easeljs":84,"movieclipjs":85,"preloadjs":86,"tweenjs":87}],4:[function(require,module,exports){
+},{"easeljs":87,"movieclipjs":88,"preloadjs":89,"tweenjs":90}],4:[function(require,module,exports){
 'use strict';
 var createjs = require("../createjs");
 var images = require("../image_store");
@@ -1403,6 +1407,16 @@ for(i = 0; i < 8; i++) {
 		}
 	);
 }
+
+BulletDictionaries[7] = [];
+
+
+for(i = 0; i < 8; i++) {
+	BulletDictionaries[7].push({ vector: { r: 3, theta: 30 + i * 45,  w: 0, ra: 0, wa: 0, raa: 0 } });
+}
+
+
+
 
 module.exports = BulletDictionaries;
 
@@ -2519,8 +2533,187 @@ EnemiesParams.sort(function(a, b) {
 module.exports = EnemiesParams;
 
 },{"../constant":2}],12:[function(require,module,exports){
-arguments[4][9][0].apply(exports,arguments)
-},{"../constant":2,"dup":9}],13:[function(require,module,exports){
+'use strict';
+var Constant = require('../constant');
+
+var appear_frame = 0;
+var EnemiesParams = [ ] ;
+
+// あと 3600countくらい
+
+var appear_frame = 10;
+for( var i = 0; i < 24; i++ ) {
+	EnemiesParams.push(
+		{ 'appear_frame': appear_frame + i * 30,
+			'x': 0,
+			'y': 180,
+			'vital': 1,
+			'powerItem': i % 2 === 0 ? 1 : 0,
+			'scoreItem': i % 2 === 1 ? 1 : 0,
+			'shot': [
+				{ 'bullet': (i%2) ? 7 : 2, 'count': 40+(i%2)*20 },
+			],
+			'vector': [
+				{ 'count':   0,  'vector': { 'r': 3,  'theta': 0, 'w':    -0.5, 'ra': 0, 'wa':     0 } },
+			]
+		}
+	);
+}
+appear_frame += 720;
+
+for( var i = 0; i < 24; i++ ) {
+	EnemiesParams.push(
+		{ 'appear_frame': appear_frame + i * 30,
+			'x': 480,
+			'y': 180,
+			'vital': 1,
+			'powerItem': i % 2 === 0 ? 1 : 0,
+			'scoreItem': i % 2 === 1 ? 1 : 0,
+			'shot': [
+				{ 'bullet': (i%2) ? 7 : 2, 'count': 40+(i%2)*20 },
+			],
+			'vector': [
+				{ 'count':   0,  'vector': { 'r': 3,  'theta': 180, 'w':    0.5, 'ra': 0, 'wa':     0 } },
+			]
+		}
+	);
+}
+
+appear_frame += 720;
+
+for( var i = 0; i < 24; i++ ) {
+	EnemiesParams.push(
+		{ 'appear_frame': appear_frame + i * 30,
+			'x': 0,
+			'y': 180,
+			'vital': 1,
+			'powerItem': i % 2 === 0 ? 1 : 0,
+			'scoreItem': i % 2 === 1 ? 1 : 0,
+			'shot': [
+				{ 'bullet': (i%2) ? 7 : 2, 'count': 40+(i%2)*20 },
+			],
+			'vector': [
+				{ 'count':   0,  'vector': { 'r': 3,  'theta': 0, 'w':    -0.5, 'ra': 0, 'wa':     0 } },
+			]
+		}
+	);
+}
+
+for( var i = 0; i < 24; i++ ) {
+	EnemiesParams.push(
+		{ 'appear_frame': appear_frame + i * 30,
+			'x': 480,
+			'y': 180,
+			'vital': 1,
+			'powerItem': i % 2 === 0 ? 1 : 0,
+			'scoreItem': i % 2 === 1 ? 1 : 0,
+			'shot': [
+				{ 'bullet': (i%2) ? 7 : 2, 'count': 40+(i%2)*20 },
+			],
+			'vector': [
+				{ 'count':   0,  'vector': { 'r': 3,  'theta': 180, 'w':    0.5, 'ra': 0, 'wa':     0 } },
+			]
+		}
+	);
+}
+
+appear_frame += 1000;
+
+for( var i = 0; i < 4 ; i++ ) {
+	EnemiesParams.push({
+		'appear_frame': appear_frame + i * 20,
+		'x': 50 + i * 50,
+		'y': 0,
+		'vital': 1,
+		'powerItem': i % 4 === 0 ? 1 : 0,
+		'scoreItem': i % 4 === 2 ? 1 : 0,
+		'shot': [
+			{ 'bullet': 1, 'count': 30 - i*10 },
+			{ 'bullet': 1, 'count': 130 - i*10 },
+			{ 'bullet': 1, 'count': 230 - i*10 },
+			{ 'bullet': 1, 'count': 330 - i*10 },
+		],
+		'vector': [
+			{ 'count':   0,  'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':    0 } },
+			{ 'count':  30,  'vector': { 'r': 2,               'w':    0, 'ra': 0, 'wa': -0.01, 'trange': { 'min': -30 }, 'wrange': { 'min': -1 } } },
+		]
+	});
+	EnemiesParams.push({
+		'appear_frame': appear_frame + i * 20,
+		'x': 430 - i * 50,
+		'y': 0,
+		'vital': 1,
+		'powerItem': i % 4 === 0 ? 1 : 0,
+		'scoreItem': i % 4 === 2 ? 1 : 0,
+		'shot': [
+			{ 'bullet': 1, 'count': 30 - i*10 },
+			{ 'bullet': 1, 'count': 130 - i*10 },
+			{ 'bullet': 1, 'count': 230 - i*10 },
+			{ 'bullet': 1, 'count': 330 - i*10 },
+		],
+		'vector': [
+			{ 'count':   0,  'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
+			{ 'count':  30,  'vector': { 'r': 2,               'w':    0, 'ra': 0, 'wa': 0.01, 'trange': { 'max': 210 }, 'wrange': { 'max': 1 } } },
+		]
+	});
+}
+
+appear_frame += 10;
+
+for( var i = 0; i < 4 ; i++ ) {
+	EnemiesParams.push({
+		'appear_frame': appear_frame + i * 10,
+		'x': 25 + i * 50,
+		'y': 0,
+		'vital': 1,
+		'powerItem': i % 4 === 0 ? 1 : 0,
+		'scoreItem': i % 4 === 2 ? 1 : 0,
+		'shot': [
+			{ 'bullet': 1, 'count': 30 - i*10 },
+			{ 'bullet': 1, 'count': 130 - i*10 },
+			{ 'bullet': 1, 'count': 230 - i*10 },
+			{ 'bullet': 1, 'count': 330 - i*10 },
+		],
+		'vector': [
+			{ 'count':   0,  'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':    0 } },
+			{ 'count':  30,  'vector': { 'r': 2,               'w':    0, 'ra': 0, 'wa': -0.01, 'trange': { 'min': -30 }, 'wrange': { 'min': -1 } } },
+		]
+	});
+	EnemiesParams.push({
+		'appear_frame': appear_frame + i * 10,
+		'x': 455 - i * 50,
+		'y': 0,
+		'vital': 1,
+		'powerItem': i % 4 === 0 ? 1 : 0,
+		'scoreItem': i % 4 === 2 ? 1 : 0,
+		'shot': [
+			{ 'bullet': 1, 'count': 30 - i*10 },
+			{ 'bullet': 1, 'count': 130 - i*10 },
+			{ 'bullet': 1, 'count': 230 - i*10 },
+			{ 'bullet': 1, 'count': 330 - i*10 },
+		],
+		'vector': [
+			{ 'count':   0,  'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
+			{ 'count':  30,  'vector': { 'r': 2,               'w':    0, 'ra': 0, 'wa': 0.01, 'trange': { 'max': 210 }, 'wrange': { 'max': 1 } } },
+		]
+	});
+}
+
+appear_frame += 720;
+
+
+
+
+
+
+// 出現順にソート
+EnemiesParams.sort(function(a, b) {
+	return a.appear_frame - b.appear_frame;
+});
+
+module.exports = EnemiesParams;
+
+},{"../constant":2}],13:[function(require,module,exports){
 arguments[4][9][0].apply(exports,arguments)
 },{"../constant":2,"dup":9}],14:[function(require,module,exports){
 'use strict';
@@ -3556,7 +3749,7 @@ Aya.prototype.bgm = function() { return 'stage1'; };
 
 module.exports = Aya;
 
-},{"../../spell/stage1/spell1":70,"../../spell/stage1/spell2":71,"../../spell/stage1/spell3":72,"../../spell/stage1/spell4":73,"../../util":83,"./base":24}],24:[function(require,module,exports){
+},{"../../spell/stage1/spell1":70,"../../spell/stage1/spell2":71,"../../spell/stage1/spell3":72,"../../spell/stage1/spell4":73,"../../util":86,"./base":24}],24:[function(require,module,exports){
 'use strict';
 
 /* ボス基底クラス */
@@ -3850,7 +4043,7 @@ BossBase.prototype.bgm = function() {
 
 module.exports = BossBase;
 
-},{"../../createjs/boss_appearance":4,"../../logic/createjs":16,"../../object/shot":35,"../../util":83,"../base":22}],25:[function(require,module,exports){
+},{"../../createjs/boss_appearance":4,"../../logic/createjs":16,"../../object/shot":35,"../../util":86,"../base":22}],25:[function(require,module,exports){
 'use strict';
 
 /* ステージ5ボス マエリベリー・ハーン */
@@ -3859,7 +4052,9 @@ module.exports = BossBase;
 var BaseObject = require('./base');
 var Util = require('../../util');
 
-var Spell1 = require('../../spell/stage1/spell1');
+var Spell1 = require('../../spell/stage5/spell1');
+var Spell2 = require('../../spell/stage5/spell2');
+var Spell3 = require('../../spell/stage5/spell3');
 
 // constructor
 var Merry = function(stage) {
@@ -3868,6 +4063,8 @@ var Merry = function(stage) {
 
 	this.setSpells([
 		new Spell1(this),
+		new Spell2(this),
+		new Spell3(this),
 	]);
 };
 
@@ -3884,7 +4081,7 @@ Merry.prototype.spriteX = function() { return this.indexX; };
 Merry.prototype.spriteY = function() { return this.indexY; };
 
 // スプライト画像
-Merry.prototype.spriteImage = function() { return 'boss_aya'; };
+Merry.prototype.spriteImage = function() { return 'boss_merry'; };
 
 // スプライトのサイズ
 Merry.prototype.spriteWidth  = function() { return 128; };
@@ -3896,7 +4093,7 @@ Merry.prototype.bgm = function() { return 'stage1'; };
 module.exports = Merry;
 
 
-},{"../../spell/stage1/spell1":70,"../../util":83,"./base":24}],26:[function(require,module,exports){
+},{"../../spell/stage5/spell1":83,"../../spell/stage5/spell2":84,"../../spell/stage5/spell3":85,"../../util":86,"./base":24}],26:[function(require,module,exports){
 'use strict';
 
 /* ステージ2ボス 東風谷早苗 */
@@ -3936,7 +4133,7 @@ Sanae.prototype.spriteX = function() { return this.indexX; };
 Sanae.prototype.spriteY = function() { return this.indexY; };
 
 // スプライト画像
-Sanae.prototype.spriteImage = function() { return 'boss_aya'; };
+Sanae.prototype.spriteImage = function() { return 'boss_sanae'; };
 
 // スプライトのサイズ
 Sanae.prototype.spriteWidth  = function() { return 128; };
@@ -3947,7 +4144,7 @@ Sanae.prototype.bgm = function() { return 'stage1'; };
 
 module.exports = Sanae;
 
-},{"../../spell/stage2/spell1":74,"../../spell/stage2/spell2":75,"../../spell/stage2/spell3":76,"../../util":83,"./base":24}],27:[function(require,module,exports){
+},{"../../spell/stage2/spell1":74,"../../spell/stage2/spell2":75,"../../spell/stage2/spell3":76,"../../util":86,"./base":24}],27:[function(require,module,exports){
 'use strict';
 
 /* ステージ4ボス 八雲紫 */
@@ -3985,7 +4182,7 @@ Yukari.prototype.spriteX = function() { return this.indexX; };
 Yukari.prototype.spriteY = function() { return this.indexY; };
 
 // スプライト画像
-Yukari.prototype.spriteImage = function() { return 'boss_aya'; };
+Yukari.prototype.spriteImage = function() { return 'boss_yukari'; };
 
 // スプライトのサイズ
 Yukari.prototype.spriteWidth  = function() { return 128; };
@@ -3996,7 +4193,7 @@ Yukari.prototype.bgm = function() { return 'stage1'; };
 
 module.exports = Yukari;
 
-},{"../../spell/stage4/spell1":80,"../../spell/stage4/spell2":81,"../../spell/stage4/spell3":82,"../../util":83,"./base":24}],28:[function(require,module,exports){
+},{"../../spell/stage4/spell1":80,"../../spell/stage4/spell2":81,"../../spell/stage4/spell3":82,"../../util":86,"./base":24}],28:[function(require,module,exports){
 'use strict';
 
 /* ステージ3ボス 風見幽香 */
@@ -4034,7 +4231,7 @@ Yuuka.prototype.spriteX = function() { return this.indexX; };
 Yuuka.prototype.spriteY = function() { return this.indexY; };
 
 // スプライト画像
-Yuuka.prototype.spriteImage = function() { return 'boss_aya'; };
+Yuuka.prototype.spriteImage = function() { return 'boss_yuuka'; };
 
 // スプライトのサイズ
 Yuuka.prototype.spriteWidth  = function() { return 128; };
@@ -4045,7 +4242,7 @@ Yuuka.prototype.bgm = function() { return 'stage1'; };
 
 module.exports = Yuuka;
 
-},{"../../spell/stage3/spell1":77,"../../spell/stage3/spell2":78,"../../spell/stage3/spell3":79,"../../util":83,"./base":24}],29:[function(require,module,exports){
+},{"../../spell/stage3/spell1":77,"../../spell/stage3/spell2":78,"../../spell/stage3/spell3":79,"../../util":86,"./base":24}],29:[function(require,module,exports){
 'use strict';
 
 /* 敵弾オブジェクト */
@@ -4153,7 +4350,7 @@ Bullet.prototype.spriteHeight = function() { return this.height; };
 
 module.exports = Bullet;
 
-},{"../constant":2,"../enemy/bullet_types":8,"../util":83,"./vector_base":36}],30:[function(require,module,exports){
+},{"../constant":2,"../enemy/bullet_types":8,"../util":86,"./vector_base":36}],30:[function(require,module,exports){
 'use strict';
 
 /* 自機 */
@@ -4552,7 +4749,7 @@ Character.prototype.spriteHeight = function() { return 48; };
 
 module.exports = Character;
 
-},{"../constant":2,"../logic/manager":19,"../spell/renko/spell1":69,"../util":83,"./base":22,"./boss/aya":23,"./bullet":29,"./enemy":32,"./option":34}],31:[function(require,module,exports){
+},{"../constant":2,"../logic/manager":19,"../spell/renko/spell1":69,"../util":86,"./base":22,"./boss/aya":23,"./bullet":29,"./enemy":32,"./option":34}],31:[function(require,module,exports){
 'use strict';
 
 /* エフェクトオブジェクト */
@@ -4621,7 +4818,7 @@ Effect.prototype.updateDisplay = function() {
 
 module.exports = Effect;
 
-},{"../constant":2,"../util":83,"./base":22}],32:[function(require,module,exports){
+},{"../constant":2,"../util":86,"./base":22}],32:[function(require,module,exports){
 'use strict';
 
 /* 敵オブジェクト */
@@ -4781,7 +4978,7 @@ Enemy.prototype.spriteHeight = function() { return 32; };
 
 module.exports = Enemy;
 
-},{"../constant":2,"../enemy/bullet_dictionaries":7,"../object/shot":35,"../util":83,"./vector_base":36}],33:[function(require,module,exports){
+},{"../constant":2,"../enemy/bullet_dictionaries":7,"../object/shot":35,"../util":86,"./vector_base":36}],33:[function(require,module,exports){
 'use strict';
 
 /* アイテムオブジェクト */
@@ -4904,7 +5101,7 @@ Item.prototype.spriteHeight = function() { return 17; };
 
 module.exports = Item;
 
-},{"../constant":2,"../util":83,"./vector_base":36}],34:[function(require,module,exports){
+},{"../constant":2,"../util":86,"./vector_base":36}],34:[function(require,module,exports){
 'use strict';
 
 /* 自機オプションオブジェクト */
@@ -4970,7 +5167,7 @@ Option.prototype.spriteHeight = function() { return 20; };
 
 module.exports = Option;
 
-},{"../constant":2,"../util":83,"./base":22}],35:[function(require,module,exports){
+},{"../constant":2,"../util":86,"./base":22}],35:[function(require,module,exports){
 'use strict';
 
 /* 自機弾オブジェクト */
@@ -5074,7 +5271,7 @@ Shot.prototype.notifyCollision = function(obj) {
 
 module.exports = Shot;
 
-},{"../constant":2,"../shot_types":66,"../util":83,"./vector_base":36}],36:[function(require,module,exports){
+},{"../constant":2,"../shot_types":66,"../util":86,"./vector_base":36}],36:[function(require,module,exports){
 'use strict';
 
 /* ベクトルを使って動くオブジェクトの基底クラス */
@@ -5257,7 +5454,7 @@ VectorBase.prototype.calc_moveY = function() {
 
 module.exports = VectorBase;
 
-},{"../constant":2,"../util":83,"./base":22}],37:[function(require,module,exports){
+},{"../constant":2,"../util":86,"./base":22}],37:[function(require,module,exports){
 'use strict';
 
 /* シーンの基底クラス */
@@ -5351,7 +5548,7 @@ Scene.prototype.updateDisplay = function(){
 
 module.exports = Scene;
 
-},{"../config":1,"../constant":2,"../createjs/ending":5,"../logic/createjs":16,"../util":83,"./base":37}],39:[function(require,module,exports){
+},{"../config":1,"../constant":2,"../createjs/ending":5,"../logic/createjs":16,"../util":86,"./base":37}],39:[function(require,module,exports){
 'use strict';
 
 /* エピローグ画面1 */
@@ -5403,7 +5600,7 @@ Scene.prototype.updateDisplay = function(){
 
 module.exports = Scene;
 
-},{"../config":1,"../constant":2,"../createjs/epilogue":6,"../logic/createjs":16,"../util":83,"./base":37}],40:[function(require,module,exports){
+},{"../config":1,"../constant":2,"../createjs/epilogue":6,"../logic/createjs":16,"../util":86,"./base":37}],40:[function(require,module,exports){
 'use strict';
 var cjs = require("../createjs");
 var images = require("../image_store");
@@ -5574,7 +5771,7 @@ LoadingScene.prototype._loadBGM = function(url, successCallback) {
 };
 module.exports = LoadingScene;
 
-},{"../config":1,"../createjs":3,"../image_store":15,"../util":83,"./base":37}],41:[function(require,module,exports){
+},{"../config":1,"../createjs":3,"../image_store":15,"../util":86,"./base":37}],41:[function(require,module,exports){
 'use strict';
 
 /* プロローグ画面1 */
@@ -5711,7 +5908,7 @@ Scene.prototype._showMessage = function(){
 
 module.exports = Scene;
 
-},{"../config":1,"../constant":2,"../serif/prologue1":54,"../util":83,"./base":37}],42:[function(require,module,exports){
+},{"../config":1,"../constant":2,"../serif/prologue1":54,"../util":86,"./base":37}],42:[function(require,module,exports){
 'use strict';
 
 /* プロローグ画面2 */
@@ -5952,7 +6149,7 @@ Scene.prototype._showMessage = function() {
 
 module.exports = Scene;
 
-},{"../config":1,"../constant":2,"../logic/serif":20,"../serif/prologue2":55,"../util":83,"./base":37}],43:[function(require,module,exports){
+},{"../config":1,"../constant":2,"../logic/serif":20,"../serif/prologue2":55,"../util":86,"./base":37}],43:[function(require,module,exports){
 'use strict';
 
 /* ステージ画面 */
@@ -6389,7 +6586,7 @@ Scene.prototype.notifyClearEnd = function() {
 
 module.exports = Scene;
 
-},{"../config":1,"../constant":2,"../enemy/stage1":9,"../enemy/stage2":10,"../enemy/stage3":11,"../enemy/stage4":12,"../enemy/stage5":13,"../logic/manager":19,"../object/boss/aya":23,"../object/boss/merry":25,"../object/boss/sanae":26,"../object/boss/yukari":27,"../object/boss/yuuka":28,"../object/bullet":29,"../object/character":30,"../object/effect":31,"../object/enemy":32,"../object/item":33,"../object/shot":35,"../serif/stage1/after":56,"../serif/stage1/before":57,"../serif/stage2/after":58,"../serif/stage2/before":59,"../serif/stage3/after":60,"../serif/stage3/before":61,"../serif/stage4/after":62,"../serif/stage4/before":63,"../serif/stage5/after":64,"../serif/stage5/before":65,"../util":83,"./base":37,"./stage/state/boss":45,"./stage/state/result_clear":47,"./stage/state/result_gameover":48,"./stage/state/talk_after":49,"./stage/state/talk_before":51,"./stage/state/way":52}],44:[function(require,module,exports){
+},{"../config":1,"../constant":2,"../enemy/stage1":9,"../enemy/stage2":10,"../enemy/stage3":11,"../enemy/stage4":12,"../enemy/stage5":13,"../logic/manager":19,"../object/boss/aya":23,"../object/boss/merry":25,"../object/boss/sanae":26,"../object/boss/yukari":27,"../object/boss/yuuka":28,"../object/bullet":29,"../object/character":30,"../object/effect":31,"../object/enemy":32,"../object/item":33,"../object/shot":35,"../serif/stage1/after":56,"../serif/stage1/before":57,"../serif/stage2/after":58,"../serif/stage2/before":59,"../serif/stage3/after":60,"../serif/stage3/before":61,"../serif/stage4/after":62,"../serif/stage4/before":63,"../serif/stage5/after":64,"../serif/stage5/before":65,"../util":86,"./base":37,"./stage/state/boss":45,"./stage/state/result_clear":47,"./stage/state/result_gameover":48,"./stage/state/talk_after":49,"./stage/state/talk_before":51,"./stage/state/way":52}],44:[function(require,module,exports){
 'use strict';
 
 /* ステージ状態の基底クラス */
@@ -6560,7 +6757,7 @@ State.prototype._showVital = function(){
 
 module.exports = State;
 
-},{"../../../config":1,"../../../constant":2,"../../../util":83,"./base":44}],46:[function(require,module,exports){
+},{"../../../config":1,"../../../constant":2,"../../../util":86,"./base":44}],46:[function(require,module,exports){
 'use strict';
 
 /* 結果画面基底クラス */
@@ -6685,7 +6882,7 @@ State.prototype.notifyResultEnd = function(){
 
 module.exports = State;
 
-},{"../../../config":1,"../../../constant":2,"../../../util":83,"./base":44}],47:[function(require,module,exports){
+},{"../../../config":1,"../../../constant":2,"../../../util":86,"./base":44}],47:[function(require,module,exports){
 'use strict';
 
 // クリア リザルト
@@ -6704,7 +6901,7 @@ ResultState.prototype.notifyResultEnd = function () {
 };
 module.exports = ResultState;
 
-},{"../../../util":83,"./result_base":46}],48:[function(require,module,exports){
+},{"../../../util":86,"./result_base":46}],48:[function(require,module,exports){
 'use strict';
 
 // ゲームオーバー リザルト
@@ -6723,7 +6920,7 @@ ResultState.prototype.notifyResultEnd = function () {
 };
 module.exports = ResultState;
 
-},{"../../../util":83,"./result_base":46}],49:[function(require,module,exports){
+},{"../../../util":86,"./result_base":46}],49:[function(require,module,exports){
 'use strict';
 
 // ボス戦後のセリフ
@@ -6749,7 +6946,7 @@ TalkState.prototype.notifyTalkEnd = function () {
 
 module.exports = TalkState;
 
-},{"../../../util":83,"./talk_base":50}],50:[function(require,module,exports){
+},{"../../../util":86,"./talk_base":50}],50:[function(require,module,exports){
 'use strict';
 
 var BaseState = require('./base');
@@ -6959,7 +7156,7 @@ State.prototype.notifyTalkEnd = function () {
 
 module.exports = State;
 
-},{"../../../config":1,"../../../constant":2,"../../../logic/serif":20,"../../../util":83,"./base":44}],51:[function(require,module,exports){
+},{"../../../config":1,"../../../constant":2,"../../../logic/serif":20,"../../../util":86,"./base":44}],51:[function(require,module,exports){
 'use strict';
 
 // ボス戦前のセリフ
@@ -6984,7 +7181,7 @@ TalkState.prototype.notifyTalkEnd = function () {
 
 module.exports = TalkState;
 
-},{"../../../util":83,"./talk_base":50}],52:[function(require,module,exports){
+},{"../../../util":86,"./talk_base":50}],52:[function(require,module,exports){
 'use strict';
 
 // 敵生成終了から次のシーンまでの間隔
@@ -7108,7 +7305,7 @@ State.prototype.updateDisplay = function(){
 
 module.exports = State;
 
-},{"../../../config":1,"../../../constant":2,"../../../logic/enemy_appear":17,"../../../util":83,"./base":44}],53:[function(require,module,exports){
+},{"../../../config":1,"../../../constant":2,"../../../logic/enemy_appear":17,"../../../util":86,"./base":44}],53:[function(require,module,exports){
 'use strict';
 
 /* タイトル画面 */
@@ -7200,7 +7397,7 @@ OpeningScene.prototype.updateDisplay = function(){
 
 module.exports = OpeningScene;
 
-},{"../config":1,"../constant":2,"../util":83,"./base":37}],54:[function(require,module,exports){
+},{"../config":1,"../constant":2,"../util":86,"./base":37}],54:[function(require,module,exports){
 'use strict';
 
 var Serif = [
@@ -7542,7 +7739,7 @@ SpellBase.prototype.initY = function( ) {
 
 module.exports = SpellBase;
 
-},{"../config":1,"../constant":2,"../util":83}],68:[function(require,module,exports){
+},{"../config":1,"../constant":2,"../util":86}],68:[function(require,module,exports){
 'use strict';
 
 /* パラメータ指定で作るスペルカード基底クラス */
@@ -7705,7 +7902,7 @@ BaseParamSpell.prototype.bulletDictionary = function( ) {
 
 module.exports = BaseParamSpell;
 
-},{"../util":83,"./base":67}],69:[function(require,module,exports){
+},{"../util":86,"./base":67}],69:[function(require,module,exports){
 'use strict';
 
 /* 自機スペルカード */
@@ -7751,7 +7948,7 @@ Spell.prototype.charaImage = function() { return "renko_normal"; };
 
 module.exports = Spell;
 
-},{"../../constant":2,"../../util":83,"../base":67}],70:[function(require,module,exports){
+},{"../../constant":2,"../../util":86,"../base":67}],70:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -7847,7 +8044,7 @@ Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 module.exports = Spell;
 
-},{"../../constant":2,"../../util":83,"../base":67}],71:[function(require,module,exports){
+},{"../../constant":2,"../../util":86,"../base":67}],71:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -7895,7 +8092,7 @@ Spell.prototype._getRandomValue = function( range ) {
 
 module.exports = Spell;
 
-},{"../../constant":2,"../../util":83,"../base":67}],72:[function(require,module,exports){
+},{"../../constant":2,"../../util":86,"../base":67}],72:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -7944,7 +8141,7 @@ Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 module.exports = Spell;
 
-},{"../../constant":2,"../../util":83,"../base":67}],73:[function(require,module,exports){
+},{"../../constant":2,"../../util":86,"../base":67}],73:[function(require,module,exports){
 'use strict';
 
 /* TODO:
@@ -8019,7 +8216,7 @@ Spell.prototype._getRandomValue = function( range ) {
 
 module.exports = Spell;
 
-},{"../../constant":2,"../../util":83,"../base":67}],74:[function(require,module,exports){
+},{"../../constant":2,"../../util":86,"../base":67}],74:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -8107,7 +8304,7 @@ Spell.prototype.bulletDictionary = function( ) {
 
 module.exports = Spell;
 
-},{"../../constant":2,"../../util":83,"../param_base":68}],75:[function(require,module,exports){
+},{"../../constant":2,"../../util":86,"../param_base":68}],75:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -8127,7 +8324,6 @@ Spell.prototype.init = function() {
 };
 
 Spell.prototype.runInSpellExecute = function() {
-	this.boss.is_show = false;
 	var count = this.frameCountStartedBySpellExec();
 
 	var x = 240;
@@ -8193,7 +8389,7 @@ Spell.prototype.initY = function( ) { return 100; };
 
 module.exports = Spell;
 
-},{"../../constant":2,"../../util":83,"../base":67}],76:[function(require,module,exports){
+},{"../../constant":2,"../../util":86,"../base":67}],76:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -8284,7 +8480,7 @@ var spell5_1 = function( ) {
 
 module.exports = Spell;
 
-},{"../../constant":2,"../../util":83,"../param_base":68}],77:[function(require,module,exports){
+},{"../../constant":2,"../../util":86,"../param_base":68}],77:[function(require,module,exports){
 'use strict';
 
 
@@ -8413,7 +8609,6 @@ Spell.prototype.init = function() {
 
 Spell.prototype.runInSpellExecute = function() {
 	if(!this.is_init) {
-		this.boss.is_show = false;
 		this.is_init = true;
 
 
@@ -8428,7 +8623,6 @@ Spell.prototype.runInSpellExecute = function() {
 	this.generator_manager.run();
 
 	if(this.boss.vital < 10) {
-		this.boss.is_show = true;
 		this.generator_manager.removeAll();
 	}
 };
@@ -8448,7 +8642,7 @@ Spell.prototype.initY = function() { return 100; };
 
 module.exports = Spell;
 
-},{"../../constant":2,"../../logic/manager":19,"../../object/vector_base":36,"../../util":83,"../base":67}],78:[function(require,module,exports){
+},{"../../constant":2,"../../logic/manager":19,"../../object/vector_base":36,"../../util":86,"../base":67}],78:[function(require,module,exports){
 'use strict';
 
 /* 幽香 ビーム */
@@ -8593,7 +8787,6 @@ Spell.prototype.init = function() {
 
 
 Spell.prototype.runInSpellExecute = function() {
-	this.boss.is_show = false;
 
 	if (this.frame_count % 300 === 0) {
 		var move = this.moveTo[this.moveIndex];
@@ -8618,9 +8811,6 @@ Spell.prototype.runInSpellExecute = function() {
 	}
 
 
-	if(this.boss.vital < 10) {
-		this.boss.is_show = true;
-	}
 };
 
 Spell.prototype.updateDisplayInSpellExecute = function () {
@@ -8647,7 +8837,7 @@ Spell.prototype._getRandomValue = function( range ) {
 
 module.exports = Spell;
 
-},{"../../constant":2,"../../object/base":22,"../../util":83,"../base":67}],79:[function(require,module,exports){
+},{"../../constant":2,"../../object/base":22,"../../util":86,"../base":67}],79:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -8751,7 +8941,7 @@ Spell.prototype._getRandomValue = function( range ) {
 
 module.exports = Spell;
 
-},{"../../constant":2,"../../util":83,"../base":67}],80:[function(require,module,exports){
+},{"../../constant":2,"../../util":86,"../base":67}],80:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -8833,7 +9023,7 @@ Spell.prototype.initY = function() { return 100; };
 
 module.exports = Spell;
 
-},{"../../constant":2,"../../util":83,"../base":67}],81:[function(require,module,exports){
+},{"../../constant":2,"../../util":86,"../base":67}],81:[function(require,module,exports){
 'use strict';
 
 /* 幽香 蝶を生成するオブジェクト */
@@ -8941,7 +9131,6 @@ Spell.prototype.init = function() {
 
 Spell.prototype.runInSpellExecute = function() {
 	if(!this.is_init) {
-		this.boss.is_show = false;
 		this.is_init = true;
 
 
@@ -8987,7 +9176,7 @@ Spell.prototype.initY = function() { return 240; };
 
 module.exports = Spell;
 
-},{"../../constant":2,"../../logic/manager":19,"../../object/vector_base":36,"../../util":83,"../base":67}],82:[function(require,module,exports){
+},{"../../constant":2,"../../logic/manager":19,"../../object/vector_base":36,"../../util":86,"../base":67}],82:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -9072,7 +9261,286 @@ Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 module.exports = Spell;
 
-},{"../../constant":2,"../../util":83,"../base":67}],83:[function(require,module,exports){
+},{"../../constant":2,"../../util":86,"../base":67}],83:[function(require,module,exports){
+'use strict';
+
+/* スペルカード */
+var BaseSpell = require('../base');
+var Util = require('../../util');
+var Constant = require('../../constant');
+
+var Spell = function(boss) {
+	BaseSpell.apply(this, arguments);
+};
+Util.inherit(Spell, BaseSpell);
+
+// 初期化
+Spell.prototype.init = function() {
+	BaseSpell.prototype.init.apply(this, arguments);
+
+	this.moveIndex = 0;
+	this.moveTo = [
+		{x: 200, y: 100},
+		{x: 300, y: 100},
+		{x: 400, y: 100},
+		{x: 300, y: 100},
+		{x: 200, y: 100},
+		{x: 100, y: 100},
+	];
+
+	this.shotCount = 0;
+};
+
+
+Spell.prototype.runInSpellExecute = function() {
+
+	if (!this.boss.isMoving() && this.shotCount >= 3) {
+		var move = this.moveTo[this.moveIndex];
+		this.boss.setMoveTo(move.x, move.y);
+
+		this.moveIndex++;
+
+		if(this.moveIndex > 5) {
+			this.moveIndex = 0;
+		}
+
+		this.shotCount = 0;
+	}
+
+	if(!this.boss.isMoving()) {
+		if(this.frame_count % 50 === 0){
+			this.shotCount++;
+
+			var r = 50;
+			var aimed_theta = this.calcThetaAimedToChara();
+
+			/* 交差 */
+			for (var i = 0; i < 20; i++) {
+				var theta = i * 18 + aimed_theta;
+
+				var type_id = Constant.BULLET_TINY_RED;
+				for (var j = 0; j < 10; j++) {
+					var r = 20 * 0.5*j;
+					var offset_x = r * Math.cos( Util.thetaToRadian( theta ) );
+					var offset_y = r * Math.sin( Util.thetaToRadian( theta ) );
+					theta += (i%2===0 ? -90 : 90);
+
+					this.shot(type_id, this.boss.x + offset_x, this.boss.y + offset_y, [
+						{ count: 0 , vector: {r: 0.5*j, theta: theta, ra: 0.05} },
+					]);
+				}
+			}
+		}
+	}
+};
+
+Spell.prototype.name = function() { return "風符「天狗風」"; };
+Spell.prototype.charaImage = function() { return "aya_normal"; };
+
+Spell.prototype.initX = function() { return 100; };
+Spell.prototype.initY = function() { return 100; };
+
+Spell.prototype._getRandomValue = function( range ) {
+  var differ = range.max - range.min ;
+  return ((Math.random() * differ) | 0) + range.min ;
+} ;
+
+// 初期 x, y 座標
+
+module.exports = Spell;
+
+},{"../../constant":2,"../../util":86,"../base":67}],84:[function(require,module,exports){
+'use strict';
+
+/* スペルカード */
+var BaseSpell = require('../base');
+var Util = require('../../util');
+var Constant = require('../../constant');
+
+var Spell = function(boss) {
+	BaseSpell.apply(this, arguments);
+	this.shot_thetas1 = [0, 60, 120, 180, 240, 300];
+	this.shot_thetas2 = [0, 60, 120, 180, 240, 300];
+	this.maru_shot_theta = 0;
+
+	// config
+	this.add_shot_theta = 10;
+	this.r = 1.5;
+	this.uzumaki_percount = 15;
+	this.maru_percount    = 75;
+	this.maru_shot_pertheta = 12;
+
+};
+Util.inherit(Spell, BaseSpell);
+
+// 初期化
+Spell.prototype.init = function() {
+	BaseSpell.prototype.init.apply(this, arguments);
+
+	// まずは中央に移動
+	this.boss.setMoveTo(this.stage.width / 2, this.stage.height / 2);
+};
+
+Spell.prototype.runInSpellExecute = function() {
+	if(this.boss.isMoving()) return;
+
+	// 渦巻き弾
+	if(this.frame_count % this.uzumaki_percount === 0) {
+		this.uzumaki_shot1();
+		this.uzumaki_shot2();
+		this.game.playSound('boss_shot_small');
+	}
+
+	// 円形弾
+	if(this.frame_count % this.maru_percount === 0) {
+		// 自機狙い
+		this.aimedToChara();
+		for (var i=0; i< 360 / this.maru_shot_pertheta; i++) {
+			this.maru_shot();
+			this.maru_shot_theta += this.maru_shot_pertheta;
+		}
+		this.game.playSound('boss_shot_big');
+	}
+
+};
+
+Spell.prototype.uzumaki_shot1 = function() {
+	var x = this.boss.x;
+	var y = this.boss.y;
+	var r = this.r;
+
+	for(var i = 0; i < this.shot_thetas1.length; i++ ) {
+		var theta = this.shot_thetas1[i];
+
+		this.shot(Constant.BULLET_TINY_YELLOW, x, y, {r: r, theta: theta});
+		this.shot_thetas1[i] += this.add_shot_theta;
+	}
+};
+Spell.prototype.uzumaki_shot2 = function() {
+	var x = this.boss.x;
+	var y = this.boss.y;
+	var r = this.r;
+
+	for(var i = 0; i < this.shot_thetas2.length; i++ ) {
+		var theta = this.shot_thetas2[i];
+
+		this.shot(Constant.BULLET_TINY_YELLOW, x, y, {r: r, theta: theta});
+		this.shot_thetas2[i] -= this.add_shot_theta;
+	}
+};
+Spell.prototype.maru_shot = function() {
+	var x = this.boss.x;
+	var y = this.boss.y;
+	var theta = this.maru_shot_theta;
+	var r = this.r;
+
+	this.shot(Constant.BULLET_DOUBLEBALL_RED, x, y, {r: r, theta: theta});
+};
+
+// 自機狙いにする
+Spell.prototype.aimedToChara = function() {
+	// 自機
+	var character = this.stage.character;
+
+	var ax = character.x - this.boss.x;
+	var ay = character.y - this.boss.y;
+
+	this.maru_shot_theta = Util.radianToTheta(Math.atan2(ay, ax));
+};
+
+Spell.prototype.name = function() { return "風符「天狗風」"; };
+
+Spell.prototype.charaImage = function() { return "aya_normal"; };
+
+module.exports = Spell;
+
+},{"../../constant":2,"../../util":86,"../base":67}],85:[function(require,module,exports){
+'use strict';
+
+/* スペルカード */
+var BaseSpell = require('../param_base');
+var Util = require('../../util');
+var Constant = require('../../constant');
+
+
+var Spell = function(boss) {
+	BaseSpell.apply(this, arguments);
+};
+Util.inherit(Spell, BaseSpell);
+
+// 初期化
+Spell.prototype.init = function() {
+	BaseSpell.prototype.init.apply(this, arguments);
+};
+
+
+Spell.prototype.runInSpellExecute = function() {
+	BaseSpell.prototype.runInSpellExecute.apply(this, arguments);
+};
+
+Spell.prototype.name = function() { return "風符「蝉しぐれ」"; };
+Spell.prototype.charaImage = function() { return "aya_normal"; };
+
+// 初期 x, y 座標
+Spell.prototype.initX = function( ) { return this.stage.width/2; };
+Spell.prototype.initY = function( ) { return this.stage.height/2; };
+
+Spell.prototype.baseCount = function( ) { return 465; };
+
+Spell.prototype.shotParam = function( ) {
+	var r_num        = 20; // 弾幕の円の半径(大きいほど外側への弾の数が増えていく)
+	var shotParam = [];
+
+	for(var i = 0; i<r_num; i++) {
+		var type = i%2 ? Constant.BULLET_TINY_LIMEGREEN : Constant.BULLET_TINY_BLUE;
+
+		shotParam.push({
+			'bullet':i, 'type': type, 'count': [ 1 ]
+		});
+	}
+
+	return shotParam;
+};
+
+Spell.prototype.moveParam = function( ) {
+	return [];
+};
+
+Spell.prototype.bulletDictionary = function( ) {
+	var r_space      = 17; // 弾幕の円の半径(小さいほど外側に行く方の弾の間隔が短くなっていく)
+	var r_num        = 20; // 弾幕の円の半径(大きいほど外側への弾の数が増えていく)
+	var density      = 48; // 弾と隣の弾の間隔
+	var spread_speed = 6;  // 弾を撒く速さ
+
+	var BulletDictionaries = [];
+
+	for (var j = 1; j <= r_num; j++) {
+		var array = [];
+		var r = r_space * j;
+		for( var k = 0; k < density; k++ ) {
+			var count = k;
+			var theta = ( ( k * 360/density ) + 450 ) % 360;
+			var v = { 'x': r * Math.cos( Util.thetaToRadian( theta ) ),
+				'y': r * Math.sin( Util.thetaToRadian( theta ) ),
+				'count': count + j * density/spread_speed,
+				'vector': [
+					{ 'count': 0, 'vector': { 'r': 0, 'theta': theta, } },
+					{ 'count': (density/spread_speed-k)+(r_num-j)*density/spread_speed + 100, 'vector': { 'r':2.5, theta: theta + 180} },
+				],
+			} ;
+			array.push( v ) ;
+		}
+
+
+		BulletDictionaries.push(array);
+	}
+
+	return BulletDictionaries;
+};
+
+module.exports = Spell;
+
+},{"../../constant":2,"../../util":86,"../param_base":68}],86:[function(require,module,exports){
 'use strict';
 var Util = {
 	// 継承
@@ -9098,7 +9566,7 @@ var Util = {
 
 module.exports = Util;
 
-},{}],84:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*
@@ -9229,7 +9697,7 @@ function(b,a,c,h,d){b.__touch.pointers[a]&&b._handlePointerMove(a,c,h,d)};c._han
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],85:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*
@@ -9256,7 +9724,7 @@ c.length-1;b>=0;b--)a=c[b].id,this._managed[a]==1&&(this.removeChildAt(b),delete
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],86:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /**
@@ -9310,7 +9778,7 @@ a.src,true);if(createjs.PreloadJS.isBinary(a.type))this._request.responseType="a
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],87:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*
