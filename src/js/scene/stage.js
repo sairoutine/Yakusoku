@@ -354,14 +354,18 @@ Scene.prototype._showText = function(){
 // 背景画像表示
 Scene.prototype._showBG = function() {
 	var ctx = this.game.surface;
+
+	var stage_bg = this.game.getImage(this.currentStageBackGround());
+
+	var height = stage_bg.height * Config.CHARA_SIZE_RATIO;
+	var width  = stage_bg.width  * Config.CHARA_SIZE_RATIO;
+
 	var x = 0;
-	// 背景画像をスクロールさせる
-	var y = (this.frame_count * BACKGROUND_SCROLL_SPEED) % this.game.height;
+	var y = (this.frame_count * BACKGROUND_SCROLL_SPEED) % height; // 背景画像をスクロールさせる
 
 	ctx.save();
 
 	// 2枚つなげてスクロールさせる
-	var stage_bg = this.game.getImage(this.currentStageBackGround());
 	this.game.surface.drawImage(stage_bg,
 		0,
 		0,
@@ -369,8 +373,8 @@ Scene.prototype._showBG = function() {
 		stage_bg.height,
 		x,
 		y,
-		this.game.width - SIDE_WIDTH,
-		this.game.height
+		width,
+		height
 	);
 
 	this.game.surface.drawImage(stage_bg,
@@ -379,9 +383,9 @@ Scene.prototype._showBG = function() {
 		stage_bg.width,
 		stage_bg.height,
 		x,
-		y - this.game.height,
-		this.game.width - SIDE_WIDTH,
-		this.game.height
+		y - height,
+		width,
+		height
 	);
 
 	this.game.surface.restore();
