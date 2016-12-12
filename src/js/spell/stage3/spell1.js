@@ -126,7 +126,6 @@ Spell.prototype.init = function() {
 
 Spell.prototype.runInSpellExecute = function() {
 	if(!this.is_init) {
-		this.boss.is_show = false;
 		this.is_init = true;
 
 
@@ -141,7 +140,6 @@ Spell.prototype.runInSpellExecute = function() {
 	this.generator_manager.run();
 
 	if(this.boss.vital < 10) {
-		this.boss.is_show = true;
 		this.generator_manager.removeAll();
 	}
 };

@@ -142,7 +142,6 @@ Spell.prototype.init = function() {
 
 
 Spell.prototype.runInSpellExecute = function() {
-	this.boss.is_show = false;
 
 	if (this.frame_count % 300 === 0) {
 		var move = this.moveTo[this.moveIndex];
@@ -167,9 +166,6 @@ Spell.prototype.runInSpellExecute = function() {
 	}
 
 
-	if(this.boss.vital < 10) {
-		this.boss.is_show = true;
-	}
 };
 
 Spell.prototype.updateDisplayInSpellExecute = function () {
