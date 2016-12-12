@@ -17,7 +17,6 @@ Spell.prototype.init = function() {
 };
 
 Spell.prototype.runInSpellExecute = function() {
-	this.boss.is_show = false;
 	var count = this.frameCountStartedBySpellExec();
 
 	var x = 240;

@@ -105,7 +105,6 @@ Spell.prototype.init = function() {
 
 Spell.prototype.runInSpellExecute = function() {
 	if(!this.is_init) {
-		this.boss.is_show = false;
 		this.is_init = true;
 
 
