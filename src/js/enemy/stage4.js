@@ -4,8 +4,6 @@ var Constant = require('../constant');
 var appear_frame = 0;
 var EnemiesParams = [ ] ;
 
-// あと 3600countくらい
-
 var appear_frame = 10;
 for( var i = 0; i < 24; i++ ) {
 	EnemiesParams.push(
