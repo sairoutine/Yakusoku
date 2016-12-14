@@ -70,24 +70,24 @@ VectorBase.prototype.setVector = function(vectors) {
 		});
 	}
 
-	// 自機狙い設定のオブジェクトのベクトルを自機にむける
+	// 自機狙い設定のベクトルについて、自機にむける
 	this._calculateAimedVector();
 };
 
 // 自機狙いにする
 VectorBase.prototype._calculateAimedVector = function() {
-	for(var i = 0, len = this.vectors.length; i < len; i++) {
-		// 自機狙い設定がされているか確認
-		if( ! this.vectors[i].aimed){ continue; }
+	var i = this.vector_index;
 
-		// 自機
-		var character = this.stage.character;
+	// 自機狙い設定がされているか確認
+	if( ! this.vectors[i].aimed) return;
 
-		var ax = character.x - this.x;
-		var ay = character.y - this.y;
+	// 自機
+	var character = this.stage.character;
 
-		this.vectors[i].theta = this._radian_to_theta(Math.atan2(ay, ax));
-	}
+	var ax = character.x - this.x;
+	var ay = character.y - this.y;
+
+	this.vectors[i].theta = this._radian_to_theta(Math.atan2(ay, ax));
 };
 
 // フレーム処理
@@ -102,6 +102,9 @@ VectorBase.prototype.run = function(){
 
 		// 次の動きに変更
 		this.vector_index++;
+
+		// 自機狙い設定のベクトルについて、自機にむける
+		this._calculateAimedVector();
 
 		// 次の動きの角度が空なら前回の角度を引き継ぐ
 		if(pre_theta && ! this.vectors[this.vector_index].theta) {
