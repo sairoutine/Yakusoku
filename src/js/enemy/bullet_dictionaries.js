@@ -75,10 +75,10 @@ BulletDictionaries[4] = [
 // 横に広がる弾
 BulletDictionaries[5] = [
 	{ vector: { aimed: true, r: 3, theta: 0,  w: 0, ra: 0, wa: 0, raa: 0 } },
-	{ vector: { aimed: true, r: 3, theta: 0,  w: 0.2, ra: 0, wa: 0, raa: 0 } },
-	{ vector: { aimed: true, r: 3, theta: 0,  w: 0.4, ra: 0, wa: 0, raa: 0 } },
-	{ vector: { aimed: true, r: 3, theta: 0,  w: -0.2, ra: 0, wa: 0, raa: 0 } },
-	{ vector: { aimed: true, r: 3, theta: 0,  w: -0.4, ra: 0, wa: 0, raa: 0 } },
+	{ vector: { aimed: true, r: 3, theta: 0,  w: 0.05, ra: 0, wa: 0, raa: 0 } },
+	{ vector: { aimed: true, r: 3, theta: 0,  w: 0.10, ra: 0, wa: 0, raa: 0 } },
+	{ vector: { aimed: true, r: 3, theta: 0,  w: -0.05, ra: 0, wa: 0, raa: 0 } },
+	{ vector: { aimed: true, r: 3, theta: 0,  w: -0.10, ra: 0, wa: 0, raa: 0 } },
 ];
 
 BulletDictionaries[6] = [];
@@ -99,6 +99,19 @@ for(i = 0; i < 8; i++) {
 }
 
 
+BulletDictionaries[8] = [
 
+];
+
+for(i = 0; i < 8; i++) {
+	BulletDictionaries[8].push(
+		{
+			'vector': [
+				{ count: 0, vector: { 'r': 3, 'theta':  22.5 + i * 45, 'w': 0, 'ra': 0.1, 'wa': 0, 'raa': -0.01, 'rrange': { 'min': 2 } } },
+				{ count: 50, vector: { 'r': 7, 'theta': 0, 'aimed': true } },
+			]
+		}
+	);
+}
 
 module.exports = BulletDictionaries;
