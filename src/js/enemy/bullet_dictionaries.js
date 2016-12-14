@@ -91,4 +91,14 @@ for(i = 0; i < 8; i++) {
 	);
 }
 
+BulletDictionaries[7] = [];
+
+
+for(i = 0; i < 8; i++) {
+	BulletDictionaries[7].push({ vector: { r: 3, theta: 30 + i * 45,  w: 0, ra: 0, wa: 0, raa: 0 } });
+}
+
+
+
+
 module.exports = BulletDictionaries;
