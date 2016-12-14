@@ -1392,10 +1392,10 @@ BulletDictionaries[4] = [
 // 横に広がる弾
 BulletDictionaries[5] = [
 	{ vector: { aimed: true, r: 3, theta: 0,  w: 0, ra: 0, wa: 0, raa: 0 } },
-	{ vector: { aimed: true, r: 3, theta: 0,  w: 0.2, ra: 0, wa: 0, raa: 0 } },
-	{ vector: { aimed: true, r: 3, theta: 0,  w: 0.4, ra: 0, wa: 0, raa: 0 } },
-	{ vector: { aimed: true, r: 3, theta: 0,  w: -0.2, ra: 0, wa: 0, raa: 0 } },
-	{ vector: { aimed: true, r: 3, theta: 0,  w: -0.4, ra: 0, wa: 0, raa: 0 } },
+	{ vector: { aimed: true, r: 3, theta: 0,  w: 0.05, ra: 0, wa: 0, raa: 0 } },
+	{ vector: { aimed: true, r: 3, theta: 0,  w: 0.10, ra: 0, wa: 0, raa: 0 } },
+	{ vector: { aimed: true, r: 3, theta: 0,  w: -0.05, ra: 0, wa: 0, raa: 0 } },
+	{ vector: { aimed: true, r: 3, theta: 0,  w: -0.10, ra: 0, wa: 0, raa: 0 } },
 ];
 
 BulletDictionaries[6] = [];
@@ -1416,7 +1416,20 @@ for(i = 0; i < 8; i++) {
 }
 
 
+BulletDictionaries[8] = [
 
+];
+
+for(i = 0; i < 8; i++) {
+	BulletDictionaries[8].push(
+		{
+			'vector': [
+				{ count: 0, vector: { 'r': 3, 'theta':  22.5 + i * 45, 'w': 0, 'ra': 0.1, 'wa': 0, 'raa': -0.01, 'rrange': { 'min': 2 } } },
+				{ count: 50, vector: { 'r': 7, 'theta': 0, 'aimed': true } },
+			]
+		}
+	);
+}
 
 module.exports = BulletDictionaries;
 
@@ -2481,50 +2494,6 @@ for( var i = 0; i < 8; i++ ) {
 	});
 }
 
-appear_frame += 130;
-
-for(var i = 0; i < 8; i++) {
-	EnemiesParams.push({
-		'appear_frame': appear_frame + 260 * i,
-		'x': 120,
-		'y': 0,
-		'vital': 3,
-		'type': Constant.ENEMY_GREEN_NEUTRAL_TYPE,
-		'shot': [
-			{ 'bullet': 3, 'count': 30 },
-			{ 'bullet': 6, 'count': 50 },
-			{ 'bullet': 3, 'count': 70 },
-			{ 'bullet': 6, 'count': 90 },
-			{ 'bullet': 3, 'count': 110 },
-			{ 'bullet': 6, 'count': 130 },
-		],
-		'vector': [
-			{ 'count':   0,      'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
-			{ 'count':  30, 'vector': { 'r': 0,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
-			{ 'count': 180, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':   0.1, 'trange': { 'max': 190 } } },
-		]
-	});
-	EnemiesParams.push({
-		'appear_frame': appear_frame + 130 + 260 * i,
-		'x': 360,
-		'y': 0,
-		'vital': 3,
-		'type': Constant.ENEMY_GREEN_NEUTRAL_TYPE,
-		'shot': [
-			{ 'bullet': 3, 'count': 30 },
-			{ 'bullet': 6, 'count': 50 },
-			{ 'bullet': 3, 'count': 70 },
-			{ 'bullet': 6, 'count': 90 },
-			{ 'bullet': 3, 'count': 110 },
-			{ 'bullet': 6, 'count': 130 },
-		],
-		'vector': [
-			{ 'count':   0,      'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
-			{ 'count':  30, 'vector': { 'r': 0,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
-			{ 'count': 180, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':  -0.1, 'trange': { 'min': -10 } } },
-		]
-	});
-}
 // 出現順にソート
 EnemiesParams.sort(function(a, b) {
 	return a.appear_frame - b.appear_frame;
@@ -2538,8 +2507,6 @@ var Constant = require('../constant');
 
 var appear_frame = 0;
 var EnemiesParams = [ ] ;
-
-// あと 3600countくらい
 
 var appear_frame = 10;
 for( var i = 0; i < 24; i++ ) {
@@ -2701,10 +2668,48 @@ for( var i = 0; i < 4 ; i++ ) {
 
 appear_frame += 720;
 
-
-
-
-
+for(var i = 0; i < 8; i++) {
+	EnemiesParams.push({
+		'appear_frame': appear_frame + 260 * i,
+		'x': 120,
+		'y': 0,
+		'vital': 3,
+		'type': Constant.ENEMY_GREEN_NEUTRAL_TYPE,
+		'shot': [
+			{ 'bullet': 3, 'count': 30 },
+			{ 'bullet': 6, 'count': 50 },
+			{ 'bullet': 3, 'count': 70 },
+			{ 'bullet': 6, 'count': 90 },
+			{ 'bullet': 3, 'count': 110 },
+			{ 'bullet': 6, 'count': 130 },
+		],
+		'vector': [
+			{ 'count':   0,      'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
+			{ 'count':  30, 'vector': { 'r': 0,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
+			{ 'count': 180, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':   0.1, 'trange': { 'max': 190 } } },
+		]
+	});
+	EnemiesParams.push({
+		'appear_frame': appear_frame + 130 + 260 * i,
+		'x': 360,
+		'y': 0,
+		'vital': 3,
+		'type': Constant.ENEMY_GREEN_NEUTRAL_TYPE,
+		'shot': [
+			{ 'bullet': 3, 'count': 30 },
+			{ 'bullet': 6, 'count': 50 },
+			{ 'bullet': 3, 'count': 70 },
+			{ 'bullet': 6, 'count': 90 },
+			{ 'bullet': 3, 'count': 110 },
+			{ 'bullet': 6, 'count': 130 },
+		],
+		'vector': [
+			{ 'count':   0,      'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
+			{ 'count':  30, 'vector': { 'r': 0,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
+			{ 'count': 180, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':  -0.1, 'trange': { 'min': -10 } } },
+		]
+	});
+}
 
 // 出現順にソート
 EnemiesParams.sort(function(a, b) {
@@ -2714,8 +2719,227 @@ EnemiesParams.sort(function(a, b) {
 module.exports = EnemiesParams;
 
 },{"../constant":2}],13:[function(require,module,exports){
-arguments[4][9][0].apply(exports,arguments)
-},{"../constant":2,"dup":9}],14:[function(require,module,exports){
+'use strict';
+var Constant = require('../constant');
+
+var __randomizer = 
+	{
+		random: function () { return Math.random(); }
+	};
+
+
+var appear_frame = 0;
+var EnemiesParams = [ ] ;
+
+appear_frame += 10;
+
+for (var i = 0; i < 24; i++) {
+	EnemiesParams.push({
+		'appear_frame': appear_frame + i*60,
+		'x': 60 + (i%3) * 60,
+		'y': 0,
+		'vital': 3,
+		'type': Constant.ENEMY_GREEN_NEUTRAL_TYPE,
+		'powerItem': 0,
+		'shot': [
+			{ 'type': Constant.BULLET_KUNAI_RED, 'bullet': 8, 'count': 30 },
+		],
+		'vector': [
+			{ 'count':   0, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
+			{ 'count':  30, 'vector': { 'r': 0,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
+			{ 'count': 130, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':   0.1, 'trange': { 'max': 190 } } },
+		]
+	});
+	EnemiesParams.push({
+		'appear_frame': appear_frame + i*60,
+		'x': 420 - (i%3) * 60,
+		'y': 0,
+		'vital': 3,
+		'type': Constant.ENEMY_GREEN_NEUTRAL_TYPE,
+		'powerItem': 1,
+		'shot': [
+			{ 'type': Constant.BULLET_KUNAI_RED, 'bullet': 8, 'count': 30 },
+		],
+		'vector': [
+			{ 'count':   0, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
+			{ 'count':  30, 'vector': { 'r': 0,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
+			{ 'count': 130, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':  -0.1, 'trange': { 'min': -10 } } },
+		]
+	});
+}
+
+appear_frame += 720 + 30;
+
+for (var i = 0; i < 24; i++) {
+	EnemiesParams.push({
+		'appear_frame': appear_frame + i*60,
+		'x': 30 + (i%3) * 60,
+		'y': 0,
+		'vital': 3,
+		'type': Constant.ENEMY_PURPLE_NEUTRAL_TYPE,
+		'powerItem': 0,
+		'shot': [
+			{ 'type': Constant.BULLET_KUNAI_PURPLE, 'bullet': 8, 'count': 40 },
+		],
+		'vector': [
+			{ 'count':   0, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
+			{ 'count':  50, 'vector': { 'r': 0,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
+			{ 'count': 150, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':   0.1, 'trange': { 'max': 190 } } },
+		]
+	});
+	EnemiesParams.push({
+		'appear_frame': appear_frame + i*60,
+		'x': 450 - (i%3) * 60,
+		'y': 0,
+		'vital': 3,
+		'type': Constant.ENEMY_PURPLE_NEUTRAL_TYPE,
+		'powerItem': 1,
+		'shot': [
+			{ 'type': Constant.BULLET_KUNAI_PURPLE, 'bullet': 8, 'count': 40 },
+		],
+		'vector': [
+			{ 'count':   0, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
+			{ 'count':  50, 'vector': { 'r': 0,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
+			{ 'count': 150, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':  -0.1, 'trange': { 'min': -10 } } },
+		]
+	});
+}
+
+appear_frame += 720 + 720 + 200;
+
+// 前方に直進する
+for( var i = 0; i < 50 ; i++ ) {
+	EnemiesParams.push(
+		{ 'appear_frame': appear_frame + i * 10,
+			'x': parseInt(__randomizer.random() * 480),
+			'vital': 1,
+			'powerItem': i % 2 === 0 ? 1 : 0,
+			'scoreItem': i % 2 === 1 ? 1 : 0,
+			'type': Constant.ENEMY_BLUE_NEUTRAL_TYPE,
+			'vector': [
+				{ 'count':   0,  'vector': { 'r': 3,  'theta': 90, 'w':    0, 'ra': 0, 'wa':    0 } },
+			]
+		}
+	);
+}
+appear_frame += 250;
+
+var shot = [];
+for( var i = 0; i < 12 ; i++ ) {
+	shot.push(
+		{ 'type': Constant.BULLET_KUNAI_RED, 'bullet': i%2 === 0 ? 3 : 6, 'count': 30 + i*10 }
+	);
+}
+EnemiesParams.push({
+	'appear_frame': appear_frame,
+	'x': 240,
+	'y': 0,
+	'vital': 3,
+	'type': Constant.ENEMY_RED_NEUTRAL_TYPE,
+	'powerItem': 0,
+	'shot': shot,
+	'vector': [
+		{ 'count':   0, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
+		{ 'count':  30, 'vector': { 'r': 0,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
+		{ 'count': 160, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':   0.1, 'trange': { 'max': 190 } } },
+	]
+});
+
+appear_frame += 200;
+
+EnemiesParams.push({
+	'appear_frame': appear_frame,
+	'x': 360,
+	'y': 0,
+	'vital': 3,
+	'type': Constant.ENEMY_RED_NEUTRAL_TYPE,
+	'powerItem': 0,
+	'shot': shot,
+	'vector': [
+		{ 'count':   0, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
+		{ 'count':  30, 'vector': { 'r': 0,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
+		{ 'count': 160, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':   0.1, 'trange': { 'max': 190 } } },
+	]
+});
+
+EnemiesParams.push({
+	'appear_frame': appear_frame,
+	'x': 120,
+	'y': 0,
+	'vital': 3,
+	'type': Constant.ENEMY_RED_NEUTRAL_TYPE,
+	'powerItem': 0,
+	'shot': shot,
+	'vector': [
+		{ 'count':   0, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
+		{ 'count':  30, 'vector': { 'r': 0,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
+		{ 'count': 160, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':  -0.1, 'trange': { 'min': -10 } } },
+	]
+});
+
+appear_frame += 200;
+
+for( var i = 0; i < 24; i++ ) {
+	EnemiesParams.push(
+		{ 'appear_frame': appear_frame + i * 30,
+			'x': 0,
+			'y': 10,
+			'vital': 1,
+			'powerItem': i % 2 === 0 ? 1 : 0,
+			'scoreItem': i % 2 === 1 ? 1 : 0,
+			shot: [
+				{ 'type': Constant.BULLET_KUNAI_PURPLE, 'bullet': 5, 'count': 30 + (i%2)*10 },
+			],
+			'vector': [
+				{ 'count':   0,   'vector': { 'r': 3,  'theta': 0 } },
+				{ 'count':   20,  'vector': { 'r': 3,  'theta': 0, 'w': 1.5, 'trange': {max: 180} } },
+			]
+		}
+	);
+	EnemiesParams.push(
+		{ 'appear_frame': appear_frame + i * 30,
+			'x': 480,
+			'y': 10,
+			'vital': 1,
+			'powerItem': i % 2 === 0 ? 1 : 0,
+			'scoreItem': i % 2 === 1 ? 1 : 0,
+			shot: [
+				{ 'type': Constant.BULLET_KUNAI_PURPLE, 'bullet': 5, 'count': 30 + (i%2)*10 },
+			],
+			'vector': [
+				{ 'count':   0,   'vector': { 'r': 3,  'theta': 180 } },
+				{ 'count':   20,  'vector': { 'r': 3,  'theta': 180, 'w': -1.5, 'trange': {min: 0} } },
+			]
+		}
+	);
+}
+
+appear_frame += 480;
+
+EnemiesParams.push({
+	'appear_frame': appear_frame,
+	'x': 240,
+	'y': 0,
+	'vital': 3,
+	'type': Constant.ENEMY_RED_NEUTRAL_TYPE,
+	'powerItem': 0,
+	'shot': shot,
+	'vector': [
+		{ 'count':   0, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
+		{ 'count':  30, 'vector': { 'r': 0,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
+		{ 'count': 160, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':   0.1, 'trange': { 'max': 190 } } },
+	]
+});
+
+
+// 出現順にソート
+EnemiesParams.sort(function(a, b) {
+	return a.appear_frame - b.appear_frame;
+});
+
+module.exports = EnemiesParams;
+
+},{"../constant":2}],14:[function(require,module,exports){
 'use strict';
 
 var Config = require('./config');
@@ -5344,24 +5568,24 @@ VectorBase.prototype.setVector = function(vectors) {
 		});
 	}
 
-	// 自機狙い設定のオブジェクトのベクトルを自機にむける
+	// 自機狙い設定のベクトルについて、自機にむける
 	this._calculateAimedVector();
 };
 
 // 自機狙いにする
 VectorBase.prototype._calculateAimedVector = function() {
-	for(var i = 0, len = this.vectors.length; i < len; i++) {
-		// 自機狙い設定がされているか確認
-		if( ! this.vectors[i].aimed){ continue; }
+	var i = this.vector_index;
 
-		// 自機
-		var character = this.stage.character;
+	// 自機狙い設定がされているか確認
+	if( ! this.vectors[i].aimed) return;
 
-		var ax = character.x - this.x;
-		var ay = character.y - this.y;
+	// 自機
+	var character = this.stage.character;
 
-		this.vectors[i].theta = this._radian_to_theta(Math.atan2(ay, ax));
-	}
+	var ax = character.x - this.x;
+	var ay = character.y - this.y;
+
+	this.vectors[i].theta = this._radian_to_theta(Math.atan2(ay, ax));
 };
 
 // フレーム処理
@@ -5376,6 +5600,9 @@ VectorBase.prototype.run = function(){
 
 		// 次の動きに変更
 		this.vector_index++;
+
+		// 自機狙い設定のベクトルについて、自機にむける
+		this._calculateAimedVector();
 
 		// 次の動きの角度が空なら前回の角度を引き継ぐ
 		if(pre_theta && ! this.vectors[this.vector_index].theta) {
@@ -6506,14 +6733,18 @@ Scene.prototype._showText = function(){
 // 背景画像表示
 Scene.prototype._showBG = function() {
 	var ctx = this.game.surface;
+
+	var stage_bg = this.game.getImage(this.currentStageBackGround());
+
+	var height = stage_bg.height * Config.CHARA_SIZE_RATIO;
+	var width  = stage_bg.width  * Config.CHARA_SIZE_RATIO;
+
 	var x = 0;
-	// 背景画像をスクロールさせる
-	var y = (this.frame_count * BACKGROUND_SCROLL_SPEED) % this.game.height;
+	var y = (this.frame_count * BACKGROUND_SCROLL_SPEED) % height; // 背景画像をスクロールさせる
 
 	ctx.save();
 
 	// 2枚つなげてスクロールさせる
-	var stage_bg = this.game.getImage(this.currentStageBackGround());
 	this.game.surface.drawImage(stage_bg,
 		0,
 		0,
@@ -6521,8 +6752,8 @@ Scene.prototype._showBG = function() {
 		stage_bg.height,
 		x,
 		y,
-		this.game.width - SIDE_WIDTH,
-		this.game.height
+		width,
+		height
 	);
 
 	this.game.surface.drawImage(stage_bg,
@@ -6531,9 +6762,9 @@ Scene.prototype._showBG = function() {
 		stage_bg.width,
 		stage_bg.height,
 		x,
-		y - this.game.height,
-		this.game.width - SIDE_WIDTH,
-		this.game.height
+		y - height,
+		width,
+		height
 	);
 
 	this.game.surface.restore();
