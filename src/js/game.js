@@ -178,6 +178,18 @@ Game.prototype = {
 		}
 		return;
 	},
+	// BGM のフェードアウトを設定
+	fadeOutBGM: function (fadeout_time) {
+		var self = this;
+		if(self.audio_gain && self.audio_context) {
+			var gain = self.audio_gain.gain;
+			var startTime = self.audio_context.currentTime;
+			var endTime = startTime + fadeout_time;
+			gain.linearRampToValueAtTime(0, endTime);
+		}
+
+		return 1;
+	},
 	// BGM の AudioBufferSourceNode インスタンスを作成
 	_createSourceNode: function(key) {
 		var self = this;
@@ -190,7 +202,7 @@ Game.prototype = {
 		if(conf.loopStart || conf.loopEnd) { source.loop = true; }
 		if(conf.loopStart) { source.loopStart = conf.loopStart; }
 		if(conf.loopEnd)   { source.loopEnd = conf.loopEnd; }
-		if(conf.volume)    { self.audio_gain.gain.value = conf.volume; }
+		self.audio_gain.gain.value = conf.volume || 1;
 
 		source.connect(self.audio_gain);
 
