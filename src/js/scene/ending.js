@@ -34,6 +34,10 @@ Scene.prototype.run = function(){
 	if(this.frame_count > 3600) {
 		this.game.notifyEndingDone();
 	}
+	// エンディング曲をN秒でフェードアウト
+	else if(this.frame_count === 3300) {
+		this.game.fadeOutBGM(5);
+	}
 	else {
 		this.ending.update();
 	}
