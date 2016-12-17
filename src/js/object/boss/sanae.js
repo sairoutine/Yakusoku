@@ -9,8 +9,6 @@ var Util = require('../../util');
 var Spell1 = require('../../spell/stage2/spell1');
 var Spell2 = require('../../spell/stage2/spell2');
 var Spell3 = require('../../spell/stage2/spell3');
-//var Spell7 = require('../../spell/stage2/spell7');
-//var Spell2 = require('../../spell/stage2/spell2');
 
 // constructor
 var Sanae = function(stage) {
