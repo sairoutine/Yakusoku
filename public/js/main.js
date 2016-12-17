@@ -6,8 +6,8 @@ var Constant = require('./constant');
 var Config = {
 	DEBUG: true,
 	//DEBUG_SCENE: Constant.STAGE_SCENE,
-	//DEBUG_STATE: Constant.WAY_STATE,
-	//DEBUG_BOSS: 3,
+	//DEBUG_STATE: Constant.BOSS_STATE,
+	//DEBUG_BOSS: 0,
 	//DEBUG_MUSIC_OFF: true,
 	IMAGES: {
 		title_bg:  'image/title_bg.png',
@@ -174,7 +174,7 @@ var Config = {
 	BGMS:{
 		title: {
 			path:   'bgm/title.mp3',
-			volume: 0.60
+			volume: 0.40
 		},
 		prologue: {
 			path:   'bgm/prologue.ogg',
@@ -195,12 +195,12 @@ var Config = {
 			loopEnd: 60 * 2 + 0.827,
 		},
 		epilogue: {
-			path:   'bgm/epilogue.mp3',
-			volume: 1.00
+			path:   'bgm/epilogue.ogg',
+			volume: 0.40,
 		},
 		ending: {
-			path:   'bgm/mute.wav',
-			volume: 1.00
+			path:   'bgm/ending.ogg',
+			volume: 0.40,
 		},
 	},
 	// テキストの typography スピード
@@ -3120,6 +3120,18 @@ Game.prototype = {
 		}
 		return;
 	},
+	// BGM のフェードアウトを設定
+	fadeOutBGM: function (fadeout_time) {
+		var self = this;
+		if(self.audio_gain && self.audio_context) {
+			var gain = self.audio_gain.gain;
+			var startTime = self.audio_context.currentTime;
+			var endTime = startTime + fadeout_time;
+			gain.linearRampToValueAtTime(0, endTime);
+		}
+
+		return 1;
+	},
 	// BGM の AudioBufferSourceNode インスタンスを作成
 	_createSourceNode: function(key) {
 		var self = this;
@@ -3132,7 +3144,7 @@ Game.prototype = {
 		if(conf.loopStart || conf.loopEnd) { source.loop = true; }
 		if(conf.loopStart) { source.loopStart = conf.loopStart; }
 		if(conf.loopEnd)   { source.loopEnd = conf.loopEnd; }
-		if(conf.volume)    { self.audio_gain.gain.value = conf.volume; }
+		self.audio_gain.gain.value = conf.volume || 1;
 
 		source.connect(self.audio_gain);
 
@@ -4329,8 +4341,6 @@ var Util = require('../../util');
 var Spell1 = require('../../spell/stage2/spell1');
 var Spell2 = require('../../spell/stage2/spell2');
 var Spell3 = require('../../spell/stage2/spell3');
-//var Spell7 = require('../../spell/stage2/spell7');
-//var Spell2 = require('../../spell/stage2/spell2');
 
 // constructor
 var Sanae = function(stage) {
@@ -5758,6 +5768,10 @@ Scene.prototype.run = function(){
 	// エンディング終了
 	if(this.frame_count > 3600) {
 		this.game.notifyEndingDone();
+	}
+	// エンディング曲をN秒でフェードアウト
+	else if(this.frame_count === 3300) {
+		this.game.fadeOutBGM(5);
 	}
 	else {
 		this.ending.update();
