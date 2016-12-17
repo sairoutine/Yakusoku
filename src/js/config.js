@@ -5,8 +5,8 @@ var Constant = require('./constant');
 var Config = {
 	DEBUG: true,
 	//DEBUG_SCENE: Constant.STAGE_SCENE,
-	//DEBUG_STATE: Constant.WAY_STATE,
-	//DEBUG_BOSS: 3,
+	//DEBUG_STATE: Constant.BOSS_STATE,
+	//DEBUG_BOSS: 0,
 	//DEBUG_MUSIC_OFF: true,
 	IMAGES: {
 		title_bg:  'image/title_bg.png',
@@ -173,7 +173,7 @@ var Config = {
 	BGMS:{
 		title: {
 			path:   'bgm/title.mp3',
-			volume: 0.60
+			volume: 0.40
 		},
 		prologue: {
 			path:   'bgm/prologue.ogg',
@@ -194,12 +194,12 @@ var Config = {
 			loopEnd: 60 * 2 + 0.827,
 		},
 		epilogue: {
-			path:   'bgm/epilogue.mp3',
-			volume: 1.00
+			path:   'bgm/epilogue.ogg',
+			volume: 0.40,
 		},
 		ending: {
-			path:   'bgm/mute.wav',
-			volume: 1.00
+			path:   'bgm/ending.ogg',
+			volume: 0.40,
 		},
 	},
 	// テキストの typography スピード
