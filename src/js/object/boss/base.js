@@ -114,7 +114,7 @@ BossBase.prototype.resetVital = function(){
 	this.vital = this.MAX_VITAL();
 };
 
-// HPを初期化
+// ボスが死んだかどうか
 BossBase.prototype.isDead = function(){
 	return this.vital <= 0;
 };
@@ -139,7 +139,15 @@ BossBase.prototype.run = function(){
 	}
 
 	if(this.isDead() && this.hasNextSpell()) {
+		// 敵の弾を vanish する
+		this.stage.bullet_manager.notifyUseBomb();
+
+		// アイテムを自機に吸引させる
+		this.stage.item_manager.notifyUseBomb();
+
+		// HPを初期化
 		this.resetVital();
+
 		// 次のスペルカード発動！
 		this.executeSpell();
 	}
