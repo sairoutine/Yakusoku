@@ -63,8 +63,7 @@ BossBase.prototype.init = function() {
 	this.setInitPosition();
 
 	// 初期HP
-	this.max_vital = VITAL;
-	this.vital = VITAL;
+	this.vital = this.MAX_VITAL();
 
 	// 発動スペル
 	this.spell_index = 0;
@@ -111,7 +110,7 @@ BossBase.prototype.hasNextSpell = function(){
 
 // HPを初期化
 BossBase.prototype.resetVital = function(){
-	this.vital = this.max_vital;
+	this.vital = this.MAX_VITAL();
 };
 
 // HPを初期化
