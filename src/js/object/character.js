@@ -309,6 +309,9 @@ Character.prototype.die = function() {
 
 	// 無敵状態になったフレームを保存
 	this.unhittable_count = this.frame_count;
+
+	// 画面上の弾を全部消す
+	this.stage.bullet_manager.removeAll();
 };
 
 // 衝突した時
