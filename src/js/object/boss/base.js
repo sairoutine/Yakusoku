@@ -287,5 +287,21 @@ BossBase.prototype.bgm = function() {
 	console.error('bgm method must be overridden.');
 };
 
+// 最大HP
+BossBase.prototype.MAX_VITAL = function() {
+	return VITAL;
+};
+
+// 残HP パーセント
+BossBase.prototype.vitalPercentage = function() {
+	return this.vital / this.MAX_VITAL();
+};
+
+// 現在のスペカ名
+BossBase.prototype.currentSpellName = function() {
+	return this.currentSpell().name();
+};
+
+
 
 module.exports = BossBase;
