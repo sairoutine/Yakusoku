@@ -107,7 +107,13 @@ Enemy.prototype.shot = function(){
 Enemy.prototype.notifyCollision = function(obj) {
 	if(!(obj instanceof Shot)) { return; }
 
-	this.die();
+	// HPを減らす
+	this.vital--;
+
+	// 死
+	if(this.vital <= 0) {
+		this.die();
+	}
 };
 
 // ボムの使用を通知
