@@ -7,7 +7,8 @@ var Config = {
 	DEBUG: true,
 	//DEBUG_SCENE: Constant.STAGE_SCENE,
 	//DEBUG_STATE: Constant.BOSS_STATE,
-	//DEBUG_BOSS: 0,
+	//DEBUG_STAGE: 0,
+	//DEBUG_SPELL: 0,
 	//DEBUG_MUSIC_OFF: true,
 	IMAGES: {
 		title_bg:  'image/title_bg.png',
@@ -2857,7 +2858,7 @@ for( var i = 0; i < 50 ; i++ ) {
 	EnemiesParams.push(
 		{ 'appear_frame': appear_frame + i * 10,
 			'x': parseInt(__randomizer.random() * 480),
-			'vital': 1,
+			'vital': 10,
 			'powerItem': i % 2 === 0 ? 1 : 0,
 			'scoreItem': i % 2 === 1 ? 1 : 0,
 			'type': Constant.ENEMY_BLUE_NEUTRAL_TYPE,
@@ -2879,7 +2880,7 @@ EnemiesParams.push({
 	'appear_frame': appear_frame,
 	'x': 240,
 	'y': 0,
-	'vital': 3,
+	'vital': 15,
 	'type': Constant.ENEMY_RED_NEUTRAL_TYPE,
 	'powerItem': 0,
 	'shot': shot,
@@ -2896,7 +2897,7 @@ EnemiesParams.push({
 	'appear_frame': appear_frame,
 	'x': 360,
 	'y': 0,
-	'vital': 3,
+	'vital': 15,
 	'type': Constant.ENEMY_RED_NEUTRAL_TYPE,
 	'powerItem': 0,
 	'shot': shot,
@@ -2911,7 +2912,7 @@ EnemiesParams.push({
 	'appear_frame': appear_frame,
 	'x': 120,
 	'y': 0,
-	'vital': 3,
+	'vital': 15,
 	'type': Constant.ENEMY_RED_NEUTRAL_TYPE,
 	'powerItem': 0,
 	'shot': shot,
@@ -2965,7 +2966,7 @@ EnemiesParams.push({
 	'appear_frame': appear_frame,
 	'x': 240,
 	'y': 0,
-	'vital': 3,
+	'vital': 15,
 	'type': Constant.ENEMY_RED_NEUTRAL_TYPE,
 	'powerItem': 0,
 	'shot': shot,
@@ -3506,7 +3507,6 @@ Manager.prototype.checkCollisionWithObject = function(obj1) {
 		if(obj1.checkCollision(obj2)) {
 			obj1.notifyCollision(obj2);
 			obj2.notifyCollision(obj1);
-			break;
 		}
 	}
 };
@@ -4038,6 +4038,7 @@ module.exports = Aya;
 // 基底クラス
 var BaseObject = require('../base');
 var Util = require('../../util');
+var Config = require('../../config');
 
 var Shot = require('../../object/shot');
 
@@ -4050,7 +4051,7 @@ var FRONT_ANIMATION_SPAN = 6;
 var LR_ANIMATION_SPAN = 4;
 
 // HP
-var VITAL = 60 * 60 * 1;
+var VITAL = 60 * 30;
 
 // ボスの移動速度
 var DEFAULT_SPEED = 2;
@@ -4096,11 +4097,10 @@ BossBase.prototype.init = function() {
 	this.setInitPosition();
 
 	// 初期HP
-	this.max_vital = VITAL;
-	this.vital = VITAL;
+	this.vital = this.MAX_VITAL();
 
-	// 発動スペル
-	this.spell_index = 0;
+	// 発動スペル TODO:
+	this.spell_index = Config.DEBUG && Config.DEBUG_SPELL ? Config.DEBUG_SPELL : 0;
 
 	// スペルカード発動！
 	this.executeSpell();
@@ -4144,10 +4144,10 @@ BossBase.prototype.hasNextSpell = function(){
 
 // HPを初期化
 BossBase.prototype.resetVital = function(){
-	this.vital = this.max_vital;
+	this.vital = this.MAX_VITAL();
 };
 
-// HPを初期化
+// ボスが死んだかどうか
 BossBase.prototype.isDead = function(){
 	return this.vital <= 0;
 };
@@ -4172,7 +4172,15 @@ BossBase.prototype.run = function(){
 	}
 
 	if(this.isDead() && this.hasNextSpell()) {
+		// 敵の弾を vanish する
+		this.stage.bullet_manager.notifyUseBomb();
+
+		// アイテムを自機に吸引させる
+		this.stage.item_manager.notifyUseBomb();
+
+		// HPを初期化
 		this.resetVital();
+
 		// 次のスペルカード発動！
 		this.executeSpell();
 	}
@@ -4321,10 +4329,26 @@ BossBase.prototype.bgm = function() {
 	console.error('bgm method must be overridden.');
 };
 
+// 最大HP
+BossBase.prototype.MAX_VITAL = function() {
+	return VITAL;
+};
+
+// 残HP パーセント
+BossBase.prototype.vitalPercentage = function() {
+	return this.vital / this.MAX_VITAL();
+};
+
+// 現在のスペカ名
+BossBase.prototype.currentSpellName = function() {
+	return this.currentSpell().name();
+};
+
+
 
 module.exports = BossBase;
 
-},{"../../createjs/boss_appearance":4,"../../logic/createjs":16,"../../object/shot":35,"../../util":86,"../base":22}],25:[function(require,module,exports){
+},{"../../config":1,"../../createjs/boss_appearance":4,"../../logic/createjs":16,"../../object/shot":35,"../../util":86,"../base":22}],25:[function(require,module,exports){
 'use strict';
 
 /* ステージ5ボス マエリベリー・ハーン */
@@ -4941,6 +4965,9 @@ Character.prototype.die = function() {
 
 	// 無敵状態になったフレームを保存
 	this.unhittable_count = this.frame_count;
+
+	// 画面上の弾を全部消す
+	this.stage.bullet_manager.removeAll();
 };
 
 // 衝突した時
@@ -4988,6 +5015,10 @@ Character.prototype.useBomb = function() {
 
 	// 敵の弾を vanish する
 	this.stage.bullet_manager.notifyUseBomb();
+
+	// アイテムを自機に吸引させる
+	this.stage.item_manager.notifyUseBomb();
+
 
 	// ボムを生成
 	this.spell.init();
@@ -5207,7 +5238,13 @@ Enemy.prototype.shot = function(){
 Enemy.prototype.notifyCollision = function(obj) {
 	if(!(obj instanceof Shot)) { return; }
 
-	this.die();
+	// HPを減らす
+	this.vital--;
+
+	// 死
+	if(this.vital <= 0) {
+		this.die();
+	}
 };
 
 // ボムの使用を通知
@@ -5297,21 +5334,19 @@ Item.prototype.init = function(type_id, x, y) {
 
 	if(this.isPower()) {
 		// 弾のスプライト上の位置
-		this.indexX = 4; this.indexY = 0;
+		this.indexX = 0; this.indexY = 0;
 	}
 	else if(this.isScore()) {
 		// 弾のスプライト上の位置
-		this.indexX = 0; this.indexY = 0;
+		this.indexX = 4; this.indexY = 0;
 	}
 
-	// 自機とグレイズ済かどうか
-	this.is_graze = false;
+	// 自機に吸引されるかどうか
+	this.is_vacuum = false;
 };
 
 Item.prototype.run = function() {
-	// 自機とグレイズ済あるいは
-	// 自機がボム使用中なら、キャラに向けて逐一ベクトルを修正
-	if(this.is_graze || this.stage.character.is_using_bomb) {
+	if(this.is_vacuum) {
 		this.setVector([
 			{
 				count: 0,
@@ -5352,8 +5387,14 @@ Item.prototype.isPower = function() {
 
 // グレイズした時
 Item.prototype.notifyGraze = function(obj) {
-	// このアイテムは既にグレイズ済
-	this.is_graze = true;
+	// グレイズ範囲に入ったら、自機に向かって吸引させる
+	this.is_vacuum = true;
+};
+
+// ボムの使用を通知
+Item.prototype.notifyUseBomb = function() {
+	// ボムを使ったら、自機に向かって吸引させる
+	this.is_vacuum = true;
 };
 
 // 当たり判定サイズ
@@ -6590,7 +6631,7 @@ Scene.prototype.init = function() {
 
 	this.score = 0; // スコア
 	this.state = null; // ステージの現在の状態
-	this.stage = Config.DEBUG && Config.DEBUG_BOSS ? Config.DEBUG_BOSS : 0; // 現在のステージ
+	this.stage = Config.DEBUG && Config.DEBUG_STAGE ? Config.DEBUG_STAGE : 0; // 現在のステージ
 
 	for(var i = 0, len = this.objects.length; i < len; i++) {
 		this.objects[i].init();
@@ -6746,7 +6787,7 @@ Scene.prototype._showText = function(){
 	//ctx.fillText("HiScore",   x1, 25);
 	ctx.fillText("Score",     x1, 70);
 	ctx.fillText("Player",    x1, 130);
-	//ctx.fillText("Spell",     x1, 175);
+	ctx.fillText("Spell",     x1, 175);
 	if(Config.DEBUG) {
 		ctx.fillText("Frame",     x1, 235);
 	}
@@ -6781,7 +6822,7 @@ Scene.prototype._showText = function(){
 			break;
 	}
 
-	//ctx.fillText(bomb_star_string,     x2, 200); // Bomb
+	ctx.fillText(bomb_star_string,     x2, 200); // Bomb
 
 	if(Config.DEBUG) {
 		ctx.fillText(this.frame_count,     x2, 260); // Frame
@@ -6825,6 +6866,13 @@ Scene.prototype._showBG = function() {
 		width,
 		height
 	);
+
+	// ボスの際は背景を暗くする
+	if(this.state === Constant.BOSS_STATE) {
+		this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
+		this.game.surface.globalAlpha = 0.7;
+		this.game.surface.fillRect(0, 0, this.width, this.height);
+	}
 
 	this.game.surface.restore();
 };
@@ -7026,6 +7074,15 @@ State.prototype.updateDisplay = function(){
 	// スペルカード残り時間
 	this._showVital();
 
+	// スペカ名
+	var ctx = this.game.surface;
+	ctx.save();
+	ctx.fillStyle = 'rgb( 255, 255, 255 )';
+	ctx.textAlign = 'left';
+	ctx.font = "14px 'Migu'" ;
+	ctx.fillText(this.stage.currentStageBoss().currentSpellName(), VITAL_OUTLINE_MARGIN, 25);
+	ctx.restore();
+
 };
 // スペルカード残り時間
 State.prototype._showVital = function(){
@@ -7036,7 +7093,7 @@ State.prototype._showVital = function(){
 	ctx.fillRect(
 		VITAL_OUTLINE_MARGIN,
 		VITAL_OUTLINE_MARGIN,
-		this.stage.currentStageBoss().vital / this.stage.currentStageBoss().max_vital * (this.stage.width - VITAL_OUTLINE_MARGIN * 2),
+		this.stage.currentStageBoss().vitalPercentage() * (this.stage.width - VITAL_OUTLINE_MARGIN * 2),
 		VITAL_OUTLINE_MARGIN
 	);
 
@@ -7217,6 +7274,7 @@ module.exports = ResultState;
 
 var BaseState = require('./talk_base');
 var Util = require('../../../util');
+var Config = require('../../../config');
 
 var TalkState = function(stage) {
 	BaseState.apply(this, arguments);
@@ -7225,6 +7283,12 @@ Util.inherit(TalkState, BaseState);
 
 // セリフ
 TalkState.prototype.serifInfo = function(){
+	var serif = document.getElementById("stage1_after").value;
+	// TODO: DEBUG
+	if(Config.DEBUG && serif.length > 1) {
+		return JSON.parse(serif);
+	}
+
 	return this.stage.currentStageSerifAfter();
 };
 
@@ -7236,7 +7300,7 @@ TalkState.prototype.notifyTalkEnd = function () {
 
 module.exports = TalkState;
 
-},{"../../../util":86,"./talk_base":50}],50:[function(require,module,exports){
+},{"../../../config":1,"../../../util":86,"./talk_base":50}],50:[function(require,module,exports){
 'use strict';
 
 var BaseState = require('./base');
@@ -7255,11 +7319,6 @@ Util.inherit(State, BaseState);
 // 初期化
 State.prototype.init = function(){
 	BaseState.prototype.init.apply(this, arguments);
-
-	// TODO: DEBUG
-	if(Config.DEBUG) {
-		//this.serif.script = JSON.parse(document.getElementById("stage1_before").value);
-	}
 
 	this.serif = new Serif(this.serifInfo());
 	this.serif.init();
@@ -7453,6 +7512,7 @@ module.exports = State;
 
 var BaseState = require('./talk_base');
 var Util = require('../../../util');
+var Config = require('../../../config');
 
 var TalkState = function(stage) {
 	BaseState.apply(this, arguments);
@@ -7461,6 +7521,12 @@ Util.inherit(TalkState, BaseState);
 
 // セリフ情報
 TalkState.prototype.serifInfo = function(){
+	var serif = document.getElementById("stage1_before").value;
+	// TODO: DEBUG
+	if(Config.DEBUG && serif.length > 1) {
+		return JSON.parse(serif);
+	}
+
 	return this.stage.currentStageSerifBefore();
 };
 
@@ -7471,7 +7537,7 @@ TalkState.prototype.notifyTalkEnd = function () {
 
 module.exports = TalkState;
 
-},{"../../../util":86,"./talk_base":50}],52:[function(require,module,exports){
+},{"../../../config":1,"../../../util":86,"./talk_base":50}],52:[function(require,module,exports){
 'use strict';
 
 // 敵生成終了から次のシーンまでの間隔
@@ -8218,13 +8284,21 @@ Spell.prototype.init = function() {
 };
 
 Spell.prototype.runInSpellExecute = function() {
+	// ボムの初期位置が蓮子からどれだけ離れているか
+	var r = 30;
+
 	// ボム生成
 	if(this.frame_count % BOMB_PER_COUNT === 0) {
 		for(var i = 0; i < BOMB_NUM; i++) {
-			this.stage.shot_manager.create(Constant.SHOT_BOMB_TYPE,
-				this.stage.character.x,
-				this.stage.character.y,
-				{ 'r': 0, 'theta': ((360 / BOMB_NUM) | 0) * i, 'ra': 0.05, 'raa': 0.01 }
+			var theta = ((360 / BOMB_NUM) | 0) * i;
+			var ax = r * Math.cos(Util.thetaToRadian(theta));
+			var ay = r * Math.sin(Util.thetaToRadian(theta));
+
+			this.stage.shot_manager.create(
+				Constant.SHOT_BOMB_TYPE,
+				this.stage.character.x + ax,
+				this.stage.character.y + ay,
+				{ 'r': 0, 'theta': theta, 'ra': 0.05, 'raa': 0.01 }
 			);
 		}
 
@@ -8329,7 +8403,7 @@ Spell.prototype.aimedToChara = function() {
 	this.maru_shot_theta = Util.radianToTheta(Math.atan2(ay, ax));
 };
 
-Spell.prototype.name = function() { return "風符「天狗風」"; };
+Spell.prototype.name = function() { return "風符「落葉広葉樹」"; };
 Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 module.exports = Spell;
@@ -8367,7 +8441,7 @@ Spell.prototype.runInSpellExecute = function() {
 	this.shot(Constant.BULLET_TINY_RED,    this.boss.x, this.boss.y, vector2);
 };
 
-Spell.prototype.name = function() { return "風符「天狗風」"; };
+Spell.prototype.name = function() { return "風符「五月雨の紅葉」"; };
 Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 Spell.prototype.initX = function() { return this.stage.width/2; };
@@ -8426,7 +8500,7 @@ Spell.prototype.runInSpellExecute = function() {
 	}
 };
 
-Spell.prototype.name = function() { return "風符「蝉しぐれ」"; };
+Spell.prototype.name = function() { return "風符「落葉時雨」"; };
 Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 module.exports = Spell;
@@ -8491,7 +8565,7 @@ Spell.prototype.runInSpellExecute = function() {
 	}
 };
 
-Spell.prototype.name = function() { return "風符「天狗風」"; };
+Spell.prototype.name = function() { return "「幻想風靡」"; };
 Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 //Spell.prototype.initX = function() { return 240; };
@@ -8530,7 +8604,7 @@ Spell.prototype.runInSpellExecute = function() {
 	BaseSpell.prototype.runInSpellExecute.apply(this, arguments);
 };
 
-Spell.prototype.name = function() { return "風符「蝉しぐれ」"; };
+Spell.prototype.name = function() { return "秘術「半神の戯曲」"; };
 Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 // 初期 x, y 座標
@@ -8670,7 +8744,7 @@ Spell.prototype.shotCommonSense = function(x, y) {
 	}
 };
 
-Spell.prototype.name = function() { return "風符「天狗風」"; };
+Spell.prototype.name = function() { return "「この幻想郷では常識に囚われてはいけないのですね」"; };
 Spell.prototype.charaImage = function() { return "merry_normal"; };
 
 // 初期 x, y 座標
@@ -8703,7 +8777,7 @@ Spell.prototype.runInSpellExecute = function() {
 	BaseSpell.prototype.runInSpellExecute.apply(this, arguments);
 };
 
-Spell.prototype.name = function() { return "風符「蝉しぐれ」"; };
+Spell.prototype.name = function() { return "奇跡「客星の誕生」"; };
 Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 // 初期 x, y 座標
@@ -8923,7 +8997,7 @@ Spell.prototype.updateDisplayInSpellExecute = function () {
 	this.generator_manager.updateDisplay();
 };
 
-Spell.prototype.name = function() { return "風符「天狗風」"; };
+Spell.prototype.name = function() { return "花符「日回りの蝶」"; };
 Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 // 初期 x, y 座標
@@ -9112,7 +9186,7 @@ Spell.prototype.updateDisplayInSpellExecute = function () {
 
 
 
-Spell.prototype.name = function() { return "風符「天狗風」"; };
+Spell.prototype.name = function() { return "花符「幻想開花」"; };
 Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 // 初期 x, y 座標
@@ -9216,7 +9290,7 @@ Spell.prototype.runInSpellExecute = function() {
 
 };
 
-Spell.prototype.name = function() { return "風符「天狗風」"; };
+Spell.prototype.name = function() { return "花符「サンフラワーゲーム」"; };
 Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 Spell.prototype.initX = function() { return 100; };
@@ -9304,7 +9378,7 @@ Spell.prototype.runInSpellExecute = function() {
 	}
 };
 
-Spell.prototype.name = function() { return "風符「天狗風」"; };
+Spell.prototype.name = function() { return "罔両「無限呪縛」"; };
 Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 // 初期 x, y 座標
@@ -9457,7 +9531,7 @@ Spell.prototype.updateDisplayInSpellExecute = function () {
 
 
 
-Spell.prototype.name = function() { return "風符「天狗風」"; };
+Spell.prototype.name = function() { return "境符「スキマツアーへご招待」"; };
 Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 // 初期 x, y 座標
@@ -9542,7 +9616,7 @@ Spell.prototype.runInSpellExecute = function() {
 	}
 };
 
-Spell.prototype.name = function() { return "風符「天狗風」"; };
+Spell.prototype.name = function() { return "境符「十二次元と十三次元の境界」"; };
 Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 // 初期 x, y 座標
@@ -9624,7 +9698,7 @@ Spell.prototype.runInSpellExecute = function() {
 	}
 };
 
-Spell.prototype.name = function() { return "風符「天狗風」"; };
+Spell.prototype.name = function() { return "?????????"; };
 Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 Spell.prototype.initX = function() { return 100; };
@@ -9738,7 +9812,7 @@ Spell.prototype.aimedToChara = function() {
 	this.maru_shot_theta = Util.radianToTheta(Math.atan2(ay, ax));
 };
 
-Spell.prototype.name = function() { return "風符「天狗風」"; };
+Spell.prototype.name = function() { return "?????????"; };
 
 Spell.prototype.charaImage = function() { return "aya_normal"; };
 
@@ -9768,7 +9842,7 @@ Spell.prototype.runInSpellExecute = function() {
 	BaseSpell.prototype.runInSpellExecute.apply(this, arguments);
 };
 
-Spell.prototype.name = function() { return "風符「蝉しぐれ」"; };
+Spell.prototype.name = function() { return "?????????"; };
 Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 // 初期 x, y 座標
