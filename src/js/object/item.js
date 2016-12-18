@@ -37,11 +37,11 @@ Item.prototype.init = function(type_id, x, y) {
 
 	if(this.isPower()) {
 		// 弾のスプライト上の位置
-		this.indexX = 4; this.indexY = 0;
+		this.indexX = 0; this.indexY = 0;
 	}
 	else if(this.isScore()) {
 		// 弾のスプライト上の位置
-		this.indexX = 0; this.indexY = 0;
+		this.indexX = 4; this.indexY = 0;
 	}
 
 	// 自機に吸引されるかどうか
