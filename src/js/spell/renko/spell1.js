@@ -23,13 +23,21 @@ Spell.prototype.init = function() {
 };
 
 Spell.prototype.runInSpellExecute = function() {
+	// ボムの初期位置が蓮子からどれだけ離れているか
+	var r = 30;
+
 	// ボム生成
 	if(this.frame_count % BOMB_PER_COUNT === 0) {
 		for(var i = 0; i < BOMB_NUM; i++) {
-			this.stage.shot_manager.create(Constant.SHOT_BOMB_TYPE,
-				this.stage.character.x,
-				this.stage.character.y,
-				{ 'r': 0, 'theta': ((360 / BOMB_NUM) | 0) * i, 'ra': 0.05, 'raa': 0.01 }
+			var theta = ((360 / BOMB_NUM) | 0) * i;
+			var ax = r * Math.cos(Util.thetaToRadian(theta));
+			var ay = r * Math.sin(Util.thetaToRadian(theta));
+
+			this.stage.shot_manager.create(
+				Constant.SHOT_BOMB_TYPE,
+				this.stage.character.x + ax,
+				this.stage.character.y + ay,
+				{ 'r': 0, 'theta': theta, 'ra': 0.05, 'raa': 0.01 }
 			);
 		}
 
