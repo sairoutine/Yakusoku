@@ -388,6 +388,13 @@ Scene.prototype._showBG = function() {
 		height
 	);
 
+	// ボスの際は背景を暗くする
+	if(this.state === Constant.BOSS_STATE) {
+		this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
+		this.game.surface.globalAlpha = 0.7;
+		this.game.surface.fillRect(0, 0, this.width, this.height);
+	}
+
 	this.game.surface.restore();
 };
 
