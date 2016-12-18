@@ -17,11 +17,6 @@ Util.inherit(State, BaseState);
 State.prototype.init = function(){
 	BaseState.prototype.init.apply(this, arguments);
 
-	// TODO: DEBUG
-	if(Config.DEBUG) {
-		//this.serif.script = JSON.parse(document.getElementById("stage1_before").value);
-	}
-
 	this.serif = new Serif(this.serifInfo());
 	this.serif.init();
 };
