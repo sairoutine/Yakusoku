@@ -114,6 +114,15 @@ State.prototype.updateDisplay = function(){
 	// スペルカード残り時間
 	this._showVital();
 
+	// スペカ名
+	var ctx = this.game.surface;
+	ctx.save();
+	ctx.fillStyle = 'rgb( 255, 255, 255 )';
+	ctx.textAlign = 'left';
+	ctx.font = "14px 'Migu'" ;
+	ctx.fillText(this.stage.currentStageBoss().currentSpellName(), VITAL_OUTLINE_MARGIN, 25);
+	ctx.restore();
+
 };
 // スペルカード残り時間
 State.prototype._showVital = function(){
@@ -124,7 +133,7 @@ State.prototype._showVital = function(){
 	ctx.fillRect(
 		VITAL_OUTLINE_MARGIN,
 		VITAL_OUTLINE_MARGIN,
-		this.stage.currentStageBoss().vital / this.stage.currentStageBoss().max_vital * (this.stage.width - VITAL_OUTLINE_MARGIN * 2),
+		this.stage.currentStageBoss().vitalPercentage() * (this.stage.width - VITAL_OUTLINE_MARGIN * 2),
 		VITAL_OUTLINE_MARGIN
 	);
 
