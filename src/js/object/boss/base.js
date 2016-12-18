@@ -5,6 +5,7 @@
 // 基底クラス
 var BaseObject = require('../base');
 var Util = require('../../util');
+var Config = require('../../config');
 
 var Shot = require('../../object/shot');
 
@@ -65,8 +66,8 @@ BossBase.prototype.init = function() {
 	// 初期HP
 	this.vital = this.MAX_VITAL();
 
-	// 発動スペル
-	this.spell_index = 0;
+	// 発動スペル TODO:
+	this.spell_index = Config.DEBUG && Config.DEBUG_SPELL ? Config.DEBUG_SPELL : 0;
 
 	// スペルカード発動！
 	this.executeSpell();

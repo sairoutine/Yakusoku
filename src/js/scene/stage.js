@@ -152,7 +152,7 @@ Scene.prototype.init = function() {
 
 	this.score = 0; // スコア
 	this.state = null; // ステージの現在の状態
-	this.stage = Config.DEBUG && Config.DEBUG_BOSS ? Config.DEBUG_BOSS : 0; // 現在のステージ
+	this.stage = Config.DEBUG && Config.DEBUG_STAGE ? Config.DEBUG_STAGE : 0; // 現在のステージ
 
 	for(var i = 0, len = this.objects.length; i < len; i++) {
 		this.objects[i].init();
