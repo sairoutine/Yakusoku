@@ -357,6 +357,10 @@ Character.prototype.useBomb = function() {
 	// 敵の弾を vanish する
 	this.stage.bullet_manager.notifyUseBomb();
 
+	// アイテムを自機に吸引させる
+	this.stage.item_manager.notifyUseBomb();
+
+
 	// ボムを生成
 	this.spell.init();
 };

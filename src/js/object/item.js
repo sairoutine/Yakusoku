@@ -44,14 +44,12 @@ Item.prototype.init = function(type_id, x, y) {
 		this.indexX = 0; this.indexY = 0;
 	}
 
-	// 自機とグレイズ済かどうか
-	this.is_graze = false;
+	// 自機に吸引されるかどうか
+	this.is_vacuum = false;
 };
 
 Item.prototype.run = function() {
-	// 自機とグレイズ済あるいは
-	// 自機がボム使用中なら、キャラに向けて逐一ベクトルを修正
-	if(this.is_graze || this.stage.character.is_using_bomb) {
+	if(this.is_vacuum) {
 		this.setVector([
 			{
 				count: 0,
@@ -92,8 +90,14 @@ Item.prototype.isPower = function() {
 
 // グレイズした時
 Item.prototype.notifyGraze = function(obj) {
-	// このアイテムは既にグレイズ済
-	this.is_graze = true;
+	// グレイズ範囲に入ったら、自機に向かって吸引させる
+	this.is_vacuum = true;
+};
+
+// ボムの使用を通知
+Item.prototype.notifyUseBomb = function() {
+	// ボムを使ったら、自機に向かって吸引させる
+	this.is_vacuum = true;
 };
 
 // 当たり判定サイズ
