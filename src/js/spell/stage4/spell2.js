@@ -141,7 +141,7 @@ Spell.prototype.updateDisplayInSpellExecute = function () {
 
 
 
-Spell.prototype.name = function() { return "風符「天狗風」"; };
+Spell.prototype.name = function() { return "境符「スキマツアーへご招待」"; };
 Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 // 初期 x, y 座標

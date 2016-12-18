@@ -88,7 +88,7 @@ Spell.prototype.aimedToChara = function() {
 	this.maru_shot_theta = Util.radianToTheta(Math.atan2(ay, ax));
 };
 
-Spell.prototype.name = function() { return "風符「天狗風」"; };
+Spell.prototype.name = function() { return "風符「落葉広葉樹」"; };
 Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 module.exports = Spell;

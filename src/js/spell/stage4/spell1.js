@@ -70,7 +70,7 @@ Spell.prototype.runInSpellExecute = function() {
 	}
 };
 
-Spell.prototype.name = function() { return "風符「天狗風」"; };
+Spell.prototype.name = function() { return "罔両「無限呪縛」"; };
 Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 // 初期 x, y 座標

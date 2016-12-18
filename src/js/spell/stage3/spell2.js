@@ -177,7 +177,7 @@ Spell.prototype.updateDisplayInSpellExecute = function () {
 
 
 
-Spell.prototype.name = function() { return "風符「天狗風」"; };
+Spell.prototype.name = function() { return "花符「幻想開花」"; };
 Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 // 初期 x, y 座標

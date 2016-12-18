@@ -70,7 +70,7 @@ Spell.prototype.runInSpellExecute = function() {
 	}
 };
 
-Spell.prototype.name = function() { return "風符「天狗風」"; };
+Spell.prototype.name = function() { return "?????????"; };
 Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 Spell.prototype.initX = function() { return 100; };

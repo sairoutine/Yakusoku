@@ -30,7 +30,7 @@ Spell.prototype.runInSpellExecute = function() {
 	this.shot(Constant.BULLET_TINY_RED,    this.boss.x, this.boss.y, vector2);
 };
 
-Spell.prototype.name = function() { return "風符「天狗風」"; };
+Spell.prototype.name = function() { return "風符「五月雨の紅葉」"; };
 Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 Spell.prototype.initX = function() { return this.stage.width/2; };

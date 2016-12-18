@@ -21,7 +21,7 @@ Spell.prototype.runInSpellExecute = function() {
 	BaseSpell.prototype.runInSpellExecute.apply(this, arguments);
 };
 
-Spell.prototype.name = function() { return "風符「蝉しぐれ」"; };
+Spell.prototype.name = function() { return "?????????"; };
 Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 // 初期 x, y 座標

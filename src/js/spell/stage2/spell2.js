@@ -73,7 +73,7 @@ Spell.prototype.shotCommonSense = function(x, y) {
 	}
 };
 
-Spell.prototype.name = function() { return "風符「天狗風」"; };
+Spell.prototype.name = function() { return "「この幻想郷では常識に囚われてはいけないのですね」"; };
 Spell.prototype.charaImage = function() { return "merry_normal"; };
 
 // 初期 x, y 座標

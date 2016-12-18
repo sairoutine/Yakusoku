@@ -41,7 +41,7 @@ Spell.prototype.runInSpellExecute = function() {
 	}
 };
 
-Spell.prototype.name = function() { return "風符「蝉しぐれ」"; };
+Spell.prototype.name = function() { return "風符「落葉時雨」"; };
 Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 module.exports = Spell;
