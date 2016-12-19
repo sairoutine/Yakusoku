@@ -6,7 +6,7 @@ var Config = {
 	DEBUG: true,
 	//DEBUG_SCENE: Constant.STAGE_SCENE,
 	//DEBUG_STATE: Constant.BOSS_STATE,
-	//DEBUG_STAGE: 0,
+	//DEBUG_STAGE: 4,
 	//DEBUG_SPELL: 0,
 	//DEBUG_MUSIC_OFF: true,
 	IMAGES: {
@@ -19,35 +19,69 @@ var Config = {
 		fukidashi_normal:  'image/fukidashi_blue.png',
 		fukidashi_orange:  'image/fukidashi_orange.png',
 		fukidashi_purple:  'image/fukidashi_purple.png',
-		// キャラ立ち絵
-		aya_normal:  'image/aya_normal.png',
-		aya_dissatisfied:  'image/aya_dissatisfied.png',
-		aya_smile:  'image/aya_smile.png',
 
-		ganger_normal:  'image/ganger_normal.png',
-		ganger_owata:  'image/ganger_owata.png',
-		hatena_normal:  'image/ganger_normal.png',
-		hatena_owata:  'image/ganger_owata.png',
+		/* キャラ立ち絵 */
 
-		renko_normal:  'image/renko_normal.png',
-		renko_disappointed:  'image/renko_disappointed.png',
-		renko_surprised:  'image/renko_surprised.png',
-		renko_trouble:  'image/renko_trouble.png',
-		renko_calm:  'image/renko_calm.png',
+		// 射命丸 文
+		aya_normal:       'image/aya/normal.png',
+		aya_dissatisfied: 'image/aya/dissatisfied.png',
+		aya_smile:        'image/aya/smile.png',
 
-		merry_normal:  'image/merry_normal.png',
-		merry_disappointed:  'image/merry_disappointed.png',
-		merry_trouble:  'image/merry_trouble.png',
+		// 東風谷 早苗
+		sanae_normal:        'image/sanae/normal.png',
+		sanae_smile:        'image/sanae/smile.png',
+		sanae_dissatisfied:        'image/sanae/dissatisfied.png',
 
-		// 名前
-		name_aya:  'image/name_aya.png',
-		name_ganger:  'image/name_ganger.png',
-		name_hatena:  'image/name_hatena.png',
+		// 風見 幽香
+		yuuka_grin:   'image/yuuka/grin.png',
+		yuuka_normal: 'image/yuuka/normal.png',
+
+		// 八雲 紫
+		yukari_anger:        'image/yukari/anger.png',
+		yukari_disappointed: 'image/yukari/disappointed.png',
+		yukari_normal:       'image/yukari/normal.png',
+
+		// ドッペルゲンガー
+		ganger_normal: 'image/ganger/normal.png',
+		ganger_owata:  'image/ganger/owata.png',
+		ganger_smile:  'image/ganger/smile.png',
+		hatena_normal: 'image/ganger/normal.png',
+		hatena_owata:  'image/ganger/owata.png',
+		hatena_smile:  'image/ganger/smile.png',
+
+		// 蓮子
+		renko_normal:         'image/renko/normal.png',
+		renko_disappointed:   'image/renko/disappointed.png',
+		renko_surprised:      'image/renko/surprised.png',
+		renko_troubled:       'image/renko/troubled.png',
+		renko_troubled_blood: 'image/renko/troubled_blood.png',
+		renko_calm:           'image/renko/calm.png',
+		renko_calm_blood:     'image/renko/calm_blood.png',
+		renko_normal_blood:   'image/renko/normal_blood.png',
+		renko_pain:           'image/renko/pain.png',
+		renko_pain_blood:     'image/renko/pain_blood.png',
+		renko_sad:            'image/renko/sad.png',
+		renko_smile_blood:    'image/renko/smile_blood.png',
+
+		// メリー
+		merry_normal:       'image/merry/normal.png',
+		merry_disappointed: 'image/merry/disappointed.png',
+		merry_troubled:     'image/merry/troubled.png',
+		merry_anger:        'image/merry/anger.png',
+		merry_calm:         'image/merry/calm.png',
+		merry_furious:      'image/merry/furious.png',
+		merry_grin:         'image/merry/grin.png',
+		merry_sad:          'image/merry/sad.png',
+
+		// 名前プレート
+		name_aya:    'image/name_aya.png',
+		name_ganger: 'image/name_ganger.png',
+		name_hatena: 'image/name_hatena.png',
 		name_merry:  'image/name_merry.png',
 		name_renko:  'image/name_renko.png',
-		name_yuka:  'image/name_yuka.png',
+		name_yuuka:  'image/name_yuuka.png',
 		name_sanae:  'image/name_sanae.png',
-		name_yukari:  'image/name_yukari.png',
+		name_yukari: 'image/name_yukari.png',
 
 		stage1_bg: 'image/stage1_bg.png',
 		stage2_bg: 'image/stage2_bg.png',
