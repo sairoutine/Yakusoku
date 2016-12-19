@@ -7,7 +7,7 @@ var Config = {
 	DEBUG: true,
 	//DEBUG_SCENE: Constant.STAGE_SCENE,
 	//DEBUG_STATE: Constant.BOSS_STATE,
-	//DEBUG_STAGE: 0,
+	//DEBUG_STAGE: 4,
 	//DEBUG_SPELL: 0,
 	//DEBUG_MUSIC_OFF: true,
 	IMAGES: {
@@ -20,35 +20,69 @@ var Config = {
 		fukidashi_normal:  'image/fukidashi_blue.png',
 		fukidashi_orange:  'image/fukidashi_orange.png',
 		fukidashi_purple:  'image/fukidashi_purple.png',
-		// キャラ立ち絵
-		aya_normal:  'image/aya_normal.png',
-		aya_dissatisfied:  'image/aya_dissatisfied.png',
-		aya_smile:  'image/aya_smile.png',
 
-		ganger_normal:  'image/ganger_normal.png',
-		ganger_owata:  'image/ganger_owata.png',
-		hatena_normal:  'image/ganger_normal.png',
-		hatena_owata:  'image/ganger_owata.png',
+		/* キャラ立ち絵 */
 
-		renko_normal:  'image/renko_normal.png',
-		renko_disappointed:  'image/renko_disappointed.png',
-		renko_surprised:  'image/renko_surprised.png',
-		renko_trouble:  'image/renko_trouble.png',
-		renko_calm:  'image/renko_calm.png',
+		// 射命丸 文
+		aya_normal:       'image/aya/normal.png',
+		aya_dissatisfied: 'image/aya/dissatisfied.png',
+		aya_smile:        'image/aya/smile.png',
 
-		merry_normal:  'image/merry_normal.png',
-		merry_disappointed:  'image/merry_disappointed.png',
-		merry_trouble:  'image/merry_trouble.png',
+		// 東風谷 早苗
+		sanae_normal:        'image/sanae/normal.png',
+		sanae_smile:        'image/sanae/smile.png',
+		sanae_dissatisfied:        'image/sanae/dissatisfied.png',
 
-		// 名前
-		name_aya:  'image/name_aya.png',
-		name_ganger:  'image/name_ganger.png',
-		name_hatena:  'image/name_hatena.png',
+		// 風見 幽香
+		yuuka_grin:   'image/yuuka/grin.png',
+		yuuka_normal: 'image/yuuka/normal.png',
+
+		// 八雲 紫
+		yukari_anger:        'image/yukari/anger.png',
+		yukari_disappointed: 'image/yukari/disappointed.png',
+		yukari_normal:       'image/yukari/normal.png',
+
+		// ドッペルゲンガー
+		ganger_normal: 'image/ganger/normal.png',
+		ganger_owata:  'image/ganger/owata.png',
+		ganger_smile:  'image/ganger/smile.png',
+		hatena_normal: 'image/ganger/normal.png',
+		hatena_owata:  'image/ganger/owata.png',
+		hatena_smile:  'image/ganger/smile.png',
+
+		// 蓮子
+		renko_normal:         'image/renko/normal.png',
+		renko_disappointed:   'image/renko/disappointed.png',
+		renko_surprised:      'image/renko/surprised.png',
+		renko_troubled:       'image/renko/troubled.png',
+		renko_troubled_blood: 'image/renko/troubled_blood.png',
+		renko_calm:           'image/renko/calm.png',
+		renko_calm_blood:     'image/renko/calm_blood.png',
+		renko_normal_blood:   'image/renko/normal_blood.png',
+		renko_pain:           'image/renko/pain.png',
+		renko_pain_blood:     'image/renko/pain_blood.png',
+		renko_sad:            'image/renko/sad.png',
+		renko_smile_blood:    'image/renko/smile_blood.png',
+
+		// メリー
+		merry_normal:       'image/merry/normal.png',
+		merry_disappointed: 'image/merry/disappointed.png',
+		merry_troubled:     'image/merry/troubled.png',
+		merry_anger:        'image/merry/anger.png',
+		merry_calm:         'image/merry/calm.png',
+		merry_furious:      'image/merry/furious.png',
+		merry_grin:         'image/merry/grin.png',
+		merry_sad:          'image/merry/sad.png',
+
+		// 名前プレート
+		name_aya:    'image/name_aya.png',
+		name_ganger: 'image/name_ganger.png',
+		name_hatena: 'image/name_hatena.png',
 		name_merry:  'image/name_merry.png',
 		name_renko:  'image/name_renko.png',
-		name_yuka:  'image/name_yuka.png',
+		name_yuuka:  'image/name_yuuka.png',
 		name_sanae:  'image/name_sanae.png',
-		name_yukari:  'image/name_yukari.png',
+		name_yukari: 'image/name_yukari.png',
 
 		stage1_bg: 'image/stage1_bg.png',
 		stage2_bg: 'image/stage2_bg.png',
@@ -7771,7 +7805,7 @@ module.exports = Serif;
 'use strict';
 
 // セリフ
-var Serif = [{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":null},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"早朝の散歩も良いものね。"},{"pos":"right","exp":null,"chara":null,"fukidashi":"normal","serif":"…約束を守りなさい。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"ん…誰？\n誰かいるの？"},{"pos":"right","exp":"normal","chara":"hatena","fukidashi":null,"serif":"　"},{"pos":"right","exp":"owata","chara":"hatena","fukidashi":"orange","serif":"わたしです"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"なんだ私か。"},{"pos":"right","exp":"normal","chara":"hatena","fukidashi":"normal","serif":"え…。\nちょっとは驚きなさいよ。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"驚いたわよ。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"で、貴方誰なの？\n見たところ、私に\nそっくりだけど。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"orange","serif":"…ひょっとして、\nドッペルゲンガーってやつ？"},{"pos":"right","exp":"normal","chara":"ganger","fukidashi":"normal","serif":"そのようなものね。\nそんなことより、\n貴方に大事な話があるの。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"なにかしら。"},{"pos":"right","exp":"normal","chara":"ganger","fukidashi":"normal","serif":"約束を守りなさい。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"約束？\n何か約束してたっけ。"},{"pos":"right","exp":"normal","chara":"ganger","fukidashi":"normal","serif":"ほら、博麗神社に…。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"orange","serif":"あぁ、そういえば前に\nメリーと約束してたわ。"},{"pos":"right","exp":null,"chara":null,"fukidashi":null,"serif":null},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"博麗神社の入り口を\n調べようって。\nそのことかしら？"},{"pos":"right","exp":"normal","chara":"merry","fukidashi":"orange","serif":"蓮子？\nこんなところで何してるの？"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"orange","serif":"あ、噂をすれば。\nメリー、見て！\n私のドッペルゲンガーが…"},{"pos":"right","exp":"normal","chara":null,"fukidashi":"normal","serif":null},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"あれ？いない…。"},{"pos":"right","exp":"normal","chara":"merry","fukidashi":"normal","serif":"どうしたの？"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"それが、\nかくかくしかじかで。"},{"pos":"right","exp":"normal","chara":"merry","fukidashi":"normal","serif":"ふーん。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"覚えてる？前に博霊神社の\n入り口を調べようって\n約束してたこと。"},{"pos":"right","exp":"normal","chara":"merry","fukidashi":"normal","serif":"そうだっけ？"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"orange","serif":"ねえ、今から行ってみない？"},{"pos":"right","exp":"trouble","chara":"merry","fukidashi":"normal","serif":"今から？面倒だわ…。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"なんだか気になるのよ。"},{"pos":"right","exp":"disappointed","chara":"merry","fukidashi":"normal","serif":"うっ…急にめまいと頭痛が。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"絶対嘘でしょ、それ。"},{"pos":"right","exp":"disappointed","chara":"merry","fukidashi":"normal","serif":"全身の骨が折れてるかも。"},{"pos":"left","exp":"surprised","chara":"renko","fukidashi":"purple","serif":"さっきまで\n元気だったじゃない！"},{"pos":"right","exp":"trouble","chara":"merry","fukidashi":"normal","serif":"うーん、気が進まないわ。"},{"pos":"left","exp":"disappointed","chara":"renko","fukidashi":"normal","serif":"はぁ…。そんなに嫌なら\n仕方ないわね。\n私一人で行ってくるわ。"}];
+var Serif = [{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":null},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"早朝の散歩も良いものね。"},{"pos":"right","exp":null,"chara":null,"fukidashi":"normal","serif":"…約束を守りなさい。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"ん…誰？\n誰かいるの？"},{"pos":"right","exp":"normal","chara":"hatena","fukidashi":null,"serif":"　"},{"pos":"right","exp":"owata","chara":"hatena","fukidashi":"orange","serif":"わたしです"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"なんだ私か。"},{"pos":"right","exp":"normal","chara":"hatena","fukidashi":"normal","serif":"え…。\nちょっとは驚きなさいよ。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"驚いたわよ。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"で、貴方誰なの？\n見たところ、私に\nそっくりだけど。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"orange","serif":"…ひょっとして、\nドッペルゲンガーってやつ？"},{"pos":"right","exp":"normal","chara":"ganger","fukidashi":"normal","serif":"そのようなものね。\nそんなことより、\n貴方に大事な話があるの。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"なにかしら。"},{"pos":"right","exp":"normal","chara":"ganger","fukidashi":"normal","serif":"約束を守りなさい。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"約束？\n何か約束してたっけ。"},{"pos":"right","exp":"normal","chara":"ganger","fukidashi":"normal","serif":"ほら、博麗神社に…。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"orange","serif":"あぁ、そういえば前に\nメリーと約束してたわ。"},{"pos":"right","exp":null,"chara":null,"fukidashi":null,"serif":null},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"博麗神社の入り口を\n調べようって。\nそのことかしら？"},{"pos":"right","exp":"normal","chara":"merry","fukidashi":"orange","serif":"蓮子？\nこんなところで何してるの？"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"orange","serif":"あ、噂をすれば。\nメリー、見て！\n私のドッペルゲンガーが…"},{"pos":"right","exp":"normal","chara":null,"fukidashi":"normal","serif":null},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"あれ？いない…。"},{"pos":"right","exp":"normal","chara":"merry","fukidashi":"normal","serif":"どうしたの？"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"それが、\nかくかくしかじかで。"},{"pos":"right","exp":"normal","chara":"merry","fukidashi":"normal","serif":"ふーん。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"覚えてる？前に博霊神社の\n入り口を調べようって\n約束してたこと。"},{"pos":"right","exp":"normal","chara":"merry","fukidashi":"normal","serif":"そうだっけ？"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"orange","serif":"ねえ、今から行ってみない？"},{"pos":"right","exp":"troubled","chara":"merry","fukidashi":"normal","serif":"今から？面倒だわ…。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"なんだか気になるのよ。"},{"pos":"right","exp":"disappointed","chara":"merry","fukidashi":"normal","serif":"うっ…急にめまいと頭痛が。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"絶対嘘でしょ、それ。"},{"pos":"right","exp":"disappointed","chara":"merry","fukidashi":"normal","serif":"全身の骨が折れてるかも。"},{"pos":"left","exp":"surprised","chara":"renko","fukidashi":"purple","serif":"さっきまで\n元気だったじゃない！"},{"pos":"right","exp":"troubled","chara":"merry","fukidashi":"normal","serif":"うーん、気が進まないわ。"},{"pos":"left","exp":"disappointed","chara":"renko","fukidashi":"normal","serif":"はぁ…。そんなに嫌なら\n仕方ないわね。\n私一人で行ってくるわ。"}];
 module.exports = Serif;
 
 },{}],56:[function(require,module,exports){
@@ -7786,7 +7820,7 @@ module.exports = Serif;
 'use strict';
 
 // セリフ
-var Serif= [{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"見覚えのない場所に\n来てしまったわ。\n道に迷ったようね。"},{"pos":"right","exp":"smile","chara":"aya","fukidashi":"orange","serif":"あやややや。\n挙動の不審な人間を\n発見しました！"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"あぁ、ちょうど良かったわ。\n博麗神社へはどう行けば…"},{"pos":"right","exp":"smile","chara":"aya","fukidashi":"orange","serif":"早速、取材してみようと\n思います！"},{"pos":"left","exp":"trouble","chara":"renko","fukidashi":"normal","serif":"もしもーし？"}];
+var Serif= [{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"見覚えのない場所に\n来てしまったわ。\n道に迷ったようね。"},{"pos":"right","exp":"smile","chara":"aya","fukidashi":"orange","serif":"あやややや。\n挙動の不審な人間を\n発見しました！"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"あぁ、ちょうど良かったわ。\n博麗神社へはどう行けば…"},{"pos":"right","exp":"smile","chara":"aya","fukidashi":"orange","serif":"早速、取材してみようと\n思います！"},{"pos":"left","exp":"troubled","chara":"renko","fukidashi":"normal","serif":"もしもーし？"}];
 
 module.exports = Serif;
 
@@ -8605,7 +8639,7 @@ Spell.prototype.runInSpellExecute = function() {
 };
 
 Spell.prototype.name = function() { return "秘術「半神の戯曲」"; };
-Spell.prototype.charaImage = function() { return "aya_normal"; };
+Spell.prototype.charaImage = function() { return "sanae_normal"; };
 
 // 初期 x, y 座標
 Spell.prototype.initX = function( ) { return 240; };
@@ -8745,7 +8779,7 @@ Spell.prototype.shotCommonSense = function(x, y) {
 };
 
 Spell.prototype.name = function() { return "「この幻想郷では常識に囚われてはいけないのですね」"; };
-Spell.prototype.charaImage = function() { return "merry_normal"; };
+Spell.prototype.charaImage = function() { return "sanae_normal"; };
 
 // 初期 x, y 座標
 Spell.prototype.initX = function( ) { return 240; };
@@ -8778,7 +8812,7 @@ Spell.prototype.runInSpellExecute = function() {
 };
 
 Spell.prototype.name = function() { return "奇跡「客星の誕生」"; };
-Spell.prototype.charaImage = function() { return "aya_normal"; };
+Spell.prototype.charaImage = function() { return "sanae_normal"; };
 
 // 初期 x, y 座標
 Spell.prototype.initX = function( ) { return 240; };
@@ -8998,7 +9032,7 @@ Spell.prototype.updateDisplayInSpellExecute = function () {
 };
 
 Spell.prototype.name = function() { return "花符「日回りの蝶」"; };
-Spell.prototype.charaImage = function() { return "aya_normal"; };
+Spell.prototype.charaImage = function() { return "yuuka_normal"; };
 
 // 初期 x, y 座標
 Spell.prototype.initX = function() { return 240; };
@@ -9187,7 +9221,7 @@ Spell.prototype.updateDisplayInSpellExecute = function () {
 
 
 Spell.prototype.name = function() { return "花符「幻想開花」"; };
-Spell.prototype.charaImage = function() { return "aya_normal"; };
+Spell.prototype.charaImage = function() { return "yuuka_normal"; };
 
 // 初期 x, y 座標
 Spell.prototype.initX = function() { return 100; };
@@ -9291,7 +9325,7 @@ Spell.prototype.runInSpellExecute = function() {
 };
 
 Spell.prototype.name = function() { return "花符「サンフラワーゲーム」"; };
-Spell.prototype.charaImage = function() { return "aya_normal"; };
+Spell.prototype.charaImage = function() { return "yuuka_normal"; };
 
 Spell.prototype.initX = function() { return 100; };
 Spell.prototype.initY = function() { return 100; };
@@ -9379,7 +9413,7 @@ Spell.prototype.runInSpellExecute = function() {
 };
 
 Spell.prototype.name = function() { return "罔両「無限呪縛」"; };
-Spell.prototype.charaImage = function() { return "aya_normal"; };
+Spell.prototype.charaImage = function() { return "yukari_normal"; };
 
 // 初期 x, y 座標
 Spell.prototype.initX = function() { return 240; };
@@ -9532,7 +9566,7 @@ Spell.prototype.updateDisplayInSpellExecute = function () {
 
 
 Spell.prototype.name = function() { return "境符「スキマツアーへご招待」"; };
-Spell.prototype.charaImage = function() { return "aya_normal"; };
+Spell.prototype.charaImage = function() { return "yukari_normal"; };
 
 // 初期 x, y 座標
 Spell.prototype.initX = function() { return 240; };
@@ -9617,7 +9651,7 @@ Spell.prototype.runInSpellExecute = function() {
 };
 
 Spell.prototype.name = function() { return "境符「十二次元と十三次元の境界」"; };
-Spell.prototype.charaImage = function() { return "aya_normal"; };
+Spell.prototype.charaImage = function() { return "yukari_normal"; };
 
 // 初期 x, y 座標
 //Spell.prototype.initX = function() { return 240; };
@@ -9699,7 +9733,7 @@ Spell.prototype.runInSpellExecute = function() {
 };
 
 Spell.prototype.name = function() { return "?????????"; };
-Spell.prototype.charaImage = function() { return "aya_normal"; };
+Spell.prototype.charaImage = function() { return "merry_furious"; };
 
 Spell.prototype.initX = function() { return 100; };
 Spell.prototype.initY = function() { return 100; };
@@ -9814,7 +9848,7 @@ Spell.prototype.aimedToChara = function() {
 
 Spell.prototype.name = function() { return "?????????"; };
 
-Spell.prototype.charaImage = function() { return "aya_normal"; };
+Spell.prototype.charaImage = function() { return "merry_furious"; };
 
 module.exports = Spell;
 
@@ -9843,7 +9877,7 @@ Spell.prototype.runInSpellExecute = function() {
 };
 
 Spell.prototype.name = function() { return "?????????"; };
-Spell.prototype.charaImage = function() { return "aya_normal"; };
+Spell.prototype.charaImage = function() { return "merry_furious"; };
 
 // 初期 x, y 座標
 Spell.prototype.initX = function( ) { return this.stage.width/2; };
