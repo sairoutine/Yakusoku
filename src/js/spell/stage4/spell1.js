@@ -71,7 +71,7 @@ Spell.prototype.runInSpellExecute = function() {
 };
 
 Spell.prototype.name = function() { return "罔両「無限呪縛」"; };
-Spell.prototype.charaImage = function() { return "aya_normal"; };
+Spell.prototype.charaImage = function() { return "yukari_normal"; };
 
 // 初期 x, y 座標
 Spell.prototype.initX = function() { return 240; };

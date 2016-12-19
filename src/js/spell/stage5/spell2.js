@@ -98,6 +98,6 @@ Spell.prototype.aimedToChara = function() {
 
 Spell.prototype.name = function() { return "?????????"; };
 
-Spell.prototype.charaImage = function() { return "aya_normal"; };
+Spell.prototype.charaImage = function() { return "merry_furious"; };
 
 module.exports = Spell;

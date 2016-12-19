@@ -74,7 +74,7 @@ Spell.prototype.shotCommonSense = function(x, y) {
 };
 
 Spell.prototype.name = function() { return "「この幻想郷では常識に囚われてはいけないのですね」"; };
-Spell.prototype.charaImage = function() { return "merry_normal"; };
+Spell.prototype.charaImage = function() { return "sanae_normal"; };
 
 // 初期 x, y 座標
 Spell.prototype.initX = function( ) { return 240; };

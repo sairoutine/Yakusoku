@@ -87,7 +87,7 @@ Spell.prototype.runInSpellExecute = function() {
 };
 
 Spell.prototype.name = function() { return "花符「サンフラワーゲーム」"; };
-Spell.prototype.charaImage = function() { return "aya_normal"; };
+Spell.prototype.charaImage = function() { return "yuuka_normal"; };
 
 Spell.prototype.initX = function() { return 100; };
 Spell.prototype.initY = function() { return 100; };

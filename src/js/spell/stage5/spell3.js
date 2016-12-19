@@ -22,7 +22,7 @@ Spell.prototype.runInSpellExecute = function() {
 };
 
 Spell.prototype.name = function() { return "?????????"; };
-Spell.prototype.charaImage = function() { return "aya_normal"; };
+Spell.prototype.charaImage = function() { return "merry_furious"; };
 
 // 初期 x, y 座標
 Spell.prototype.initX = function( ) { return this.stage.width/2; };

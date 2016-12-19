@@ -71,7 +71,7 @@ Spell.prototype.runInSpellExecute = function() {
 };
 
 Spell.prototype.name = function() { return "?????????"; };
-Spell.prototype.charaImage = function() { return "aya_normal"; };
+Spell.prototype.charaImage = function() { return "merry_furious"; };
 
 Spell.prototype.initX = function() { return 100; };
 Spell.prototype.initY = function() { return 100; };

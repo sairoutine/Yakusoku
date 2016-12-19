@@ -22,7 +22,7 @@ Spell.prototype.runInSpellExecute = function() {
 };
 
 Spell.prototype.name = function() { return "奇跡「客星の誕生」"; };
-Spell.prototype.charaImage = function() { return "aya_normal"; };
+Spell.prototype.charaImage = function() { return "sanae_normal"; };
 
 // 初期 x, y 座標
 Spell.prototype.initX = function( ) { return 240; };

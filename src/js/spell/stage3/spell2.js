@@ -178,7 +178,7 @@ Spell.prototype.updateDisplayInSpellExecute = function () {
 
 
 Spell.prototype.name = function() { return "花符「幻想開花」"; };
-Spell.prototype.charaImage = function() { return "aya_normal"; };
+Spell.prototype.charaImage = function() { return "yuuka_normal"; };
 
 // 初期 x, y 座標
 Spell.prototype.initX = function() { return 100; };
