@@ -30,11 +30,6 @@ State.prototype.init = function(){
 State.prototype.run = function(){
 	BaseState.prototype.run.apply(this, arguments);
 
-	// BGM start
-	if (this.frame_count === 60) {
-		this.game.playBGM('douchu');
-	}
-
 	// 道中の終了
 	if(this.enemy_appear.isEnd() &&
 		this.enemy_appear.getLastEnemyAppearCount() + END_MARGIN_COUNT < this.frame_count) {

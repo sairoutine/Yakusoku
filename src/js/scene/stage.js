@@ -25,6 +25,7 @@ var Effect = require('../object/effect');
 var Item = require('../object/item');
 
 // ステージの状態
+var StartState = require('./stage/state/start');
 var WayState = require('./stage/state/way');
 var TalkStateBefore = require('./stage/state/talk_before');
 var TalkStateAfter = require('./stage/state/talk_after');
@@ -84,6 +85,7 @@ var Scene = function(game) {
 
 	// ステージの状態一覧
 	this.states = [];
+	this.states[ Constant.START_STATE ]      = new StartState(this);
 	this.states[ Constant.WAY_STATE ]      = new WayState(this);
 	this.states[ Constant.TALK1_STATE ]    = new TalkStateBefore(this);
 	this.states[ Constant.BOSS_STATE ]     = new BossState(this);
@@ -136,6 +138,14 @@ var Scene = function(game) {
 		'stage5_bg',
 	];
 
+	// ステージ説明書き
+	this.descriptions = [
+		'幻想の地の名も無き道',
+		'寄る辺無き巫女',
+		'無限で夢幻の花の国',
+		'虚無と実存の境界',
+		'?????????',
+	];
 
 
 	this.score = 0; // スコア
@@ -160,7 +170,7 @@ Scene.prototype.init = function() {
 
 	// TODO: DEBUG
 	// 道中開始
-	this.changeState(Config.DEBUG && Config.DEBUG_STATE ? Config.DEBUG_STATE : Constant.WAY_STATE);
+	this.changeState(Config.DEBUG && Config.DEBUG_STATE ? Config.DEBUG_STATE : Constant.START_STATE);
 };
 
 // 現在のシーン
@@ -201,13 +211,18 @@ Scene.prototype.currentStageBackGround = function() {
 	return this.bg_images[this.stage];
 };
 
+// 現在のステージ背景画像
+Scene.prototype.currentStageDescription = function() {
+	return this.descriptions[this.stage];
+};
+
 // 次のステージへ
 Scene.prototype.goNextStage = function(){
 	// ステージ切り替え
 	this.stage++;
 
 	// 次のステージの道中開始
-	this.changeState(Constant.WAY_STATE);
+	this.changeState(Constant.START_STATE);
 
 	// 自機を初期位置に
 	this.character.setInitPosition();
@@ -217,6 +232,14 @@ Scene.prototype.goNextStage = function(){
 Scene.prototype.hasNextStage = function(){
 	return this.enemy_info_list[this.stage + 1] ? true : false;
 };
+
+// 現在のステージ番号
+Scene.prototype.currentStageNo = function(){
+	return this.stage + 1;
+};
+
+
+
 
 // フレーム処理
 Scene.prototype.run = function(){
@@ -408,6 +431,11 @@ Scene.prototype.notifyGameOverEnd = function() {
 	this.game.notifyGameOver();
 };
 
+// スタート時のタイトル表示の終了
+Scene.prototype.notifyStartEnd = function() {
+	// 道中シーンへ
+	this.changeState(Constant.WAY_STATE);
+};
 // 道中の終了
 Scene.prototype.notifyWayEnd = function() {
 	// ボスとの会話シーンへ
