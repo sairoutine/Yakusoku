@@ -51,6 +51,7 @@ var Config = {
 
 		// 蓮子
 		renko_normal:         'image/renko/normal.png',
+		renko_anger:          'image/renko/anger.png',
 		renko_disappointed:   'image/renko/disappointed.png',
 		renko_surprised:      'image/renko/surprised.png',
 		renko_troubled:       'image/renko/troubled.png',
