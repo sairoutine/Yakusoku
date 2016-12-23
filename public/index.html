@@ -20,19 +20,14 @@ body {
 	width:640px;
 	height:480px
 }
-#canvasdiv:-webkit-full-screen {
-	width: 100%;
-	height: 100%;
-}
-canvas {
-	width: 100%;
+#mainCanvas:-webkit-full-screen {
 	height: 100%;
 }
 </style>
 <script>
 // Electron のレンダラプロセスならば
 if(window.require) {
-	require('electron').webFrame.setZoomLevelLimits(1,1);
+	require('electron').webFrame.setZoomLevelLimits(1,1); //zoomさせない
 }
 </script>
 </head>
@@ -57,6 +52,11 @@ if(window.require) {
 			<option value="6">エンディング</option>
 		</select>
 	</td>
+	<td>
+		<input type="button" value="最大化" onclick="changeFullScreen();"><br />
+		Esc キーで戻る
+	</td>
+
 </tr>
 <tr>
 <td>

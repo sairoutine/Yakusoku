@@ -44,3 +44,19 @@ window.onerror = function (msg, file, line, column, err) {
 	window.alert(msg + "\n" + line + ":" + column);
 };
 
+window.changeFullScreen = function () {
+	var mainCanvas = document.getElementById('mainCanvas');
+	if (mainCanvas.requestFullscreen) {
+		mainCanvas.requestFullscreen();
+	}
+	else if (mainCanvas.msRequestuestFullscreen) {
+		mainCanvas.msRequestuestFullscreen();
+	}
+	else if (mainCanvas.mozRequestFullScreen) {
+		mainCanvas.mozRequestFullScreen();
+	}
+	else if (mainCanvas.webkitRequestFullscreen) {
+		mainCanvas.webkitRequestFullscreen();
+	}
+};
+
