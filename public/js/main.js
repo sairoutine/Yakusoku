@@ -7,8 +7,8 @@ var Config = {
 	DEBUG: true,
 	//DEBUG_SCENE: Constant.STAGE_SCENE,
 	//DEBUG_STATE: Constant.BOSS_STATE,
-	//DEBUG_STAGE: 4,
-	//DEBUG_SPELL: 0,
+	//DEBUG_STAGE: 1,
+	//DEBUG_SPELL: 1,
 	//DEBUG_MUSIC_OFF: true,
 	IMAGES: {
 		title_bg:  'image/title_bg.png',
@@ -90,6 +90,7 @@ var Config = {
 		stage3_bg: 'image/stage3_bg.png',
 		stage4_bg: 'image/stage4_bg.png',
 		stage5_bg: 'image/stage5_bg.png',
+		shadow:      'image/shadow.png',
 		character_renko: 'image/character_renko.png',
 		boss_aya:        'image/boss_aya.png',
 		boss_sanae:      'image/boss_sanae.png',
@@ -1541,8 +1542,8 @@ BulletTypes[Constant.BULLET_TINY_YELLOW] = {
 	'indexY':           1,
 	'width':           14,
 	'height':          20,
-	'collisionWidth':  13,
-	'collisionHeight': 13,
+	'collisionWidth':  12,
+	'collisionHeight': 12,
 	'is_rotate':       true
 };
 // 1:文：赤い弾
@@ -1552,8 +1553,8 @@ BulletTypes[Constant.BULLET_TINY_RED] = {
 	'indexY':           1,
 	'width':           14,
 	'height':          20,
-	'collisionWidth':  13,
-	'collisionHeight': 13,
+	'collisionWidth':  12,
+	'collisionHeight': 12,
 	'is_rotate':       true
 };
 // 3: 文：オレンジっぽい弾
@@ -1563,8 +1564,8 @@ BulletTypes[Constant.BULLET_TINY_ORANGE] = {
 	'indexY':           1,
 	'width':           14,
 	'height':          20,
-	'collisionWidth':  13,
-	'collisionHeight': 13,
+	'collisionWidth':  12,
+	'collisionHeight': 12,
 	'is_rotate':       true
 };
 // 8; 米びつ黄緑弾
@@ -1574,8 +1575,8 @@ BulletTypes[Constant.BULLET_TINY_LIMEGREEN] = {
 	'indexY':           1,
 	'width':           14,
 	'height':          20,
-	'collisionWidth':  13,
-	'collisionHeight': 13,
+	'collisionWidth':  12,
+	'collisionHeight': 12,
 	'is_rotate':       true
 };
 // 9: 米びつ青弾
@@ -1585,8 +1586,8 @@ BulletTypes[Constant.BULLET_TINY_BLUE] = {
 	'indexY':           1,
 	'width':           14,
 	'height':          20,
-	'collisionWidth':  13,
-	'collisionHeight': 13,
+	'collisionWidth':  12,
+	'collisionHeight': 12,
 	'is_rotate':       true
 };
 
@@ -1596,8 +1597,8 @@ BulletTypes[Constant.BULLET_TINY_AQUA] = {
 	'indexY':           1,
 	'width':           14,
 	'height':          20,
-	'collisionWidth':  13,
-	'collisionHeight': 13,
+	'collisionWidth':  12,
+	'collisionHeight': 12,
 	'is_rotate':       true
 };
 
@@ -1653,8 +1654,8 @@ BulletTypes[Constant.BULLET_KUNAI_RED] = {
 	'indexY':           7,
 	'width':           14,
 	'height':          20,
-	'collisionWidth':  12,
-	'collisionHeight': 14,
+	'collisionWidth':  10,
+	'collisionHeight': 10,
 	'is_rotate':       true
 };
 
@@ -1665,8 +1666,8 @@ BulletTypes[Constant.BULLET_KUNAI_PURPLE] = {
 	'indexY':           7,
 	'width':           14,
 	'height':          20,
-	'collisionWidth':  12,
-	'collisionHeight': 14,
+	'collisionWidth':  10,
+	'collisionHeight': 10,
 	'is_rotate':       true
 };
 
@@ -3319,8 +3320,15 @@ Game.prototype = {
 	},
 	// ステージ画面が終わったら
 	notifyStageDone: function() {
-		// エピローグへ切り替え
-		this.changeScene(constant.EPILOGUE1_SCENE);
+		// TODO:
+		// エンディング分岐
+		if(this.currentScene().score > 100000) {
+			// エピローグへ切り替え
+			this.changeScene(constant.EPILOGUE1_SCENE);
+		}
+		else {
+			this.changeScene(constant.TITLE_SCENE);
+		}
 	},
 	// エピローグ画面が終わったら
 	notifyEpilogue1Done: function() {
@@ -3804,6 +3812,22 @@ window.onerror = function (msg, file, line, column, err) {
 	err: error object
 	*/ 
 	window.alert(msg + "\n" + line + ":" + column);
+};
+
+window.changeFullScreen = function () {
+	var mainCanvas = document.getElementById('mainCanvas');
+	if (mainCanvas.requestFullscreen) {
+		mainCanvas.requestFullscreen();
+	}
+	else if (mainCanvas.msRequestuestFullscreen) {
+		mainCanvas.msRequestuestFullscreen();
+	}
+	else if (mainCanvas.mozRequestFullScreen) {
+		mainCanvas.mozRequestFullScreen();
+	}
+	else if (mainCanvas.webkitRequestFullscreen) {
+		mainCanvas.webkitRequestFullscreen();
+	}
 };
 
 
@@ -4712,7 +4736,7 @@ var Manager = require('../logic/manager');
 // 自機の移動速度(通常時)
 var FAST_SPEED = 4;
 // 自機の移動速度(Z押下時)
-var SLOW_SPEED = 3;
+var SLOW_SPEED = 2;
 // Nフレーム毎に自機をアニメーション
 var FRONT_ANIMATION_SPAN = 6; // 正面
 var LR_ANIMATION_SPAN = 4; // 左右移動
@@ -6927,15 +6951,23 @@ Scene.prototype._showBG = function() {
 		width,
 		height
 	);
+	this.game.surface.restore();
 
 	// ボスの際は背景を暗くする
 	if(this.state === Constant.BOSS_STATE) {
-		this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
-		this.game.surface.globalAlpha = 0.7;
-		this.game.surface.fillRect(0, 0, this.width, this.height);
+		ctx.save();
+		var shadow = this.game.getImage('shadow');
+		//this.game.surface.globalAlpha = 1.0;
+		this.game.surface.drawImage(shadow,
+			0,
+			0,
+			shadow.width,
+			shadow.height
+		);
+
+		this.game.surface.restore();
 	}
 
-	this.game.surface.restore();
 };
 
 // 自機が死亡
