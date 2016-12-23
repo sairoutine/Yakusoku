@@ -293,8 +293,15 @@ Game.prototype = {
 	},
 	// ステージ画面が終わったら
 	notifyStageDone: function() {
-		// エピローグへ切り替え
-		this.changeScene(constant.EPILOGUE1_SCENE);
+		// TODO:
+		// エンディング分岐
+		if(this.currentScene().score > 100000) {
+			// エピローグへ切り替え
+			this.changeScene(constant.EPILOGUE1_SCENE);
+		}
+		else {
+			this.changeScene(constant.TITLE_SCENE);
+		}
 	},
 	// エピローグ画面が終わったら
 	notifyEpilogue1Done: function() {
