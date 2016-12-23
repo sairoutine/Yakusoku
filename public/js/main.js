@@ -210,8 +210,10 @@ var Config = {
 
 	BGMS:{
 		title: {
-			path:   'bgm/title.mp3',
-			volume: 0.40
+			path:   'bgm/title.ogg',
+			volume: 0.40,
+			loopStart: 29.142,
+			loopEnd: 60 * 1 + 24.000,
 		},
 		prologue: {
 			path:   'bgm/prologue.ogg',
