@@ -436,7 +436,13 @@ Scene.prototype.notifyCharacterDead = function() {
 
 // ゲームオーバーのリザルト終了後
 Scene.prototype.notifyGameOverEnd = function() {
-	this.game.notifyGameOver();
+	// コンティニューしたらスコアを半分にする
+	this.score = Math.floor(this.score / 2);
+
+	// キャラを初期化
+	this.character.init();
+
+	this.changeState(Constant.START_STATE);
 };
 
 // スタート時のタイトル表示の終了

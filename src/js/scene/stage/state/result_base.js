@@ -108,7 +108,7 @@ State.prototype._showScoreWindow = function(){
 
 	// N秒ごとにメッセージを点滅
 	if (Math.floor(this.frame_count / SHOW_MESSAGE_INTERVAL) % 2 === 0) {
-		ctx.fillText('Press Z to Quit', 300, 250);
+		ctx.fillText('Press Z to Next', 300, 250);
 	}
 
 	ctx.restore();
