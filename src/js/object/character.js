@@ -18,7 +18,7 @@ var Manager = require('../logic/manager');
 // 自機の移動速度(通常時)
 var FAST_SPEED = 4;
 // 自機の移動速度(Z押下時)
-var SLOW_SPEED = 3;
+var SLOW_SPEED = 2;
 // Nフレーム毎に自機をアニメーション
 var FRONT_ANIMATION_SPAN = 6; // 正面
 var LR_ANIMATION_SPAN = 4; // 左右移動
