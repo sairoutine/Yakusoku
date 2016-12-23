@@ -410,15 +410,23 @@ Scene.prototype._showBG = function() {
 		width,
 		height
 	);
+	this.game.surface.restore();
 
 	// ボスの際は背景を暗くする
 	if(this.state === Constant.BOSS_STATE) {
-		this.game.surface.fillStyle = 'rgb( 0, 0, 0 )';
-		this.game.surface.globalAlpha = 0.7;
-		this.game.surface.fillRect(0, 0, this.width, this.height);
+		ctx.save();
+		var shadow = this.game.getImage('shadow');
+		//this.game.surface.globalAlpha = 1.0;
+		this.game.surface.drawImage(shadow,
+			0,
+			0,
+			shadow.width,
+			shadow.height
+		);
+
+		this.game.surface.restore();
 	}
 
-	this.game.surface.restore();
 };
 
 // 自機が死亡

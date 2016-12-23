@@ -6,8 +6,8 @@ var Config = {
 	DEBUG: true,
 	//DEBUG_SCENE: Constant.STAGE_SCENE,
 	//DEBUG_STATE: Constant.BOSS_STATE,
-	//DEBUG_STAGE: 4,
-	//DEBUG_SPELL: 0,
+	//DEBUG_STAGE: 1,
+	//DEBUG_SPELL: 1,
 	//DEBUG_MUSIC_OFF: true,
 	IMAGES: {
 		title_bg:  'image/title_bg.png',
@@ -89,6 +89,7 @@ var Config = {
 		stage3_bg: 'image/stage3_bg.png',
 		stage4_bg: 'image/stage4_bg.png',
 		stage5_bg: 'image/stage5_bg.png',
+		shadow:      'image/shadow.png',
 		character_renko: 'image/character_renko.png',
 		boss_aya:        'image/boss_aya.png',
 		boss_sanae:      'image/boss_sanae.png',
