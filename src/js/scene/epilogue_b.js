@@ -1,8 +1,8 @@
 'use strict';
 
-/* エピローグ画面A */
+/* エピローグ画面B */
 
-var epilogue = require("../createjs/epilogue_a");
+var epilogue = require("../createjs/epilogue_b");
 var CreateJS = require("../logic/createjs");
 
 // 基底クラス
@@ -22,9 +22,7 @@ Util.inherit(Scene, BaseScene);
 Scene.prototype.init = function() {
 	BaseScene.prototype.init.apply(this, arguments);
 
-	this.epilogue = new CreateJS(new epilogue.ED_A(), 640, 480);
-
-	this.game.playBGM('epilogue');
+	this.epilogue = new CreateJS(new epilogue.ED_B(), 640, 480);
 };
 
 // フレーム処理
@@ -32,18 +30,10 @@ Scene.prototype.run = function(){
 	BaseScene.prototype.run.apply(this, arguments);
 
 	// エピローグ終了
-	if(this.frame_count === 9800) {
-		this.game.fadeOutBGM(5);
-	}
-	else if(this.frame_count > 10300) {
-		this.game.notifyEpilogueADone();
+	if(this.frame_count > 4040) {
+		this.game.notifyEpilogueBDone();
 	}
 	else {
-		if(this.frame_count === 8030) {
-			// もう一度再生
-			this.game.playBGM('epilogue');
-		}
-
 		this.epilogue.update();
 	}
 };
@@ -68,7 +58,7 @@ Scene.prototype._showFrameCount = function() {
 	ctx.font = "18px 'Migu'";
 	ctx.textAlign = 'left';
 	ctx.textBaseAlign = 'middle';
-	ctx.fillStyle = 'rgb( 255, 0, 255 )';
+	ctx.fillStyle = 'rgb( 255, 255, 255 )';
 
 	// フレーム数
 	ctx.fillText("フレーム数：" + this.frame_count.toString(), 20, 20);
