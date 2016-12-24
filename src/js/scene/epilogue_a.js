@@ -32,7 +32,7 @@ Scene.prototype.run = function(){
 
 	// エピローグ終了
 	if(this.frame_count > 7700) {
-		this.game.notifyEpilogue1Done();
+		this.game.notifyEpilogueADone();
 	}
 	else {
 		this.epilogue.update();

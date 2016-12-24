@@ -8,7 +8,7 @@ var TitleScene     = require('./scene/title');
 var Prologue1Scene = require('./scene/prologue1');
 var Prologue2Scene = require('./scene/prologue2');
 var StageScene    = require('./scene/stage');
-var Epilogue1Scene = require('./scene/epilogue1');
+var EpilogueAScene = require('./scene/epilogue_a');
 var EndingScene   = require('./scene/ending');
 
 var Game = function(mainCanvas) {
@@ -43,7 +43,7 @@ var Game = function(mainCanvas) {
 	// ステージ
 	this.scenes[ constant.STAGE_SCENE ] = new StageScene(this);
 	// エピローグ画面1
-	this.scenes[ constant.EPILOGUE1_SCENE ]  = new Epilogue1Scene(this);
+	this.scenes[ constant.EPILOGUE_A_SCENE ]  = new EpilogueAScene(this);
 	// エンディング画面
 	this.scenes[ constant.ENDING_SCENE ]  = new EndingScene(this);
 
@@ -297,14 +297,14 @@ Game.prototype = {
 		// エンディング分岐
 		if(this.currentScene().score > 100000) {
 			// エピローグへ切り替え
-			this.changeScene(constant.EPILOGUE1_SCENE);
+			this.changeScene(constant.EPILOGUE_A_SCENE);
 		}
 		else {
 			this.changeScene(constant.TITLE_SCENE);
 		}
 	},
-	// エピローグ画面が終わったら
-	notifyEpilogue1Done: function() {
+	// エピローグAが終わったら
+	notifyEpilogueADone: function() {
 		// エンディングに切り替え
 		this.changeScene(constant.ENDING_SCENE);
 	},
