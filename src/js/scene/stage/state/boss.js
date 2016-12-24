@@ -91,11 +91,20 @@ State.prototype.run = function(){
 	if(Number(document.getElementById("invincible").value) === 0) { // TODO: DEBUG
 		// 敵弾と自機の衝突判定
 		this.stage.bullet_manager.checkCollisionWithObject(character);
-		// ボスと自機の衝突判定
-		character.checkCollisionWithObject(this.stage.currentStageBoss());
+
+		// ボスが表示されているなら当たり判定をする
+		if(this.stage.currentStageBoss().is_show) {
+			// ボスと自機の衝突判定
+			character.checkCollisionWithObject(this.stage.currentStageBoss());
+		}
 	}
-	// ボスと自機弾の衝突判定
-	this.stage.shot_manager.checkCollisionWithObject(this.stage.currentStageBoss());
+
+	// TODO: コリジョンチェック側でis_showを見たいね・・
+	// ボスが表示されているなら当たり判定をする
+	if(this.stage.currentStageBoss().is_show) {
+		// ボスと自機弾の衝突判定
+		this.stage.shot_manager.checkCollisionWithObject(this.stage.currentStageBoss());
+	}
 	// 敵弾と自機のグレイズ判定
 	this.stage.bullet_manager.checkGrazeWithObject(character);
 
