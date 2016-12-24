@@ -19,6 +19,11 @@ State.prototype.init = function(){
 
 	this.serif = new Serif(this.serifInfo());
 	this.serif.init();
+
+	// 何もセリフが設定されてなければそのままシーン終了
+	if(this.serif.is_end()) {
+		this.notifyTalkEnd();
+	}
 };
 
 // フレーム処理

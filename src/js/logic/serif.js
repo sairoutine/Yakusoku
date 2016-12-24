@@ -44,7 +44,9 @@ Logic.prototype.init = function () {
 	this.line_num = 0;
 	this.printing_lines = [];
 
-	this.next(); // start
+	if(!this.is_end()) {
+		this.next(); // start
+	}
 };
 
 
