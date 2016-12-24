@@ -18,7 +18,7 @@ var FRONT_ANIMATION_SPAN = 6;
 var LR_ANIMATION_SPAN = 4;
 
 // HP
-var VITAL = 60 * 30;
+var VITAL = 60 * 45;
 
 // ボスの移動速度
 var DEFAULT_SPEED = 2;
