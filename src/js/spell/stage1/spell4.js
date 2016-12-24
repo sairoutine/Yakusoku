@@ -1,17 +1,15 @@
 'use strict';
 
 /* TODO:
-文の移動にいい感じのsoundをつけたいな
-ビームに貫通属性つけたいな(フラグで一度自分にぶつかったら判定しないのも入れる)
-ビームの矩形判定ガバガバ(矩形の回転に対応していない)
-文に当たり判定が残りっぱなし
-rand は組み込みのrandにしたくないね
+ビームにアタリ判定をいつか・・・
+
 */
 
 /* スペルカード */
 var BaseSpell = require('../base');
 var Util = require('../../util');
 var Constant = require('../../constant');
+var mersenne = require('../../logic/mersenne');
 
 var Spell = function(boss) {
 	BaseSpell.apply(this, arguments);
@@ -21,6 +19,8 @@ Util.inherit(Spell, BaseSpell);
 // 初期化
 Spell.prototype.init = function() {
 	BaseSpell.prototype.init.apply(this, arguments);
+	// 乱数初期化
+	mersenne.init_seed(1000);
 };
 
 
@@ -34,23 +34,26 @@ Spell.prototype.runInSpellExecute = function() {
 	else {
 		if(this.frame_count % 50 === 0) {
 			this.me = this.shot(Constant.BULLET_BEAM_YELLOW, this.stage.width, this.stage.height/3, vector);
+			this.game.playSound('boss_shot_small');
 		}
 		if((this.frame_count+25) % 50 === 0) {
 			this.me = this.shot(Constant.BULLET_BEAM_YELLOW, 0, this.stage.height/3, vector2);
+			this.game.playSound('boss_shot_small');
 		}
 	}
 
 
-	var r =  this._getRandomValue({ 'min': 2, 'max': 3 }) ;
-	var theta = this._getRandomValue({ 'min': 0, 'max': 360 });
+	if (0 && this.frame_count % 3 !== 0) {
+		var r =  this._getRandomValue({ 'min': 2, 'max': 3 }) ;
+		var theta = this._getRandomValue({ 'min': 0, 'max': 360 });
 
-	this.shot(Constant.BULLET_TINY_YELLOW, this.me.x, this.me.y, [
-		{
-			count: 0,
-			vector: {r: r, theta: theta}
-		}
-	]);
-
+		this.shot(Constant.BULLET_TINY_YELLOW, this.me.x, this.me.y, [
+			{
+				count: 0,
+				vector: {r: r, theta: theta}
+			}
+		]);
+	}
 
 	if(this.boss.vital < 10) {
 		this.boss.is_show = true;
@@ -65,7 +68,7 @@ Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 Spell.prototype._getRandomValue = function( range ) {
   var differ = range.max - range.min ;
-  return ((Math.random() * differ) | 0) + range.min ;
+  return ((mersenne.random() * differ) | 0) + range.min ;
 } ;
 
 // 初期 x, y 座標

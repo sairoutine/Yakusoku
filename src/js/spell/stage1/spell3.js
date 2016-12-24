@@ -36,7 +36,7 @@ Spell.prototype.runInSpellExecute = function() {
 		this.game.playSound('boss_shot_big');
 		var theta = this.calcThetaAimedToChara();
 		for (var j = 0; j < 10; j++) {
-			this.shot(Constant.BULLET_BIG_ORANGE, this.boss.x, this.boss.y, {r: 0.1, theta: theta + j * 360 / 10, ra: 0.05, rrange: {max: 10}});
+			this.shot(Constant.BULLET_BIG_ORANGE, this.boss.x, this.boss.y, {r: 1, theta: theta + j * 360 / 10, ra: 0.05, rrange: {max: 10}});
 		}
 	}
 };
