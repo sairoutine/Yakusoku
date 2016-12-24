@@ -9,6 +9,8 @@ var Prologue1Scene = require('./scene/prologue1');
 var Prologue2Scene = require('./scene/prologue2');
 var StageScene    = require('./scene/stage');
 var EpilogueAScene = require('./scene/epilogue_a');
+var EpilogueBScene = require('./scene/epilogue_b');
+var EpilogueCScene = require('./scene/epilogue_c');
 var EndingScene   = require('./scene/ending');
 
 var Game = function(mainCanvas) {
@@ -42,8 +44,10 @@ var Game = function(mainCanvas) {
 	this.scenes[ constant.PROLOGUE2_SCENE ] = new Prologue2Scene(this);
 	// ステージ
 	this.scenes[ constant.STAGE_SCENE ] = new StageScene(this);
-	// エピローグ画面1
+	// エピローグ画面
 	this.scenes[ constant.EPILOGUE_A_SCENE ]  = new EpilogueAScene(this);
+	this.scenes[ constant.EPILOGUE_B_SCENE ]  = new EpilogueBScene(this);
+	this.scenes[ constant.EPILOGUE_C_SCENE ]  = new EpilogueCScene(this);
 	// エンディング画面
 	this.scenes[ constant.ENDING_SCENE ]  = new EndingScene(this);
 
@@ -307,6 +311,14 @@ Game.prototype = {
 	notifyEpilogueADone: function() {
 		// エンディングに切り替え
 		this.changeScene(constant.ENDING_SCENE);
+	},
+	// エピローグBが終わったら
+	notifyEpilogueBDone: function() {
+		this.changeScene(constant.TITLE_SCENE);
+	},
+	// エピローグCが終わったら
+	notifyEpilogueCDone: function() {
+		this.changeScene(constant.TITLE_SCENE);
 	},
 	notifyEndingDone: function() {
 		this.changeScene(constant.TITLE_SCENE);
