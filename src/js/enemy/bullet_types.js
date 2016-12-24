@@ -157,8 +157,8 @@ BulletTypes[Constant.BULLET_BEAM_YELLOW] = {
 	'indexY':           0,
 	'width':           20,
 	'height':          256,
-	'collisionWidth':  18,
-	'collisionHeight': 248,
+	'collisionWidth':  0,
+	'collisionHeight': 0,
 	'is_rotate':       true
 };
 
