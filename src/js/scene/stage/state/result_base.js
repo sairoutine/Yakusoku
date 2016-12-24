@@ -94,9 +94,16 @@ State.prototype._showScoreWindow = function(){
 
 	ctx.fillStyle = 'rgb( 0, 0, 0 )' ;
 	ctx.globalAlpha = alpha * 0.5; // タイトル背景黒は半透明
-	ctx.fillRect(0, 170, this.stage.width, 100);
+	ctx.fillRect(0, 140, this.stage.width, 140);
 
 	ctx.globalAlpha = alpha; // 文字を表示するので戻す
+
+	ctx.fillStyle = 'rgb( 255, 255, 255 )';
+	ctx.textAlign = 'center';
+	ctx.font = "18px 'Migu'" ;
+	ctx.fillText(this.resultName(), this.stage.width/2, 180);
+
+
 	ctx.fillStyle = 'rgb( 255, 255, 255 )';
 	ctx.textAlign = 'left';
 	ctx.font = "16px 'Migu'" ;
@@ -108,7 +115,8 @@ State.prototype._showScoreWindow = function(){
 
 	// N秒ごとにメッセージを点滅
 	if (Math.floor(this.frame_count / SHOW_MESSAGE_INTERVAL) % 2 === 0) {
-		ctx.fillText('Press Z to Next', 300, 250);
+		ctx.textAlign = 'center';
+		ctx.fillText('Press Z to Next', this.stage.width/2, 255);
 	}
 
 	ctx.restore();
@@ -118,6 +126,12 @@ State.prototype._showScoreWindow = function(){
 State.prototype.notifyResultEnd = function(){
 	console.error("notifyResultEnd method must be overridden");
 };
+
+// リザルト画面のタイトル名
+State.prototype.resultName = function(){
+	return "";
+};
+
 
 
 module.exports = State;

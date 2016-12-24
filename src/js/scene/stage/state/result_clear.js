@@ -14,4 +14,10 @@ Util.inherit(ResultState, BaseState);
 ResultState.prototype.notifyResultEnd = function () {
 	this.stage.notifyClearEnd();
 };
+
+ResultState.prototype.resultName = function(){
+	return "STAGE CLEAR !";
+};
+
+
 module.exports = ResultState;

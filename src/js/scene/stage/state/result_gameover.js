@@ -14,4 +14,11 @@ Util.inherit(ResultState, BaseState);
 ResultState.prototype.notifyResultEnd = function () {
 	this.stage.notifyGameOverEnd();
 };
+
+ResultState.prototype.resultName = function(){
+	return "GAME OVER...";
+};
+
+
+
 module.exports = ResultState;
