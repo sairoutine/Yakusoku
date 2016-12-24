@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "electron ./public/electron.js",
-	"build": "cd public && electron-packager ./ Yakusoku --platform=darwin,win32 --arch=x64 --version=0.36.1 --icon=icon.ico"
+    "build": "cd public && electron-packager ./ Yakusoku --platform=darwin,win32 --arch=x64 --version=0.36.1 --icon=icon.ico"
   },
   "repository": {
     "type": "git",
@@ -48,5 +48,8 @@
     "preloadjs": "createjs",
     "movieclipjs": "createjs"
   },
-  "homepage": "https://github.com/sairoutine/Yakusoku#readme"
+  "homepage": "https://github.com/sairoutine/Yakusoku#readme",
+  "dependencies": {
+    "mersenne-twister": "1.1.0"
+  }
 }
