@@ -23,7 +23,10 @@ Scene.prototype.init = function() {
 	BaseScene.prototype.init.apply(this, arguments);
 
 	this.end = new CreateJS(new end.epilog(), 640, 480);
-
+	// 前のシーンの run -> このシーンの updatedisplay と走るので、
+	// init の段階で update しておく
+	// しないと updatedisplay の clearcanvas で画面が真っ白になる
+	this.end.update();
 };
 
 // フレーム処理

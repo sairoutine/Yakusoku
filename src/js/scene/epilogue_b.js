@@ -23,6 +23,11 @@ Scene.prototype.init = function() {
 	BaseScene.prototype.init.apply(this, arguments);
 
 	this.epilogue = new CreateJS(new epilogue.ED_B(), 640, 480);
+	// 前のシーンの run -> このシーンの updatedisplay と走るので、
+	// init の段階で update しておく
+	// しないと updatedisplay の clearcanvas で画面が真っ白になる
+	this.epilogue.update();
+
 };
 
 // フレーム処理
@@ -40,6 +45,7 @@ Scene.prototype.run = function(){
 
 // 画面更新
 Scene.prototype.updateDisplay = function(){
+	this.game.clearCanvas();
 	var ctx = this.game.surface;
 	ctx.save();
 	ctx.drawImage(this.epilogue.canvas, 0, 0);

@@ -25,6 +25,11 @@ Scene.prototype.init = function() {
 	this.staffroll = new CreateJS(new staffroll.staffroll(), 640, 480);
 
 	this.game.playBGM('staffroll');
+
+	// 前のシーンの run -> このシーンの updatedisplay と走るので、
+	// init の段階で update しておく
+	// しないと updatedisplay の clearcanvas で画面が真っ白になる
+	this.staffroll.update();
 };
 
 // フレーム処理
@@ -41,6 +46,7 @@ Scene.prototype.run = function(){
 
 // 画面更新
 Scene.prototype.updateDisplay = function(){
+	this.game.clearCanvas();
 	var ctx = this.game.surface;
 	ctx.save();
 	ctx.drawImage(this.staffroll.canvas, 0, 0);
