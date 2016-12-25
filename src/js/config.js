@@ -297,8 +297,12 @@ var Config = {
 			id: 0x80,
 			path: 'sound/powerup.wav',
 			volume: 0.4
-		}
-
+		},
+		kirakira: {
+			id: 0x100,
+			path: 'sound/kira2.mp3',
+			volume: 0.2
+		},
 
 		/*
 		shot: {
