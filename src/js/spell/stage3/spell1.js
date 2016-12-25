@@ -114,6 +114,8 @@ Util.inherit(Spell, BaseSpell);
 Spell.prototype.init = function() {
 	BaseSpell.prototype.init.apply(this, arguments);
 
+	this.generator_manager.init();
+
 	// 乱数初期化
 	mersenne.init_seed(1000);
 
