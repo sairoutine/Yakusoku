@@ -219,7 +219,7 @@ var Config = {
 	DEBUG: true,
 	//DEBUG_SCENE: Constant.STAGE_SCENE,
 	//DEBUG_STATE: Constant.BOSS_STATE,
-	//DEBUG_STAGE: 1,
+	//DEBUG_STAGE: 4,
 	//DEBUG_SPELL: 1,
 	//DEBUG_MUSIC_OFF: true,
 	IMAGES: {
@@ -555,6 +555,12 @@ var Config = {
 			volume: 0.50,
 			loopStart: 41.379,
 			loopEnd: 60 * 2 + 0.827,
+		},
+		stage5: {
+			path:   'bgm/stage5.ogg',
+			volume: 0.50,
+			loopStart: 60 * 2 + 8,
+			loopEnd: 60 * 3 + 12,
 		},
 		epilogue: {
 			path:   'bgm/epilogue.ogg',
@@ -5668,10 +5674,10 @@ Game.prototype = {
 	notifyStageDone: function() {
 		// TODO:
 		// エンディング分岐
-		if(this.currentScene().score > 1000000) {
+		if(this.currentScene().score > 3000000) {
 			this.changeScene(constant.EPILOGUE_A_SCENE);
 		}
-		else if(this.currentScene().score > 100000) {
+		else if(this.currentScene().score > 1000000) {
 			this.changeScene(constant.EPILOGUE_B_SCENE);
 		}
 		else {
@@ -6825,7 +6831,7 @@ Merry.prototype.spriteWidth  = function() { return 128; };
 Merry.prototype.spriteHeight = function() { return 128; };
 
 // BGM
-Merry.prototype.bgm = function() { return 'stage1'; };
+Merry.prototype.bgm = function() { return 'stage5'; };
 
 module.exports = Merry;
 
