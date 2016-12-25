@@ -11,6 +11,7 @@ for( var i = 0; i < 24; i++ ) {
 			'x': 0,
 			'y': 180,
 			'vital': 1,
+			'type': Constant.ENEMY_PURPLE_NEUTRAL_TYPE,
 			'powerItem': i % 2 === 0 ? 1 : 0,
 			'scoreItem': i % 2 === 1 ? 1 : 0,
 			'shot': [
@@ -30,6 +31,7 @@ for( var i = 0; i < 24; i++ ) {
 			'x': 480,
 			'y': 180,
 			'vital': 1,
+			'type': Constant.ENEMY_PURPLE_NEUTRAL_TYPE,
 			'powerItem': i % 2 === 0 ? 1 : 0,
 			'scoreItem': i % 2 === 1 ? 1 : 0,
 			'shot': [
@@ -50,6 +52,7 @@ for( var i = 0; i < 24; i++ ) {
 			'x': 0,
 			'y': 180,
 			'vital': 1,
+			'type': Constant.ENEMY_PURPLE_NEUTRAL_TYPE,
 			'powerItem': i % 2 === 0 ? 1 : 0,
 			'scoreItem': i % 2 === 1 ? 1 : 0,
 			'shot': [
@@ -70,6 +73,7 @@ for( var i = 0; i < 24; i++ ) {
 			'vital': 1,
 			'powerItem': i % 2 === 0 ? 1 : 0,
 			'scoreItem': i % 2 === 1 ? 1 : 0,
+			'type': Constant.ENEMY_PURPLE_NEUTRAL_TYPE,
 			'shot': [
 				{ 'bullet': (i%2) ? 7 : 2, 'count': 40+(i%2)*20 },
 			],
@@ -90,6 +94,7 @@ for( var i = 0; i < 4 ; i++ ) {
 		'vital': 1,
 		'powerItem': i % 4 === 0 ? 1 : 0,
 		'scoreItem': i % 4 === 2 ? 1 : 0,
+		'type': Constant.ENEMY_PURPLE_NEUTRAL_TYPE,
 		'shot': [
 			{ 'bullet': 1, 'count': 30 - i*10 },
 			{ 'bullet': 1, 'count': 130 - i*10 },
@@ -108,6 +113,7 @@ for( var i = 0; i < 4 ; i++ ) {
 		'vital': 1,
 		'powerItem': i % 4 === 0 ? 1 : 0,
 		'scoreItem': i % 4 === 2 ? 1 : 0,
+		'type': Constant.ENEMY_PURPLE_NEUTRAL_TYPE,
 		'shot': [
 			{ 'bullet': 1, 'count': 30 - i*10 },
 			{ 'bullet': 1, 'count': 130 - i*10 },
@@ -131,6 +137,7 @@ for( var i = 0; i < 4 ; i++ ) {
 		'vital': 1,
 		'powerItem': i % 4 === 0 ? 1 : 0,
 		'scoreItem': i % 4 === 2 ? 1 : 0,
+		'type': Constant.ENEMY_PURPLE_NEUTRAL_TYPE,
 		'shot': [
 			{ 'bullet': 1, 'count': 30 - i*10 },
 			{ 'bullet': 1, 'count': 130 - i*10 },
@@ -149,6 +156,7 @@ for( var i = 0; i < 4 ; i++ ) {
 		'vital': 1,
 		'powerItem': i % 4 === 0 ? 1 : 0,
 		'scoreItem': i % 4 === 2 ? 1 : 0,
+		'type': Constant.ENEMY_PURPLE_NEUTRAL_TYPE,
 		'shot': [
 			{ 'bullet': 1, 'count': 30 - i*10 },
 			{ 'bullet': 1, 'count': 130 - i*10 },
