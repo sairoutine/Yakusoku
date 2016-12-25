@@ -45,6 +45,7 @@ MagicCircle.prototype.run = function() {
 	}
 
 	if(this.frame_count > 100 && this.frame_count % 100 === 0) {
+		this.game.playSound('boss_shot_small');
 		for (var i = 1; i <= 6; i++) {
 			var theta = 60 * i + Util.radianToTheta(this.rotate);
 			this.stage.bullet_manager.create(Constant.BULLET_DOUBLEBALL_PURPLE, this.x, this.y, {r: 3, theta: theta});
@@ -113,12 +114,12 @@ Spell.prototype.runInSpellExecute = function() {
 				{ count: 0, vector: {r: 5, theta: 72 * i, w: 1, ra: -0.05, rrange: {min: 0}} },
 			]);
 		}
+		this.game.playSound('boss_powerup');
 	}
 
 	if(this.frame_count % 100 === 0) {
 		var r = 10;
 		var aimed_theta = this.calcThetaAimedToChara();
-
 		for (var j = 0; j < 8; j++) {
 			var theta = aimed_theta + j * 45;
 			var offset_x = r * Math.cos( Util.thetaToRadian( theta ) );
