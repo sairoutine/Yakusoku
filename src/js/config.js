@@ -303,6 +303,11 @@ var Config = {
 			path: 'sound/kira2.mp3',
 			volume: 0.2
 		},
+		boss_powerup: {
+			id: 0x200,
+			path: 'sound/boss_powerup.wav',
+			volume: 1.0
+		},
 
 		/*
 		shot: {
