@@ -54,11 +54,11 @@ Spell.prototype.runInSpellExecute = function() {
 			}
 		]);
 	}
-
-	if(this.boss.vital < 10) {
-		this.boss.is_show = true;
-	}
 };
+Spell.prototype.onend = function() {
+	this.boss.is_show = true;
+};
+
 
 Spell.prototype.name = function() { return "「幻想風靡」"; };
 Spell.prototype.charaImage = function() { return "aya_normal"; };
