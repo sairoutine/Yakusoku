@@ -243,4 +243,8 @@ SpellBase.prototype.initX = function( ) {
 SpellBase.prototype.initY = function( ) {
 };
 
+// スペル終了時の処理
+SpellBase.prototype.onend = function( ) {
+};
+
 module.exports = SpellBase;

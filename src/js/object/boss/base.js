@@ -139,6 +139,9 @@ BossBase.prototype.run = function(){
 	}
 
 	if(this.isDead() && this.hasNextSpell()) {
+		// スペル終了時のフックを実行
+		this.currentSpell().onend();
+
 		// 敵の弾を vanish する
 		this.stage.bullet_manager.notifyUseBomb();
 
