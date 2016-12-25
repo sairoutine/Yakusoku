@@ -11,7 +11,7 @@ var StageScene    = require('./scene/stage');
 var EpilogueAScene = require('./scene/epilogue_a');
 var EpilogueBScene = require('./scene/epilogue_b');
 var EpilogueCScene = require('./scene/epilogue_c');
-var EndingScene   = require('./scene/ending');
+var StaffRollScene   = require('./scene/staffroll');
 
 var Game = function(mainCanvas) {
 	// メインCanvas
@@ -48,8 +48,8 @@ var Game = function(mainCanvas) {
 	this.scenes[ constant.EPILOGUE_A_SCENE ]  = new EpilogueAScene(this);
 	this.scenes[ constant.EPILOGUE_B_SCENE ]  = new EpilogueBScene(this);
 	this.scenes[ constant.EPILOGUE_C_SCENE ]  = new EpilogueCScene(this);
-	// エンディング画面
-	this.scenes[ constant.ENDING_SCENE ]  = new EndingScene(this);
+	// スタッフロール画面
+	this.scenes[ constant.STAFFROLL_SCENE ]  = new StaffRollScene(this);
 
 	// 画像一覧
 	this.images = {};
@@ -320,7 +320,10 @@ Game.prototype = {
 	notifyEpilogueCDone: function() {
 		this.changeScene(constant.TITLE_SCENE);
 	},
-	notifyEndingDone: function() {
+	notifyStaffRollDone: function() {
+		this.changeScene(constant.TITLE_SCENE);
+	},
+	notifyEndDone: function() {
 		this.changeScene(constant.TITLE_SCENE);
 	},
 	// ゲームオーバー
