@@ -80,6 +80,31 @@ BulletTypes[Constant.BULLET_TINY_AQUA] = {
 	'collisionHeight': 12,
 	'is_rotate':       true
 };
+BulletTypes[Constant.BULLET_TINY_PURPLE] = {
+	'image':       'shot',
+	'indexX':           4,
+	'indexY':           1,
+	'width':           14,
+	'height':          20,
+	'collisionWidth':  12,
+	'collisionHeight': 12,
+	'is_rotate':       true
+};
+BulletTypes[Constant.BULLET_TINY_GRAY] = {
+	'image':       'shot',
+	'indexX':           6,
+	'indexY':           1,
+	'width':           14,
+	'height':          20,
+	'collisionWidth':  12,
+	'collisionHeight': 12,
+	'is_rotate':       true
+};
+
+
+
+
+
 
 
 // 4: 文：赤いにじゅうまる弾
