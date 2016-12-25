@@ -2,10 +2,10 @@
 
 /* 幽香 ビーム */
 
-// 基底クラス
 var BaseObject = require('../../object/base');
 var Util = require('../../util');
 var Constant = require('../../constant');
+var mersenne = require('../../logic/mersenne');
 
 // 花の色の種類
 var TYPE_IDS = [
@@ -62,14 +62,14 @@ Beam.prototype.run = function() {
 			var i2 = i*2;
 			if(this.frame_count % 6 === 0) i2-=1;
 
-			this._createBullet(this.x - (offset_x/4)*i2, this.y - (offset_y/4)*i2, count);
+			//this._createBullet(this.x - (offset_x/4)*i2, this.y - (offset_y/4)*i2, count);
 			this._createBullet(this.x + (offset_x/4)*i2, this.y + (offset_y/4)*i2, count);
 		}
 	}
 };
 Beam.prototype._getRandomValue = function( range ) {
   var differ = range.max - range.min ;
-  return ((Math.random() * differ) | 0) + range.min ;
+  return ((mersenne.random() * differ) | 0) + range.min ;
 } ;
 
 Beam.prototype._createBullet = function(x, y, count) {
@@ -138,6 +138,7 @@ Spell.prototype.init = function() {
 	this.moveTo = [{x: 100, y: 100}, {x: 380, y: 100}];
 
 	this.beam = null;
+	mersenne.init_seed(1000);
 };
 
 
@@ -159,6 +160,7 @@ Spell.prototype.runInSpellExecute = function() {
 	if(!this.beam) {
 		this.beam = new Beam(this.stage);
 		this.beam.init(this.boss.x, this.boss.y);
+		this.game.playSound('kirakira');
 
 	}
 	else {
@@ -186,7 +188,7 @@ Spell.prototype.initY = function() { return 100; };
 
 Spell.prototype._getRandomValue = function( range ) {
   var differ = range.max - range.min ;
-  return ((Math.random() * differ) | 0) + range.min ;
+  return ((mersenne.random() * differ) | 0) + range.min ;
 } ;
 
 

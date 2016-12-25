@@ -46,12 +46,13 @@ Spell.prototype.runInSpellExecute = function() {
 		if(this.frame_count % 50 === 0){
 			this.shotCount++;
 
+			this.game.playSound('boss_shot_small');
 			var r = 50;
 			var aimed_theta = this.calcThetaAimedToChara();
 
 			/* 円形 */
-			for (var i = 0; i < 40; i++) {
-				var theta = i * 9 + aimed_theta;
+			for (var i = 0; i < 36; i++) {
+				var theta = i * 10 + aimed_theta;
 				var offset_x = r * Math.cos( Util.thetaToRadian( theta ) );
 				var offset_y = r * Math.sin( Util.thetaToRadian( theta ) );
 
@@ -59,7 +60,7 @@ Spell.prototype.runInSpellExecute = function() {
 				for (var j = 0; j < 10; j++) {
 					this.shot(type_id, this.boss.x + offset_x, this.boss.y + offset_y, [
 						{ count: 0 , vector: {r: 0, theta: theta} },
-						{ count: 25 , vector: {r: 3 + 0.4*j, theta: theta} },
+						{ count: 25 , vector: {r: 3.5 + 0.4*j, theta: theta} },
 					]);
 				}
 			}

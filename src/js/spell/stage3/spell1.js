@@ -7,6 +7,7 @@
 var VectorBaseObject = require('../../object/vector_base');
 var Util = require('../../util');
 var Constant = require('../../constant');
+var mersenne = require('../../logic/mersenne');
 
 // 蝶の種類
 var TYPE_IDS = [
@@ -53,15 +54,6 @@ ButterFlyGenerator.prototype.run = function() {
 	VectorBaseObject.prototype.run.apply(this, arguments);
 
 	if(this.frame_count % 60 === 0) {
-/*
-	BULLET_BUTTERFLY_ORANGE:    14,
-	BULLET_BUTTERFLY_AQUA:      15,
-	BULLET_BUTTERFLY_PURPLE:    16,
-	BULLET_BUTTERFLY_YELLOW:    17,
-	BULLET_BUTTERFLY_BLUE:      18,
-	BULLET_BUTTERFLY_LIMEGREEN: 19,
-	BULLET_BUTTERFLY_RED:       20,
-*/
 		for (var i = 0; i < 10; i++) {
 			var type_id = TYPE_IDS[this._getRandomValue({max: TYPE_IDS.length, min: 0})];
 			var theta = i * 36;
@@ -70,15 +62,17 @@ ButterFlyGenerator.prototype.run = function() {
 			var offset_x = r * Math.cos( Util.thetaToRadian( theta ) );
 			var offset_y = r * Math.sin( Util.thetaToRadian( theta ) );
 
-			//this.stage.bullet_manager.create(type_id, this.x + offset_x, this.y + offset_y, {r: 0, theta: theta, ra: 0.1, rrange: {max: 2}});
 			this.stage.bullet_manager.create(type_id, this.x + offset_x, this.y + offset_y, {r: 2, theta: theta});
+			this.game.playSound('kirakira');
 		}
 	}
 };
 ButterFlyGenerator.prototype._getRandomValue = function( range ) {
   var differ = range.max - range.min ;
-  return ((Math.random() * differ) | 0) + range.min ;
+  return ((mersenne.random() * differ) | 0) + range.min ;
 } ;
+
+ButterFlyGenerator.prototype.updateDisplay = function() {}; // オブジェクトは透明
 
 // 当たり判定サイズ
 ButterFlyGenerator.prototype.collisionWidth  = function() { return 0; };
@@ -119,6 +113,9 @@ Util.inherit(Spell, BaseSpell);
 // 初期化
 Spell.prototype.init = function() {
 	BaseSpell.prototype.init.apply(this, arguments);
+
+	// 乱数初期化
+	mersenne.init_seed(1000);
 
 	this.is_init = false;
 };
