@@ -101,6 +101,7 @@ Util.inherit(Spell, BaseSpell);
 Spell.prototype.init = function() {
 	BaseSpell.prototype.init.apply(this, arguments);
 	this.is_init = false;
+	this.magic_circle_manager.init();
 };
 
 
