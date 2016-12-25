@@ -212,17 +212,25 @@ var Config = {
 		{src:"image/createjs/epilogue/voice1.png", id:"voice1"},
 		{src:"image/createjs/epilogue/voice3.png", id:"voice3"},
 		{src:"image/createjs/epilogue/WO.png", id:"WO"},
-		// エンディング
-		{src:"image/createjs/ending/bg.png", id:"bg"},
-		{src:"image/createjs/ending/BO.png", id:"BO"},
-		{src:"image/createjs/ending/last.png", id:"last"},
-		{src:"image/createjs/ending/renko_d.png", id:"renko_d"},
-		{src:"image/createjs/ending/renko_d_sil.png", id:"renko_d_sil"},
-		{src:"image/createjs/ending/s1.png", id:"s1_e"},
-		{src:"image/createjs/ending/s2.png", id:"s2_e"},
-		{src:"image/createjs/ending/s3.png", id:"s3_e"},
-		{src:"image/createjs/ending/s4.png", id:"s4_e"},
-		{src:"image/createjs/ending/WO.png", id:"WO"}
+		// スタッフロール
+		{src:"image/createjs/staffroll/bg.png", id:"bg"},
+		{src:"image/createjs/staffroll/BO.png", id:"BO"},
+		{src:"image/createjs/staffroll/e01.png", id:"e01"},
+		{src:"image/createjs/staffroll/e02.png", id:"e02"},
+		{src:"image/createjs/staffroll/e03.png", id:"e03"},
+		{src:"image/createjs/staffroll/e04.png", id:"e04"},
+		{src:"image/createjs/staffroll/e05.png", id:"e05"},
+		{src:"image/createjs/staffroll/e06.png", id:"e06"},
+		{src:"image/createjs/staffroll/renko_d.png", id:"renko_d"},
+		{src:"image/createjs/staffroll/renko_d_sil.png", id:"renko_d_sil"},
+		{src:"image/createjs/staffroll/s01.png", id:"s01"},
+		{src:"image/createjs/staffroll/s02.png", id:"s02"},
+		{src:"image/createjs/staffroll/s03.png", id:"s03"},
+		{src:"image/createjs/staffroll/s04.png", id:"s04"},
+		{src:"image/createjs/staffroll/s05.png", id:"s05"},
+		{src:"image/createjs/staffroll/s06.png", id:"s06"},
+		{src:"image/createjs/staffroll/s07.png", id:"s07"},
+
 	],
 	SOUNDS: {
 		select: {
@@ -303,6 +311,10 @@ var Config = {
 		},
 		epilogue: {
 			path:   'bgm/epilogue.ogg',
+			volume: 0.40,
+		},
+		staffroll: {
+			path:   'bgm/title.ogg', // タイトル曲と同じ
 			volume: 0.40,
 		},
 		ending: {
