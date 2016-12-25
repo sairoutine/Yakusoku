@@ -21,7 +21,7 @@ for (var i = 0; i < 24; i++) {
 		'type': Constant.ENEMY_GREEN_NEUTRAL_TYPE,
 		'powerItem': 0,
 		'shot': [
-			{ 'type': Constant.BULLET_KUNAI_RED, 'bullet': 8, 'count': 30 },
+			{ 'type': Constant.BULLET_KUNAI_LIMEGREEN, 'bullet': 8, 'count': 30 },
 		],
 		'vector': [
 			{ 'count':   0, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
@@ -37,7 +37,7 @@ for (var i = 0; i < 24; i++) {
 		'type': Constant.ENEMY_GREEN_NEUTRAL_TYPE,
 		'powerItem': 1,
 		'shot': [
-			{ 'type': Constant.BULLET_KUNAI_RED, 'bullet': 8, 'count': 30 },
+			{ 'type': Constant.BULLET_KUNAI_LIMEGREEN, 'bullet': 8, 'count': 30 },
 		],
 		'vector': [
 			{ 'count':   0, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
