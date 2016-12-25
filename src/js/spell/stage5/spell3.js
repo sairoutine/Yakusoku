@@ -7,6 +7,17 @@ var Constant = require('../../constant');
 
 var Spell = function(boss) {
 	BaseSpell.apply(this, arguments);
+	this.shot_thetas1 = [0, 60, 120, 180, 240, 300];
+	this.shot_thetas2 = [0, 60, 120, 180, 240, 300];
+	this.maru_shot_theta = 0;
+
+	// config
+	this.add_shot_theta = 10;
+	this.r = 1.5;
+	this.uzumaki_percount = 15;
+	this.maru_percount    = 75;
+	this.maru_shot_pertheta = 12;
+
 };
 Util.inherit(Spell, BaseSpell);
 
@@ -14,73 +25,79 @@ Util.inherit(Spell, BaseSpell);
 Spell.prototype.init = function() {
 	BaseSpell.prototype.init.apply(this, arguments);
 
-	this.moveIndex = 0;
-	this.moveTo = [
-		{x: 200, y: 100},
-		{x: 300, y: 100},
-		{x: 400, y: 100},
-		{x: 300, y: 100},
-		{x: 200, y: 100},
-		{x: 100, y: 100},
-	];
-
-	this.shotCount = 0;
+	// まずは中央に移動
+	this.boss.setMoveTo(this.stage.width / 2, this.stage.height / 2);
 };
 
-
 Spell.prototype.runInSpellExecute = function() {
+	if(this.boss.isMoving()) return;
 
-	if (!this.boss.isMoving() && this.shotCount >= 3) {
-		var move = this.moveTo[this.moveIndex];
-		this.boss.setMoveTo(move.x, move.y);
-
-		this.moveIndex++;
-
-		if(this.moveIndex > 5) {
-			this.moveIndex = 0;
-		}
-
-		this.shotCount = 0;
+	// 渦巻き弾
+	if(this.frame_count % this.uzumaki_percount === 0) {
+		this.uzumaki_shot1();
+		this.uzumaki_shot2();
+		this.game.playSound('boss_shot_small');
 	}
 
-	if(!this.boss.isMoving()) {
-		if(this.frame_count % 50 === 0){
-			this.shotCount++;
-
-			var r = 50;
-			var aimed_theta = this.calcThetaAimedToChara();
-
-			/* 交差 */
-			for (var i = 0; i < 20; i++) {
-				var theta = i * 18 + aimed_theta;
-
-				var type_id = Constant.BULLET_TINY_RED;
-				for (var j = 0; j < 10; j++) {
-					var r = 20 * 0.5*j;
-					var offset_x = r * Math.cos( Util.thetaToRadian( theta ) );
-					var offset_y = r * Math.sin( Util.thetaToRadian( theta ) );
-					theta += (i%2===0 ? -90 : 90);
-
-					this.shot(type_id, this.boss.x + offset_x, this.boss.y + offset_y, [
-						{ count: 0 , vector: {r: 0.5*j, theta: theta, ra: 0.05} },
-					]);
-				}
-			}
+	// 円形弾
+	if(this.frame_count % this.maru_percount === 0) {
+		// 自機狙い
+		this.aimedToChara();
+		for (var i=0; i< 360 / this.maru_shot_pertheta; i++) {
+			this.maru_shot();
+			this.maru_shot_theta += this.maru_shot_pertheta;
 		}
+		this.game.playSound('boss_shot_big');
 	}
+
+};
+
+Spell.prototype.uzumaki_shot1 = function() {
+	var x = this.boss.x;
+	var y = this.boss.y;
+	var r = this.r;
+
+	for(var i = 0; i < this.shot_thetas1.length; i++ ) {
+		var theta = this.shot_thetas1[i];
+
+		this.shot(Constant.BULLET_TINY_GRAY, x, y, {r: r, theta: theta});
+		this.shot_thetas1[i] += this.add_shot_theta;
+	}
+};
+Spell.prototype.uzumaki_shot2 = function() {
+	var x = this.boss.x;
+	var y = this.boss.y;
+	var r = this.r;
+
+	for(var i = 0; i < this.shot_thetas2.length; i++ ) {
+		var theta = this.shot_thetas2[i];
+
+		this.shot(Constant.BULLET_TINY_GRAY, x, y, {r: r, theta: theta});
+		this.shot_thetas2[i] -= this.add_shot_theta;
+	}
+};
+Spell.prototype.maru_shot = function() {
+	var x = this.boss.x;
+	var y = this.boss.y;
+	var theta = this.maru_shot_theta;
+	var r = this.r;
+
+	this.shot(Constant.BULLET_DOUBLEBALL_PURPLE, x, y, {r: r, theta: theta});
+};
+
+// 自機狙いにする
+Spell.prototype.aimedToChara = function() {
+	// 自機
+	var character = this.stage.character;
+
+	var ax = character.x - this.boss.x;
+	var ay = character.y - this.boss.y;
+
+	this.maru_shot_theta = Util.radianToTheta(Math.atan2(ay, ax));
 };
 
 Spell.prototype.name = function() { return "?????????"; };
+
 Spell.prototype.charaImage = function() { return "merry_furious"; };
-
-Spell.prototype.initX = function() { return 100; };
-Spell.prototype.initY = function() { return 100; };
-
-Spell.prototype._getRandomValue = function( range ) {
-  var differ = range.max - range.min ;
-  return ((Math.random() * differ) | 0) + range.min ;
-} ;
-
-// 初期 x, y 座標
 
 module.exports = Spell;

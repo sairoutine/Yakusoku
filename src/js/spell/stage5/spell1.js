@@ -35,7 +35,7 @@ Spell.prototype.shotParam = function( ) {
 	var shotParam = [];
 
 	for(var i = 0; i<r_num; i++) {
-		var type = i%2 ? Constant.BULLET_TINY_LIMEGREEN : Constant.BULLET_TINY_BLUE;
+		var type = i%2 ? Constant.BULLET_TINY_PURPLE : Constant.BULLET_TINY_GRAY;
 
 		shotParam.push({
 			'bullet':i, 'type': type, 'count': [ 1 ]
