@@ -11477,7 +11477,7 @@ Spell.prototype.runInSpellExecute = function() {
 	}
 
 
-	if (0 && this.frame_count % 3 !== 0) {
+	if (this.frame_count % 3 !== 0) {
 		var r =  this._getRandomValue({ 'min': 2, 'max': 3 }) ;
 		var theta = this._getRandomValue({ 'min': 0, 'max': 360 });
 
