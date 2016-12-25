@@ -42,7 +42,7 @@ Merry.prototype.spriteWidth  = function() { return 128; };
 Merry.prototype.spriteHeight = function() { return 128; };
 
 // BGM
-Merry.prototype.bgm = function() { return 'stage1'; };
+Merry.prototype.bgm = function() { return 'stage5'; };
 
 module.exports = Merry;
 

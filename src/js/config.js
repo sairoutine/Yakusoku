@@ -6,7 +6,7 @@ var Config = {
 	DEBUG: true,
 	//DEBUG_SCENE: Constant.STAGE_SCENE,
 	//DEBUG_STATE: Constant.BOSS_STATE,
-	//DEBUG_STAGE: 1,
+	//DEBUG_STAGE: 4,
 	//DEBUG_SPELL: 1,
 	//DEBUG_MUSIC_OFF: true,
 	IMAGES: {
@@ -342,6 +342,12 @@ var Config = {
 			volume: 0.50,
 			loopStart: 41.379,
 			loopEnd: 60 * 2 + 0.827,
+		},
+		stage5: {
+			path:   'bgm/stage5.ogg',
+			volume: 0.50,
+			loopStart: 60 * 2 + 8,
+			loopEnd: 60 * 3 + 12,
 		},
 		epilogue: {
 			path:   'bgm/epilogue.ogg',
