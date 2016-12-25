@@ -149,6 +149,16 @@ BulletTypes[Constant.BULLET_KUNAI_PURPLE] = {
 	'collisionHeight': 10,
 	'is_rotate':       true
 };
+BulletTypes[Constant.BULLET_KUNAI_LIMEGREEN] = {
+	'image':       'shot',
+	'indexX':           1,
+	'indexY':           7,
+	'width':           14,
+	'height':          20,
+	'collisionWidth':  10,
+	'collisionHeight': 10,
+	'is_rotate':       true
+};
 
 // 7: 文：黄色ビーム
 BulletTypes[Constant.BULLET_BEAM_YELLOW] = {
