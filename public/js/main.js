@@ -425,17 +425,50 @@ var Config = {
 		{src:"image/createjs/epilogue/voice1.png", id:"voice1"},
 		{src:"image/createjs/epilogue/voice3.png", id:"voice3"},
 		{src:"image/createjs/epilogue/WO.png", id:"WO"},
-		// エンディング
-		{src:"image/createjs/ending/bg.png", id:"bg"},
-		{src:"image/createjs/ending/BO.png", id:"BO"},
-		{src:"image/createjs/ending/last.png", id:"last"},
-		{src:"image/createjs/ending/renko_d.png", id:"renko_d"},
-		{src:"image/createjs/ending/renko_d_sil.png", id:"renko_d_sil"},
-		{src:"image/createjs/ending/s1.png", id:"s1_e"},
-		{src:"image/createjs/ending/s2.png", id:"s2_e"},
-		{src:"image/createjs/ending/s3.png", id:"s3_e"},
-		{src:"image/createjs/ending/s4.png", id:"s4_e"},
-		{src:"image/createjs/ending/WO.png", id:"WO"}
+		// スタッフロール
+		{src:"image/createjs/staffroll/bg.png", id:"bg"},
+		{src:"image/createjs/staffroll/BO.png", id:"BO"},
+		{src:"image/createjs/staffroll/e01.png", id:"e01"},
+		{src:"image/createjs/staffroll/e02.png", id:"e02"},
+		{src:"image/createjs/staffroll/e03.png", id:"e03"},
+		{src:"image/createjs/staffroll/e04.png", id:"e04"},
+		{src:"image/createjs/staffroll/e05.png", id:"e05"},
+		{src:"image/createjs/staffroll/e06.png", id:"e06"},
+		{src:"image/createjs/staffroll/renko_d.png", id:"renko_d"},
+		{src:"image/createjs/staffroll/renko_d_sil.png", id:"renko_d_sil"},
+		{src:"image/createjs/staffroll/s01.png", id:"s01"},
+		{src:"image/createjs/staffroll/s02.png", id:"s02"},
+		{src:"image/createjs/staffroll/s03.png", id:"s03"},
+		{src:"image/createjs/staffroll/s04.png", id:"s04"},
+		{src:"image/createjs/staffroll/s05.png", id:"s05"},
+		{src:"image/createjs/staffroll/s06.png", id:"s06"},
+		{src:"image/createjs/staffroll/s07.png", id:"s07"},
+		// エンド
+		{src:"image/createjs/end/BO.png", id:"BO"},
+		{src:"image/createjs/end/end_A.png", id:"end_A"},
+		{src:"image/createjs/end/l01.png", id:"l01"},
+		{src:"image/createjs/end/l02.png", id:"l02"},
+		{src:"image/createjs/end/l03.png", id:"l03"},
+		{src:"image/createjs/end/l04.png", id:"l04"},
+		{src:"image/createjs/end/l05.png", id:"l05"},
+		{src:"image/createjs/end/l06.png", id:"l06"},
+		{src:"image/createjs/end/l07.png", id:"l07"},
+		{src:"image/createjs/end/l08.png", id:"l08"},
+		{src:"image/createjs/end/l09.png", id:"l09"},
+		{src:"image/createjs/end/l10.png", id:"l10"},
+		{src:"image/createjs/end/l11.png", id:"l11"},
+		{src:"image/createjs/end/l12.png", id:"l12"},
+		{src:"image/createjs/end/l13.png", id:"l13"},
+		{src:"image/createjs/end/l14.png", id:"l14"},
+		{src:"image/createjs/end/l15.png", id:"l15"},
+		{src:"image/createjs/end/l16.png", id:"l16"},
+		{src:"image/createjs/end/l17.png", id:"l17"},
+		{src:"image/createjs/end/l18.png", id:"l18"},
+		{src:"image/createjs/end/l19.png", id:"l19"},
+		{src:"image/createjs/end/l20.png", id:"l20"},
+		{src:"image/createjs/end/l21.png", id:"l21"},
+		{src:"image/createjs/end/last.png", id:"last"},
+		{src:"image/createjs/end/WO.png", id:"WO"},
 	],
 	SOUNDS: {
 		select: {
@@ -518,6 +551,10 @@ var Config = {
 			path:   'bgm/epilogue.ogg',
 			volume: 0.40,
 		},
+		staffroll: {
+			path:   'bgm/title.ogg', // タイトル曲と同じ
+			volume: 0.40,
+		},
 		ending: {
 			path:   'bgm/ending.ogg',
 			volume: 0.40,
@@ -580,7 +617,8 @@ var Constant = {
 	EPILOGUE_A_SCENE: 5,
 	EPILOGUE_B_SCENE: 6,
 	EPILOGUE_C_SCENE: 7,
-	ENDING_SCENE:    8,
+	STAFFROLL_SCENE:  8,
+	END_SCENE:        9,
 
 	BUTTON_LEFT:  0x01,
 	BUTTON_UP:    0x02,
@@ -658,7 +696,7 @@ var cjs = window.createjs;
 
 module.exports = cjs;
 
-},{"easeljs":94,"movieclipjs":95,"preloadjs":96,"tweenjs":97}],5:[function(require,module,exports){
+},{"easeljs":96,"movieclipjs":97,"preloadjs":98,"tweenjs":99}],5:[function(require,module,exports){
 'use strict';
 var createjs = require("../createjs");
 var images = require("../image_store");
@@ -856,7 +894,7 @@ p.nominalBounds = new cjs.Rectangle(-96.2,-96.2,192.5,192.5);
 })(lib = lib||{}, images = images||{}, createjs = createjs||{});
 module.exports = lib;
 
-},{"../createjs":4,"../image_store":18}],6:[function(require,module,exports){
+},{"../createjs":4,"../image_store":19}],6:[function(require,module,exports){
 'use strict';
 var createjs = require("../createjs");
 var images = require("../image_store");
@@ -866,94 +904,353 @@ var lib = {};
 var p; // shortcut to reference prototypes
 
 // stage content:
-(lib.ending = function(mode,startPosition,loop) {
+(lib.epilog = function(mode,startPosition,loop) {
 	this.initialize(mode,startPosition,loop,{});
 
-	// bo
-	this.instance = new lib.bo("synched",0);
-	this.instance.setTransform(320,240);
+	// timeline functions:
+	this.frame_180 = function() {
+		//playSound("ending003_MSTwav");
+	};
 
-	this.timeline.addTween(cjs.Tween.get(this.instance).to({alpha:0},59).to({_off:true},1).wait(2050).to({startPosition:0,_off:false},0).to({alpha:1},91).wait(150).to({startPosition:0},0).to({alpha:0},57).to({_off:true},1).wait(1191));
+	// actions tween:
+	this.timeline.addTween(cjs.Tween.get(this).wait(180).call(this.frame_180).wait(10458));
 
-	// wo
-	this.instance_1 = new lib.wo("synched",0);
-	this.instance_1.setTransform(320,240);
-	this.instance_1._off = true;
+	// ed
+	this.instance = new lib.end_A_1("synched",0);
+	this.instance.setTransform(550.8,453.4,1,1,0,0,0,75,15);
+	this.instance.alpha = 0;
+	this.instance._off = true;
 
-	this.timeline.addTween(cjs.Tween.get(this.instance_1).wait(2351).to({startPosition:0,_off:false},0).wait(186).to({startPosition:0},0).to({alpha:0},124).to({_off:true},1).wait(938));
+	this.timeline.addTween(cjs.Tween.get(this.instance).wait(10298).to({startPosition:0,_off:false},0).to({alpha:1},52).wait(240).to({startPosition:0},0).to({alpha:0},47).to({_off:true},1).wait(1));
 
-	// last
-	this.instance_2 = new lib.last();
-	this.instance_2.setTransform(0,0,0.5,0.5);
+	// BO
+	this.instance_1 = new lib.BO_1("synched",0);
+	this.instance_1.setTransform(320,240,1,1,0,0,0,320,240);
 
-	this.timeline.addTween(cjs.Tween.get({}).to({state:[]}).to({state:[{t:this.instance_2}]},2537).wait(1063));
+	this.timeline.addTween(cjs.Tween.get(this.instance_1).to({_off:true},59).wait(10580));
 
-	// renko_sil
-	this.instance_3 = new lib.renko_d_sil_1("synched",0);
-	this.instance_3.setTransform(59,-36.4);
+	// l01.png
+	this.instance_2 = new lib.l01_1("synched",0);
+	this.instance_2.setTransform(320.1,438.5,0.95,0.95,0,0,0,225.8,43.8);
+	this.instance_2.alpha = 0;
+	this.instance_2._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_2).wait(401).to({startPosition:0,_off:false},0).to({scaleX:1,scaleY:1,alpha:1},40).wait(310).to({startPosition:0},0).to({regY:43.7,scaleX:1.05,scaleY:1.05,alpha:0},39).to({_off:true},1).wait(9848));
+
+	// l02.png
+	this.instance_3 = new lib.l02_1("synched",0);
+	this.instance_3.setTransform(320.1,438.5,0.95,0.95,0,0,0,225.8,43.8);
+	this.instance_3.alpha = 0;
 	this.instance_3._off = true;
 
-	this.timeline.addTween(cjs.Tween.get(this.instance_3).wait(2162).to({startPosition:0,_off:false},0).to({y:524.5},21).to({_off:true},1).wait(1416));
+	this.timeline.addTween(cjs.Tween.get(this.instance_3).wait(833).to({startPosition:0,_off:false},0).to({scaleX:1,scaleY:1,alpha:1},40).wait(338).to({startPosition:0},0).to({regY:43.7,scaleX:1.05,scaleY:1.05,alpha:0},39).to({_off:true},1).wait(9388));
 
-	// s1
-	this.instance_4 = new lib.s1_1("synched",0);
-	this.instance_4.setTransform(320,240);
+	// l03.png
+	this.instance_4 = new lib.l03_1("synched",0);
+	this.instance_4.setTransform(320.1,438.5,0.95,0.95,0,0,0,225.8,43.8);
 	this.instance_4.alpha = 0;
 	this.instance_4._off = true;
 
-	this.timeline.addTween(cjs.Tween.get(this.instance_4).wait(180).to({startPosition:0,_off:false},0).to({alpha:1},59).wait(310).to({startPosition:0},0).to({alpha:0},60).to({_off:true},1).wait(2990));
+	this.timeline.addTween(cjs.Tween.get(this.instance_4).wait(1293).to({startPosition:0,_off:false},0).to({scaleX:1,scaleY:1,alpha:1},40).wait(310).to({startPosition:0},0).to({regY:43.7,scaleX:1.05,scaleY:1.05,alpha:0},39).to({_off:true},1).wait(8956));
 
-	// s2
-	this.instance_5 = new lib.s2_1("synched",0);
-	this.instance_5.setTransform(320,240);
+	// l04.png
+	this.instance_5 = new lib.l04_1("synched",0);
+	this.instance_5.setTransform(320.1,438.5,0.95,0.95,0,0,0,225.8,43.8);
 	this.instance_5.alpha = 0;
 	this.instance_5._off = true;
 
-	this.timeline.addTween(cjs.Tween.get(this.instance_5).wait(670).to({startPosition:0,_off:false},0).to({alpha:1},59).wait(310).to({startPosition:0},0).to({alpha:0},60).to({_off:true},1).wait(2500));
+	this.timeline.addTween(cjs.Tween.get(this.instance_5).wait(1725).to({startPosition:0,_off:false},0).to({scaleX:1,scaleY:1,alpha:1},40).wait(346).to({startPosition:0},0).to({regY:43.7,scaleX:1.05,scaleY:1.05,alpha:0},39).to({_off:true},1).wait(8488));
 
-	// s3
-	this.instance_6 = new lib.s3_1("synched",0);
-	this.instance_6.setTransform(320,240);
+	// l05.png
+	this.instance_6 = new lib.l05_1("synched",0);
+	this.instance_6.setTransform(320.1,438.5,0.95,0.95,0,0,0,225.8,43.8);
 	this.instance_6.alpha = 0;
 	this.instance_6._off = true;
 
-	this.timeline.addTween(cjs.Tween.get(this.instance_6).wait(1160).to({startPosition:0,_off:false},0).to({alpha:1},59).wait(310).to({startPosition:0},0).to({alpha:0},60).to({_off:true},1).wait(2010));
+	this.timeline.addTween(cjs.Tween.get(this.instance_6).wait(2193).to({startPosition:0,_off:false},0).to({scaleX:1,scaleY:1,alpha:1},40).wait(345).to({startPosition:0},0).to({regY:43.7,scaleX:1.05,scaleY:1.05,alpha:0},39).to({_off:true},1).wait(8021));
 
-	// s4
-	this.instance_7 = new lib.s4_1("synched",0);
-	this.instance_7.setTransform(320,240);
+	// l06.png
+	this.instance_7 = new lib.l06_1("synched",0);
+	this.instance_7.setTransform(320.1,438.5,0.95,0.95,0,0,0,225.8,43.8);
 	this.instance_7.alpha = 0;
 	this.instance_7._off = true;
 
-	this.timeline.addTween(cjs.Tween.get(this.instance_7).wait(1650).to({startPosition:0,_off:false},0).to({alpha:1},59).wait(310).to({startPosition:0},0).to({alpha:0},60).to({_off:true},1).wait(1520));
+	this.timeline.addTween(cjs.Tween.get(this.instance_7).wait(2660).to({startPosition:0,_off:false},0).to({scaleX:1,scaleY:1,alpha:1},40).wait(393).to({startPosition:0},0).to({regY:43.7,scaleX:1.05,scaleY:1.05,alpha:0},39).to({_off:true},1).wait(7506));
 
-	// renko
-	this.instance_8 = new lib.renko("synched",0);
-	this.instance_8.setTransform(567.5,240);
+	// l07.png
+	this.instance_8 = new lib.l07_1("synched",0);
+	this.instance_8.setTransform(320.1,438.5,0.95,0.95,0,0,0,225.8,43.8);
+	this.instance_8.alpha = 0;
+	this.instance_8._off = true;
 
-	this.timeline.addTween(cjs.Tween.get(this.instance_8).wait(2019).to({startPosition:0},0).to({alpha:0},60).to({_off:true},1).wait(1520));
+	this.timeline.addTween(cjs.Tween.get(this.instance_8).wait(3175).to({startPosition:0,_off:false},0).to({scaleX:1,scaleY:1,alpha:1},40).wait(332).to({startPosition:0},0).to({regY:43.7,scaleX:1.05,scaleY:1.05,alpha:0},39).to({_off:true},1).wait(7052));
 
-	// bg
-	this.instance_9 = new lib.bg();
-	this.instance_9.setTransform(0,0,0.5,0.5);
+	// l08.png
+	this.instance_9 = new lib.l08_1("synched",0);
+	this.instance_9.setTransform(320.1,438.5,0.95,0.95,0,0,0,225.8,43.8);
+	this.instance_9.alpha = 0;
+	this.instance_9._off = true;
 
-	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.instance_9}]}).wait(3600));
+	this.timeline.addTween(cjs.Tween.get(this.instance_9).wait(3629).to({startPosition:0,_off:false},0).to({scaleX:1,scaleY:1,alpha:1},40).wait(375).to({startPosition:0},0).to({regY:43.7,scaleX:1.05,scaleY:1.05,alpha:0},39).to({_off:true},1).wait(6555));
+
+	// l09.png
+	this.instance_10 = new lib.l09_1("synched",0);
+	this.instance_10.setTransform(320.1,438.5,0.95,0.95,0,0,0,225.8,43.8);
+	this.instance_10.alpha = 0;
+	this.instance_10._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_10).wait(4126).to({startPosition:0,_off:false},0).to({scaleX:1,scaleY:1,alpha:1},40).wait(351).to({startPosition:0},0).to({regY:43.7,scaleX:1.05,scaleY:1.05,alpha:0},39).to({_off:true},1).wait(6082));
+
+	// l10.png
+	this.instance_11 = new lib.l10_1("synched",0);
+	this.instance_11.setTransform(320.1,438.5,0.95,0.95,0,0,0,225.8,43.8);
+	this.instance_11.alpha = 0;
+	this.instance_11._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_11).wait(4599).to({startPosition:0,_off:false},0).to({scaleX:1,scaleY:1,alpha:1},40).wait(310).to({startPosition:0},0).to({regY:43.7,scaleX:1.05,scaleY:1.05,alpha:0},39).to({_off:true},1).wait(5650));
+
+	// l11.png
+	this.instance_12 = new lib.l11_1("synched",0);
+	this.instance_12.setTransform(320.1,438.5,0.95,0.95,0,0,0,225.8,43.8);
+	this.instance_12.alpha = 0;
+	this.instance_12._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_12).wait(5031).to({startPosition:0,_off:false},0).to({scaleX:1,scaleY:1,alpha:1},40).wait(397).to({startPosition:0},0).to({regY:43.7,scaleX:1.05,scaleY:1.05,alpha:0},39).to({_off:true},1).wait(5131));
+
+	// l12.png
+	this.instance_13 = new lib.l12_1("synched",0);
+	this.instance_13.setTransform(320.1,438.5,0.95,0.95,0,0,0,225.8,43.8);
+	this.instance_13.alpha = 0;
+	this.instance_13._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_13).wait(5550).to({startPosition:0,_off:false},0).to({scaleX:1,scaleY:1,alpha:1},40).wait(310).to({startPosition:0},0).to({regY:43.7,scaleX:1.05,scaleY:1.05,alpha:0},39).to({_off:true},1).wait(4699));
+
+	// l13.png
+	this.instance_14 = new lib.l13_1("synched",0);
+	this.instance_14.setTransform(320.1,438.5,0.95,0.95,0,0,0,225.8,43.8);
+	this.instance_14.alpha = 0;
+	this.instance_14._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_14).wait(5982).to({startPosition:0,_off:false},0).to({scaleX:1,scaleY:1,alpha:1},40).wait(360).to({startPosition:0},0).to({regY:43.7,scaleX:1.05,scaleY:1.05,alpha:0},39).to({_off:true},1).wait(4217));
+
+	// l14.png
+	this.instance_15 = new lib.l14_1("synched",0);
+	this.instance_15.setTransform(320.1,438.5,0.95,0.95,0,0,0,225.8,43.8);
+	this.instance_15.alpha = 0;
+	this.instance_15._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_15).wait(6464).to({startPosition:0,_off:false},0).to({scaleX:1,scaleY:1,alpha:1},40).wait(310).to({startPosition:0},0).to({regY:43.7,scaleX:1.05,scaleY:1.05,alpha:0},39).to({_off:true},1).wait(3785));
+
+	// l15.png
+	this.instance_16 = new lib.l15_1("synched",0);
+	this.instance_16.setTransform(320.1,438.5,0.95,0.95,0,0,0,225.8,43.8);
+	this.instance_16.alpha = 0;
+	this.instance_16._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_16).wait(6896).to({startPosition:0,_off:false},0).to({scaleX:1,scaleY:1,alpha:1},40).wait(310).to({startPosition:0},0).to({regY:43.7,scaleX:1.05,scaleY:1.05,alpha:0},39).to({_off:true},1).wait(3353));
+
+	// l16.png
+	this.instance_17 = new lib.l16_1("synched",0);
+	this.instance_17.setTransform(320.1,438.5,0.95,0.95,0,0,0,225.8,43.8);
+	this.instance_17.alpha = 0;
+	this.instance_17._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_17).wait(7328).to({startPosition:0,_off:false},0).to({scaleX:1,scaleY:1,alpha:1},40).wait(424).to({startPosition:0},0).to({regY:43.7,scaleX:1.05,scaleY:1.05,alpha:0},39).to({_off:true},1).wait(2807));
+
+	// l17.png
+	this.instance_18 = new lib.l17_1("synched",0);
+	this.instance_18.setTransform(320.1,438.5,0.95,0.95,0,0,0,225.8,43.8);
+	this.instance_18.alpha = 0;
+	this.instance_18._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_18).wait(7874).to({startPosition:0,_off:false},0).to({scaleX:1,scaleY:1,alpha:1},40).wait(349).to({startPosition:0},0).to({regY:43.7,scaleX:1.05,scaleY:1.05,alpha:0},39).to({_off:true},1).wait(2336));
+
+	// l18.png
+	this.instance_19 = new lib.l18_1("synched",0);
+	this.instance_19.setTransform(320.1,438.5,0.95,0.95,0,0,0,225.8,43.8);
+	this.instance_19.alpha = 0;
+	this.instance_19._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_19).wait(8345).to({startPosition:0,_off:false},0).to({scaleX:1,scaleY:1,alpha:1},40).wait(393).to({startPosition:0},0).to({regY:43.7,scaleX:1.05,scaleY:1.05,alpha:0},39).to({_off:true},1).wait(1821));
+
+	// l19.png
+	this.instance_20 = new lib.l19_1("synched",0);
+	this.instance_20.setTransform(320.1,438.5,0.95,0.95,0,0,0,225.8,43.8);
+	this.instance_20.alpha = 0;
+	this.instance_20._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_20).wait(8860).to({startPosition:0,_off:false},0).to({scaleX:1,scaleY:1,alpha:1},40).wait(310).to({startPosition:0},0).to({regY:43.7,scaleX:1.05,scaleY:1.05,alpha:0},39).to({_off:true},1).wait(1389));
+
+	// l20.png
+	this.instance_21 = new lib.l20_1("synched",0);
+	this.instance_21.setTransform(320.1,438.5,0.95,0.95,0,0,0,225.8,43.8);
+	this.instance_21.alpha = 0;
+	this.instance_21._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_21).wait(9292).to({startPosition:0,_off:false},0).to({scaleX:1,scaleY:1,alpha:1},40).wait(310).to({startPosition:0},0).to({regY:43.7,scaleX:1.05,scaleY:1.05,alpha:0},39).to({_off:true},1).wait(957));
+
+	// l21.png
+	this.instance_22 = new lib.l21_1("synched",0);
+	this.instance_22.setTransform(320.1,438.5,0.95,0.95,0,0,0,225.8,43.8);
+	this.instance_22.alpha = 0;
+	this.instance_22._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_22).wait(9724).to({startPosition:0,_off:false},0).to({scaleX:1,scaleY:1,alpha:1},40).wait(310).to({startPosition:0},0).to({regY:43.7,scaleX:1.05,scaleY:1.05,alpha:0},39).to({_off:true},1).wait(525));
+
+	// WO
+	this.instance_23 = new lib.WO_1("synched",0);
+	this.instance_23.setTransform(320,240,1,1,0,0,0,320,240);
+	this.instance_23._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_23).wait(59).to({startPosition:0,_off:false},0).wait(121).to({startPosition:0},0).to({alpha:0},119).to({_off:true},1).wait(8701).to({startPosition:0,_off:false},0).to({alpha:1},1187).wait(451));
+
+	// lastcut
+	this.instance_24 = new lib.lastcut("synched",0);
+	this.instance_24.setTransform(320,240,1,1,0,0,0,320,240);
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_24).to({scaleX:0.7,scaleY:0.7},10188).wait(451));
 
 }).prototype = p = new cjs.MovieClip();
 p.nominalBounds = new cjs.Rectangle(0,0,640,480);
 
 
 // symbols:
-(lib.bg = function() {
-	this.initialize(img.bg);
-}).prototype = p = new cjs.Bitmap();
-p.nominalBounds = new cjs.Rectangle(0,0,1280,960);
-
-
 (lib.BO = function() {
 	this.initialize(img.BO);
 }).prototype = p = new cjs.Bitmap();
 p.nominalBounds = new cjs.Rectangle(0,0,64,48);
+
+
+(lib.end_A = function() {
+	this.initialize(img.end_A);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,300,60);
+
+
+(lib.l01 = function() {
+	this.initialize(img.l01);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,903,175);
+
+
+(lib.l02 = function() {
+	this.initialize(img.l02);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,903,175);
+
+
+(lib.l03 = function() {
+	this.initialize(img.l03);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,903,175);
+
+
+(lib.l04 = function() {
+	this.initialize(img.l04);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,903,175);
+
+
+(lib.l05 = function() {
+	this.initialize(img.l05);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,903,175);
+
+
+(lib.l06 = function() {
+	this.initialize(img.l06);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,903,175);
+
+
+(lib.l07 = function() {
+	this.initialize(img.l07);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,903,175);
+
+
+(lib.l08 = function() {
+	this.initialize(img.l08);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,903,175);
+
+
+(lib.l09 = function() {
+	this.initialize(img.l09);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,903,175);
+
+
+(lib.l10 = function() {
+	this.initialize(img.l10);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,903,175);
+
+
+(lib.l11 = function() {
+	this.initialize(img.l11);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,903,175);
+
+
+(lib.l12 = function() {
+	this.initialize(img.l12);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,903,175);
+
+
+(lib.l13 = function() {
+	this.initialize(img.l13);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,903,175);
+
+
+(lib.l14 = function() {
+	this.initialize(img.l14);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,903,175);
+
+
+(lib.l15 = function() {
+	this.initialize(img.l15);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,903,175);
+
+
+(lib.l16 = function() {
+	this.initialize(img.l16);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,903,175);
+
+
+(lib.l17 = function() {
+	this.initialize(img.l17);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,903,175);
+
+
+(lib.l18 = function() {
+	this.initialize(img.l18);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,903,175);
+
+
+(lib.l19 = function() {
+	this.initialize(img.l19);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,903,175);
+
+
+(lib.l20 = function() {
+	this.initialize(img.l20);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,903,175);
+
+
+(lib.l21 = function() {
+	this.initialize(img.l21);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,903,175);
 
 
 (lib.last = function() {
@@ -962,148 +1259,316 @@ p.nominalBounds = new cjs.Rectangle(0,0,64,48);
 p.nominalBounds = new cjs.Rectangle(0,0,1280,960);
 
 
-(lib.renko_d = function() {
-	this.initialize(img.renko_d);
-}).prototype = p = new cjs.Bitmap();
-p.nominalBounds = new cjs.Rectangle(0,0,290,960);
-
-
-(lib.renko_d_sil = function() {
-	this.initialize(img.renko_d_sil);
-}).prototype = p = new cjs.Bitmap();
-p.nominalBounds = new cjs.Rectangle(0,0,150,210);
-
-
-(lib.s1 = function() {
-	this.initialize(img.s1_e);
-}).prototype = p = new cjs.Bitmap();
-p.nominalBounds = new cjs.Rectangle(0,0,740,400);
-
-
-(lib.s2 = function() {
-	this.initialize(img.s2_e);
-}).prototype = p = new cjs.Bitmap();
-p.nominalBounds = new cjs.Rectangle(0,0,740,400);
-
-
-(lib.s3 = function() {
-	this.initialize(img.s3_e);
-}).prototype = p = new cjs.Bitmap();
-p.nominalBounds = new cjs.Rectangle(0,0,740,400);
-
-
-(lib.s4 = function() {
-	this.initialize(img.s4_e);
-}).prototype = p = new cjs.Bitmap();
-p.nominalBounds = new cjs.Rectangle(0,0,740,400);
-
-
 (lib.WO = function() {
 	this.initialize(img.WO);
 }).prototype = p = new cjs.Bitmap();
 p.nominalBounds = new cjs.Rectangle(0,0,64,48);
 
 
-(lib.wo = function() {
+(lib.WO_1 = function() {
 	this.initialize();
 
 	// レイヤー 1
 	this.instance = new lib.WO();
-	this.instance.setTransform(-319.9,-239.9,10,10);
+	this.instance.setTransform(0,0,10,10);
 
 	this.addChild(this.instance);
 }).prototype = p = new cjs.Container();
-p.nominalBounds = new cjs.Rectangle(-319.9,-239.9,640,480);
+p.nominalBounds = new cjs.Rectangle(0,0,640,480);
 
 
-(lib.s4_1 = function() {
+(lib.lastcut = function() {
 	this.initialize();
 
 	// レイヤー 1
-	this.instance = new lib.s4();
-	this.instance.setTransform(-184.9,-99.9,0.5,0.5);
+	this.instance = new lib.last();
+	this.instance.setTransform(0,0,0.5,0.5);
 
 	this.addChild(this.instance);
 }).prototype = p = new cjs.Container();
-p.nominalBounds = new cjs.Rectangle(-184.9,-99.9,370,200);
+p.nominalBounds = new cjs.Rectangle(0,0,640,480);
 
 
-(lib.s3_1 = function() {
+(lib.l21_1 = function() {
 	this.initialize();
 
 	// レイヤー 1
-	this.instance = new lib.s3();
-	this.instance.setTransform(-184.9,-99.9,0.5,0.5);
+	this.instance = new lib.l21();
+	this.instance.setTransform(0,0,0.5,0.5);
 
 	this.addChild(this.instance);
 }).prototype = p = new cjs.Container();
-p.nominalBounds = new cjs.Rectangle(-184.9,-99.9,370,200);
+p.nominalBounds = new cjs.Rectangle(0,0,451.5,87.5);
 
 
-(lib.s2_1 = function() {
+(lib.l20_1 = function() {
 	this.initialize();
 
 	// レイヤー 1
-	this.instance = new lib.s2();
-	this.instance.setTransform(-184.9,-99.9,0.5,0.5);
+	this.instance = new lib.l20();
+	this.instance.setTransform(0,0,0.5,0.5);
 
 	this.addChild(this.instance);
 }).prototype = p = new cjs.Container();
-p.nominalBounds = new cjs.Rectangle(-184.9,-99.9,370,200);
+p.nominalBounds = new cjs.Rectangle(0,0,451.5,87.5);
 
 
-(lib.s1_1 = function() {
+(lib.l19_1 = function() {
 	this.initialize();
 
 	// レイヤー 1
-	this.instance = new lib.s1();
-	this.instance.setTransform(-184.9,-99.9,0.5,0.5);
+	this.instance = new lib.l19();
+	this.instance.setTransform(0,0,0.5,0.5);
 
 	this.addChild(this.instance);
 }).prototype = p = new cjs.Container();
-p.nominalBounds = new cjs.Rectangle(-184.9,-99.9,370,200);
+p.nominalBounds = new cjs.Rectangle(0,0,451.5,87.5);
 
 
-(lib.renko_d_sil_1 = function() {
+(lib.l18_1 = function() {
 	this.initialize();
 
 	// レイヤー 1
-	this.instance = new lib.renko_d_sil();
-	this.instance.setTransform(-37.4,-52.4,0.5,0.5);
+	this.instance = new lib.l18();
+	this.instance.setTransform(0,0,0.5,0.5);
 
 	this.addChild(this.instance);
 }).prototype = p = new cjs.Container();
-p.nominalBounds = new cjs.Rectangle(-37.4,-52.4,75,105);
+p.nominalBounds = new cjs.Rectangle(0,0,451.5,87.5);
 
 
-(lib.renko = function() {
+(lib.l17_1 = function() {
 	this.initialize();
 
 	// レイヤー 1
-	this.instance = new lib.renko_d();
-	this.instance.setTransform(-72.4,-239.9,0.5,0.5);
+	this.instance = new lib.l17();
+	this.instance.setTransform(0,0,0.5,0.5);
 
 	this.addChild(this.instance);
 }).prototype = p = new cjs.Container();
-p.nominalBounds = new cjs.Rectangle(-72.4,-239.9,145,480);
+p.nominalBounds = new cjs.Rectangle(0,0,451.5,87.5);
 
 
-(lib.bo = function() {
+(lib.l16_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.l16();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,451.5,87.5);
+
+
+(lib.l15_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.l15();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,451.5,87.5);
+
+
+(lib.l14_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.l14();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,451.5,87.5);
+
+
+(lib.l13_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.l13();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,451.5,87.5);
+
+
+(lib.l12_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.l12();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,451.5,87.5);
+
+
+(lib.l11_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.l11();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,451.5,87.5);
+
+
+(lib.l10_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.l10();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,451.5,87.5);
+
+
+(lib.l09_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.l09();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,451.5,87.5);
+
+
+(lib.l08_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.l08();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,451.5,87.5);
+
+
+(lib.l07_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.l07();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,451.5,87.5);
+
+
+(lib.l06_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.l06();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,451.5,87.5);
+
+
+(lib.l05_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.l05();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,451.5,87.5);
+
+
+(lib.l04_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.l04();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,451.5,87.5);
+
+
+(lib.l03_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.l03();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,451.5,87.5);
+
+
+(lib.l02_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.l02();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,451.5,87.5);
+
+
+(lib.l01_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.l01();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,451.5,87.5);
+
+
+(lib.end_A_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.end_A();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,150,30);
+
+
+(lib.BO_1 = function() {
 	this.initialize();
 
 	// レイヤー 1
 	this.instance = new lib.BO();
-	this.instance.setTransform(-319.9,-239.9,10,10);
+	this.instance.setTransform(0,0,10,10);
 
 	this.addChild(this.instance);
 }).prototype = p = new cjs.Container();
-p.nominalBounds = new cjs.Rectangle(-319.9,-239.9,640,480);
+p.nominalBounds = new cjs.Rectangle(0,0,640,480);
 
 })(lib = lib||{}, images = images||{}, createjs = createjs||{});
 var lib, images, createjs;
 module.exports = lib;
 
-},{"../createjs":4,"../image_store":18}],7:[function(require,module,exports){
+},{"../createjs":4,"../image_store":19}],7:[function(require,module,exports){
 'use strict';
 var createjs = require("../createjs");
 var images = require("../image_store");
@@ -2039,7 +2504,7 @@ p.nominalBounds = new cjs.Rectangle(0,0,640,480);
 var lib, images, createjs;
 module.exports = lib;
 
-},{"../createjs":4,"../image_store":18}],8:[function(require,module,exports){
+},{"../createjs":4,"../image_store":19}],8:[function(require,module,exports){
 'use strict';
 var createjs = require("../createjs");
 var images = require("../image_store");
@@ -2306,7 +2771,7 @@ p.nominalBounds = new cjs.Rectangle(0,0,640,480);
 var lib, images, createjs;
 module.exports = lib;
 
-},{"../createjs":4,"../image_store":18}],9:[function(require,module,exports){
+},{"../createjs":4,"../image_store":19}],9:[function(require,module,exports){
 'use strict';
 var createjs = require("../createjs");
 var images = require("../image_store");
@@ -2757,7 +3222,467 @@ p.nominalBounds = new cjs.Rectangle(0,0,640,480);
 var lib, images, createjs;
 module.exports = lib;
 
-},{"../createjs":4,"../image_store":18}],10:[function(require,module,exports){
+},{"../createjs":4,"../image_store":19}],10:[function(require,module,exports){
+'use strict';
+var createjs = require("../createjs");
+var images = require("../image_store");
+var lib = {};
+(function (lib, img, cjs) {
+
+var p; // shortcut to reference prototypes
+
+// stage content:
+(lib.staffroll = function(mode,startPosition,loop) {
+	this.initialize(mode,startPosition,loop,{});
+
+	// timeline functions:
+	this.frame_0 = function() {
+	};
+
+	// actions tween:
+	this.timeline.addTween(cjs.Tween.get(this).call(this.frame_0).wait(7808));
+
+	// BO
+	this.instance = new lib.BO_1("synched",0);
+	this.instance.setTransform(320,240,1,1,0,0,0,320,240);
+
+	this.timeline.addTween(cjs.Tween.get(this.instance).wait(102).to({startPosition:0},0).to({alpha:0},251).to({_off:true},1).wait(7140).to({startPosition:0,_off:false},0).to({alpha:1},104).wait(211));
+
+	// renko_d
+	this.instance_1 = new lib.renko_d_1("synched",0);
+	this.instance_1.setTransform(60.6,-64.8,1,1,0,0,0,37.5,52.5);
+	this.instance_1._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_1).wait(7532).to({startPosition:0,_off:false},0).to({y:536.1},22).to({_off:true},1).wait(254));
+
+	// e06.png
+	this.instance_2 = new lib.e06_1("synched",0);
+	this.instance_2.setTransform(320,240,1,1,0,0,0,152.5,97.5);
+	this.instance_2.alpha = 0.5;
+	this.instance_2._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_2).wait(6277).to({startPosition:0,_off:false},0).to({_off:true},1).wait(3).to({alpha:0.77,_off:false},0).to({_off:true},1).wait(1).to({alpha:1,_off:false},0).to({_off:true},2).wait(1).to({alpha:0,_off:false},0).to({alpha:1},17).wait(252).to({startPosition:0},0).to({alpha:0},53).to({_off:true},1).wait(1200));
+
+	// e05.png
+	this.instance_3 = new lib.e05_1("synched",0);
+	this.instance_3.setTransform(320,240,1,1,0,0,0,152.5,97.5);
+	this.instance_3.alpha = 0.5;
+	this.instance_3._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_3).wait(5183).to({startPosition:0,_off:false},0).to({_off:true},1).wait(3).to({alpha:0.77,_off:false},0).to({_off:true},1).wait(1).to({alpha:1,_off:false},0).to({_off:true},2).wait(1).to({alpha:0,_off:false},0).to({alpha:1},17).wait(251).to({startPosition:0},0).to({alpha:0},53).to({_off:true},1).wait(2295));
+
+	// e04.png
+	this.instance_4 = new lib.e04_1("synched",0);
+	this.instance_4.setTransform(320,240,1,1,0,0,0,152.5,97.5);
+	this.instance_4.alpha = 0.5;
+	this.instance_4._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_4).wait(4089).to({startPosition:0,_off:false},0).to({_off:true},1).wait(3).to({alpha:0.77,_off:false},0).to({_off:true},1).wait(1).to({alpha:1,_off:false},0).to({_off:true},2).wait(1).to({alpha:0,_off:false},0).to({alpha:1},17).wait(251).to({startPosition:0},0).to({alpha:0},53).to({_off:true},1).wait(3389));
+
+	// e03.png
+	this.instance_5 = new lib.e03_1("synched",0);
+	this.instance_5.setTransform(320,240,1,1,0,0,0,152.5,97.5);
+	this.instance_5.alpha = 0.5;
+	this.instance_5._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_5).wait(2995).to({startPosition:0,_off:false},0).to({_off:true},1).wait(3).to({alpha:0.77,_off:false},0).to({_off:true},1).wait(1).to({alpha:1,_off:false},0).to({_off:true},2).wait(1).to({alpha:0,_off:false},0).to({alpha:1},17).wait(251).to({startPosition:0},0).to({alpha:0},53).to({_off:true},1).wait(4483));
+
+	// e02.png
+	this.instance_6 = new lib.e02_1("synched",0);
+	this.instance_6.setTransform(320,240,1,1,0,0,0,152.5,97.5);
+	this.instance_6.alpha = 0.5;
+	this.instance_6._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_6).wait(2001).to({startPosition:0,_off:false},0).to({_off:true},1).wait(3).to({alpha:0.77,_off:false},0).to({_off:true},1).wait(1).to({alpha:1,_off:false},0).to({_off:true},2).wait(1).to({alpha:0,_off:false},0).to({alpha:1},17).wait(251).to({startPosition:0},0).to({alpha:0},53).to({_off:true},1).wait(5477));
+
+	// e01.png
+	this.instance_7 = new lib.e01_1("synched",0);
+	this.instance_7.setTransform(320,240,1,1,0,0,0,152.5,97.5);
+	this.instance_7.alpha = 0.5;
+	this.instance_7._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_7).wait(1005).to({startPosition:0,_off:false},0).to({_off:true},1).wait(3).to({alpha:0.77,_off:false},0).to({_off:true},1).wait(1).to({alpha:1,_off:false},0).to({_off:true},2).wait(1).to({alpha:0,_off:false},0).to({alpha:1},17).wait(253).to({startPosition:0},0).to({alpha:0},53).to({_off:true},1).wait(6471));
+
+	// mask
+	this.instance_8 = new lib.BO_1("synched",0);
+	this.instance_8.setTransform(498,209,0.536,0.067,0,0,0,640,240);
+	this.instance_8._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_8).wait(413).to({startPosition:0,_off:false},0).to({regX:641,scaleX:0.01},99).to({_off:true},1).wait(392).to({regX:640,scaleX:0.54,alpha:0,_off:false},0).to({alpha:1},48).to({_off:true},1).wait(455).to({startPosition:0,_off:false},0).to({regX:641,scaleX:0.01},99).to({_off:true},1).wait(392).to({regX:640,scaleX:0.54,alpha:0,_off:false},0).to({alpha:1},48).to({_off:true},1).wait(453).to({startPosition:0,_off:false},0).to({regX:641,scaleX:0.01},99).to({_off:true},1).wait(392).to({regX:640,scaleX:0.54,alpha:0,_off:false},0).to({alpha:1},48).to({_off:true},1).wait(453).to({startPosition:0,_off:false},0).to({regX:641,scaleX:0.01},99).to({_off:true},1).wait(492).to({regX:640,scaleX:0.54,alpha:0,_off:false},0).to({alpha:1},48).to({_off:true},1).wait(453).to({startPosition:0,_off:false},0).to({regX:641,scaleX:0.01},99).to({_off:true},1).wait(492).to({regX:640,scaleX:0.54,alpha:0,_off:false},0).to({alpha:1},48).to({_off:true},1).wait(453).to({startPosition:0,_off:false},0).to({regX:641,scaleX:0.01},99).to({_off:true},1).wait(492).to({regX:640,scaleX:0.54,alpha:0,_off:false},0).to({alpha:1},48).to({_off:true},1).wait(454).to({startPosition:0,_off:false},0).to({regX:641,scaleX:0.01},99).to({_off:true},1).wait(492).to({regX:640,scaleX:0.54,alpha:0,_off:false},0).to({alpha:1},48).to({_off:true},1).wait(488));
+
+	// mask
+	this.instance_9 = new lib.BO_1("synched",0);
+	this.instance_9.setTransform(498,244,0.536,0.067,0,0,0,640,240);
+	this.instance_9._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_9).wait(413).to({startPosition:0,_off:false},0).wait(149).to({startPosition:0},0).to({regX:640.1,scaleX:0.06},99).to({_off:true},1).wait(243).to({regX:640,scaleX:0.54,alpha:0,_off:false},0).to({alpha:1},48).to({_off:true},1).wait(455).to({startPosition:0,_off:false},0).wait(149).to({startPosition:0},0).to({regX:640.1,scaleX:0.06},99).to({_off:true},1).wait(243).to({regX:640,scaleX:0.54,alpha:0,_off:false},0).to({alpha:1},48).to({_off:true},1).wait(453).to({startPosition:0,_off:false},0).wait(149).to({startPosition:0},0).to({regX:640.1,scaleX:0.06},99).to({_off:true},1).wait(243).to({regX:640,scaleX:0.54,alpha:0,_off:false},0).to({alpha:1},48).to({_off:true},1).wait(453).to({startPosition:0,_off:false},0).wait(149).to({startPosition:0},0).to({regX:640.1,scaleX:0.06},99).to({_off:true},1).wait(343).to({regX:640,scaleX:0.54,alpha:0,_off:false},0).to({alpha:1},48).to({_off:true},1).wait(453).to({startPosition:0,_off:false},0).wait(149).to({startPosition:0},0).to({regX:640.1,scaleX:0.06},99).to({_off:true},1).wait(343).to({regX:640,scaleX:0.54,alpha:0,_off:false},0).to({alpha:1},48).to({_off:true},1).wait(453).to({startPosition:0,_off:false},0).wait(149).to({startPosition:0},0).to({regX:640.1,scaleX:0.06},99).to({_off:true},1).wait(343).to({regX:640,scaleX:0.54,alpha:0,_off:false},0).to({alpha:1},48).to({_off:true},1).wait(454).to({startPosition:0,_off:false},0).wait(149).to({startPosition:0},0).to({regX:640.1,scaleX:0.06},99).to({_off:true},1).wait(343).to({regX:640,scaleX:0.54,alpha:0,_off:false},0).to({alpha:1},48).to({_off:true},1).wait(488));
+
+	// mask
+	this.instance_10 = new lib.BO_1("synched",0);
+	this.instance_10.setTransform(498,278.6,0.536,0.081,0,0,0,640,240);
+	this.instance_10._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_10).wait(3397).to({startPosition:0,_off:false},0).wait(298).to({startPosition:0},0).to({scaleX:0.13},99).to({_off:true},1).wait(194).to({scaleX:0.54,alpha:0,_off:false},0).to({alpha:1},48).to({_off:true},1).wait(453).to({startPosition:0,_off:false},0).wait(298).to({startPosition:0},0).to({scaleX:0.13},99).to({_off:true},1).wait(194).to({scaleX:0.54,alpha:0,_off:false},0).to({alpha:1},48).to({_off:true},1).wait(453).to({startPosition:0,_off:false},0).wait(298).to({startPosition:0},0).to({scaleX:0.13},99).to({_off:true},1).wait(194).to({scaleX:0.54,alpha:0,_off:false},0).to({alpha:1},48).to({_off:true},1).wait(1583));
+
+	// s07.png
+	this.instance_11 = new lib.s07_1("synched",0);
+	this.instance_11.setTransform(320,240,1,1,0,0,0,178,67);
+	this.instance_11._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_11).wait(6680).to({startPosition:0,_off:false},0).to({_off:true},641).wait(488));
+
+	// s06.png
+	this.instance_12 = new lib.s06_1("synched",0);
+	this.instance_12.setTransform(320,240,1,1,0,0,0,178,67);
+	this.instance_12._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_12).wait(5585).to({startPosition:0,_off:false},0).to({_off:true},641).wait(1583));
+
+	// s05.png
+	this.instance_13 = new lib.s05_1("synched",0);
+	this.instance_13.setTransform(320,240,1,1,0,0,0,178,67);
+	this.instance_13._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_13).wait(4491).to({startPosition:0,_off:false},0).to({_off:true},641).wait(2677));
+
+	// s04.png
+	this.instance_14 = new lib.s04_1("synched",0);
+	this.instance_14.setTransform(320,240,1,1,0,0,0,178,67);
+	this.instance_14._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_14).wait(3397).to({startPosition:0,_off:false},0).to({_off:true},641).wait(3771));
+
+	// s03.png
+	this.instance_15 = new lib.s03_1("synched",0);
+	this.instance_15.setTransform(320,240,1,1,0,0,0,178,67);
+	this.instance_15._off = true;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_15).wait(2403).to({startPosition:0,_off:false},0).to({_off:true},541).wait(4865));
+
+	// s01.png
+	this.instance_16 = new lib.s01_1("synched",0);
+	this.instance_16.setTransform(320,240,1,1,0,0,0,178,67);
+
+	this.instance_17 = new lib.s02_1("synched",0);
+	this.instance_17.setTransform(320,240,1,1,0,0,0,178,67);
+
+	this.timeline.addTween(cjs.Tween.get({}).to({state:[]}).to({state:[{t:this.instance_16}]},413).to({state:[]},541).to({state:[{t:this.instance_17}]},455).to({state:[]},541).wait(5859));
+
+	// renko
+	this.instance_18 = new lib.renko("synched",0);
+	this.instance_18.setTransform(567.5,240,1,1,0,0,0,72.5,240);
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_18).wait(1465).to({startPosition:0},0).wait(5807).to({startPosition:0},0).to({alpha:0},48).to({_off:true},1).wait(488));
+
+	// bg
+	this.instance_19 = new lib.bg();
+	this.instance_19.setTransform(0,0,0.5,0.5);
+
+	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.instance_19}]}).wait(7809));
+
+}).prototype = p = new cjs.MovieClip();
+p.nominalBounds = new cjs.Rectangle(0,0,640,480);
+
+
+// symbols:
+(lib.bg = function() {
+	this.initialize(img.bg);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,1280,960);
+
+
+(lib.BO = function() {
+	this.initialize(img.BO);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,64,48);
+
+
+(lib.e01 = function() {
+	this.initialize(img.e01);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,610,390);
+
+
+(lib.e02 = function() {
+	this.initialize(img.e02);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,610,390);
+
+
+(lib.e03 = function() {
+	this.initialize(img.e03);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,610,390);
+
+
+(lib.e04 = function() {
+	this.initialize(img.e04);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,610,390);
+
+
+(lib.e05 = function() {
+	this.initialize(img.e05);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,610,390);
+
+
+(lib.e06 = function() {
+	this.initialize(img.e06);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,610,390);
+
+
+(lib.renko_d = function() {
+	this.initialize(img.renko_d);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,290,960);
+
+
+(lib.renko_d_sil = function() {
+	this.initialize(img.renko_d_sil);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,150,210);
+
+
+(lib.s01 = function() {
+	this.initialize(img.s01);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,712,268);
+
+
+(lib.s02 = function() {
+	this.initialize(img.s02);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,712,268);
+
+
+(lib.s03 = function() {
+	this.initialize(img.s03);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,712,268);
+
+
+(lib.s04 = function() {
+	this.initialize(img.s04);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,712,268);
+
+
+(lib.s05 = function() {
+	this.initialize(img.s05);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,712,268);
+
+
+(lib.s06 = function() {
+	this.initialize(img.s06);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,712,268);
+
+
+(lib.s07 = function() {
+	this.initialize(img.s07);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,712,268);
+
+
+(lib.s07_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.s07();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,356,134);
+
+
+(lib.s06_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.s06();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,356,134);
+
+
+(lib.s05_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.s05();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,356,134);
+
+
+(lib.s04_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.s04();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,356,134);
+
+
+(lib.s03_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.s03();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,356,134);
+
+
+(lib.s02_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.s02();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,356,134);
+
+
+(lib.s01_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.s01();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,356,134);
+
+
+(lib.renko_d_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.renko_d_sil();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,75,105);
+
+
+(lib.renko = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.renko_d();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,145,480);
+
+
+(lib.e06_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.e06();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,305,195);
+
+
+(lib.e05_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.e05();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,305,195);
+
+
+(lib.e04_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.e04();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,305,195);
+
+
+(lib.e03_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.e03();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,305,195);
+
+
+(lib.e02_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.e02();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,305,195);
+
+
+(lib.e01_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.e01();
+	this.instance.setTransform(0,0,0.5,0.5);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,305,195);
+
+
+(lib.BO_1 = function() {
+	this.initialize();
+
+	// レイヤー 1
+	this.instance = new lib.BO();
+	this.instance.setTransform(0,0,10,10);
+
+	this.addChild(this.instance);
+}).prototype = p = new cjs.Container();
+p.nominalBounds = new cjs.Rectangle(0,0,640,480);
+
+})(lib = lib||{}, images = images||{}, createjs = createjs||{});
+var lib, images, createjs;
+module.exports = lib;
+
+},{"../createjs":4,"../image_store":19}],11:[function(require,module,exports){
 'use strict';
 var Constant = require('../constant');
 var i;
@@ -2876,7 +3801,7 @@ for(i = 0; i < 8; i++) {
 
 module.exports = BulletDictionaries;
 
-},{"../constant":3}],11:[function(require,module,exports){
+},{"../constant":3}],12:[function(require,module,exports){
 'use strict';
 
 var Constant = require('../constant');
@@ -3144,7 +4069,7 @@ BulletTypes[Constant.BULLET_BUTTERFLY_RED] = {
 
 module.exports = BulletTypes;
 
-},{"../constant":3}],12:[function(require,module,exports){
+},{"../constant":3}],13:[function(require,module,exports){
 'use strict';
 var Constant = require('../constant');
 var EnemiesParams = [ ] ;
@@ -3479,7 +4404,7 @@ EnemiesParams.sort(function(a, b) {
 
 module.exports = EnemiesParams;
 
-},{"../constant":3}],13:[function(require,module,exports){
+},{"../constant":3}],14:[function(require,module,exports){
 'use strict';
 var Constant = require('../constant');
 var EnemiesParams = [ ] ;
@@ -3724,7 +4649,7 @@ EnemiesParams.sort(function(a, b) {
 
 module.exports = EnemiesParams;
 
-},{"../constant":3}],14:[function(require,module,exports){
+},{"../constant":3}],15:[function(require,module,exports){
 'use strict';
 var Constant = require('../constant');
 
@@ -3944,7 +4869,7 @@ EnemiesParams.sort(function(a, b) {
 
 module.exports = EnemiesParams;
 
-},{"../constant":3}],15:[function(require,module,exports){
+},{"../constant":3}],16:[function(require,module,exports){
 'use strict';
 var Constant = require('../constant');
 
@@ -4161,7 +5086,7 @@ EnemiesParams.sort(function(a, b) {
 
 module.exports = EnemiesParams;
 
-},{"../constant":3}],16:[function(require,module,exports){
+},{"../constant":3}],17:[function(require,module,exports){
 'use strict';
 var Constant = require('../constant');
 
@@ -4382,7 +5307,7 @@ EnemiesParams.sort(function(a, b) {
 
 module.exports = EnemiesParams;
 
-},{"../constant":3}],17:[function(require,module,exports){
+},{"../constant":3}],18:[function(require,module,exports){
 'use strict';
 
 var Config = require('./config');
@@ -4396,7 +5321,8 @@ var StageScene    = require('./scene/stage');
 var EpilogueAScene = require('./scene/epilogue_a');
 var EpilogueBScene = require('./scene/epilogue_b');
 var EpilogueCScene = require('./scene/epilogue_c');
-var EndingScene   = require('./scene/ending');
+var StaffRollScene   = require('./scene/staffroll');
+var EndScene   = require('./scene/end');
 
 var Game = function(mainCanvas) {
 	// メインCanvas
@@ -4433,8 +5359,10 @@ var Game = function(mainCanvas) {
 	this.scenes[ constant.EPILOGUE_A_SCENE ]  = new EpilogueAScene(this);
 	this.scenes[ constant.EPILOGUE_B_SCENE ]  = new EpilogueBScene(this);
 	this.scenes[ constant.EPILOGUE_C_SCENE ]  = new EpilogueCScene(this);
-	// エンディング画面
-	this.scenes[ constant.ENDING_SCENE ]  = new EndingScene(this);
+	// スタッフロール画面
+	this.scenes[ constant.STAFFROLL_SCENE ]  = new StaffRollScene(this);
+	// エンド
+	this.scenes[ constant.END_SCENE ]  = new EndScene(this);
 
 	// 画像一覧
 	this.images = {};
@@ -4695,7 +5623,7 @@ Game.prototype = {
 	// エピローグAが終わったら
 	notifyEpilogueADone: function() {
 		// エンディングに切り替え
-		this.changeScene(constant.ENDING_SCENE);
+		this.changeScene(constant.STAFFROLL_SCENE);
 	},
 	// エピローグBが終わったら
 	notifyEpilogueBDone: function() {
@@ -4705,7 +5633,10 @@ Game.prototype = {
 	notifyEpilogueCDone: function() {
 		this.changeScene(constant.TITLE_SCENE);
 	},
-	notifyEndingDone: function() {
+	notifyStaffRollDone: function() {
+		this.changeScene(constant.END_SCENE);
+	},
+	notifyEndDone: function() {
 		this.changeScene(constant.TITLE_SCENE);
 	},
 	// ゲームオーバー
@@ -4740,10 +5671,10 @@ Game.prototype = {
 
 module.exports = Game;
 
-},{"./config":2,"./constant":3,"./scene/ending":42,"./scene/epilogue_a":43,"./scene/epilogue_b":44,"./scene/epilogue_c":45,"./scene/loading":46,"./scene/prologue1":47,"./scene/prologue2":48,"./scene/stage":49,"./scene/title":60}],18:[function(require,module,exports){
+},{"./config":2,"./constant":3,"./scene/end":43,"./scene/epilogue_a":44,"./scene/epilogue_b":45,"./scene/epilogue_c":46,"./scene/loading":47,"./scene/prologue1":48,"./scene/prologue2":49,"./scene/staffroll":50,"./scene/stage":51,"./scene/title":62}],19:[function(require,module,exports){
 module.exports = {};
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 'use strict';
 
 var cjs = require("../createjs");
@@ -4764,7 +5695,7 @@ CreateJS.prototype.update = function() {
 
 module.exports = CreateJS;
 
-},{"../createjs":4}],20:[function(require,module,exports){
+},{"../createjs":4}],21:[function(require,module,exports){
 'use strict';
 
 /* 雑魚敵の出現管理クラス */
@@ -4804,7 +5735,7 @@ Logic.prototype.getLastEnemyAppearCount = function() {
 };
 module.exports = Logic;
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 'use strict';
 
 var Factory = function(Class, stage) {
@@ -4832,7 +5763,7 @@ Factory.prototype.free = function(id) {
 
 module.exports = Factory;
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 'use strict';
 
 var Factory = require("./factory");
@@ -4972,13 +5903,13 @@ Manager.prototype.checkGrazeWithObject = function(obj1) {
 
 module.exports = Manager;
 
-},{"./factory":21}],23:[function(require,module,exports){
+},{"./factory":22}],24:[function(require,module,exports){
 var MersenneTwister = require('mersenne-twister');
 var generator = new MersenneTwister();
 
 module.exports = generator;
 
-},{"mersenne-twister":1}],24:[function(require,module,exports){
+},{"mersenne-twister":1}],25:[function(require,module,exports){
 'use strict';
 
 /* セリフを扱うクラス */
@@ -5145,7 +6076,7 @@ Logic.prototype.lines = function () {
 
 module.exports = Logic;
 
-},{"../config":2}],25:[function(require,module,exports){
+},{"../config":2}],26:[function(require,module,exports){
 'use strict';
 var Game = require('./game');
 
@@ -5209,7 +6140,7 @@ window.changeFullScreen = function () {
 };
 
 
-},{"./game":17}],26:[function(require,module,exports){
+},{"./game":18}],27:[function(require,module,exports){
 'use strict';
 
 /* オブジェクトの基底クラス */
@@ -5419,7 +6350,7 @@ ObjectBase.prototype.notifyGraze = function() {
 
 module.exports = ObjectBase;
 
-},{"../config":2}],27:[function(require,module,exports){
+},{"../config":2}],28:[function(require,module,exports){
 'use strict';
 
 /* ステージ1ボス 射命丸文 */
@@ -5470,7 +6401,7 @@ Aya.prototype.bgm = function() { return 'stage1'; };
 
 module.exports = Aya;
 
-},{"../../spell/stage1/spell1":77,"../../spell/stage1/spell2":78,"../../spell/stage1/spell3":79,"../../spell/stage1/spell4":80,"../../util":93,"./base":28}],28:[function(require,module,exports){
+},{"../../spell/stage1/spell1":79,"../../spell/stage1/spell2":80,"../../spell/stage1/spell3":81,"../../spell/stage1/spell4":82,"../../util":95,"./base":29}],29:[function(require,module,exports){
 'use strict';
 
 /* ボス基底クラス */
@@ -5788,7 +6719,7 @@ BossBase.prototype.currentSpellName = function() {
 
 module.exports = BossBase;
 
-},{"../../config":2,"../../createjs/boss_appearance":5,"../../logic/createjs":19,"../../object/shot":39,"../../util":93,"../base":26}],29:[function(require,module,exports){
+},{"../../config":2,"../../createjs/boss_appearance":5,"../../logic/createjs":20,"../../object/shot":40,"../../util":95,"../base":27}],30:[function(require,module,exports){
 'use strict';
 
 /* ステージ5ボス マエリベリー・ハーン */
@@ -5838,7 +6769,7 @@ Merry.prototype.bgm = function() { return 'stage1'; };
 module.exports = Merry;
 
 
-},{"../../spell/stage5/spell1":90,"../../spell/stage5/spell2":91,"../../spell/stage5/spell3":92,"../../util":93,"./base":28}],30:[function(require,module,exports){
+},{"../../spell/stage5/spell1":92,"../../spell/stage5/spell2":93,"../../spell/stage5/spell3":94,"../../util":95,"./base":29}],31:[function(require,module,exports){
 'use strict';
 
 /* ステージ2ボス 東風谷早苗 */
@@ -5887,7 +6818,7 @@ Sanae.prototype.bgm = function() { return 'stage1'; };
 
 module.exports = Sanae;
 
-},{"../../spell/stage2/spell1":81,"../../spell/stage2/spell2":82,"../../spell/stage2/spell3":83,"../../util":93,"./base":28}],31:[function(require,module,exports){
+},{"../../spell/stage2/spell1":83,"../../spell/stage2/spell2":84,"../../spell/stage2/spell3":85,"../../util":95,"./base":29}],32:[function(require,module,exports){
 'use strict';
 
 /* ステージ4ボス 八雲紫 */
@@ -5936,7 +6867,7 @@ Yukari.prototype.bgm = function() { return 'stage1'; };
 
 module.exports = Yukari;
 
-},{"../../spell/stage4/spell1":87,"../../spell/stage4/spell2":88,"../../spell/stage4/spell3":89,"../../util":93,"./base":28}],32:[function(require,module,exports){
+},{"../../spell/stage4/spell1":89,"../../spell/stage4/spell2":90,"../../spell/stage4/spell3":91,"../../util":95,"./base":29}],33:[function(require,module,exports){
 'use strict';
 
 /* ステージ3ボス 風見幽香 */
@@ -5985,7 +6916,7 @@ Yuuka.prototype.bgm = function() { return 'stage1'; };
 
 module.exports = Yuuka;
 
-},{"../../spell/stage3/spell1":84,"../../spell/stage3/spell2":85,"../../spell/stage3/spell3":86,"../../util":93,"./base":28}],33:[function(require,module,exports){
+},{"../../spell/stage3/spell1":86,"../../spell/stage3/spell2":87,"../../spell/stage3/spell3":88,"../../util":95,"./base":29}],34:[function(require,module,exports){
 'use strict';
 
 /* 敵弾オブジェクト */
@@ -6093,7 +7024,7 @@ Bullet.prototype.spriteHeight = function() { return this.height; };
 
 module.exports = Bullet;
 
-},{"../constant":3,"../enemy/bullet_types":11,"../util":93,"./vector_base":40}],34:[function(require,module,exports){
+},{"../constant":3,"../enemy/bullet_types":12,"../util":95,"./vector_base":41}],35:[function(require,module,exports){
 'use strict';
 
 /* 自機 */
@@ -6499,7 +7430,7 @@ Character.prototype.spriteHeight = function() { return 48; };
 
 module.exports = Character;
 
-},{"../constant":3,"../logic/manager":22,"../spell/renko/spell1":76,"../util":93,"./base":26,"./boss/aya":27,"./bullet":33,"./enemy":36,"./option":38}],35:[function(require,module,exports){
+},{"../constant":3,"../logic/manager":23,"../spell/renko/spell1":78,"../util":95,"./base":27,"./boss/aya":28,"./bullet":34,"./enemy":37,"./option":39}],36:[function(require,module,exports){
 'use strict';
 
 /* エフェクトオブジェクト */
@@ -6568,7 +7499,7 @@ Effect.prototype.updateDisplay = function() {
 
 module.exports = Effect;
 
-},{"../constant":3,"../util":93,"./base":26}],36:[function(require,module,exports){
+},{"../constant":3,"../util":95,"./base":27}],37:[function(require,module,exports){
 'use strict';
 
 /* 敵オブジェクト */
@@ -6734,7 +7665,7 @@ Enemy.prototype.spriteHeight = function() { return 32; };
 
 module.exports = Enemy;
 
-},{"../constant":3,"../enemy/bullet_dictionaries":10,"../object/shot":39,"../util":93,"./vector_base":40}],37:[function(require,module,exports){
+},{"../constant":3,"../enemy/bullet_dictionaries":11,"../object/shot":40,"../util":95,"./vector_base":41}],38:[function(require,module,exports){
 'use strict';
 
 /* アイテムオブジェクト */
@@ -6861,7 +7792,7 @@ Item.prototype.spriteHeight = function() { return 17; };
 
 module.exports = Item;
 
-},{"../constant":3,"../util":93,"./vector_base":40}],38:[function(require,module,exports){
+},{"../constant":3,"../util":95,"./vector_base":41}],39:[function(require,module,exports){
 'use strict';
 
 /* 自機オプションオブジェクト */
@@ -6927,7 +7858,7 @@ Option.prototype.spriteHeight = function() { return 20; };
 
 module.exports = Option;
 
-},{"../constant":3,"../util":93,"./base":26}],39:[function(require,module,exports){
+},{"../constant":3,"../util":95,"./base":27}],40:[function(require,module,exports){
 'use strict';
 
 /* 自機弾オブジェクト */
@@ -7031,7 +7962,7 @@ Shot.prototype.notifyCollision = function(obj) {
 
 module.exports = Shot;
 
-},{"../constant":3,"../shot_types":73,"../util":93,"./vector_base":40}],40:[function(require,module,exports){
+},{"../constant":3,"../shot_types":75,"../util":95,"./vector_base":41}],41:[function(require,module,exports){
 'use strict';
 
 /* ベクトルを使って動くオブジェクトの基底クラス */
@@ -7217,7 +8148,7 @@ VectorBase.prototype.calc_moveY = function() {
 
 module.exports = VectorBase;
 
-},{"../constant":3,"../util":93,"./base":26}],41:[function(require,module,exports){
+},{"../constant":3,"../util":95,"./base":27}],42:[function(require,module,exports){
 'use strict';
 
 /* シーンの基底クラス */
@@ -7258,12 +8189,12 @@ BaseScene.prototype.onunload = function(){
 
 module.exports = BaseScene;
 
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 'use strict';
 
-/* エンディング */
+/* エンド */
 
-var ending = require("../createjs/ending");
+var end = require("../createjs/end");
 var CreateJS = require("../logic/createjs");
 
 // 基底クラス
@@ -7283,39 +8214,65 @@ Util.inherit(Scene, BaseScene);
 Scene.prototype.init = function() {
 	BaseScene.prototype.init.apply(this, arguments);
 
-	this.ending = new CreateJS(new ending.ending(), 640, 480);
-	this.game.playBGM('ending');
+	this.end = new CreateJS(new end.epilog(), 640, 480);
+	// 前のシーンの run -> このシーンの updatedisplay と走るので、
+	// init の段階で update しておく
+	// しないと updatedisplay の clearcanvas で画面が真っ白になる
+	this.end.update();
 };
 
 // フレーム処理
 Scene.prototype.run = function(){
 	BaseScene.prototype.run.apply(this, arguments);
 
-	// エンディング終了
-	if(this.frame_count > 3600) {
-		this.game.notifyEndingDone();
+	if(this.frame_count === 180) {
+		this.game.playBGM('ending');
 	}
-	// エンディング曲をN秒でフェードアウト
-	else if(this.frame_count === 3300) {
-		this.game.fadeOutBGM(5);
-	}
-	else {
-		this.ending.update();
+	else if(this.frame_count === 9002) {
+		this.game.fadeOutBGM(19.8);
 	}
 
+	if(this.frame_count === 10600) {
+		this.game.notifyEndDone();
+	}
+	else {
+		this.end.update();
+	}
 };
 
 // 画面更新
 Scene.prototype.updateDisplay = function(){
+	this.game.clearCanvas();
+
 	var ctx = this.game.surface;
 	ctx.save();
-	ctx.drawImage(this.ending.canvas, 0, 0);
+	ctx.drawImage(this.end.canvas, 0, 0);
+	ctx.restore();
+
+	if(Config.DEBUG) {
+		this._showFrameCount();
+	}
+};
+
+// デバッグメッセージ
+Scene.prototype._showFrameCount = function() {
+	var ctx = this.game.surface;
+	ctx.save();
+
+	ctx.font = "18px 'Migu'";
+	ctx.textAlign = 'left';
+	ctx.textBaseAlign = 'middle';
+	ctx.fillStyle = 'rgb( 255, 0, 255 )';
+
+	// フレーム数
+	ctx.fillText("フレーム数：" + this.frame_count.toString(), 20, 20);
+
 	ctx.restore();
 };
 
 module.exports = Scene;
 
-},{"../config":2,"../constant":3,"../createjs/ending":6,"../logic/createjs":19,"../util":93,"./base":41}],43:[function(require,module,exports){
+},{"../config":2,"../constant":3,"../createjs/end":6,"../logic/createjs":20,"../util":95,"./base":42}],44:[function(require,module,exports){
 'use strict';
 
 /* エピローグ画面A */
@@ -7343,6 +8300,11 @@ Scene.prototype.init = function() {
 	this.epilogue = new CreateJS(new epilogue.ED_A(), 640, 480);
 
 	this.game.playBGM('epilogue');
+	// 前のシーンの run -> このシーンの updatedisplay と走るので、
+	// init の段階で update しておく
+	// しないと updatedisplay の clearcanvas で画面が真っ白になる
+	this.epilogue.update();
+
 };
 
 // フレーム処理
@@ -7368,6 +8330,7 @@ Scene.prototype.run = function(){
 
 // 画面更新
 Scene.prototype.updateDisplay = function(){
+	this.game.clearCanvas();
 	var ctx = this.game.surface;
 	ctx.save();
 	ctx.drawImage(this.epilogue.canvas, 0, 0);
@@ -7399,7 +8362,7 @@ Scene.prototype._showFrameCount = function() {
 
 module.exports = Scene;
 
-},{"../config":2,"../constant":3,"../createjs/epilogue_a":7,"../logic/createjs":19,"../util":93,"./base":41}],44:[function(require,module,exports){
+},{"../config":2,"../constant":3,"../createjs/epilogue_a":7,"../logic/createjs":20,"../util":95,"./base":42}],45:[function(require,module,exports){
 'use strict';
 
 /* エピローグ画面B */
@@ -7425,6 +8388,11 @@ Scene.prototype.init = function() {
 	BaseScene.prototype.init.apply(this, arguments);
 
 	this.epilogue = new CreateJS(new epilogue.ED_B(), 640, 480);
+	// 前のシーンの run -> このシーンの updatedisplay と走るので、
+	// init の段階で update しておく
+	// しないと updatedisplay の clearcanvas で画面が真っ白になる
+	this.epilogue.update();
+
 };
 
 // フレーム処理
@@ -7442,6 +8410,7 @@ Scene.prototype.run = function(){
 
 // 画面更新
 Scene.prototype.updateDisplay = function(){
+	this.game.clearCanvas();
 	var ctx = this.game.surface;
 	ctx.save();
 	ctx.drawImage(this.epilogue.canvas, 0, 0);
@@ -7473,7 +8442,7 @@ Scene.prototype._showFrameCount = function() {
 
 module.exports = Scene;
 
-},{"../config":2,"../constant":3,"../createjs/epilogue_b":8,"../logic/createjs":19,"../util":93,"./base":41}],45:[function(require,module,exports){
+},{"../config":2,"../constant":3,"../createjs/epilogue_b":8,"../logic/createjs":20,"../util":95,"./base":42}],46:[function(require,module,exports){
 'use strict';
 
 /* エピローグ画面C */
@@ -7499,6 +8468,11 @@ Scene.prototype.init = function() {
 	BaseScene.prototype.init.apply(this, arguments);
 
 	this.epilogue = new CreateJS(new epilogue.ED_C(), 640, 480);
+	// 前のシーンの run -> このシーンの updatedisplay と走るので、
+	// init の段階で update しておく
+	// しないと updatedisplay の clearcanvas で画面が真っ白になる
+	this.epilogue.update();
+
 };
 
 // フレーム処理
@@ -7516,6 +8490,7 @@ Scene.prototype.run = function(){
 
 // 画面更新
 Scene.prototype.updateDisplay = function(){
+	this.game.clearCanvas();
 	var ctx = this.game.surface;
 	ctx.save();
 	ctx.drawImage(this.epilogue.canvas, 0, 0);
@@ -7547,7 +8522,7 @@ Scene.prototype._showFrameCount = function() {
 
 module.exports = Scene;
 
-},{"../config":2,"../constant":3,"../createjs/epilogue_c":9,"../logic/createjs":19,"../util":93,"./base":41}],46:[function(require,module,exports){
+},{"../config":2,"../constant":3,"../createjs/epilogue_c":9,"../logic/createjs":20,"../util":95,"./base":42}],47:[function(require,module,exports){
 'use strict';
 var cjs = require("../createjs");
 var images = require("../image_store");
@@ -7718,7 +8693,7 @@ LoadingScene.prototype._loadBGM = function(url, successCallback) {
 };
 module.exports = LoadingScene;
 
-},{"../config":2,"../createjs":4,"../image_store":18,"../util":93,"./base":41}],47:[function(require,module,exports){
+},{"../config":2,"../createjs":4,"../image_store":19,"../util":95,"./base":42}],48:[function(require,module,exports){
 'use strict';
 
 /* プロローグ画面1 */
@@ -7855,7 +8830,7 @@ Scene.prototype._showMessage = function(){
 
 module.exports = Scene;
 
-},{"../config":2,"../constant":3,"../serif/prologue1":61,"../util":93,"./base":41}],48:[function(require,module,exports){
+},{"../config":2,"../constant":3,"../serif/prologue1":63,"../util":95,"./base":42}],49:[function(require,module,exports){
 'use strict';
 
 /* プロローグ画面2 */
@@ -8096,7 +9071,85 @@ Scene.prototype._showMessage = function() {
 
 module.exports = Scene;
 
-},{"../config":2,"../constant":3,"../logic/serif":24,"../serif/prologue2":62,"../util":93,"./base":41}],49:[function(require,module,exports){
+},{"../config":2,"../constant":3,"../logic/serif":25,"../serif/prologue2":64,"../util":95,"./base":42}],50:[function(require,module,exports){
+'use strict';
+
+/* スタッフロール */
+
+var staffroll = require("../createjs/staffroll");
+var CreateJS = require("../logic/createjs");
+
+// 基底クラス
+var BaseScene = require('./base');
+
+var Util = require('../util');
+var Constant = require('../constant');
+var Config = require('../config');
+
+var Scene = function(game) {
+	BaseScene.apply(this, arguments);
+};
+// 基底クラスを継承
+Util.inherit(Scene, BaseScene);
+
+// 初期化
+Scene.prototype.init = function() {
+	BaseScene.prototype.init.apply(this, arguments);
+
+	this.staffroll = new CreateJS(new staffroll.staffroll(), 640, 480);
+
+	this.game.playBGM('staffroll');
+
+	// 前のシーンの run -> このシーンの updatedisplay と走るので、
+	// init の段階で update しておく
+	// しないと updatedisplay の clearcanvas で画面が真っ白になる
+	this.staffroll.update();
+};
+
+// フレーム処理
+Scene.prototype.run = function(){
+	BaseScene.prototype.run.apply(this, arguments);
+
+	if(this.frame_count > 7800) {
+		this.game.notifyStaffRollDone();
+	}
+	else {
+		this.staffroll.update();
+	}
+};
+
+// 画面更新
+Scene.prototype.updateDisplay = function(){
+	this.game.clearCanvas();
+	var ctx = this.game.surface;
+	ctx.save();
+	ctx.drawImage(this.staffroll.canvas, 0, 0);
+	ctx.restore();
+
+	if(Config.DEBUG) {
+		this._showFrameCount();
+	}
+};
+
+// デバッグメッセージ
+Scene.prototype._showFrameCount = function() {
+	var ctx = this.game.surface;
+	ctx.save();
+
+	ctx.font = "18px 'Migu'";
+	ctx.textAlign = 'left';
+	ctx.textBaseAlign = 'middle';
+	ctx.fillStyle = 'rgb( 255, 0, 255 )';
+
+	// フレーム数
+	ctx.fillText("フレーム数：" + this.frame_count.toString(), 20, 20);
+
+	ctx.restore();
+};
+
+module.exports = Scene;
+
+},{"../config":2,"../constant":3,"../createjs/staffroll":10,"../logic/createjs":20,"../util":95,"./base":42}],51:[function(require,module,exports){
 'use strict';
 
 /* ステージ画面 */
@@ -8586,7 +9639,7 @@ Scene.prototype.notifyClearEnd = function() {
 
 module.exports = Scene;
 
-},{"../config":2,"../constant":3,"../enemy/stage1":12,"../enemy/stage2":13,"../enemy/stage3":14,"../enemy/stage4":15,"../enemy/stage5":16,"../logic/manager":22,"../object/boss/aya":27,"../object/boss/merry":29,"../object/boss/sanae":30,"../object/boss/yukari":31,"../object/boss/yuuka":32,"../object/bullet":33,"../object/character":34,"../object/effect":35,"../object/enemy":36,"../object/item":37,"../object/shot":39,"../serif/stage1/after":63,"../serif/stage1/before":64,"../serif/stage2/after":65,"../serif/stage2/before":66,"../serif/stage3/after":67,"../serif/stage3/before":68,"../serif/stage4/after":69,"../serif/stage4/before":70,"../serif/stage5/after":71,"../serif/stage5/before":72,"../util":93,"./base":41,"./stage/state/boss":51,"./stage/state/result_clear":53,"./stage/state/result_gameover":54,"./stage/state/start":55,"./stage/state/talk_after":56,"./stage/state/talk_before":58,"./stage/state/way":59}],50:[function(require,module,exports){
+},{"../config":2,"../constant":3,"../enemy/stage1":13,"../enemy/stage2":14,"../enemy/stage3":15,"../enemy/stage4":16,"../enemy/stage5":17,"../logic/manager":23,"../object/boss/aya":28,"../object/boss/merry":30,"../object/boss/sanae":31,"../object/boss/yukari":32,"../object/boss/yuuka":33,"../object/bullet":34,"../object/character":35,"../object/effect":36,"../object/enemy":37,"../object/item":38,"../object/shot":40,"../serif/stage1/after":65,"../serif/stage1/before":66,"../serif/stage2/after":67,"../serif/stage2/before":68,"../serif/stage3/after":69,"../serif/stage3/before":70,"../serif/stage4/after":71,"../serif/stage4/before":72,"../serif/stage5/after":73,"../serif/stage5/before":74,"../util":95,"./base":42,"./stage/state/boss":53,"./stage/state/result_clear":55,"./stage/state/result_gameover":56,"./stage/state/start":57,"./stage/state/talk_after":58,"./stage/state/talk_before":60,"./stage/state/way":61}],52:[function(require,module,exports){
 'use strict';
 
 /* ステージ状態の基底クラス */
@@ -8619,7 +9672,7 @@ BaseState.prototype.updateDisplay = function(){
 
 module.exports = BaseState;
 
-},{}],51:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 'use strict';
 
 var BaseState = require('./base');
@@ -8775,7 +9828,7 @@ State.prototype._showVital = function(){
 
 module.exports = State;
 
-},{"../../../config":2,"../../../constant":3,"../../../util":93,"./base":50}],52:[function(require,module,exports){
+},{"../../../config":2,"../../../constant":3,"../../../util":95,"./base":52}],54:[function(require,module,exports){
 'use strict';
 
 /* 結果画面基底クラス */
@@ -8914,7 +9967,7 @@ State.prototype.resultName = function(){
 
 module.exports = State;
 
-},{"../../../config":2,"../../../constant":3,"../../../util":93,"./base":50}],53:[function(require,module,exports){
+},{"../../../config":2,"../../../constant":3,"../../../util":95,"./base":52}],55:[function(require,module,exports){
 'use strict';
 
 // クリア リザルト
@@ -8939,7 +9992,7 @@ ResultState.prototype.resultName = function(){
 
 module.exports = ResultState;
 
-},{"../../../util":93,"./result_base":52}],54:[function(require,module,exports){
+},{"../../../util":95,"./result_base":54}],56:[function(require,module,exports){
 'use strict';
 
 // ゲームオーバー リザルト
@@ -8965,7 +10018,7 @@ ResultState.prototype.resultName = function(){
 
 module.exports = ResultState;
 
-},{"../../../util":93,"./result_base":52}],55:[function(require,module,exports){
+},{"../../../util":95,"./result_base":54}],57:[function(require,module,exports){
 'use strict';
 
 /* 道中 最初のタイトル表示 */
@@ -9086,7 +10139,7 @@ State.prototype.updateDisplay = function(){
 };
 module.exports = State;
 
-},{"../../../constant":3,"../../../util":93,"./base":50}],56:[function(require,module,exports){
+},{"../../../constant":3,"../../../util":95,"./base":52}],58:[function(require,module,exports){
 'use strict';
 
 // ボス戦後のセリフ
@@ -9119,7 +10172,7 @@ TalkState.prototype.notifyTalkEnd = function () {
 
 module.exports = TalkState;
 
-},{"../../../config":2,"../../../util":93,"./talk_base":57}],57:[function(require,module,exports){
+},{"../../../config":2,"../../../util":95,"./talk_base":59}],59:[function(require,module,exports){
 'use strict';
 
 var BaseState = require('./base');
@@ -9329,7 +10382,7 @@ State.prototype.notifyTalkEnd = function () {
 
 module.exports = State;
 
-},{"../../../config":2,"../../../constant":3,"../../../logic/serif":24,"../../../util":93,"./base":50}],58:[function(require,module,exports){
+},{"../../../config":2,"../../../constant":3,"../../../logic/serif":25,"../../../util":95,"./base":52}],60:[function(require,module,exports){
 'use strict';
 
 // ボス戦前のセリフ
@@ -9361,7 +10414,7 @@ TalkState.prototype.notifyTalkEnd = function () {
 
 module.exports = TalkState;
 
-},{"../../../config":2,"../../../util":93,"./talk_base":57}],59:[function(require,module,exports){
+},{"../../../config":2,"../../../util":95,"./talk_base":59}],61:[function(require,module,exports){
 'use strict';
 
 // 敵生成終了から次のシーンまでの間隔
@@ -9480,7 +10533,7 @@ State.prototype.updateDisplay = function(){
 
 module.exports = State;
 
-},{"../../../config":2,"../../../constant":3,"../../../logic/enemy_appear":20,"../../../util":93,"./base":50}],60:[function(require,module,exports){
+},{"../../../config":2,"../../../constant":3,"../../../logic/enemy_appear":21,"../../../util":95,"./base":52}],62:[function(require,module,exports){
 'use strict';
 
 /* タイトル画面 */
@@ -9572,7 +10625,7 @@ OpeningScene.prototype.updateDisplay = function(){
 
 module.exports = OpeningScene;
 
-},{"../config":2,"../constant":3,"../util":93,"./base":41}],61:[function(require,module,exports){
+},{"../config":2,"../constant":3,"../util":95,"./base":42}],63:[function(require,module,exports){
 'use strict';
 
 var Serif = [
@@ -9586,14 +10639,14 @@ var Serif = [
 
 module.exports = Serif;
 
-},{}],62:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 'use strict';
 
 // セリフ
 var Serif = [{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":null},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"早朝の散歩も良いものね。"},{"pos":"right","exp":null,"chara":null,"fukidashi":"normal","serif":"…約束を守りなさい。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"ん…誰？\n誰かいるの？"},{"pos":"right","exp":"normal","chara":"hatena","fukidashi":null,"serif":"　"},{"pos":"right","exp":"owata","chara":"hatena","fukidashi":"orange","serif":"わたしです"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"なんだ私か。"},{"pos":"right","exp":"normal","chara":"hatena","fukidashi":"normal","serif":"え…。\nちょっとは驚きなさいよ。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"驚いたわよ。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"で、貴方誰なの？\n見たところ、私に\nそっくりだけど。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"orange","serif":"…ひょっとして、\nドッペルゲンガーってやつ？"},{"pos":"right","exp":"normal","chara":"ganger","fukidashi":"normal","serif":"そのようなものね。\nそんなことより、\n貴方に大事な話があるの。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"なにかしら。"},{"pos":"right","exp":"normal","chara":"ganger","fukidashi":"normal","serif":"約束を守りなさい。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"約束？\n何か約束してたっけ。"},{"pos":"right","exp":"normal","chara":"ganger","fukidashi":"normal","serif":"ほら、博麗神社に…。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"orange","serif":"あぁ、そういえば前に\nメリーと約束してたわ。"},{"pos":"right","exp":null,"chara":null,"fukidashi":null,"serif":null},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"博麗神社の入り口を\n調べようって。\nそのことかしら？"},{"pos":"right","exp":"normal","chara":"merry","fukidashi":"orange","serif":"蓮子？\nこんなところで何してるの？"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"orange","serif":"あ、噂をすれば。\nメリー、見て！\n私のドッペルゲンガーが…"},{"pos":"right","exp":"normal","chara":null,"fukidashi":"normal","serif":null},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"あれ？いない…。"},{"pos":"right","exp":"normal","chara":"merry","fukidashi":"normal","serif":"どうしたの？"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"それが、\nかくかくしかじかで。"},{"pos":"right","exp":"normal","chara":"merry","fukidashi":"normal","serif":"ふーん。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"覚えてる？前に博霊神社の\n入り口を調べようって\n約束してたこと。"},{"pos":"right","exp":"normal","chara":"merry","fukidashi":"normal","serif":"そうだっけ？"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"orange","serif":"ねえ、今から行ってみない？"},{"pos":"right","exp":"troubled","chara":"merry","fukidashi":"normal","serif":"今から？面倒だわ…。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"なんだか気になるのよ。"},{"pos":"right","exp":"disappointed","chara":"merry","fukidashi":"normal","serif":"うっ…急にめまいと頭痛が。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"絶対嘘でしょ、それ。"},{"pos":"right","exp":"disappointed","chara":"merry","fukidashi":"normal","serif":"全身の骨が折れてるかも。"},{"pos":"left","exp":"surprised","chara":"renko","fukidashi":"purple","serif":"さっきまで\n元気だったじゃない！"},{"pos":"right","exp":"troubled","chara":"merry","fukidashi":"normal","serif":"うーん、気が進まないわ。"},{"pos":"left","exp":"disappointed","chara":"renko","fukidashi":"normal","serif":"はぁ…。そんなに嫌なら\n仕方ないわね。\n私一人で行ってくるわ。"}];
 module.exports = Serif;
 
-},{}],63:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 'use strict';
 
 // セリフ
@@ -9601,7 +10654,7 @@ var Serif= [{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","s
 
 module.exports = Serif;
 
-},{}],64:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 'use strict';
 
 // セリフ
@@ -9609,7 +10662,7 @@ var Serif= [{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","ser
 
 module.exports = Serif;
 
-},{}],65:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 'use strict';
 
 // セリフ
@@ -9617,7 +10670,7 @@ var Serif= [{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","s
 
 module.exports = Serif;
 
-},{}],66:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 'use strict';
 
 // セリフ
@@ -9625,7 +10678,7 @@ var Serif= [{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","ser
 
 module.exports = Serif;
 
-},{}],67:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 'use strict';
 
 // セリフ
@@ -9633,28 +10686,28 @@ var Serif= [{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","ser
 
 module.exports = Serif;
 
-},{}],68:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 'use strict';
 
 // セリフ
 var Serif= [{"pos":"left","exp":"disappointed","chara":"renko","fukidashi":"normal","serif":"闇雲に進んできたけれど、\n神社の姿は影も見えず。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"あれは誰かしら？"},{"pos":"right","exp":"normal","chara":"yuuka","fukidashi":"orange","serif":"天には星。\n地には花。\n人には悲鳴。"},{"pos":"left","exp":"troubled","chara":"renko","fukidashi":"normal","serif":"最後はどうかと思うわ。"},{"pos":"right","exp":"grin","chara":"yuuka","fukidashi":"normal","serif":"虐めると、人は\nいい声で鳴くのよ。"},{"pos":"right","exp":"normal","chara":"yuuka","fukidashi":"normal","serif":"ところで貴方は\n人間かしら？"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"今だけは\n人外でありたいわね。"},{"pos":"right","exp":"normal","chara":"yuuka","fukidashi":"normal","serif":"まあ、結局は何でも\nいいのよ。等しく、私が\n虐めてあげる。"}];
 module.exports = Serif;
 
-},{}],69:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 'use strict';
 
 // セリフ
 var Serif= [{"pos":"right","exp":"normal","chara":"yukari","fukidashi":"normal","serif":null},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"私、博霊神社に\n行きたいの。"},{"pos":"right","exp":"normal","chara":"yukari","fukidashi":"orange","serif":"どうぞ、お通りなさい。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"あら、あっさりね。"},{"pos":"right","exp":"normal","chara":"yukari","fukidashi":"normal","serif":"流石の私も疲れたわ。\nお願いした人数を\n忘れるほどに。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"人を追い返すのが仕事？\n変わってるのね。"},{"pos":"right","exp":"normal","chara":"yukari","fukidashi":"normal","serif":"まあね。貴方は\n楽しめたのかしら？"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"ちょっぴり楽しくなって\nきた…かな？"},{"pos":"right","exp":"anger","chara":"yukari","fukidashi":"normal","serif":"以前の貴方はもっと\n楽しく遊んでいたはずよ。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"…？\nどこかで前に会ったことが？"},{"pos":"right","exp":"normal","chara":"yukari","fukidashi":"normal","serif":"そうね。\nきっと、何度も。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"覚えてないなあ。"},{"pos":"right","exp":"disappointed","chara":"yukari","fukidashi":"normal","serif":"みんな疲れてるのね。\nああ…眠くなってきた…。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"さっき起きたところじゃ\nないの？"},{"pos":"right","exp":"normal","chara":"yukari","fukidashi":"normal","serif":"もう行きなさい。\nまた会えるといいわね。"}];
 module.exports = Serif;
 
-},{}],70:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 'use strict';
 
 // セリフ
 var Serif= [{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":null},{"pos":"right","exp":"disappointed","chara":"yukari","fukidashi":"orange","serif":"私としたことが。つい、\n早起きしてしまったわ。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"もう夕方みたいだけど…"},{"pos":"right","exp":"normal","chara":"yukari","fukidashi":"normal","serif":"まだ、夕方なのよ。"},{"pos":"left","exp":"troubled","chara":"renko","fukidashi":"normal","serif":"ああ…。また変な人に\n絡まれるのね、私。"},{"pos":"right","exp":"normal","chara":"yukari","fukidashi":"normal","serif":"まあ、人ではないけれど。\nひとつ、貴方に\nお願いがあるの。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"叶えられるかは分からない\nけど、聞くだけ聞いて\nあげるわ。"},{"pos":"right","exp":"anger","chara":"yukari","fukidashi":"normal","serif":"簡単なことよ。今来た道を\n戻って欲しいだけ。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"聞けそうにないなあ。"},{"pos":"right","exp":"normal","chara":"yukari","fukidashi":"normal","serif":"なら仕方ないわね。少し\n遊んでいってもらうわよ。"}];
 module.exports = Serif;
 
-},{}],71:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 'use strict';
 
 // セリフ
@@ -9662,14 +10715,14 @@ var Serif= [];
 
 module.exports = Serif;
 
-},{}],72:[function(require,module,exports){
+},{}],74:[function(require,module,exports){
 'use strict';
 
 // セリフ
 var Serif= [{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"この石段の先が\n博霊神社ね。"},{"pos":"right","exp":"anger","chara":"merry","fukidashi":"normal","serif":"蓮子…。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"orange","serif":"あれ？メリーじゃない。\nどうしてここに？"},{"pos":"right","exp":"anger","chara":"merry","fukidashi":"normal","serif":"もう一度言うわ。\nこの石段を登らないで。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"もう一度…？\nメリー、何を言ってるの？"},{"pos":"right","exp":"anger","chara":"merry","fukidashi":"normal","serif":"石段を登らないで。\n来た道を帰って頂戴。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"何かおかしいわ…。\n貴方、誰…？"},{"pos":"right","exp":"grin","chara":"merry","fukidashi":"normal","serif":"変なことを言うのね。私は\nメリーよ？貴方の知ってる、\nマエリベリー・ハーン。"},{"pos":"left","exp":"anger","chara":"renko","fukidashi":"normal","serif":"違う…。おかしい…。"},{"pos":"right","exp":"grin","chara":"merry","fukidashi":"normal","serif":"さ、もう夜も遅いわ。\n帰りましょ、蓮子。"},{"pos":"left","exp":"anger","chara":"renko","fukidashi":"normal","serif":"この先に何かあるのね。\n通してよ。"},{"pos":"right","exp":"furious","chara":"merry","fukidashi":"purple","serif":"絶対に行かせないわ！\n貴方は何度でも\n来た道を戻るのよ！"}];
 module.exports = Serif;
 
-},{}],73:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 'use strict';
 
 var ShotTypes = [
@@ -9710,7 +10763,7 @@ var ShotTypes = [
 
 module.exports = ShotTypes;
 
-},{}],74:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 'use strict';
 
 /* スペルカードの基底クラス */
@@ -9958,7 +11011,7 @@ SpellBase.prototype.initY = function( ) {
 
 module.exports = SpellBase;
 
-},{"../config":2,"../constant":3,"../util":93}],75:[function(require,module,exports){
+},{"../config":2,"../constant":3,"../util":95}],77:[function(require,module,exports){
 'use strict';
 
 /* パラメータ指定で作るスペルカード基底クラス */
@@ -10121,7 +11174,7 @@ BaseParamSpell.prototype.bulletDictionary = function( ) {
 
 module.exports = BaseParamSpell;
 
-},{"../util":93,"./base":74}],76:[function(require,module,exports){
+},{"../util":95,"./base":76}],78:[function(require,module,exports){
 'use strict';
 
 /* 自機スペルカード */
@@ -10175,7 +11228,7 @@ Spell.prototype.charaImage = function() { return "renko_normal"; };
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../util":93,"../base":74}],77:[function(require,module,exports){
+},{"../../constant":3,"../../util":95,"../base":76}],79:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -10271,7 +11324,7 @@ Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../util":93,"../base":74}],78:[function(require,module,exports){
+},{"../../constant":3,"../../util":95,"../base":76}],80:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -10329,7 +11382,7 @@ Spell.prototype._getRandomValue = function( range ) {
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../logic/mersenne":23,"../../util":93,"../base":74}],79:[function(require,module,exports){
+},{"../../constant":3,"../../logic/mersenne":24,"../../util":95,"../base":76}],81:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -10378,7 +11431,7 @@ Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../util":93,"../base":74}],80:[function(require,module,exports){
+},{"../../constant":3,"../../util":95,"../base":76}],82:[function(require,module,exports){
 'use strict';
 
 /* TODO:
@@ -10456,7 +11509,7 @@ Spell.prototype._getRandomValue = function( range ) {
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../logic/mersenne":23,"../../util":93,"../base":74}],81:[function(require,module,exports){
+},{"../../constant":3,"../../logic/mersenne":24,"../../util":95,"../base":76}],83:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -10544,7 +11597,7 @@ Spell.prototype.bulletDictionary = function( ) {
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../util":93,"../param_base":75}],82:[function(require,module,exports){
+},{"../../constant":3,"../../util":95,"../param_base":77}],84:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -10629,7 +11682,7 @@ Spell.prototype.initY = function( ) { return 100; };
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../util":93,"../base":74}],83:[function(require,module,exports){
+},{"../../constant":3,"../../util":95,"../base":76}],85:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -10720,7 +11773,7 @@ var spell5_1 = function( ) {
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../util":93,"../param_base":75}],84:[function(require,module,exports){
+},{"../../constant":3,"../../util":95,"../param_base":77}],86:[function(require,module,exports){
 'use strict';
 
 
@@ -10882,7 +11935,7 @@ Spell.prototype.initY = function() { return 100; };
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../logic/manager":22,"../../object/vector_base":40,"../../util":93,"../base":74}],85:[function(require,module,exports){
+},{"../../constant":3,"../../logic/manager":23,"../../object/vector_base":41,"../../util":95,"../base":76}],87:[function(require,module,exports){
 'use strict';
 
 /* 幽香 ビーム */
@@ -11077,7 +12130,7 @@ Spell.prototype._getRandomValue = function( range ) {
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../object/base":26,"../../util":93,"../base":74}],86:[function(require,module,exports){
+},{"../../constant":3,"../../object/base":27,"../../util":95,"../base":76}],88:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -11181,7 +12234,7 @@ Spell.prototype._getRandomValue = function( range ) {
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../util":93,"../base":74}],87:[function(require,module,exports){
+},{"../../constant":3,"../../util":95,"../base":76}],89:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -11263,7 +12316,7 @@ Spell.prototype.initY = function() { return 100; };
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../util":93,"../base":74}],88:[function(require,module,exports){
+},{"../../constant":3,"../../util":95,"../base":76}],90:[function(require,module,exports){
 'use strict';
 
 /* 幽香 蝶を生成するオブジェクト */
@@ -11416,7 +12469,7 @@ Spell.prototype.initY = function() { return 240; };
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../logic/manager":22,"../../object/vector_base":40,"../../util":93,"../base":74}],89:[function(require,module,exports){
+},{"../../constant":3,"../../logic/manager":23,"../../object/vector_base":41,"../../util":95,"../base":76}],91:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -11501,7 +12554,7 @@ Spell.prototype.charaImage = function() { return "yukari_normal"; };
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../util":93,"../base":74}],90:[function(require,module,exports){
+},{"../../constant":3,"../../util":95,"../base":76}],92:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -11589,7 +12642,7 @@ Spell.prototype._getRandomValue = function( range ) {
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../util":93,"../base":74}],91:[function(require,module,exports){
+},{"../../constant":3,"../../util":95,"../base":76}],93:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -11694,7 +12747,7 @@ Spell.prototype.charaImage = function() { return "merry_furious"; };
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../util":93,"../base":74}],92:[function(require,module,exports){
+},{"../../constant":3,"../../util":95,"../base":76}],94:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -11780,7 +12833,7 @@ Spell.prototype.bulletDictionary = function( ) {
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../util":93,"../param_base":75}],93:[function(require,module,exports){
+},{"../../constant":3,"../../util":95,"../param_base":77}],95:[function(require,module,exports){
 'use strict';
 var Util = {
 	// 継承
@@ -11806,7 +12859,7 @@ var Util = {
 
 module.exports = Util;
 
-},{}],94:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*
@@ -11937,7 +12990,7 @@ function(b,a,c,h,d){b.__touch.pointers[a]&&b._handlePointerMove(a,c,h,d)};c._han
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],95:[function(require,module,exports){
+},{}],97:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*
@@ -11964,7 +13017,7 @@ c.length-1;b>=0;b--)a=c[b].id,this._managed[a]==1&&(this.removeChildAt(b),delete
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],96:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /**
@@ -12018,7 +13071,7 @@ a.src,true);if(createjs.PreloadJS.isBinary(a.type))this._request.responseType="a
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],97:[function(require,module,exports){
+},{}],99:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*
@@ -12059,4 +13112,4 @@ function(a,b){var h=Math.PI*2;return function(c){if(c==0||c==1)return c;var e=b/
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[25]);
+},{}]},{},[26]);
