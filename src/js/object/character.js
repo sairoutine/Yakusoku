@@ -304,6 +304,11 @@ Character.prototype.die = function() {
 	// 自機を減らす
 	this.life--;
 
+	// 初期ボム数を初期値に
+	if(this.bombs < INIT_BOMB) {
+		this.bombs = INIT_BOMB;
+	}
+
 	// 無敵状態にする
 	this.is_unhittable = true;
 
