@@ -313,7 +313,7 @@ Game.prototype = {
 	// エピローグAが終わったら
 	notifyEpilogueADone: function() {
 		// エンディングに切り替え
-		this.changeScene(constant.ENDING_SCENE);
+		this.changeScene(constant.STAFFROLL_SCENE);
 	},
 	// エピローグBが終わったら
 	notifyEpilogueBDone: function() {
