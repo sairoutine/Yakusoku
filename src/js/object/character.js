@@ -96,6 +96,8 @@ Character.prototype.init = function() {
 
 	this.power = 0; // パワーアップアイテムで獲得したパワー
 	this.level = 0; // 自機のレベル
+
+	this.option_manager.init();
 };
 
 // 撃つ
