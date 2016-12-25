@@ -1,9 +1,10 @@
 'use strict';
 var Constant = require('../constant');
+var mersenne = require('../logic/mersenne');
 var EnemiesParams = [ ] ;
 var __randomizer = 
 	{
-		random: function () { return Math.random(); }
+		random: function () { return mersenne.random(); }
 	};
 
 // 2分 = 7200 frame
