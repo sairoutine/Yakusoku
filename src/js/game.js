@@ -302,10 +302,10 @@ Game.prototype = {
 	notifyStageDone: function() {
 		// TODO:
 		// エンディング分岐
-		if(this.currentScene().score > 1000000) {
+		if(this.currentScene().score > 3000000) {
 			this.changeScene(constant.EPILOGUE_A_SCENE);
 		}
-		else if(this.currentScene().score > 100000) {
+		else if(this.currentScene().score > 1000000) {
 			this.changeScene(constant.EPILOGUE_B_SCENE);
 		}
 		else {
