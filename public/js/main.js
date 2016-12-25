@@ -510,8 +510,17 @@ var Config = {
 			id: 0x80,
 			path: 'sound/powerup.wav',
 			volume: 0.4
-		}
-
+		},
+		kirakira: {
+			id: 0x100,
+			path: 'sound/kira2.mp3',
+			volume: 0.2
+		},
+		boss_powerup: {
+			id: 0x200,
+			path: 'sound/boss_powerup.wav',
+			volume: 1.0
+		},
 
 		/*
 		shot: {
@@ -654,6 +663,8 @@ var Constant = {
 	BULLET_TINY_YELLOW:    25,
 	BULLET_TINY_AQUA:      26,
 	BULLET_TINY_ORANGE:    27,
+	BULLET_TINY_PURPLE:    28,
+	BULLET_TINY_GRAY:      29,
 
 	BULLET_DOUBLEBALL_RED: 38,
 	BULLET_DOUBLEBALL_PURPLE: 39,
@@ -664,6 +675,7 @@ var Constant = {
 
 	BULLET_KUNAI_RED:      52,
 	BULLET_KUNAI_PURPLE:   53,
+	BULLET_KUNAI_LIMEGREEN:54,
 
 	BULLET_BEAM_YELLOW:    64,
 
@@ -3884,6 +3896,31 @@ BulletTypes[Constant.BULLET_TINY_AQUA] = {
 	'collisionHeight': 12,
 	'is_rotate':       true
 };
+BulletTypes[Constant.BULLET_TINY_PURPLE] = {
+	'image':       'shot',
+	'indexX':           4,
+	'indexY':           1,
+	'width':           14,
+	'height':          20,
+	'collisionWidth':  12,
+	'collisionHeight': 12,
+	'is_rotate':       true
+};
+BulletTypes[Constant.BULLET_TINY_GRAY] = {
+	'image':       'shot',
+	'indexX':           6,
+	'indexY':           1,
+	'width':           14,
+	'height':          20,
+	'collisionWidth':  12,
+	'collisionHeight': 12,
+	'is_rotate':       true
+};
+
+
+
+
+
 
 
 // 4: 文：赤いにじゅうまる弾
@@ -3946,6 +3983,16 @@ BulletTypes[Constant.BULLET_KUNAI_RED] = {
 BulletTypes[Constant.BULLET_KUNAI_PURPLE] = {
 	'image':       'shot',
 	'indexX':           4,
+	'indexY':           7,
+	'width':           14,
+	'height':          20,
+	'collisionWidth':  10,
+	'collisionHeight': 10,
+	'is_rotate':       true
+};
+BulletTypes[Constant.BULLET_KUNAI_LIMEGREEN] = {
+	'image':       'shot',
+	'indexX':           1,
 	'indexY':           7,
 	'width':           14,
 	'height':          20,
@@ -4407,10 +4454,11 @@ module.exports = EnemiesParams;
 },{"../constant":3}],14:[function(require,module,exports){
 'use strict';
 var Constant = require('../constant');
+var mersenne = require('../logic/mersenne');
 var EnemiesParams = [ ] ;
 var __randomizer = 
 	{
-		random: function () { return Math.random(); }
+		random: function () { return mersenne.random(); }
 	};
 
 // 2分 = 7200 frame
@@ -4649,7 +4697,7 @@ EnemiesParams.sort(function(a, b) {
 
 module.exports = EnemiesParams;
 
-},{"../constant":3}],15:[function(require,module,exports){
+},{"../constant":3,"../logic/mersenne":24}],15:[function(require,module,exports){
 'use strict';
 var Constant = require('../constant');
 
@@ -4667,7 +4715,7 @@ for( var i = 0; i < 24 ; i++ ) {
 		'type': Constant.ENEMY_GREEN_NEUTRAL_TYPE,
 		'powerItem': i % 2 === 0 ? 1 : 0,
 		'shot': [
-			{ 'bullet': 3, 'count': 40+(i%2)*20 },
+			{ 'bullet': 3, 'count': 40+(i%2)*20, 'type': Constant.BULLET_DOUBLEBALL_RED },
 		],
 		'vector': [
 			{ 'count':   0,      'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
@@ -4688,7 +4736,7 @@ for( var i = 0; i < 24 ; i++ ) {
 		'powerItem': i % 2 === 0 ? 1 : 0,
 		'type': Constant.ENEMY_GREEN_NEUTRAL_TYPE,
 		'shot': [
-			{ 'bullet': 3, 'count': 40+(i%2)*20 },
+			{ 'bullet': 3, 'count': 40+(i%2)*20, type: Constant.BULLET_DOUBLEBALL_RED },
 		],
 		'vector': [
 			{ 'count':   0,      'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
@@ -4749,7 +4797,7 @@ for( var i = 0; i < 24 ; i++ ) {
 		'type': Constant.ENEMY_GREEN_NEUTRAL_TYPE,
 		'powerItem': i % 2 === 0 ? 1 : 0,
 		'shot': [
-			{ 'bullet': 3, 'count': 40+(i%2)*20 },
+			{ 'bullet': 3, 'count': 40+(i%2)*20, type: Constant.BULLET_DOUBLEBALL_RED },
 		],
 		'vector': [
 			{ 'count':   0, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
@@ -4770,7 +4818,7 @@ for( var i = 0; i < 24 ; i++ ) {
 		'type': Constant.ENEMY_GREEN_NEUTRAL_TYPE,
 		'powerItem': i % 2 === 0 ? 1 : 0,
 		'shot': [
-			{ 'bullet': 3, 'count': 40+(i%2)*20 },
+			{ 'bullet': 3, 'count': 40+(i%2)*20, type: Constant.BULLET_DOUBLEBALL_RED },
 		],
 		'vector': [
 			{ 'count':   0, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
@@ -4791,7 +4839,7 @@ for( var i = 0; i < 12 ; i++ ) {
 		'type': Constant.ENEMY_GREEN_NEUTRAL_TYPE,
 		'powerItem': i % 2 === 0 ? 1 : 0,
 		'shot': [
-			{ 'bullet': 4, 'count': 40+(i%2)*20 },
+			{ 'bullet': 4, 'count': 40+(i%2)*20, type: Constant.BULLET_DOUBLEBALL_RED },
 		],
 		'vector': [
 			{ 'count':   0, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
@@ -4810,7 +4858,7 @@ for( var i = 0; i < 12 ; i++ ) {
 		'type': Constant.ENEMY_GREEN_NEUTRAL_TYPE,
 		'powerItem': i % 2 === 0 ? 1 : 0,
 		'shot': [
-			{ 'bullet': 4, 'count': 40+(i%2)*20 },
+			{ 'bullet': 4, 'count': 40+(i%2)*20, type: Constant.BULLET_DOUBLEBALL_RED },
 		],
 		'vector': [
 			{ 'count':   0, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
@@ -4831,7 +4879,7 @@ for( var i = 0; i < 8 ; i++ ) {
 		'type': Constant.ENEMY_GREEN_NEUTRAL_TYPE,
 		'powerItem': i % 2 === 0 ? 1 : 0,
 		'shot': [
-			{ 'bullet': 0, 'count': 40+(i%2)*20 },
+			{ 'bullet': 0, 'count': 40+(i%2)*20, type: Constant.BULLET_DOUBLEBALL_RED },
 		],
 		'vector': [
 			{ 'count':   0, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
@@ -4852,7 +4900,7 @@ for( var i = 0; i < 8; i++ ) {
 		'type': Constant.ENEMY_GREEN_NEUTRAL_TYPE,
 		'powerItem': i % 2 === 0 ? 1 : 0,
 		'shot': [
-			{ 'bullet': 0, 'count': 40+(i%2)*20 },
+			{ 'bullet': 0, 'count': 40+(i%2)*20, type: Constant.BULLET_DOUBLEBALL_RED },
 		],
 		'vector': [
 			{ 'count':   0, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
@@ -4883,6 +4931,7 @@ for( var i = 0; i < 24; i++ ) {
 			'x': 0,
 			'y': 180,
 			'vital': 1,
+			'type': Constant.ENEMY_PURPLE_NEUTRAL_TYPE,
 			'powerItem': i % 2 === 0 ? 1 : 0,
 			'scoreItem': i % 2 === 1 ? 1 : 0,
 			'shot': [
@@ -4902,6 +4951,7 @@ for( var i = 0; i < 24; i++ ) {
 			'x': 480,
 			'y': 180,
 			'vital': 1,
+			'type': Constant.ENEMY_PURPLE_NEUTRAL_TYPE,
 			'powerItem': i % 2 === 0 ? 1 : 0,
 			'scoreItem': i % 2 === 1 ? 1 : 0,
 			'shot': [
@@ -4922,6 +4972,7 @@ for( var i = 0; i < 24; i++ ) {
 			'x': 0,
 			'y': 180,
 			'vital': 1,
+			'type': Constant.ENEMY_PURPLE_NEUTRAL_TYPE,
 			'powerItem': i % 2 === 0 ? 1 : 0,
 			'scoreItem': i % 2 === 1 ? 1 : 0,
 			'shot': [
@@ -4942,6 +4993,7 @@ for( var i = 0; i < 24; i++ ) {
 			'vital': 1,
 			'powerItem': i % 2 === 0 ? 1 : 0,
 			'scoreItem': i % 2 === 1 ? 1 : 0,
+			'type': Constant.ENEMY_PURPLE_NEUTRAL_TYPE,
 			'shot': [
 				{ 'bullet': (i%2) ? 7 : 2, 'count': 40+(i%2)*20 },
 			],
@@ -4962,6 +5014,7 @@ for( var i = 0; i < 4 ; i++ ) {
 		'vital': 1,
 		'powerItem': i % 4 === 0 ? 1 : 0,
 		'scoreItem': i % 4 === 2 ? 1 : 0,
+		'type': Constant.ENEMY_PURPLE_NEUTRAL_TYPE,
 		'shot': [
 			{ 'bullet': 1, 'count': 30 - i*10 },
 			{ 'bullet': 1, 'count': 130 - i*10 },
@@ -4980,6 +5033,7 @@ for( var i = 0; i < 4 ; i++ ) {
 		'vital': 1,
 		'powerItem': i % 4 === 0 ? 1 : 0,
 		'scoreItem': i % 4 === 2 ? 1 : 0,
+		'type': Constant.ENEMY_PURPLE_NEUTRAL_TYPE,
 		'shot': [
 			{ 'bullet': 1, 'count': 30 - i*10 },
 			{ 'bullet': 1, 'count': 130 - i*10 },
@@ -5003,6 +5057,7 @@ for( var i = 0; i < 4 ; i++ ) {
 		'vital': 1,
 		'powerItem': i % 4 === 0 ? 1 : 0,
 		'scoreItem': i % 4 === 2 ? 1 : 0,
+		'type': Constant.ENEMY_PURPLE_NEUTRAL_TYPE,
 		'shot': [
 			{ 'bullet': 1, 'count': 30 - i*10 },
 			{ 'bullet': 1, 'count': 130 - i*10 },
@@ -5021,6 +5076,7 @@ for( var i = 0; i < 4 ; i++ ) {
 		'vital': 1,
 		'powerItem': i % 4 === 0 ? 1 : 0,
 		'scoreItem': i % 4 === 2 ? 1 : 0,
+		'type': Constant.ENEMY_PURPLE_NEUTRAL_TYPE,
 		'shot': [
 			{ 'bullet': 1, 'count': 30 - i*10 },
 			{ 'bullet': 1, 'count': 130 - i*10 },
@@ -5110,7 +5166,7 @@ for (var i = 0; i < 24; i++) {
 		'type': Constant.ENEMY_GREEN_NEUTRAL_TYPE,
 		'powerItem': 0,
 		'shot': [
-			{ 'type': Constant.BULLET_KUNAI_RED, 'bullet': 8, 'count': 30 },
+			{ 'type': Constant.BULLET_KUNAI_LIMEGREEN, 'bullet': 8, 'count': 30 },
 		],
 		'vector': [
 			{ 'count':   0, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
@@ -5126,7 +5182,7 @@ for (var i = 0; i < 24; i++) {
 		'type': Constant.ENEMY_GREEN_NEUTRAL_TYPE,
 		'powerItem': 1,
 		'shot': [
-			{ 'type': Constant.BULLET_KUNAI_RED, 'bullet': 8, 'count': 30 },
+			{ 'type': Constant.BULLET_KUNAI_LIMEGREEN, 'bullet': 8, 'count': 30 },
 		],
 		'vector': [
 			{ 'count':   0, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
@@ -5613,7 +5669,6 @@ Game.prototype = {
 		// TODO:
 		// エンディング分岐
 		if(this.currentScene().score > 1000000) {
-			// エピローグへ切り替え
 			this.changeScene(constant.EPILOGUE_A_SCENE);
 		}
 		else if(this.currentScene().score > 100000) {
@@ -5908,7 +5963,7 @@ module.exports = Manager;
 
 },{"./factory":22}],24:[function(require,module,exports){
 var MersenneTwister = require('mersenne-twister');
-var generator = new MersenneTwister();
+var generator = new MersenneTwister(1000); //乱数初期化
 
 module.exports = generator;
 
@@ -6546,6 +6601,9 @@ BossBase.prototype.run = function(){
 	}
 
 	if(this.isDead() && this.hasNextSpell()) {
+		// スペル終了時のフックを実行
+		this.currentSpell().onend();
+
 		// 敵の弾を vanish する
 		this.stage.bullet_manager.notifyUseBomb();
 
@@ -7046,7 +7104,7 @@ var Manager = require('../logic/manager');
 
 
 // 自機の移動速度(通常時)
-var FAST_SPEED = 4;
+var FAST_SPEED = 6;
 // 自機の移動速度(Z押下時)
 var SLOW_SPEED = 2;
 // Nフレーム毎に自機をアニメーション
@@ -11012,6 +11070,10 @@ SpellBase.prototype.initX = function( ) {
 SpellBase.prototype.initY = function( ) {
 };
 
+// スペル終了時の処理
+SpellBase.prototype.onend = function( ) {
+};
+
 module.exports = SpellBase;
 
 },{"../config":2,"../constant":3,"../util":95}],77:[function(require,module,exports){
@@ -11491,11 +11553,11 @@ Spell.prototype.runInSpellExecute = function() {
 			}
 		]);
 	}
-
-	if(this.boss.vital < 10) {
-		this.boss.is_show = true;
-	}
 };
+Spell.prototype.onend = function() {
+	this.boss.is_show = true;
+};
+
 
 Spell.prototype.name = function() { return "「幻想風靡」"; };
 Spell.prototype.charaImage = function() { return "aya_normal"; };
@@ -11541,15 +11603,15 @@ Spell.prototype.charaImage = function() { return "sanae_normal"; };
 
 // 初期 x, y 座標
 Spell.prototype.initX = function( ) { return 240; };
-Spell.prototype.initY = function( ) { return 100; };
+Spell.prototype.initY = function( ) { return 80; };
 
 Spell.prototype.baseCount = function( ) { return 600; };
 
 Spell.prototype.shotParam = function( ) {
 	return [
-		{ 'bullet': 0, 'type': Constant.BULLET_TINY_YELLOW, 'count': [  10,  20,  30,  40 ]},
-		{ 'bullet': 1, 'type': Constant.BULLET_TINY_RED,    'count': [ 210, 220, 230, 240 ]},
-		{ 'bullet': 0, 'type': Constant.BULLET_TINY_YELLOW, 'count': [ 410, 420, 430, 440 ]},
+		{ 'bullet': 0, 'type': Constant.BULLET_TINY_LIMEGREEN, 'count': [  10,  20,  30,  40 ]},
+		{ 'bullet': 1, 'type': Constant.BULLET_TINY_BLUE,      'count': [ 210, 220, 230, 240 ]},
+		{ 'bullet': 0, 'type': Constant.BULLET_TINY_LIMEGREEN, 'count': [ 410, 420, 430, 440 ]},
 	];
 };
 Spell.prototype.moveParam = function( ) {
@@ -11627,6 +11689,7 @@ Spell.prototype.runInSpellExecute = function() {
 
 	if(count % 75 === 0) {
 		this.shotCommonSense(count*2 % this.stage.width, -100);
+		this.game.playSound('boss_shot_big');
 	}
 };
 
@@ -11786,6 +11849,7 @@ module.exports = Spell;
 var VectorBaseObject = require('../../object/vector_base');
 var Util = require('../../util');
 var Constant = require('../../constant');
+var mersenne = require('../../logic/mersenne');
 
 // 蝶の種類
 var TYPE_IDS = [
@@ -11832,15 +11896,6 @@ ButterFlyGenerator.prototype.run = function() {
 	VectorBaseObject.prototype.run.apply(this, arguments);
 
 	if(this.frame_count % 60 === 0) {
-/*
-	BULLET_BUTTERFLY_ORANGE:    14,
-	BULLET_BUTTERFLY_AQUA:      15,
-	BULLET_BUTTERFLY_PURPLE:    16,
-	BULLET_BUTTERFLY_YELLOW:    17,
-	BULLET_BUTTERFLY_BLUE:      18,
-	BULLET_BUTTERFLY_LIMEGREEN: 19,
-	BULLET_BUTTERFLY_RED:       20,
-*/
 		for (var i = 0; i < 10; i++) {
 			var type_id = TYPE_IDS[this._getRandomValue({max: TYPE_IDS.length, min: 0})];
 			var theta = i * 36;
@@ -11849,15 +11904,17 @@ ButterFlyGenerator.prototype.run = function() {
 			var offset_x = r * Math.cos( Util.thetaToRadian( theta ) );
 			var offset_y = r * Math.sin( Util.thetaToRadian( theta ) );
 
-			//this.stage.bullet_manager.create(type_id, this.x + offset_x, this.y + offset_y, {r: 0, theta: theta, ra: 0.1, rrange: {max: 2}});
 			this.stage.bullet_manager.create(type_id, this.x + offset_x, this.y + offset_y, {r: 2, theta: theta});
+			this.game.playSound('kirakira');
 		}
 	}
 };
 ButterFlyGenerator.prototype._getRandomValue = function( range ) {
   var differ = range.max - range.min ;
-  return ((Math.random() * differ) | 0) + range.min ;
+  return ((mersenne.random() * differ) | 0) + range.min ;
 } ;
+
+ButterFlyGenerator.prototype.updateDisplay = function() {}; // オブジェクトは透明
 
 // 当たり判定サイズ
 ButterFlyGenerator.prototype.collisionWidth  = function() { return 0; };
@@ -11899,6 +11956,9 @@ Util.inherit(Spell, BaseSpell);
 Spell.prototype.init = function() {
 	BaseSpell.prototype.init.apply(this, arguments);
 
+	// 乱数初期化
+	mersenne.init_seed(1000);
+
 	this.is_init = false;
 };
 
@@ -11938,15 +11998,15 @@ Spell.prototype.initY = function() { return 100; };
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../logic/manager":23,"../../object/vector_base":41,"../../util":95,"../base":76}],87:[function(require,module,exports){
+},{"../../constant":3,"../../logic/manager":23,"../../logic/mersenne":24,"../../object/vector_base":41,"../../util":95,"../base":76}],87:[function(require,module,exports){
 'use strict';
 
 /* 幽香 ビーム */
 
-// 基底クラス
 var BaseObject = require('../../object/base');
 var Util = require('../../util');
 var Constant = require('../../constant');
+var mersenne = require('../../logic/mersenne');
 
 // 花の色の種類
 var TYPE_IDS = [
@@ -12003,14 +12063,14 @@ Beam.prototype.run = function() {
 			var i2 = i*2;
 			if(this.frame_count % 6 === 0) i2-=1;
 
-			this._createBullet(this.x - (offset_x/4)*i2, this.y - (offset_y/4)*i2, count);
+			//this._createBullet(this.x - (offset_x/4)*i2, this.y - (offset_y/4)*i2, count);
 			this._createBullet(this.x + (offset_x/4)*i2, this.y + (offset_y/4)*i2, count);
 		}
 	}
 };
 Beam.prototype._getRandomValue = function( range ) {
   var differ = range.max - range.min ;
-  return ((Math.random() * differ) | 0) + range.min ;
+  return ((mersenne.random() * differ) | 0) + range.min ;
 } ;
 
 Beam.prototype._createBullet = function(x, y, count) {
@@ -12079,6 +12139,7 @@ Spell.prototype.init = function() {
 	this.moveTo = [{x: 100, y: 100}, {x: 380, y: 100}];
 
 	this.beam = null;
+	mersenne.init_seed(1000);
 };
 
 
@@ -12100,6 +12161,7 @@ Spell.prototype.runInSpellExecute = function() {
 	if(!this.beam) {
 		this.beam = new Beam(this.stage);
 		this.beam.init(this.boss.x, this.boss.y);
+		this.game.playSound('kirakira');
 
 	}
 	else {
@@ -12127,13 +12189,13 @@ Spell.prototype.initY = function() { return 100; };
 
 Spell.prototype._getRandomValue = function( range ) {
   var differ = range.max - range.min ;
-  return ((Math.random() * differ) | 0) + range.min ;
+  return ((mersenne.random() * differ) | 0) + range.min ;
 } ;
 
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../object/base":27,"../../util":95,"../base":76}],88:[function(require,module,exports){
+},{"../../constant":3,"../../logic/mersenne":24,"../../object/base":27,"../../util":95,"../base":76}],88:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -12182,12 +12244,13 @@ Spell.prototype.runInSpellExecute = function() {
 		if(this.frame_count % 50 === 0){
 			this.shotCount++;
 
+			this.game.playSound('boss_shot_small');
 			var r = 50;
 			var aimed_theta = this.calcThetaAimedToChara();
 
 			/* 円形 */
-			for (var i = 0; i < 40; i++) {
-				var theta = i * 9 + aimed_theta;
+			for (var i = 0; i < 36; i++) {
+				var theta = i * 10 + aimed_theta;
 				var offset_x = r * Math.cos( Util.thetaToRadian( theta ) );
 				var offset_y = r * Math.sin( Util.thetaToRadian( theta ) );
 
@@ -12195,7 +12258,7 @@ Spell.prototype.runInSpellExecute = function() {
 				for (var j = 0; j < 10; j++) {
 					this.shot(type_id, this.boss.x + offset_x, this.boss.y + offset_y, [
 						{ count: 0 , vector: {r: 0, theta: theta} },
-						{ count: 25 , vector: {r: 3 + 0.4*j, theta: theta} },
+						{ count: 25 , vector: {r: 3.5 + 0.4*j, theta: theta} },
 					]);
 				}
 			}
@@ -12254,31 +12317,30 @@ Util.inherit(Spell, BaseSpell);
 Spell.prototype.init = function() {
 	BaseSpell.prototype.init.apply(this, arguments);
 
-	this.shotCount = 0;
-
 	this.moveIndex = 0;
 	this.moveTo = [
-		{x: 300, y: 60},
-		{x: 360, y: 100},
-		{x: 300, y: 140},
-
-		{x: 240, y: 100},
-
-		{x: 180, y: 60},
-		{x: 120, y: 100},
-		{x: 180, y: 140},
-
-		{x: 240, y: 100},
+		{x: 100, y: 100},
+		{x: 400, y: 100},
+		{x: 100, y: 400},
+		{x: 400, y: 400},
 	];
+
+	this.shotCount = 0;
 
 };
 
 
 Spell.prototype.runInSpellExecute = function() {
-	// move
-	if (!this.boss.isMoving() && this.shotCount >= 10) {
+	if(this.boss.isMoving()) {
+		this.boss.is_show = false;
+	}
+	else {
+		this.boss.is_show = true;
+	}
+
+	if (!this.boss.isMoving() && this.shotCount >= 3) {
 		var move = this.moveTo[this.moveIndex];
-		this.boss.setMoveTo(move.x, move.y);
+		this.boss.setMoveTo(move.x, move.y, 100);
 
 		this.moveIndex++;
 
@@ -12289,33 +12351,42 @@ Spell.prototype.runInSpellExecute = function() {
 		this.shotCount = 0;
 	}
 
-	// shot
-	if(this.frame_count % 15 === 0) {
-		this.shotCount++;
+	if(!this.boss.isMoving()) {
+		if(this.frame_count % 50 === 0){
+			this.shotCount++;
 
-		var type_id = Constant.BULLET_KUNAI_PURPLE;
-		var r = 20;
-		var aimed_theta = this.calcThetaAimedToChara();
+			this.game.playSound('boss_shot_small');
+			var r = 50;
+			var aimed_theta = this.calcThetaAimedToChara();
 
-		/* 円形 */
-		for (var i = 0; i < 40; i++) {
-			var theta = i * 9 + aimed_theta;
-			var offset_x = r * Math.cos( Util.thetaToRadian( theta ) );
-			var offset_y = r * Math.sin( Util.thetaToRadian( theta ) );
+			/* 円形 */
+			for (var i = 0; i < 40; i++) {
+				var theta = i * 9 + aimed_theta;
+				var offset_x = r * Math.cos( Util.thetaToRadian( theta ) );
+				var offset_y = r * Math.sin( Util.thetaToRadian( theta ) );
 
-			this.shot(type_id, this.boss.x + offset_x, this.boss.y + offset_y, [
-				{ count: 0, vector: {r: 3, theta: theta} },
-			]);
+				var type_id = Constant.BULLET_KUNAI_PURPLE;
+				for (var j = 0; j < 10; j++) {
+					this.shot(type_id, this.boss.x + offset_x, this.boss.y + offset_y, [
+						{ count: 0 , vector: {r: 0, theta: theta} },
+						{ count: 25 , vector: {r: 3 + 0.4*j, theta: theta} },
+					]);
+				}
+			}
 		}
 	}
 };
 
-Spell.prototype.name = function() { return "罔両「無限呪縛」"; };
+Spell.prototype.onend = function() {
+	this.boss.is_show = true;
+};
+
+Spell.prototype.name = function() { return "境符「十二次元と十三次元の境界」"; };
 Spell.prototype.charaImage = function() { return "yukari_normal"; };
 
 // 初期 x, y 座標
-Spell.prototype.initX = function() { return 240; };
-Spell.prototype.initY = function() { return 100; };
+//Spell.prototype.initX = function() { return 240; };
+//Spell.prototype.initY = function() { return 100; };
 
 module.exports = Spell;
 
@@ -12367,6 +12438,7 @@ MagicCircle.prototype.run = function() {
 	}
 
 	if(this.frame_count > 100 && this.frame_count % 100 === 0) {
+		this.game.playSound('boss_shot_small');
 		for (var i = 1; i <= 6; i++) {
 			var theta = 60 * i + Util.radianToTheta(this.rotate);
 			this.stage.bullet_manager.create(Constant.BULLET_DOUBLEBALL_PURPLE, this.x, this.y, {r: 3, theta: theta});
@@ -12435,12 +12507,12 @@ Spell.prototype.runInSpellExecute = function() {
 				{ count: 0, vector: {r: 5, theta: 72 * i, w: 1, ra: -0.05, rrange: {min: 0}} },
 			]);
 		}
+		this.game.playSound('boss_powerup');
 	}
 
 	if(this.frame_count % 100 === 0) {
 		var r = 10;
 		var aimed_theta = this.calcThetaAimedToChara();
-
 		for (var j = 0; j < 8; j++) {
 			var theta = aimed_theta + j * 45;
 			var offset_x = r * Math.cos( Util.thetaToRadian( theta ) );
@@ -12489,30 +12561,31 @@ Util.inherit(Spell, BaseSpell);
 Spell.prototype.init = function() {
 	BaseSpell.prototype.init.apply(this, arguments);
 
+	this.shotCount = 0;
+
 	this.moveIndex = 0;
 	this.moveTo = [
-		{x: 100, y: 100},
-		{x: 400, y: 100},
-		{x: 100, y: 400},
-		{x: 400, y: 400},
-	];
+		{x: 300, y: 60},
+		{x: 360, y: 100},
+		{x: 300, y: 140},
 
-	this.shotCount = 0;
+		{x: 240, y: 100},
+
+		{x: 180, y: 60},
+		{x: 120, y: 100},
+		{x: 180, y: 140},
+
+		{x: 240, y: 100},
+	];
 
 };
 
 
 Spell.prototype.runInSpellExecute = function() {
-	if(this.boss.isMoving()) {
-		this.boss.is_show = false;
-	}
-	else {
-		this.boss.is_show = true;
-	}
-
-	if (!this.boss.isMoving() && this.shotCount >= 3) {
+	// move
+	if (!this.boss.isMoving() && this.shotCount >= 10) {
 		var move = this.moveTo[this.moveIndex];
-		this.boss.setMoveTo(move.x, move.y, 100);
+		this.boss.setMoveTo(move.x, move.y);
 
 		this.moveIndex++;
 
@@ -12523,41 +12596,124 @@ Spell.prototype.runInSpellExecute = function() {
 		this.shotCount = 0;
 	}
 
-	if(!this.boss.isMoving()) {
-		if(this.frame_count % 50 === 0){
-			this.shotCount++;
+	// shot
+	if(this.frame_count % 15 === 0) {
+		this.shotCount++;
 
-			var r = 50;
-			var aimed_theta = this.calcThetaAimedToChara();
+		var type_id = Constant.BULLET_KUNAI_PURPLE;
+		var r = 20;
+		var aimed_theta = this.calcThetaAimedToChara();
+		this.game.playSound('boss_shot_small');
 
-			/* 円形 */
-			for (var i = 0; i < 40; i++) {
-				var theta = i * 9 + aimed_theta;
-				var offset_x = r * Math.cos( Util.thetaToRadian( theta ) );
-				var offset_y = r * Math.sin( Util.thetaToRadian( theta ) );
+		/* 円形 */
+		for (var i = 0; i < 40; i++) {
+			var theta = i * 9 + aimed_theta;
+			var offset_x = r * Math.cos( Util.thetaToRadian( theta ) );
+			var offset_y = r * Math.sin( Util.thetaToRadian( theta ) );
 
-				var type_id = Constant.BULLET_KUNAI_PURPLE;
-				for (var j = 0; j < 10; j++) {
-					this.shot(type_id, this.boss.x + offset_x, this.boss.y + offset_y, [
-						{ count: 0 , vector: {r: 0, theta: theta} },
-						{ count: 25 , vector: {r: 3 + 0.4*j, theta: theta} },
-					]);
-				}
-			}
+			this.shot(type_id, this.boss.x + offset_x, this.boss.y + offset_y, [
+				{ count: 0, vector: {r: 3, theta: theta} },
+			]);
 		}
 	}
 };
 
-Spell.prototype.name = function() { return "境符「十二次元と十三次元の境界」"; };
+Spell.prototype.name = function() { return "罔両「無限呪縛」"; };
 Spell.prototype.charaImage = function() { return "yukari_normal"; };
 
 // 初期 x, y 座標
-//Spell.prototype.initX = function() { return 240; };
-//Spell.prototype.initY = function() { return 100; };
+Spell.prototype.initX = function() { return 240; };
+Spell.prototype.initY = function() { return 100; };
 
 module.exports = Spell;
 
 },{"../../constant":3,"../../util":95,"../base":76}],92:[function(require,module,exports){
+'use strict';
+
+/* スペルカード */
+var BaseSpell = require('../param_base');
+var Util = require('../../util');
+var Constant = require('../../constant');
+
+
+var Spell = function(boss) {
+	BaseSpell.apply(this, arguments);
+};
+Util.inherit(Spell, BaseSpell);
+
+// 初期化
+Spell.prototype.init = function() {
+	BaseSpell.prototype.init.apply(this, arguments);
+};
+
+
+Spell.prototype.runInSpellExecute = function() {
+	BaseSpell.prototype.runInSpellExecute.apply(this, arguments);
+};
+
+Spell.prototype.name = function() { return "?????????"; };
+Spell.prototype.charaImage = function() { return "merry_furious"; };
+
+// 初期 x, y 座標
+Spell.prototype.initX = function( ) { return this.stage.width/2; };
+Spell.prototype.initY = function( ) { return this.stage.height/2; };
+
+Spell.prototype.baseCount = function( ) { return 465; };
+
+Spell.prototype.shotParam = function( ) {
+	var r_num        = 20; // 弾幕の円の半径(大きいほど外側への弾の数が増えていく)
+	var shotParam = [];
+
+	for(var i = 0; i<r_num; i++) {
+		var type = i%2 ? Constant.BULLET_TINY_PURPLE : Constant.BULLET_TINY_GRAY;
+
+		shotParam.push({
+			'bullet':i, 'type': type, 'count': [ 1 ]
+		});
+	}
+
+	return shotParam;
+};
+
+Spell.prototype.moveParam = function( ) {
+	return [];
+};
+
+Spell.prototype.bulletDictionary = function( ) {
+	var r_space      = 17; // 弾幕の円の半径(小さいほど外側に行く方の弾の間隔が短くなっていく)
+	var r_num        = 20; // 弾幕の円の半径(大きいほど外側への弾の数が増えていく)
+	var density      = 48; // 弾と隣の弾の間隔
+	var spread_speed = 6;  // 弾を撒く速さ
+
+	var BulletDictionaries = [];
+
+	for (var j = 1; j <= r_num; j++) {
+		var array = [];
+		var r = r_space * j;
+		for( var k = 0; k < density; k++ ) {
+			var count = k;
+			var theta = ( ( k * 360/density ) + 450 ) % 360;
+			var v = { 'x': r * Math.cos( Util.thetaToRadian( theta ) ),
+				'y': r * Math.sin( Util.thetaToRadian( theta ) ),
+				'count': count + j * density/spread_speed,
+				'vector': [
+					{ 'count': 0, 'vector': { 'r': 0, 'theta': theta, } },
+					{ 'count': (density/spread_speed-k)+(r_num-j)*density/spread_speed + 100, 'vector': { 'r':2.5, theta: theta + 180} },
+				],
+			} ;
+			array.push( v ) ;
+		}
+
+
+		BulletDictionaries.push(array);
+	}
+
+	return BulletDictionaries;
+};
+
+module.exports = Spell;
+
+},{"../../constant":3,"../../util":95,"../param_base":77}],93:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -12609,14 +12765,15 @@ Spell.prototype.runInSpellExecute = function() {
 
 			var r = 50;
 			var aimed_theta = this.calcThetaAimedToChara();
+			this.game.playSound('boss_shot_small');
 
 			/* 交差 */
-			for (var i = 0; i < 20; i++) {
-				var theta = i * 18 + aimed_theta;
+			for (var i = 0; i < 18; i++) {
+				var theta = i * 20 + aimed_theta;
 
-				var type_id = Constant.BULLET_TINY_RED;
-				for (var j = 0; j < 10; j++) {
-					var r = 20 * 0.5*j;
+				var type_id = Constant.BULLET_TINY_PURPLE;
+				for (var j = 0; j < 6; j++) {
+					var r = 30 * 0.5*j;
 					var offset_x = r * Math.cos( Util.thetaToRadian( theta ) );
 					var offset_y = r * Math.sin( Util.thetaToRadian( theta ) );
 					theta += (i%2===0 ? -90 : 90);
@@ -12645,7 +12802,7 @@ Spell.prototype._getRandomValue = function( range ) {
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../util":95,"../base":76}],93:[function(require,module,exports){
+},{"../../constant":3,"../../util":95,"../base":76}],94:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -12708,7 +12865,7 @@ Spell.prototype.uzumaki_shot1 = function() {
 	for(var i = 0; i < this.shot_thetas1.length; i++ ) {
 		var theta = this.shot_thetas1[i];
 
-		this.shot(Constant.BULLET_TINY_YELLOW, x, y, {r: r, theta: theta});
+		this.shot(Constant.BULLET_TINY_GRAY, x, y, {r: r, theta: theta});
 		this.shot_thetas1[i] += this.add_shot_theta;
 	}
 };
@@ -12720,7 +12877,7 @@ Spell.prototype.uzumaki_shot2 = function() {
 	for(var i = 0; i < this.shot_thetas2.length; i++ ) {
 		var theta = this.shot_thetas2[i];
 
-		this.shot(Constant.BULLET_TINY_YELLOW, x, y, {r: r, theta: theta});
+		this.shot(Constant.BULLET_TINY_GRAY, x, y, {r: r, theta: theta});
 		this.shot_thetas2[i] -= this.add_shot_theta;
 	}
 };
@@ -12730,7 +12887,7 @@ Spell.prototype.maru_shot = function() {
 	var theta = this.maru_shot_theta;
 	var r = this.r;
 
-	this.shot(Constant.BULLET_DOUBLEBALL_RED, x, y, {r: r, theta: theta});
+	this.shot(Constant.BULLET_DOUBLEBALL_PURPLE, x, y, {r: r, theta: theta});
 };
 
 // 自機狙いにする
@@ -12750,93 +12907,7 @@ Spell.prototype.charaImage = function() { return "merry_furious"; };
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../util":95,"../base":76}],94:[function(require,module,exports){
-'use strict';
-
-/* スペルカード */
-var BaseSpell = require('../param_base');
-var Util = require('../../util');
-var Constant = require('../../constant');
-
-
-var Spell = function(boss) {
-	BaseSpell.apply(this, arguments);
-};
-Util.inherit(Spell, BaseSpell);
-
-// 初期化
-Spell.prototype.init = function() {
-	BaseSpell.prototype.init.apply(this, arguments);
-};
-
-
-Spell.prototype.runInSpellExecute = function() {
-	BaseSpell.prototype.runInSpellExecute.apply(this, arguments);
-};
-
-Spell.prototype.name = function() { return "?????????"; };
-Spell.prototype.charaImage = function() { return "merry_furious"; };
-
-// 初期 x, y 座標
-Spell.prototype.initX = function( ) { return this.stage.width/2; };
-Spell.prototype.initY = function( ) { return this.stage.height/2; };
-
-Spell.prototype.baseCount = function( ) { return 465; };
-
-Spell.prototype.shotParam = function( ) {
-	var r_num        = 20; // 弾幕の円の半径(大きいほど外側への弾の数が増えていく)
-	var shotParam = [];
-
-	for(var i = 0; i<r_num; i++) {
-		var type = i%2 ? Constant.BULLET_TINY_LIMEGREEN : Constant.BULLET_TINY_BLUE;
-
-		shotParam.push({
-			'bullet':i, 'type': type, 'count': [ 1 ]
-		});
-	}
-
-	return shotParam;
-};
-
-Spell.prototype.moveParam = function( ) {
-	return [];
-};
-
-Spell.prototype.bulletDictionary = function( ) {
-	var r_space      = 17; // 弾幕の円の半径(小さいほど外側に行く方の弾の間隔が短くなっていく)
-	var r_num        = 20; // 弾幕の円の半径(大きいほど外側への弾の数が増えていく)
-	var density      = 48; // 弾と隣の弾の間隔
-	var spread_speed = 6;  // 弾を撒く速さ
-
-	var BulletDictionaries = [];
-
-	for (var j = 1; j <= r_num; j++) {
-		var array = [];
-		var r = r_space * j;
-		for( var k = 0; k < density; k++ ) {
-			var count = k;
-			var theta = ( ( k * 360/density ) + 450 ) % 360;
-			var v = { 'x': r * Math.cos( Util.thetaToRadian( theta ) ),
-				'y': r * Math.sin( Util.thetaToRadian( theta ) ),
-				'count': count + j * density/spread_speed,
-				'vector': [
-					{ 'count': 0, 'vector': { 'r': 0, 'theta': theta, } },
-					{ 'count': (density/spread_speed-k)+(r_num-j)*density/spread_speed + 100, 'vector': { 'r':2.5, theta: theta + 180} },
-				],
-			} ;
-			array.push( v ) ;
-		}
-
-
-		BulletDictionaries.push(array);
-	}
-
-	return BulletDictionaries;
-};
-
-module.exports = Spell;
-
-},{"../../constant":3,"../../util":95,"../param_base":77}],95:[function(require,module,exports){
+},{"../../constant":3,"../../util":95,"../base":76}],95:[function(require,module,exports){
 'use strict';
 var Util = {
 	// 継承
