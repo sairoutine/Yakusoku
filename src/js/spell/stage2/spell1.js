@@ -26,15 +26,15 @@ Spell.prototype.charaImage = function() { return "sanae_normal"; };
 
 // 初期 x, y 座標
 Spell.prototype.initX = function( ) { return 240; };
-Spell.prototype.initY = function( ) { return 100; };
+Spell.prototype.initY = function( ) { return 80; };
 
 Spell.prototype.baseCount = function( ) { return 600; };
 
 Spell.prototype.shotParam = function( ) {
 	return [
-		{ 'bullet': 0, 'type': Constant.BULLET_TINY_YELLOW, 'count': [  10,  20,  30,  40 ]},
-		{ 'bullet': 1, 'type': Constant.BULLET_TINY_RED,    'count': [ 210, 220, 230, 240 ]},
-		{ 'bullet': 0, 'type': Constant.BULLET_TINY_YELLOW, 'count': [ 410, 420, 430, 440 ]},
+		{ 'bullet': 0, 'type': Constant.BULLET_TINY_LIMEGREEN, 'count': [  10,  20,  30,  40 ]},
+		{ 'bullet': 1, 'type': Constant.BULLET_TINY_BLUE,      'count': [ 210, 220, 230, 240 ]},
+		{ 'bullet': 0, 'type': Constant.BULLET_TINY_LIMEGREEN, 'count': [ 410, 420, 430, 440 ]},
 	];
 };
 Spell.prototype.moveParam = function( ) {

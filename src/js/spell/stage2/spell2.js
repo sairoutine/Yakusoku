@@ -24,6 +24,7 @@ Spell.prototype.runInSpellExecute = function() {
 
 	if(count % 75 === 0) {
 		this.shotCommonSense(count*2 % this.stage.width, -100);
+		this.game.playSound('boss_shot_big');
 	}
 };
 
