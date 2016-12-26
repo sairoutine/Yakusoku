@@ -223,9 +223,9 @@ BulletTypes[Constant.BULLET_BALL_LIMEGREEN] = {
 
 BulletTypes[Constant.BULLET_BUTTERFLY_ORANGE] = {
 	'image':       'shot',
-	'indexX':           8,
+	'indexX':           7,
 	'indexY':           4,
-	'width':           30,
+	'width':           34,
 	'height':          32,
 	'collisionWidth':  16,
 	'collisionHeight': 16,
@@ -234,9 +234,9 @@ BulletTypes[Constant.BULLET_BUTTERFLY_ORANGE] = {
 
 BulletTypes[Constant.BULLET_BUTTERFLY_AQUA] = {
 	'image':       'shot',
-	'indexX':          10,
+	'indexX':           9,
 	'indexY':           4,
-	'width':           31,
+	'width':           34,
 	'height':          32,
 	'collisionWidth':  16,
 	'collisionHeight': 16,
@@ -245,9 +245,9 @@ BulletTypes[Constant.BULLET_BUTTERFLY_AQUA] = {
 
 BulletTypes[Constant.BULLET_BUTTERFLY_PURPLE] = {
 	'image':       'shot',
-	'indexX':          11,
+	'indexX':          10,
 	'indexY':           4,
-	'width':           31,
+	'width':           34,
 	'height':          32,
 	'collisionWidth':  16,
 	'collisionHeight': 16,
@@ -256,9 +256,9 @@ BulletTypes[Constant.BULLET_BUTTERFLY_PURPLE] = {
 
 BulletTypes[Constant.BULLET_BUTTERFLY_YELLOW] = {
 	'image':       'shot',
-	'indexX':          12,
+	'indexX':          11,
 	'indexY':           4,
-	'width':           31,
+	'width':           34,
 	'height':          32,
 	'collisionWidth':  16,
 	'collisionHeight': 16,
@@ -267,9 +267,9 @@ BulletTypes[Constant.BULLET_BUTTERFLY_YELLOW] = {
 
 BulletTypes[Constant.BULLET_BUTTERFLY_BLUE] = {
 	'image':       'shot',
-	'indexX':          13,
+	'indexX':          12,
 	'indexY':           4,
-	'width':           31,
+	'width':           34,
 	'height':          32,
 	'collisionWidth':  16,
 	'collisionHeight': 16,
@@ -278,9 +278,9 @@ BulletTypes[Constant.BULLET_BUTTERFLY_BLUE] = {
 
 BulletTypes[Constant.BULLET_BUTTERFLY_LIMEGREEN] = {
 	'image':       'shot',
-	'indexX':          14,
+	'indexX':          13,
 	'indexY':           4,
-	'width':           32,
+	'width':           34,
 	'height':          32,
 	'collisionWidth':  16,
 	'collisionHeight': 16,
@@ -289,9 +289,9 @@ BulletTypes[Constant.BULLET_BUTTERFLY_LIMEGREEN] = {
 
 BulletTypes[Constant.BULLET_BUTTERFLY_RED] = {
 	'image':       'shot',
-	'indexX':          15,
+	'indexX':          14,
 	'indexY':           4,
-	'width':           32,
+	'width':           34,
 	'height':          32,
 	'collisionWidth':  16,
 	'collisionHeight': 16,
