@@ -7,7 +7,7 @@ var BaseObject = require('./base');
 var Util = require('../util');
 var Constant = require('../constant');
 
-var Aya = require('./boss/aya');
+var BossBase = require('./boss/base');
 var Enemy = require('./enemy');
 var Bullet = require('./bullet');
 var Option = require('./option');
@@ -290,8 +290,7 @@ Character.prototype.updateDisplay = function(){
 // 衝突判定
 Character.prototype.checkCollision = function(obj) {
 	// 無敵中 or ボム使用中なら敵or 敵弾 or ボスに衝突しても無視
-	// TODO: Aya -> BossBase
-	if(obj instanceof Bullet || obj instanceof Enemy || obj instanceof Aya) {
+	if(obj instanceof Bullet || obj instanceof Enemy || obj instanceof BossBase) {
 		if(this.is_unhittable || this.is_using_bomb) return false;
 	}
 
@@ -324,8 +323,7 @@ Character.prototype.die = function() {
 // 衝突した時
 Character.prototype.notifyCollision = function(obj) {
 	// 敵もしくは敵弾もしくはボスにぶつかったら
-	// TODO: Aya -> BossBase
-	if(obj instanceof Bullet || obj instanceof Enemy || obj instanceof Aya) {
+	if(obj instanceof Bullet || obj instanceof Enemy || obj instanceof BossBase) {
 		// 死亡音再生
 		this.game.playSound('dead');
 
