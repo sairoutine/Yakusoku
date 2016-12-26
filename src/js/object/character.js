@@ -268,7 +268,7 @@ Character.prototype.addPower = function(power){
 Character.prototype.updateDisplay = function(){
 	// 無敵状態ならば半透明に
 	if (this.is_unhittable) {
-		this.game.surface.globalAlpha = 0.7;
+		this.game.surface.globalAlpha = 0.4;
 	}
 
 	// 描画
