@@ -17,7 +17,14 @@ var State = function(stage) {
 
 };
 Util.inherit(State, BaseState);
+State.prototype.init = function(){
+	BaseState.prototype.init.apply(this, arguments);
+	// state の管理するオブジェクトを初期化
+	this.stage.bullet_manager.init();
+	this.stage.item_manager.init();
 
+	this.stage.initObjectsWithoutCharacter();
+};
 // フレーム更新
 State.prototype.run = function(){
 	BaseState.prototype.run.apply(this, arguments);

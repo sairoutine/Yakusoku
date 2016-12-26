@@ -18,8 +18,6 @@ Util.inherit(State, BaseState);
 // 初期化
 State.prototype.init = function(){
 	BaseState.prototype.init.apply(this, arguments);
-	this.stage.bullet_manager.init();
-	this.stage.item_manager.init();
 
 	// 雑魚敵の出現
 	this.enemy_appear = new EnemyAppear(this.stage.currentStageEnemyInfo());

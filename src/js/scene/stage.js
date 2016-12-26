@@ -238,8 +238,12 @@ Scene.prototype.currentStageNo = function(){
 	return this.stage + 1;
 };
 
-
-
+Scene.prototype.initObjectsWithoutCharacter = function(){
+	for(var i = 0, len = this.objects.length; i < len; i++) {
+		if (this.objects[i] instanceof Character) continue;
+		this.objects[i].init();
+	}
+};
 
 // フレーム処理
 Scene.prototype.run = function(){
