@@ -5703,10 +5703,6 @@ Game.prototype = {
 	notifyEndDone: function() {
 		this.changeScene(constant.TITLE_SCENE);
 	},
-	// ゲームオーバー
-	notifyGameOver: function() {
-		this.changeScene(constant.TITLE_SCENE);
-	},
 	handleGamePad: function() {
 		if(!this.is_connect_gamepad) return;
 
@@ -7190,6 +7186,8 @@ Character.prototype.init = function() {
 
 	this.power = 0; // パワーアップアイテムで獲得したパワー
 	this.level = 0; // 自機のレベル
+
+	this.option_manager.init();
 };
 
 // 撃つ
@@ -7397,6 +7395,11 @@ Character.prototype.die = function() {
 
 	// 自機を減らす
 	this.life--;
+
+	// 初期ボム数を初期値に
+	if(this.bombs < INIT_BOMB) {
+		this.bombs = INIT_BOMB;
+	}
 
 	// 無敵状態にする
 	this.is_unhittable = true;
@@ -11962,6 +11965,8 @@ Util.inherit(Spell, BaseSpell);
 Spell.prototype.init = function() {
 	BaseSpell.prototype.init.apply(this, arguments);
 
+	this.generator_manager.init();
+
 	// 乱数初期化
 	mersenne.init_seed(1000);
 
@@ -12500,6 +12505,7 @@ Util.inherit(Spell, BaseSpell);
 Spell.prototype.init = function() {
 	BaseSpell.prototype.init.apply(this, arguments);
 	this.is_init = false;
+	this.magic_circle_manager.init();
 };
 
 
