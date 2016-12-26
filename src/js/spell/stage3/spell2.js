@@ -99,7 +99,7 @@ Beam.prototype.grazeHeight  = function() { return 0; };
 Beam.prototype.grazeWidth = function() { return 0; };
 
 // スプライトの開始位置
-Beam.prototype.spriteX = function() { return 1; };
+Beam.prototype.spriteX = function() { return 0; };
 Beam.prototype.spriteY = function() { return 0; };
 
 // スプライト画像
