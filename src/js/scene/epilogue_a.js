@@ -37,10 +37,10 @@ Scene.prototype.run = function(){
 	BaseScene.prototype.run.apply(this, arguments);
 
 	// エピローグ終了
-	if(this.frame_count === 9800) {
+	if(this.frame_count === 9800 + 120) {
 		this.game.fadeOutBGM(5);
 	}
-	else if(this.frame_count > 10300) {
+	else if(this.frame_count > 10300 + 120) {
 		this.game.notifyEpilogueADone();
 	}
 	else {
