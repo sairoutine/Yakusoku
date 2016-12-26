@@ -18,7 +18,7 @@ var FRONT_ANIMATION_SPAN = 6;
 var LR_ANIMATION_SPAN = 4;
 
 // HP
-var VITAL = 60 * 45;
+var VITAL = 60 * 60;
 
 // ボスの移動速度
 var DEFAULT_SPEED = 2;
@@ -289,7 +289,7 @@ BossBase.prototype.updateDisplay = function(){
 BossBase.prototype.notifyCollision = function(obj) {
 	// 自機弾が当たればボスのHPを減らす
 	if(obj instanceof Shot) {
-		this.vital--;
+		this.vital-=3;
 		this.stage.score+=10;
 	}
 };
