@@ -315,5 +315,6 @@ BossBase.prototype.currentSpellName = function() {
 };
 
 
+BossBase.prototype.scale = function() { return 0.75; };
 
 module.exports = BossBase;
