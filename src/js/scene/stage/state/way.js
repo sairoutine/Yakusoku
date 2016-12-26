@@ -49,7 +49,7 @@ State.prototype.run = function(){
 	}
 
 	// Z押しっぱで低速移動
-	var is_slow = this.game.isKeyDown(Constant.BUTTON_Z);
+	var is_slow = this.game.isKeyDown(Constant.BUTTON_SHIFT);
 
 	// 自機移動
 	if(this.game.isKeyDown(Constant.BUTTON_LEFT)) {
