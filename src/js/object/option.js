@@ -52,13 +52,13 @@ Option.prototype.run = function() {
 
 // スプライトの開始位置
 Option.prototype.spriteX = function() { return 7; };
-Option.prototype.spriteY = function() { return 16; };
+Option.prototype.spriteY = function() { return 20; };
 
 // スプライト画像
 Option.prototype.spriteImage = function() { return 'shot2'; };
 
 // スプライトのサイズ
 Option.prototype.spriteWidth  = function() { return 20; };
-Option.prototype.spriteHeight = function() { return 20; };
+Option.prototype.spriteHeight = function() { return 16; };
 
 module.exports = Option;
