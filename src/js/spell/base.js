@@ -17,9 +17,9 @@ var CUTIN_SLIDEING_WAIT_COUNT = 30;
 // カットインの左から右へスライドする時間
 var CUTIN_SLIDEING_COUNT = 10;
 // カットインの消失まで待つ時間
-var CUTIN_DISAPPEAR_WAIT_COUNT = 45;
+var CUTIN_DISAPPEAR_WAIT_COUNT = 100;
 // カットイン消失時間
-var CUTIN_DISAPPEAR_COUNT = 5;
+var CUTIN_DISAPPEAR_COUNT = 20;
 
 
 var SpellBase = function(boss) {
