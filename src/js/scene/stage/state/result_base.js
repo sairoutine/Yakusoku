@@ -36,7 +36,7 @@ State.prototype.run = function(){
 		this.notifyResultEnd();
 	}
 	else {
-		if(this.game.isKeyPush(Constant.BUTTON_Z)) {
+		if(this.game.isKeyPush(Constant.BUTTON_Z) && !this.isInTransition()) {
 				this.game.playSound('select');
 
 				this.setTransition();
