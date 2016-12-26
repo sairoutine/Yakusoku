@@ -5,7 +5,6 @@ var constant = require('./constant');
 
 var LoadingScene   = require('./scene/loading');
 var TitleScene     = require('./scene/title');
-var Prologue1Scene = require('./scene/prologue1');
 var Prologue2Scene = require('./scene/prologue2');
 var StageScene    = require('./scene/stage');
 var EpilogueAScene = require('./scene/epilogue_a');
@@ -39,8 +38,6 @@ var Game = function(mainCanvas) {
 	this.scenes[ constant.LOADING_SCENE ] = new LoadingScene(this);
 	// タイトル画面
 	this.scenes[ constant.TITLE_SCENE ] = new TitleScene(this);
-	// プロローグ画面1
-	this.scenes[ constant.PROLOGUE1_SCENE ] = new Prologue1Scene(this);
 	// プロローグ画面2
 	this.scenes[ constant.PROLOGUE2_SCENE ] = new Prologue2Scene(this);
 	// ステージ
@@ -286,12 +283,7 @@ Game.prototype = {
 	notifyTitleDone: function() {
 		var debug_scene = document.getElementById("scene").value;
 		// プロローグ画面に切り替え
-		this.changeScene(Config.DEBUG && debug_scene ? debug_scene : constant.PROLOGUE1_SCENE);
-	},
-	// プロローグ画面1が終わったら
-	notifyPrologue1Done: function() {
-		// プロローグ画面2に切り替え
-		this.changeScene(constant.PROLOGUE2_SCENE);
+		this.changeScene(Config.DEBUG && debug_scene ? debug_scene : constant.PROLOGUE2_SCENE);
 	},
 	// プロローグ画面が終わったら
 	notifyPrologue2Done: function() {
