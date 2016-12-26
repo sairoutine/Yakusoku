@@ -42,6 +42,6 @@ Sanae.prototype.spriteWidth  = function() { return 128; };
 Sanae.prototype.spriteHeight = function() { return 128; };
 
 // BGM
-Sanae.prototype.bgm = function() { return 'stage1'; };
+Sanae.prototype.bgm = function() { return 'stage2'; };
 
 module.exports = Sanae;

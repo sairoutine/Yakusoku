@@ -42,6 +42,6 @@ Yuuka.prototype.spriteWidth  = function() { return 128; };
 Yuuka.prototype.spriteHeight = function() { return 128; };
 
 // BGM
-Yuuka.prototype.bgm = function() { return 'stage1'; };
+Yuuka.prototype.bgm = function() { return 'stage3'; };
 
 module.exports = Yuuka;

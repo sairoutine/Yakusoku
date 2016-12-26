@@ -343,6 +343,24 @@ var Config = {
 			loopStart: 41.379,
 			loopEnd: 60 * 2 + 0.827,
 		},
+		stage2: {
+			path:   'bgm/stage2.ogg',
+			volume: 0.50,
+			loopStart: 54.857,
+			loopEnd: 60 * 3 + 12,
+		},
+		stage3: {
+			path:   'bgm/stage3.ogg',
+			volume: 0.50,
+			loopStart: 0.103,
+			loopEnd: 60 * 6 + 37.344,
+		},
+		stage4: {
+			path:   'bgm/stage4.ogg',
+			volume: 0.50,
+			loopStart: 60 * 2 + 10.909,
+			loopEnd: 60 * 3 + 38.181,
+		},
 		stage5: {
 			path:   'bgm/stage5.ogg',
 			volume: 0.50,

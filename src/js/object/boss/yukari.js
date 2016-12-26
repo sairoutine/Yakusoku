@@ -42,6 +42,6 @@ Yukari.prototype.spriteWidth  = function() { return 128; };
 Yukari.prototype.spriteHeight = function() { return 128; };
 
 // BGM
-Yukari.prototype.bgm = function() { return 'stage1'; };
+Yukari.prototype.bgm = function() { return 'stage4'; };
 
 module.exports = Yukari;
