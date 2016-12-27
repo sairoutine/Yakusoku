@@ -1,5 +1,8 @@
 'use strict';
 
+var THRESHOLD_EPILOGUE_A = 2500000;
+var THRESHOLD_EPILOGUE_B = 1000000;
+
 var Config = require('./config');
 var constant = require('./constant');
 
@@ -188,6 +191,7 @@ Game.prototype = {
 		if(self.audio_gain && self.audio_context) {
 			var gain = self.audio_gain.gain;
 			var startTime = self.audio_context.currentTime;
+			gain.setValueAtTime(gain.value, startTime);
 			var endTime = startTime + fadeout_time;
 			gain.linearRampToValueAtTime(0, endTime);
 		}
@@ -298,12 +302,11 @@ Game.prototype = {
 	},
 	// ステージ画面が終わったら
 	notifyStageDone: function() {
-		// TODO:
 		// エンディング分岐
-		if(this.currentScene().score > 3000000) {
+		if(this.currentScene().score > THRESHOLD_EPILOGUE_A) {
 			this.changeScene(constant.EPILOGUE_A_SCENE);
 		}
-		else if(this.currentScene().score > 1000000) {
+		else if(this.currentScene().score > THRESHOLD_EPILOGUE_B) {
 			this.changeScene(constant.EPILOGUE_B_SCENE);
 		}
 		else {
