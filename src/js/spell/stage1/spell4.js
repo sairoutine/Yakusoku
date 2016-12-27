@@ -29,7 +29,7 @@ Spell.prototype.runInSpellExecute = function() {
 	var vector2 = {r: 10, theta: -10.5 * 360 / 10, ra: 1, rrange: {max: 20}};
 	if(this.boss.vital >= 10 && this.boss.is_show) {
 		this.boss.is_show = false;
-		this.me = this.shot(Constant.BULLET_BEAM_YELLOW, this.boss.x, this.boss.y, vector2);
+		this.me = this.shot(Constant.BULLET_BEAM_YELLOW, this.boss.x, this.boss.y, vector);
 	}
 	else {
 		if(this.frame_count % 50 === 0) {
