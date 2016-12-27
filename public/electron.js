@@ -42,19 +42,7 @@ function createWindow () {
 	// if fullscreen
 	if(fullscreen_answer === 0) {
 		mainWindow.webContents.executeJavaScript(`
-			var mainCanvas = document.querySelector('#mainCanvas');
-			if (mainCanvas.requestFullscreen) {
-				mainCanvas.requestFullscreen();
-			}
-			else if (mainCanvas.msRequestuestFullscreen) {
-				mainCanvas.msRequestuestFullscreen();
-			}
-			else if (mainCanvas.mozRequestFullScreen) {
-				mainCanvas.mozRequestFullScreen();
-			}
-			else if (mainCanvas.webkitRequestFullscreen) {
-				mainCanvas.webkitRequestFullscreen();
-			}
+			window.changeFullScreen();
 		`, true);
 	}
 
