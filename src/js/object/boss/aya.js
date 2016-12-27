@@ -42,4 +42,7 @@ Aya.prototype.spriteHeight = function() { return 128; };
 // BGM
 Aya.prototype.bgm = function() { return 'stage1'; };
 
+Aya.prototype.MAX_VITAL = function() { return 60 * 45; };
+
+
 module.exports = Aya;

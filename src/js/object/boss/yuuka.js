@@ -40,4 +40,6 @@ Yuuka.prototype.spriteHeight = function() { return 128; };
 // BGM
 Yuuka.prototype.bgm = function() { return 'stage3'; };
 
+Yuuka.prototype.MAX_VITAL = function() { return 60 * 75; };
+
 module.exports = Yuuka;

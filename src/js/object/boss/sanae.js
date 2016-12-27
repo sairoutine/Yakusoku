@@ -40,4 +40,7 @@ Sanae.prototype.spriteHeight = function() { return 128; };
 // BGM
 Sanae.prototype.bgm = function() { return 'stage2'; };
 
+Sanae.prototype.MAX_VITAL = function() { return 60 * 60; };
+
+
 module.exports = Sanae;

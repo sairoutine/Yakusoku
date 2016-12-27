@@ -40,4 +40,5 @@ Yukari.prototype.spriteHeight = function() { return 128; };
 // BGM
 Yukari.prototype.bgm = function() { return 'stage4'; };
 
+Yukari.prototype.MAX_VITAL = function() { return 60 * 75; };
 module.exports = Yukari;
