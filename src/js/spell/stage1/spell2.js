@@ -33,7 +33,7 @@ Spell.prototype.runInSpellExecute = function() {
 
 	if(this.frame_count % 3 !== 0) {
 		this.shot(Constant.BULLET_TINY_YELLOW, this.boss.x, this.boss.y, vector);
-		this.shot(Constant.BULLET_TINY_RED,    this.boss.x, this.boss.y, vector2);
+		this.shot(this.frame_count % 2 === 0 ? Constant.BULLET_TINY_RED : Constant.BULLET_TINY_GRAY,    this.boss.x, this.boss.y, vector2);
 	}
 	if(this.frame_count % 9 === 0) {
 		this.game.playSound('boss_shot_small');
