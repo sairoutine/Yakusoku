@@ -191,7 +191,7 @@ Game.prototype = {
 		if(self.audio_gain && self.audio_context) {
 			var gain = self.audio_gain.gain;
 			var startTime = self.audio_context.currentTime;
-			gain.setValueAtTime(gain.value, startTime);
+			gain.setValueAtTime(gain.value, startTime); // ないと古い端末でフェードアウトしない
 			var endTime = startTime + fadeout_time;
 			gain.linearRampToValueAtTime(0, endTime);
 		}
@@ -203,6 +203,8 @@ Game.prototype = {
 		var self = this;
 		var arrayBuffer = self.bgms[key];
 		var conf = Config.BGMS[key];
+
+		self.audio_gain = this.audio_context.createGain(); // ないとフェードアウト後にBGM再生されない
 
 		var source = self.audio_context.createBufferSource();
 		source.buffer = arrayBuffer;
