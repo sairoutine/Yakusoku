@@ -220,7 +220,7 @@ var Config = {
 	//DEBUG_SCENE: Constant.STAGE_SCENE,
 	//DEBUG_STATE: Constant.BOSS_STATE,
 	//DEBUG_STAGE: 4,
-	//DEBUG_SPELL: 1,
+	//DEBUG_SPELL: 2,
 	//DEBUG_MUSIC_OFF: true,
 	IMAGES: {
 		title_bg:  'image/title_bg.png',
@@ -11316,7 +11316,7 @@ Spell.prototype.runInSpellExecute = function() {
 
 	if(this.frame_count % 3 !== 0) {
 		this.shot(Constant.BULLET_TINY_YELLOW, this.boss.x, this.boss.y, vector);
-		this.shot(Constant.BULLET_TINY_RED,    this.boss.x, this.boss.y, vector2);
+		this.shot(this.frame_count % 2 === 0 ? Constant.BULLET_TINY_RED : Constant.BULLET_TINY_GRAY,    this.boss.x, this.boss.y, vector2);
 	}
 	if(this.frame_count % 9 === 0) {
 		this.game.playSound('boss_shot_small');
@@ -11419,7 +11419,7 @@ Spell.prototype.runInSpellExecute = function() {
 	var vector2 = {r: 10, theta: -10.5 * 360 / 10, ra: 1, rrange: {max: 20}};
 	if(this.boss.vital >= 10 && this.boss.is_show) {
 		this.boss.is_show = false;
-		this.me = this.shot(Constant.BULLET_BEAM_YELLOW, this.boss.x, this.boss.y, vector2);
+		this.me = this.shot(Constant.BULLET_BEAM_YELLOW, this.boss.x, this.boss.y, vector);
 	}
 	else {
 		if(this.frame_count % 50 === 0) {
@@ -12037,8 +12037,7 @@ Spell.prototype.init = function() {
 
 
 Spell.prototype.runInSpellExecute = function() {
-
-	if (this.frame_count % 300 === 0) {
+	if (this.frameCountStartedBySpellExec() % 280 === 0) {
 		var move = this.moveTo[this.moveIndex];
 		this.boss.setMoveTo(move.x, move.y, 100);
 
