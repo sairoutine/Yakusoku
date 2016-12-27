@@ -143,8 +143,7 @@ Spell.prototype.init = function() {
 
 
 Spell.prototype.runInSpellExecute = function() {
-
-	if (this.frame_count % 300 === 0) {
+	if (this.frameCountStartedBySpellExec() % 280 === 0) {
 		var move = this.moveTo[this.moveIndex];
 		this.boss.setMoveTo(move.x, move.y, 100);
 
