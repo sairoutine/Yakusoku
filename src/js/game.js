@@ -281,12 +281,12 @@ Game.prototype = {
 	},
 	// タイトル画面が終わったら
 	notifyTitleDoneToStart: function() {
-		var debug_scene = document.getElementById("scene").value;
-		// プロローグ画面に切り替え
-		this.changeScene(Config.DEBUG && debug_scene ? debug_scene : constant.STAGE_SCENE);
+		if(Config.DEBUG) {
+			this.changeScene(document.getElementById("scene").value);
+		}
+		this.changeScene(constant.STAGE_SCENE);
 	},
 	notifyTitleDoneToPrologue: function() {
-		var debug_scene = document.getElementById("scene").value;
 		// プロローグ画面に切り替え
 		this.changeScene(constant.PROLOGUE2_SCENE);
 	},
