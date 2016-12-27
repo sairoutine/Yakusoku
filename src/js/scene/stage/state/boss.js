@@ -29,7 +29,7 @@ State.prototype.run = function(){
 	BaseState.prototype.run.apply(this, arguments);
 
 	// BGM start
-	if (this.frame_count === 1) {
+	if (this.frame_count === 60) {
 		this.game.playBGM(this.stage.currentStageBoss().bgm());
 	}
 
@@ -88,7 +88,7 @@ State.prototype.run = function(){
 	// アイテムと自機の衝突判定
 	this.stage.item_manager.checkCollisionWithObject(character);
 
-	if(Config.DEBUG && Number(document.getElementById("invincible").value) === 0) { // TODO: DEBUG
+	if(!Config.DEBUG && Number(document.getElementById("invincible").value) === 0) { // TODO: DEBUG
 		// 敵弾と自機の衝突判定
 		this.stage.bullet_manager.checkCollisionWithObject(character);
 
