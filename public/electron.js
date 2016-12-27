@@ -46,8 +46,12 @@ function createWindow () {
 		`, true);
 	}
 
+	var is_show_dialog = false;
 
 	const ret = globalShortcut.register('Escape', function() {
+		if(is_show_dialog) return;
+
+		is_show_dialog = true;
 		var quit_answer = dialog.showMessageBox({
 			type: 'question',
 			buttons: ['Yes', 'No'],
@@ -57,6 +61,7 @@ function createWindow () {
 		if(quit_answer === 0) {
 			app.quit();
 		}
+		is_show_dialog = false;
 	});
 
 	mainWindow.on('closed', function () {
