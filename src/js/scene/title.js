@@ -40,8 +40,13 @@ OpeningScene.prototype.run = function(){
 
 	if(this.game.isKeyPush(Constant.BUTTON_Z)) {
 			this.game.playSound('select');
-			this.game.notifyTitleDone();
+			this.game.notifyTitleDoneToStart();
 	}
+	else if(this.game.isKeyPush(Constant.BUTTON_X)) {
+			this.game.playSound('select');
+			this.game.notifyTitleDoneToPrologue();
+	}
+
 };
 
 // 画面更新
@@ -61,6 +66,7 @@ OpeningScene.prototype.updateDisplay = function(){
 
 	var title_bg = this.game.getImage('title_bg');
 	var press_z = this.game.getImage('press_z');
+	var press_x = this.game.getImage('press_x');
 
 	// 背景画像表示
 	ctx.drawImage(title_bg,
@@ -73,15 +79,21 @@ OpeningScene.prototype.updateDisplay = function(){
 					this.game.width,
 					this.game.height);
 
-	// N秒ごとに start メッセージを点滅
-	if (Math.floor(this.frame_count / SHOW_START_MESSAGE_INTERVAL) % 2 === 0) {
-		ctx.drawImage(press_z,
-			248, //x座標
-			247, //y座標
-			press_z.width * Config.CHARA_SIZE_RATIO,
-			press_z.height * Config.CHARA_SIZE_RATIO
-		);
-	}
+	// press Z
+	ctx.drawImage(press_z,
+		226, //x座標
+		220, //y座標
+		press_z.width * Config.CHARA_SIZE_RATIO,
+		press_z.height * Config.CHARA_SIZE_RATIO
+	);
+
+	// press X
+	ctx.drawImage(press_x,
+		226, //x座標
+		290, //y座標
+		press_x.width * Config.CHARA_SIZE_RATIO,
+		press_x.height * Config.CHARA_SIZE_RATIO
+	);
 
 	ctx.restore();
 

@@ -280,11 +280,17 @@ Game.prototype = {
 		this.changeScene(Config.DEBUG && Config.DEBUG_SCENE ? Config.DEBUG_SCENE : constant.TITLE_SCENE);
 	},
 	// タイトル画面が終わったら
-	notifyTitleDone: function() {
+	notifyTitleDoneToStart: function() {
 		var debug_scene = document.getElementById("scene").value;
 		// プロローグ画面に切り替え
-		this.changeScene(Config.DEBUG && debug_scene ? debug_scene : constant.PROLOGUE2_SCENE);
+		this.changeScene(Config.DEBUG && debug_scene ? debug_scene : constant.STAGE_SCENE);
 	},
+	notifyTitleDoneToPrologue: function() {
+		var debug_scene = document.getElementById("scene").value;
+		// プロローグ画面に切り替え
+		this.changeScene(constant.PROLOGUE2_SCENE);
+	},
+
 	// プロローグ画面が終わったら
 	notifyPrologue2Done: function() {
 		// ステージ画面に切り替え
