@@ -26,10 +26,6 @@ var Yuuka = function(stage) {
 Util.inherit(Yuuka, BaseObject);
 
 
-// 当たり判定サイズ
-Yuuka.prototype.collisionWidth  = function() { return 64; };
-Yuuka.prototype.collisionHeight = function() { return 64; };
-
 // スプライトの開始位置
 Yuuka.prototype.spriteX = function() { return this.indexX; };
 Yuuka.prototype.spriteY = function() { return this.indexY; };

@@ -26,10 +26,6 @@ var Merry = function(stage) {
 Util.inherit(Merry, BaseObject);
 
 
-// 当たり判定サイズ
-Merry.prototype.collisionWidth  = function() { return 64; };
-Merry.prototype.collisionHeight = function() { return 64; };
-
 // スプライトの開始位置
 Merry.prototype.spriteX = function() { return this.indexX; };
 Merry.prototype.spriteY = function() { return this.indexY; };

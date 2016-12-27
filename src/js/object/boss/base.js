@@ -317,4 +317,11 @@ BossBase.prototype.currentSpellName = function() {
 
 BossBase.prototype.scale = function() { return 0.75; };
 
+// 当たり判定サイズ
+BossBase.prototype.collisionWidth  = function() { return 48; };
+BossBase.prototype.collisionHeight = function() { return 48; };
+
+
+
+
 module.exports = BossBase;

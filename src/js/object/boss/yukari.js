@@ -26,10 +26,6 @@ var Yukari = function(stage) {
 Util.inherit(Yukari, BaseObject);
 
 
-// 当たり判定サイズ
-Yukari.prototype.collisionWidth  = function() { return 64; };
-Yukari.prototype.collisionHeight = function() { return 64; };
-
 // スプライトの開始位置
 Yukari.prototype.spriteX = function() { return this.indexX; };
 Yukari.prototype.spriteY = function() { return this.indexY; };

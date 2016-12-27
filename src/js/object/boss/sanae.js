@@ -26,10 +26,6 @@ var Sanae = function(stage) {
 Util.inherit(Sanae, BaseObject);
 
 
-// 当たり判定サイズ
-Sanae.prototype.collisionWidth  = function() { return 64; };
-Sanae.prototype.collisionHeight = function() { return 64; };
-
 // スプライトの開始位置
 Sanae.prototype.spriteX = function() { return this.indexX; };
 Sanae.prototype.spriteY = function() { return this.indexY; };
