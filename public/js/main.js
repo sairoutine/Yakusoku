@@ -224,7 +224,8 @@ var Config = {
 	//DEBUG_MUSIC_OFF: true,
 	IMAGES: {
 		title_bg:  'image/title_bg.png',
-		press_z:  'image/press_z.png',
+		press_z:  'image/pressZ.png',
+		press_x:  'image/pressX.png',
 		prologue1_bg:  'image/prologue1_bg.png',
 		prologue2_bg:  'image/prologue2_bg.png',
 		logo:  'image/logo.png',
@@ -5680,11 +5681,17 @@ Game.prototype = {
 		this.changeScene(Config.DEBUG && Config.DEBUG_SCENE ? Config.DEBUG_SCENE : constant.TITLE_SCENE);
 	},
 	// タイトル画面が終わったら
-	notifyTitleDone: function() {
-		var debug_scene = document.getElementById("scene").value;
-		// プロローグ画面に切り替え
-		this.changeScene(Config.DEBUG && debug_scene ? debug_scene : constant.PROLOGUE2_SCENE);
+	notifyTitleDoneToStart: function() {
+		if(Config.DEBUG) {
+			this.changeScene(document.getElementById("scene").value);
+		}
+		this.changeScene(constant.STAGE_SCENE);
 	},
+	notifyTitleDoneToPrologue: function() {
+		// プロローグ画面に切り替え
+		this.changeScene(constant.PROLOGUE2_SCENE);
+	},
+
 	// プロローグ画面が終わったら
 	notifyPrologue2Done: function() {
 		// ステージ画面に切り替え
@@ -6463,10 +6470,6 @@ var Aya = function(stage) {
 Util.inherit(Aya, BaseObject);
 
 
-// 当たり判定サイズ
-Aya.prototype.collisionWidth  = function() { return 64; };
-Aya.prototype.collisionHeight = function() { return 64; };
-
 // スプライトの開始位置
 Aya.prototype.spriteX = function() { return this.indexX; };
 Aya.prototype.spriteY = function() { return this.indexY; };
@@ -6803,6 +6806,13 @@ BossBase.prototype.currentSpellName = function() {
 
 BossBase.prototype.scale = function() { return 0.75; };
 
+// 当たり判定サイズ
+BossBase.prototype.collisionWidth  = function() { return 48; };
+BossBase.prototype.collisionHeight = function() { return 48; };
+
+
+
+
 module.exports = BossBase;
 
 },{"../../config":2,"../../createjs/boss_appearance":5,"../../logic/createjs":20,"../../object/shot":40,"../../util":93,"../base":27}],30:[function(require,module,exports){
@@ -6833,10 +6843,6 @@ var Merry = function(stage) {
 // 基底クラスを継承
 Util.inherit(Merry, BaseObject);
 
-
-// 当たり判定サイズ
-Merry.prototype.collisionWidth  = function() { return 64; };
-Merry.prototype.collisionHeight = function() { return 64; };
 
 // スプライトの開始位置
 Merry.prototype.spriteX = function() { return this.indexX; };
@@ -6884,10 +6890,6 @@ var Sanae = function(stage) {
 Util.inherit(Sanae, BaseObject);
 
 
-// 当たり判定サイズ
-Sanae.prototype.collisionWidth  = function() { return 64; };
-Sanae.prototype.collisionHeight = function() { return 64; };
-
 // スプライトの開始位置
 Sanae.prototype.spriteX = function() { return this.indexX; };
 Sanae.prototype.spriteY = function() { return this.indexY; };
@@ -6933,10 +6935,6 @@ var Yukari = function(stage) {
 Util.inherit(Yukari, BaseObject);
 
 
-// 当たり判定サイズ
-Yukari.prototype.collisionWidth  = function() { return 64; };
-Yukari.prototype.collisionHeight = function() { return 64; };
-
 // スプライトの開始位置
 Yukari.prototype.spriteX = function() { return this.indexX; };
 Yukari.prototype.spriteY = function() { return this.indexY; };
@@ -6981,10 +6979,6 @@ var Yuuka = function(stage) {
 // 基底クラスを継承
 Util.inherit(Yuuka, BaseObject);
 
-
-// 当たり判定サイズ
-Yuuka.prototype.collisionWidth  = function() { return 64; };
-Yuuka.prototype.collisionHeight = function() { return 64; };
 
 // スプライトの開始位置
 Yuuka.prototype.spriteX = function() { return this.indexX; };
@@ -8812,10 +8806,6 @@ Util.inherit(Scene, BaseScene);
 // 初期化
 Scene.prototype.init = function() {
 	BaseScene.prototype.init.apply(this, arguments);
-	// TODO: DEBUG
-	if(Config.DEBUG) { 
-		this.serif.script = JSON.parse(document.getElementById("prologue2").value);
-	}
 	this.serif.init();
 };
 
@@ -10539,8 +10529,13 @@ OpeningScene.prototype.run = function(){
 
 	if(this.game.isKeyPush(Constant.BUTTON_Z)) {
 			this.game.playSound('select');
-			this.game.notifyTitleDone();
+			this.game.notifyTitleDoneToStart();
 	}
+	else if(this.game.isKeyPush(Constant.BUTTON_X)) {
+			this.game.playSound('select');
+			this.game.notifyTitleDoneToPrologue();
+	}
+
 };
 
 // 画面更新
@@ -10560,6 +10555,7 @@ OpeningScene.prototype.updateDisplay = function(){
 
 	var title_bg = this.game.getImage('title_bg');
 	var press_z = this.game.getImage('press_z');
+	var press_x = this.game.getImage('press_x');
 
 	// 背景画像表示
 	ctx.drawImage(title_bg,
@@ -10572,15 +10568,21 @@ OpeningScene.prototype.updateDisplay = function(){
 					this.game.width,
 					this.game.height);
 
-	// N秒ごとに start メッセージを点滅
-	if (Math.floor(this.frame_count / SHOW_START_MESSAGE_INTERVAL) % 2 === 0) {
-		ctx.drawImage(press_z,
-			248, //x座標
-			247, //y座標
-			press_z.width * Config.CHARA_SIZE_RATIO,
-			press_z.height * Config.CHARA_SIZE_RATIO
-		);
-	}
+	// press Z
+	ctx.drawImage(press_z,
+		226, //x座標
+		220, //y座標
+		press_z.width * Config.CHARA_SIZE_RATIO,
+		press_z.height * Config.CHARA_SIZE_RATIO
+	);
+
+	// press X
+	ctx.drawImage(press_x,
+		226, //x座標
+		290, //y座標
+		press_x.width * Config.CHARA_SIZE_RATIO,
+		press_x.height * Config.CHARA_SIZE_RATIO
+	);
 
 	ctx.restore();
 
@@ -10592,7 +10594,8 @@ module.exports = OpeningScene;
 'use strict';
 
 // セリフ
-var Serif = [{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":null},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"早朝の散歩も良いものね。"},{"pos":"right","exp":null,"chara":null,"fukidashi":"normal","serif":"…約束を守りなさい。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"ん…誰？\n誰かいるの？"},{"pos":"right","exp":"normal","chara":"hatena","fukidashi":null,"serif":"　"},{"pos":"right","exp":"owata","chara":"hatena","fukidashi":"orange","serif":"わたしです"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"なんだ私か。"},{"pos":"right","exp":"normal","chara":"hatena","fukidashi":"normal","serif":"え…。\nちょっとは驚きなさいよ。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"驚いたわよ。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"で、貴方誰なの？\n見たところ、私に\nそっくりだけど。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"orange","serif":"…ひょっとして、\nドッペルゲンガーってやつ？"},{"pos":"right","exp":"normal","chara":"ganger","fukidashi":"normal","serif":"そのようなものね。\nそんなことより、\n貴方に大事な話があるの。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"なにかしら。"},{"pos":"right","exp":"normal","chara":"ganger","fukidashi":"normal","serif":"約束を守りなさい。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"約束？\n何か約束してたっけ。"},{"pos":"right","exp":"normal","chara":"ganger","fukidashi":"normal","serif":"ほら、博麗神社に…。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"orange","serif":"あぁ、そういえば前に\nメリーと約束してたわ。"},{"pos":"right","exp":null,"chara":null,"fukidashi":null,"serif":null},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"博麗神社の入り口を\n調べようって。\nそのことかしら？"},{"pos":"right","exp":"normal","chara":"merry","fukidashi":"orange","serif":"蓮子？\nこんなところで何してるの？"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"orange","serif":"あ、噂をすれば。\nメリー、見て！\n私のドッペルゲンガーが…"},{"pos":"right","exp":"normal","chara":null,"fukidashi":"normal","serif":null},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"あれ？いない…。"},{"pos":"right","exp":"normal","chara":"merry","fukidashi":"normal","serif":"どうしたの？"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"それが、\nかくかくしかじかで。"},{"pos":"right","exp":"normal","chara":"merry","fukidashi":"normal","serif":"ふーん。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"覚えてる？前に博霊神社の\n入り口を調べようって\n約束してたこと。"},{"pos":"right","exp":"normal","chara":"merry","fukidashi":"normal","serif":"そうだっけ？"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"orange","serif":"ねえ、今から行ってみない？"},{"pos":"right","exp":"troubled","chara":"merry","fukidashi":"normal","serif":"今から？面倒だわ…。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"なんだか気になるのよ。"},{"pos":"right","exp":"disappointed","chara":"merry","fukidashi":"normal","serif":"うっ…急にめまいと頭痛が。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"絶対嘘でしょ、それ。"},{"pos":"right","exp":"disappointed","chara":"merry","fukidashi":"normal","serif":"全身の骨が折れてるかも。"},{"pos":"left","exp":"surprised","chara":"renko","fukidashi":"purple","serif":"さっきまで\n元気だったじゃない！"},{"pos":"right","exp":"troubled","chara":"merry","fukidashi":"normal","serif":"うーん、気が進まないわ。"},{"pos":"left","exp":"disappointed","chara":"renko","fukidashi":"normal","serif":"はぁ…。そんなに嫌なら\n仕方ないわね。\n私一人で行ってくるわ。"}];
+var Serif = 
+[{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":null},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"早朝の散歩も良いものね。"},{"pos":"right","exp":null,"chara":null,"fukidashi":"normal","serif":"…約束を守りなさい。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"ん…誰？\n誰かいるの？"},{"pos":"right","exp":"normal","chara":"hatena","fukidashi":null,"serif":"　"},{"pos":"right","exp":"owata","chara":"hatena","fukidashi":"orange","serif":"わたしです"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"なんだ私か。"},{"pos":"right","exp":"normal","chara":"hatena","fukidashi":"normal","serif":"え…。\nちょっとは驚きなさいよ。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"驚いたわよ。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"で、貴方誰なの？\n見たところ、私に\nそっくりだけど。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"orange","serif":"…ひょっとして、\nドッペルゲンガーってやつ？"},{"pos":"right","exp":"normal","chara":"ganger","fukidashi":"normal","serif":"そのようなものね。\nそんなことより、\n貴方に大事な話があるの。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"なにかしら。"},{"pos":"right","exp":"normal","chara":"ganger","fukidashi":"normal","serif":"約束を守りなさい。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"約束？\n何か約束してたっけ。"},{"pos":"right","exp":"normal","chara":"ganger","fukidashi":"normal","serif":"ほら、博麗神社に…。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"orange","serif":"あぁ、そういえば前に\nメリーと約束してたわ。"},{"pos":"right","exp":null,"chara":null,"fukidashi":null,"serif":null},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"博麗神社の入り口を\n調べようって。\nそのことかしら？"},{"pos":"right","exp":"calm","chara":"merry","fukidashi":"orange","serif":"蓮子？\nこんなところで何してるの？"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"orange","serif":"あ、噂をすれば。\nメリー、見て！\n私のドッペルゲンガーが…"},{"pos":"right","exp":"normal","chara":null,"fukidashi":"normal","serif":null},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"あれ？いない…。"},{"pos":"right","exp":"normal","chara":"merry","fukidashi":"normal","serif":"どうしたの？"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"それが、\nかくかくしかじかで。"},{"pos":"right","exp":"calm","chara":"merry","fukidashi":"normal","serif":"ふーん。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"覚えてる？前に博霊神社の\n入り口を調べようって\n約束してたこと。"},{"pos":"right","exp":"calm","chara":"merry","fukidashi":"normal","serif":"そうだっけ？"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"orange","serif":"ねえ、今から行ってみない？"},{"pos":"right","exp":"troubled","chara":"merry","fukidashi":"normal","serif":"今から？面倒だわ…。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"なんだか気になるのよ。"},{"pos":"right","exp":"disappointed","chara":"merry","fukidashi":"normal","serif":"うっ…急にめまいと頭痛が。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"絶対嘘でしょ、それ。"},{"pos":"right","exp":"disappointed","chara":"merry","fukidashi":"normal","serif":"全身の骨が折れてるかも。"},{"pos":"left","exp":"surprised","chara":"renko","fukidashi":"purple","serif":"さっきまで\n元気だったじゃない！"},{"pos":"right","exp":"troubled","chara":"merry","fukidashi":"normal","serif":"うーん、気が進まないわ。"},{"pos":"left","exp":"disappointed","chara":"renko","fukidashi":"normal","serif":"はぁ…。そんなに嫌なら\n仕方ないわね。\n私一人で行ってくるわ。"}];
 module.exports = Serif;
 
 },{}],63:[function(require,module,exports){
