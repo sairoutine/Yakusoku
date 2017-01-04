@@ -21,6 +21,7 @@ Util.inherit(Effect, BaseObject);
 
 // 初期化
 Effect.prototype.init = function(x, y) {
+	BaseObject.prototype.init.apply(this, arguments);
 	this.x = x;
 	this.y = y;
 };
