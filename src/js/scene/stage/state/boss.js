@@ -88,8 +88,7 @@ State.prototype.run = function(){
 	// アイテムと自機の衝突判定
 	this.stage.item_manager.checkCollisionWithObject(character);
 
-	//if(Config.DEBUG && Number(document.getElementById("invincible").value) === 0) { // TODO: DEBUG
-	if(1){
+	if(!Config.DEBUG || Number(document.getElementById("invincible").value) === 0) { // TODO: DEBUG
 		// 敵弾と自機の衝突判定
 		this.stage.bullet_manager.checkCollisionWithObject(character);
 
