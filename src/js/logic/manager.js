@@ -36,9 +36,9 @@ Manager.prototype.create = function() {
 
 // オブジェクト削除
 Manager.prototype.remove = function(id) {
-	delete this.objects[id];
+	this.factory.free(this.objects[id]);
 
-	this.factory.free(id);
+	delete this.objects[id];
 };
 
 // フレーム処理
