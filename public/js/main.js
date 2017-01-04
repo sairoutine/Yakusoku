@@ -216,7 +216,7 @@ module.exports = MersenneTwister;
 var Constant = require('./constant');
 
 var Config = {
-	DEBUG: true,
+	DEBUG: false,
 	//DEBUG_SCENE: Constant.STAGE_SCENE,
 	//DEBUG_STATE: Constant.BOSS_STATE,
 	//DEBUG_STAGE: 4,
@@ -5401,6 +5401,9 @@ module.exports = EnemiesParams;
 },{"../constant":3}],18:[function(require,module,exports){
 'use strict';
 
+var THRESHOLD_EPILOGUE_A = 2500000;
+var THRESHOLD_EPILOGUE_B = 1000000;
+
 var Config = require('./config');
 var constant = require('./constant');
 
@@ -5589,6 +5592,7 @@ Game.prototype = {
 		if(self.audio_gain && self.audio_context) {
 			var gain = self.audio_gain.gain;
 			var startTime = self.audio_context.currentTime;
+			gain.setValueAtTime(gain.value, startTime); // ないと古い端末でフェードアウトしない
 			var endTime = startTime + fadeout_time;
 			gain.linearRampToValueAtTime(0, endTime);
 		}
@@ -5600,6 +5604,8 @@ Game.prototype = {
 		var self = this;
 		var arrayBuffer = self.bgms[key];
 		var conf = Config.BGMS[key];
+
+		self.audio_gain = this.audio_context.createGain(); // ないとフェードアウト後にBGM再生されない
 
 		var source = self.audio_context.createBufferSource();
 		source.buffer = arrayBuffer;
@@ -5699,12 +5705,11 @@ Game.prototype = {
 	},
 	// ステージ画面が終わったら
 	notifyStageDone: function() {
-		// TODO:
 		// エンディング分岐
-		if(this.currentScene().score > 3000000) {
+		if(this.currentScene().score > THRESHOLD_EPILOGUE_A) {
 			this.changeScene(constant.EPILOGUE_A_SCENE);
 		}
-		else if(this.currentScene().score > 1000000) {
+		else if(this.currentScene().score > THRESHOLD_EPILOGUE_B) {
 			this.changeScene(constant.EPILOGUE_B_SCENE);
 		}
 		else {
@@ -6484,6 +6489,9 @@ Aya.prototype.spriteHeight = function() { return 128; };
 // BGM
 Aya.prototype.bgm = function() { return 'stage1'; };
 
+Aya.prototype.MAX_VITAL = function() { return 60 * 45; };
+
+
 module.exports = Aya;
 
 },{"../../spell/stage1/spell1":77,"../../spell/stage1/spell2":78,"../../spell/stage1/spell3":79,"../../spell/stage1/spell4":80,"../../util":93,"./base":29}],29:[function(require,module,exports){
@@ -6505,9 +6513,6 @@ var CreateJS = require("../../logic/createjs");
 // Nフレーム毎にボスをアニメーション
 var FRONT_ANIMATION_SPAN = 6;
 var LR_ANIMATION_SPAN = 4;
-
-// HP
-var VITAL = 60 * 60;
 
 // ボスの移動速度
 var DEFAULT_SPEED = 2;
@@ -6788,11 +6793,6 @@ BossBase.prototype.bgm = function() {
 	console.error('bgm method must be overridden.');
 };
 
-// 最大HP
-BossBase.prototype.MAX_VITAL = function() {
-	return VITAL;
-};
-
 // 残HP パーセント
 BossBase.prototype.vitalPercentage = function() {
 	return this.vital / this.MAX_VITAL();
@@ -6809,6 +6809,12 @@ BossBase.prototype.scale = function() { return 0.75; };
 // 当たり判定サイズ
 BossBase.prototype.collisionWidth  = function() { return 48; };
 BossBase.prototype.collisionHeight = function() { return 48; };
+
+// 最大HP
+BossBase.prototype.MAX_VITAL = function() {
+	return 1;
+};
+
 
 
 
@@ -6858,6 +6864,7 @@ Merry.prototype.spriteHeight = function() { return 128; };
 // BGM
 Merry.prototype.bgm = function() { return 'stage5'; };
 
+Merry.prototype.MAX_VITAL = function() { return 60 * 1.5 * 60; };
 module.exports = Merry;
 
 
@@ -6904,6 +6911,9 @@ Sanae.prototype.spriteHeight = function() { return 128; };
 // BGM
 Sanae.prototype.bgm = function() { return 'stage2'; };
 
+Sanae.prototype.MAX_VITAL = function() { return 60 * 60; };
+
+
 module.exports = Sanae;
 
 },{"../../spell/stage2/spell1":81,"../../spell/stage2/spell2":82,"../../spell/stage2/spell3":83,"../../util":93,"./base":29}],32:[function(require,module,exports){
@@ -6949,6 +6959,7 @@ Yukari.prototype.spriteHeight = function() { return 128; };
 // BGM
 Yukari.prototype.bgm = function() { return 'stage4'; };
 
+Yukari.prototype.MAX_VITAL = function() { return 60 * 75; };
 module.exports = Yukari;
 
 },{"../../spell/stage4/spell1":87,"../../spell/stage4/spell2":88,"../../spell/stage4/spell3":89,"../../util":93,"./base":29}],33:[function(require,module,exports){
@@ -6993,6 +7004,8 @@ Yuuka.prototype.spriteHeight = function() { return 128; };
 
 // BGM
 Yuuka.prototype.bgm = function() { return 'stage3'; };
+
+Yuuka.prototype.MAX_VITAL = function() { return 60 * 75; };
 
 module.exports = Yuuka;
 
@@ -9652,7 +9665,7 @@ State.prototype.run = function(){
 	BaseState.prototype.run.apply(this, arguments);
 
 	// BGM start
-	if (this.frame_count === 1) {
+	if (this.frame_count === 60) {
 		this.game.playBGM(this.stage.currentStageBoss().bgm());
 	}
 
@@ -9711,7 +9724,8 @@ State.prototype.run = function(){
 	// アイテムと自機の衝突判定
 	this.stage.item_manager.checkCollisionWithObject(character);
 
-	if(Number(document.getElementById("invincible").value) === 0) { // TODO: DEBUG
+	//if(Config.DEBUG && Number(document.getElementById("invincible").value) === 0) { // TODO: DEBUG
+	if(1){
 		// 敵弾と自機の衝突判定
 		this.stage.bullet_manager.checkCollisionWithObject(character);
 
@@ -10110,10 +10124,11 @@ Util.inherit(TalkState, BaseState);
 
 // セリフ
 TalkState.prototype.serifInfo = function(){
-	var serif = document.getElementById("stage1_after").value;
-	// TODO: DEBUG
-	if(Config.DEBUG && serif.length > 1) {
-		return JSON.parse(serif);
+	if(Config.DEBUG) {
+		var serif = document.getElementById("stage1_after").value;
+		if(serif.length > 1) {
+			return JSON.parse(serif);
+		}
 	}
 
 	return this.stage.currentStageSerifAfter();
@@ -10353,10 +10368,12 @@ Util.inherit(TalkState, BaseState);
 
 // セリフ情報
 TalkState.prototype.serifInfo = function(){
-	var serif = document.getElementById("stage1_before").value;
 	// TODO: DEBUG
-	if(Config.DEBUG && serif.length > 1) {
-		return JSON.parse(serif);
+	if(Config.DEBUG) {
+		var serif = document.getElementById("stage1_before").value;
+		if(serif.length > 1) {
+			return JSON.parse(serif);
+		}
 	}
 
 	return this.stage.currentStageSerifBefore();
@@ -10454,7 +10471,8 @@ State.prototype.run = function(){
 
 	// アイテムと自機の衝突判定
 	this.stage.item_manager.checkCollisionWithObject(character);
-	if(Number(document.getElementById("invincible").value) === 0) { // TODO: DEBUG
+	//if(!Config.DEBUG && Number(document.getElementById("invincible").value) === 0) { // TODO: DEBUG
+	if(1) {
 		// 敵と自機の衝突判定
 		this.stage.enemy_manager.checkCollisionWithObject(character);
 		// 敵弾と自機の衝突判定

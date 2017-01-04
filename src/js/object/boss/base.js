@@ -17,9 +17,6 @@ var CreateJS = require("../../logic/createjs");
 var FRONT_ANIMATION_SPAN = 6;
 var LR_ANIMATION_SPAN = 4;
 
-// HP
-var VITAL = 60 * 60;
-
 // ボスの移動速度
 var DEFAULT_SPEED = 2;
 
@@ -299,11 +296,6 @@ BossBase.prototype.bgm = function() {
 	console.error('bgm method must be overridden.');
 };
 
-// 最大HP
-BossBase.prototype.MAX_VITAL = function() {
-	return VITAL;
-};
-
 // 残HP パーセント
 BossBase.prototype.vitalPercentage = function() {
 	return this.vital / this.MAX_VITAL();
@@ -320,6 +312,12 @@ BossBase.prototype.scale = function() { return 0.75; };
 // 当たり判定サイズ
 BossBase.prototype.collisionWidth  = function() { return 48; };
 BossBase.prototype.collisionHeight = function() { return 48; };
+
+// 最大HP
+BossBase.prototype.MAX_VITAL = function() {
+	return 1;
+};
+
 
 
 

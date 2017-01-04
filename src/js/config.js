@@ -7,7 +7,7 @@ var Config = {
 	//DEBUG_SCENE: Constant.STAGE_SCENE,
 	//DEBUG_STATE: Constant.BOSS_STATE,
 	//DEBUG_STAGE: 4,
-	//DEBUG_SPELL: 1,
+	//DEBUG_SPELL: 2,
 	//DEBUG_MUSIC_OFF: true,
 	IMAGES: {
 		title_bg:  'image/title_bg.png',

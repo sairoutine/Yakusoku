@@ -40,5 +40,6 @@ Merry.prototype.spriteHeight = function() { return 128; };
 // BGM
 Merry.prototype.bgm = function() { return 'stage5'; };
 
+Merry.prototype.MAX_VITAL = function() { return 60 * 1.5 * 60; };
 module.exports = Merry;
 

@@ -13,10 +13,11 @@ Util.inherit(TalkState, BaseState);
 
 // セリフ
 TalkState.prototype.serifInfo = function(){
-	var serif = document.getElementById("stage1_after").value;
-	// TODO: DEBUG
-	if(Config.DEBUG && serif.length > 1) {
-		return JSON.parse(serif);
+	if(Config.DEBUG) {
+		var serif = document.getElementById("stage1_after").value;
+		if(serif.length > 1) {
+			return JSON.parse(serif);
+		}
 	}
 
 	return this.stage.currentStageSerifAfter();
