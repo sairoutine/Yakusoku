@@ -334,6 +334,10 @@ Game.prototype = {
 	notifyEndDone: function() {
 		this.changeScene(constant.TITLE_SCENE);
 	},
+	// 体験版終了
+	notifyTrialDone: function() {
+		this.changeScene(constant.TITLE_SCENE);
+	},
 	handleGamePad: function() {
 		if(!this.is_connect_gamepad) return;
 

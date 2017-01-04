@@ -216,12 +216,13 @@ module.exports = MersenneTwister;
 var Constant = require('./constant');
 
 var Config = {
-	DEBUG: false,
+	DEBUG: true,
 	//DEBUG_SCENE: Constant.STAGE_SCENE,
 	//DEBUG_STATE: Constant.BOSS_STATE,
 	//DEBUG_STAGE: 4,
 	//DEBUG_SPELL: 2,
 	//DEBUG_MUSIC_OFF: true,
+	TRIAL: false,
 	IMAGES: {
 		title_bg:  'image/title_bg.png',
 		press_z:  'image/pressZ.png',
@@ -5735,6 +5736,10 @@ Game.prototype = {
 	notifyEndDone: function() {
 		this.changeScene(constant.TITLE_SCENE);
 	},
+	// 体験版終了
+	notifyTrialDone: function() {
+		this.changeScene(constant.TITLE_SCENE);
+	},
 	handleGamePad: function() {
 		if(!this.is_connect_gamepad) return;
 
@@ -5842,7 +5847,12 @@ var Factory = function(Class, stage) {
 
 // オブジェクトを生成
 Factory.prototype.get = function() {
-	var object = new this.Class(this.stage);
+	var object = this.pool.pop();
+
+	if(!object) {
+		object = new this.Class(this.stage);
+	}
+
 	// 初期化
 	object.init.apply(object, arguments);
 
@@ -5850,8 +5860,8 @@ Factory.prototype.get = function() {
 };
 
 // オブジェクトを削除
-Factory.prototype.free = function(id) {
-
+Factory.prototype.free = function(obj) {
+	this.pool.push(obj);
 };
 
 
@@ -5896,9 +5906,9 @@ Manager.prototype.create = function() {
 
 // オブジェクト削除
 Manager.prototype.remove = function(id) {
-	delete this.objects[id];
+	this.factory.free(this.objects[id]);
 
-	this.factory.free(id);
+	delete this.objects[id];
 };
 
 // フレーム処理
@@ -7552,6 +7562,7 @@ Util.inherit(Effect, BaseObject);
 
 // 初期化
 Effect.prototype.init = function(x, y) {
+	BaseObject.prototype.init.apply(this, arguments);
 	this.x = x;
 	this.y = y;
 };
@@ -9116,6 +9127,9 @@ var SIDE_WIDTH = 160;
 // 背景画像のスクロールスピード
 var BACKGROUND_SCROLL_SPEED = 3;
 
+// 体験版終了のステージ
+var LAST_TRIAL_STAGE = 1;
+
 // 基底クラス
 var BaseScene = require('./base');
 
@@ -9340,6 +9354,11 @@ Scene.prototype.goNextStage = function(){
 // 次のステージがあるかどうか
 Scene.prototype.hasNextStage = function(){
 	return this.enemy_info_list[this.stage + 1] ? true : false;
+};
+
+// 体験版の最後のステージか
+Scene.prototype.isLastTrialStage = function(){
+	return this.stage + 1 >= LAST_TRIAL_STAGE ? true : false;
 };
 
 // 現在のステージ番号
@@ -9584,7 +9603,11 @@ Scene.prototype.notifyAfterTalkEnd = function () {
 };
 // リザルト画面の終了
 Scene.prototype.notifyClearEnd = function() {
-	if(this.hasNextStage()) {
+	if(this.isLastTrialStage()) {
+		// 体験版終了
+		this.game.notifyTrialDone();
+	}
+	else if(this.hasNextStage()) {
 		// 次のステージへ
 		this.goNextStage();
 	}
@@ -9724,8 +9747,7 @@ State.prototype.run = function(){
 	// アイテムと自機の衝突判定
 	this.stage.item_manager.checkCollisionWithObject(character);
 
-	//if(Config.DEBUG && Number(document.getElementById("invincible").value) === 0) { // TODO: DEBUG
-	if(1){
+	if(!Config.DEBUG || Number(document.getElementById("invincible").value) === 0) { // TODO: DEBUG
 		// 敵弾と自機の衝突判定
 		this.stage.bullet_manager.checkCollisionWithObject(character);
 
@@ -10471,8 +10493,7 @@ State.prototype.run = function(){
 
 	// アイテムと自機の衝突判定
 	this.stage.item_manager.checkCollisionWithObject(character);
-	//if(!Config.DEBUG && Number(document.getElementById("invincible").value) === 0) { // TODO: DEBUG
-	if(1) {
+	if(!Config.DEBUG || Number(document.getElementById("invincible").value) === 0) { // TODO: DEBUG
 		// 敵と自機の衝突判定
 		this.stage.enemy_manager.checkCollisionWithObject(character);
 		// 敵弾と自機の衝突判定

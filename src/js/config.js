@@ -9,6 +9,7 @@ var Config = {
 	//DEBUG_STAGE: 4,
 	//DEBUG_SPELL: 2,
 	//DEBUG_MUSIC_OFF: true,
+	TRIAL: false,
 	IMAGES: {
 		title_bg:  'image/title_bg.png',
 		press_z:  'image/pressZ.png',

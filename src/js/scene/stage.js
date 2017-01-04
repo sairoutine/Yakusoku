@@ -7,6 +7,9 @@ var SIDE_WIDTH = 160;
 // 背景画像のスクロールスピード
 var BACKGROUND_SCROLL_SPEED = 3;
 
+// 体験版終了のステージ
+var LAST_TRIAL_STAGE = 1;
+
 // 基底クラス
 var BaseScene = require('./base');
 
@@ -231,6 +234,11 @@ Scene.prototype.goNextStage = function(){
 // 次のステージがあるかどうか
 Scene.prototype.hasNextStage = function(){
 	return this.enemy_info_list[this.stage + 1] ? true : false;
+};
+
+// 体験版の最後のステージか
+Scene.prototype.isLastTrialStage = function(){
+	return this.stage + 1 >= LAST_TRIAL_STAGE ? true : false;
 };
 
 // 現在のステージ番号
@@ -475,7 +483,11 @@ Scene.prototype.notifyAfterTalkEnd = function () {
 };
 // リザルト画面の終了
 Scene.prototype.notifyClearEnd = function() {
-	if(this.hasNextStage()) {
+	if(this.isLastTrialStage()) {
+		// 体験版終了
+		this.game.notifyTrialDone();
+	}
+	else if(this.hasNextStage()) {
 		// 次のステージへ
 		this.goNextStage();
 	}
