@@ -353,6 +353,7 @@ Game.prototype = {
 		this.keyflag |= pad.buttons[3].pressed ? constant.BUTTON_START:  0x00;// START
 		this.keyflag |= pad.buttons[4].pressed ? constant.BUTTON_SHIFT:  0x00;// SHIFT
 		this.keyflag |= pad.buttons[5].pressed ? constant.BUTTON_SHIFT:  0x00;// SHIFT
+		this.keyflag |= pad.buttons[6].pressed ? constant.BUTTON_SPACE:  0x00;// SPACE
 		//this.keyflag |= pad.buttons[8].pressed ? 0x04 : 0x00;// SELECT
 		//this.keyflag |= pad.buttons[9].pressed ? 0x08 : 0x00;// START
 
