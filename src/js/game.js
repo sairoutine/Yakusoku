@@ -338,6 +338,10 @@ Game.prototype = {
 	notifyTrialDone: function() {
 		this.changeScene(constant.TITLE_SCENE);
 	},
+	// ステージをポーズから終了
+	notifyStageQuit: function() {
+		this.changeScene(constant.TITLE_SCENE);
+	},
 	handleGamePad: function() {
 		if(!this.is_connect_gamepad) return;
 
