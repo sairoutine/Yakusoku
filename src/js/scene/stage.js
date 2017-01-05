@@ -156,6 +156,7 @@ var Scene = function(game) {
 	this.score = 0; // スコア
 	this.state = null; // ステージの現在の状態
 	this.stage = 0; // 現在のステージ
+	this.state_before_pause = this.state; // ポーズ前のstateが何だったか
 };
 
 // 基底クラスを継承
@@ -466,6 +467,25 @@ Scene.prototype.notifyGameOverEnd = function() {
 	this.character.init();
 
 	this.changeState(Constant.START_STATE);
+};
+
+// ポーズ開始
+Scene.prototype.notifyPauseStart = function() {
+	// ポーズ前のstateが何だったかを保存
+	this.state_before_pause = this.state;
+
+	this.changeState(Constant.PAUSE_STATE);
+};
+// ポーズ終了
+Scene.prototype.notifyPauseEnd = function() {
+	// ポーズ前のstateに戻る
+	this.state = this.state_before_pause;
+
+	this.state_before_pause = null; // 前のstate情報をクリア
+};
+// ゲーム終了
+Scene.prototype.notifyStageQuit = function() {
+	this.game.notifyStageQuit();
 };
 
 // スタート時のタイトル表示の終了
