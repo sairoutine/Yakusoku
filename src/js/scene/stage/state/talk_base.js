@@ -29,6 +29,10 @@ State.prototype.init = function(){
 // フレーム処理
 State.prototype.run = function(){
 	BaseState.prototype.run.apply(this, arguments);
+
+	// キャラだけ表示する
+	this.stage.character.run();
+
 	if(this.game.isKeyPush(Constant.BUTTON_Z)) {
 		if(this.serif.is_end()) {
 			this.notifyTalkEnd();
@@ -42,6 +46,9 @@ State.prototype.run = function(){
 
 // 画面更新
 State.prototype.updateDisplay = function(){
+	// キャラだけ表示する
+	this.stage.character.updateDisplay();
+
 	var ctx = this.game.surface;
 
 	if(this.serif.right_image()) {

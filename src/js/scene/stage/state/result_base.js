@@ -31,6 +31,9 @@ State.prototype.init = function(){
 State.prototype.run = function(){
 	BaseState.prototype.run.apply(this, arguments);
 
+	// キャラだけ表示する
+	this.stage.character.run();
+
 	if(this.isTransitionEnd()) {
 		this.game.stopBGM();
 		this.notifyResultEnd();
@@ -57,6 +60,9 @@ State.prototype.setTransition = function(){
 
 // 画面更新
 State.prototype.updateDisplay = function(){
+	// キャラだけ表示する
+	this.stage.character.updateDisplay();
+
 	var ctx = this.game.surface;
 
 	this._showScoreWindow();

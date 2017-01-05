@@ -70,10 +70,8 @@ var Scene = function(game) {
 	this.width = this.game.width - SIDE_WIDTH;
 	this.height= this.game.height;
 
-	// state の方で動かすオブジェクト
 	this.bullet_manager = new Manager(Bullet, this);
-	this.item_manager = new Manager(Item, this);
-
+	this.item_manager   = new Manager(Item, this);
 	this.shot_manager   = new Manager(Shot, this);
 	this.character      = new Character(this);
 	this.enemy_manager  = new Manager(Enemy, this);
@@ -81,6 +79,8 @@ var Scene = function(game) {
 
 	// シーンが管理するオブジェクト一覧
 	this.objects = [
+		this.bullet_manager,
+		this.item_manager,
 		this.shot_manager,
 		this.character,
 		this.enemy_manager,
@@ -168,10 +168,9 @@ Scene.prototype.init = function() {
 	this.score = 0; // スコア
 	this.state = null; // ステージの現在の状態
 	this.stage = Config.DEBUG && Config.DEBUG_STAGE ? Config.DEBUG_STAGE : 0; // 現在のステージ
+	this.state_before_pause = this.state; // ポーズ前のstateが何だったか
 
-	for(var i = 0, len = this.objects.length; i < len; i++) {
-		this.objects[i].init();
-	}
+	this.initObjects();
 
 	// TODO: DEBUG
 	// 道中開始
@@ -248,6 +247,12 @@ Scene.prototype.currentStageNo = function(){
 	return this.stage + 1;
 };
 
+Scene.prototype.initObjects = function(){
+	for(var i = 0, len = this.objects.length; i < len; i++) {
+		this.objects[i].init();
+	}
+};
+
 Scene.prototype.initObjectsWithoutCharacter = function(){
 	for(var i = 0, len = this.objects.length; i < len; i++) {
 		if (this.objects[i] instanceof Character) continue;
@@ -255,13 +260,21 @@ Scene.prototype.initObjectsWithoutCharacter = function(){
 	}
 };
 
-// フレーム処理
-Scene.prototype.run = function(){
-	BaseScene.prototype.run.apply(this, arguments);
-
+Scene.prototype.runObjects = function(){
 	for(var i = 0, len = this.objects.length; i < len; i++) {
 		this.objects[i].run();
 	}
+};
+
+Scene.prototype.updateDisplayObjects = function(){
+	for(var i = 0, len = this.objects.length; i < len; i++) {
+		this.objects[i].updateDisplay();
+	}
+};
+
+// フレーム処理
+Scene.prototype.run = function(){
+	BaseScene.prototype.run.apply(this, arguments);
 
 	this.currentState().run();
 };
@@ -272,10 +285,6 @@ Scene.prototype.updateDisplay = function(){
 
 	// 背景画像表示
 	this._showBG();
-
-	for(var i = 0, len = this.objects.length; i < len; i++) {
-		this.objects[i].updateDisplay();
-	}
 
 	this.currentState().updateDisplay();
 

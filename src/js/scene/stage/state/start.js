@@ -19,9 +19,6 @@ var State = function(stage) {
 Util.inherit(State, BaseState);
 State.prototype.init = function(){
 	BaseState.prototype.init.apply(this, arguments);
-	// state の管理するオブジェクトを初期化
-	this.stage.bullet_manager.init();
-	this.stage.item_manager.init();
 
 	this.stage.initObjectsWithoutCharacter();
 };
@@ -89,10 +86,14 @@ State.prototype.run = function(){
 	if(this.frame_count > SHOW_TITLE_COUNT) {
 		this.stage.notifyStartEnd();
 	}
+
+	this.stage.runObjects();
 };
 
 // 画面更新
 State.prototype.updateDisplay = function(){
+	this.stage.updateDisplayObjects();
+
 	var ctx = this.game.surface;
 
 	ctx.save();

@@ -107,14 +107,12 @@ State.prototype.run = function(){
 		this.stage.enemy_manager.create(params[i]);
 	}
 
-	this.stage.bullet_manager.run();
-	this.stage.item_manager.run();
+	this.stage.runObjects();
 };
 
 // 画面更新
 State.prototype.updateDisplay = function(){
-	this.stage.bullet_manager.updateDisplay();
-	this.stage.item_manager.updateDisplay();
+	this.stage.updateDisplayObjects();
 };
 
 module.exports = State;

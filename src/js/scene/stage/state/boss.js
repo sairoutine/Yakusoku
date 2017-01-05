@@ -18,6 +18,8 @@ State.prototype.init = function(){
 	BaseState.prototype.init.apply(this, arguments);
 
 	this.stage.currentStageBoss().init();
+
+	// 道中の敵弾だけリセット
 	this.stage.bullet_manager.init();
 
 	// 道中曲を止める
@@ -115,15 +117,13 @@ State.prototype.run = function(){
 
 
 	this.stage.currentStageBoss().run();
-	this.stage.bullet_manager.run();
-	this.stage.item_manager.run();
+	this.stage.runObjects();
 };
 
 // 画面更新
 State.prototype.updateDisplay = function(){
 	this.stage.currentStageBoss().updateDisplay();
-	this.stage.bullet_manager.updateDisplay();
-	this.stage.item_manager.updateDisplay();
+	this.stage.updateDisplayObjects();
 
 	// スペルカード残り時間
 	this._showVital();
