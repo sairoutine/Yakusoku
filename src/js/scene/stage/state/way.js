@@ -46,6 +46,11 @@ State.prototype.run = function(){
 		character.useBomb();
 	}
 
+	// SPACE でポーズ
+	if(this.game.isKeyPush(Constant.BUTTON_SPACE)) {
+		this.stage.notifyPauseStart();
+	}
+
 	// Z押しっぱで低速移動
 	var is_slow = this.game.isKeyDown(Constant.BUTTON_SHIFT);
 
