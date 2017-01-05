@@ -514,7 +514,7 @@ Scene.prototype.notifyAfterTalkEnd = function () {
 };
 // リザルト画面の終了
 Scene.prototype.notifyClearEnd = function() {
-	if(this.isLastTrialStage()) {
+	if(Config.TRIAL && this.isLastTrialStage()) {
 		// 体験版終了
 		this.game.notifyTrialDone();
 	}
