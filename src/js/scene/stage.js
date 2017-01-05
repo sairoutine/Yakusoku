@@ -35,6 +35,7 @@ var TalkStateAfter = require('./stage/state/talk_after');
 var BossState = require('./stage/state/boss');
 var ClearState = require('./stage/state/result_clear');
 var GameoverState = require('./stage/state/result_gameover');
+var PauseState = require('./stage/state/pause');
 
 // ボス
 var Stage1Boss = require('../object/boss/aya');
@@ -95,6 +96,7 @@ var Scene = function(game) {
 	this.states[ Constant.TALK2_STATE ]    = new TalkStateAfter(this);
 	this.states[ Constant.CLEAR_STATE ]   = new ClearState(this);
 	this.states[ Constant.GAMEOVER_STATE ] = new GameoverState(this);
+	this.states[ Constant.PAUSE_STATE ]   = new PauseState(this);
 
 	// ボス一覧
 	this.bosses = [
