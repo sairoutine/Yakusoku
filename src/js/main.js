@@ -4,12 +4,13 @@ var Game = require('./game');
 // WebAudio
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
+var game;
 
 window.onload = function() {
 	// Canvas
 	var mainCanvas = document.getElementById('mainCanvas');
 	// Game オブジェクト
-	var game = new Game(mainCanvas);
+	game = new Game(mainCanvas);
 	// 初期化
 	game.init();
 	// キーバインド
@@ -31,7 +32,7 @@ window.onload = function() {
 	}
 
 	// ゲーム起動
-	game.run();
+	game.startRun();
 };
 window.onerror = function (msg, file, line, column, err) {
 	/*
@@ -42,6 +43,13 @@ window.onerror = function (msg, file, line, column, err) {
 	err: error object
 	*/ 
 	window.alert(msg + "\n" + line + ":" + column);
+};
+
+window.runGame = function () {
+	game.startRun();
+};
+window.stopGame = function () {
+	game.stopRun();
 };
 
 window.changeFullScreen = function () {

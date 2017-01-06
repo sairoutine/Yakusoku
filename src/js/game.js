@@ -69,6 +69,9 @@ var Game = function(mainCanvas) {
 	// 経過フレーム数
 	this.frame_count = 0;
 
+	// requestAnimationFrame の ID
+	this.request_id = null;
+
 	// キー押下フラグ
 	this.keyflag = 0x0;
 
@@ -84,6 +87,9 @@ Game.prototype = {
 	init: function () {
 		// 経過フレーム数を初期化
 		this.frame_count = 0;
+
+		// requestAnimationFrame の ID
+		this.request_id = null;
 
 		// キー押下フラグ
 		this.keyflag = 0x0;
@@ -258,8 +264,25 @@ Game.prototype = {
 	clearCanvas: function() {
 		this.surface.clearRect(0, 0, this.width, this.height);
 	},
-
 	// ゲーム起動
+	startRun: function(){
+		if(this.isRunning()) return;
+
+		this.run();
+	},
+	// ゲームストップ
+	stopRun: function(){
+		if(!this.isRunning()) return;
+
+		cancelAnimationFrame(this.request_id);
+
+		this.request_id = null;
+	},
+	// ゲームが起動中かどうか
+	isRunning: function () {
+		return this.request_id ? true : false;
+	},
+	// フレーム毎の実行
 	run: function(){
 		// ゲームパッド対応端末なら入力を取得
 		this.handleGamePad();
@@ -278,7 +301,7 @@ Game.prototype = {
 		this.frame_count++;
 
 		// 次の描画タイミングで再呼び出ししてループ
-		requestAnimationFrame(this.run.bind(this));
+		this.request_id = requestAnimationFrame(this.run.bind(this));
 	},
 	// ローディング画面が終わったら
 	notifyLoadingDone: function() {
