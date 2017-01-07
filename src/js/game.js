@@ -1,7 +1,11 @@
 'use strict';
 
+// エンディングの分岐条件
 var THRESHOLD_EPILOGUE_A = 2500000;
 var THRESHOLD_EPILOGUE_B = 1000000;
+
+// FPS計算する間隔(frame)
+var FPS_SPAN = 30;
 
 var Config = require('./config');
 var constant = require('./constant');
@@ -80,6 +84,12 @@ var Game = function(mainCanvas) {
 
 	// ゲームパッドが接続されているかどうか
 	this.is_connect_gamepad = 0;
+
+	// 前回にFPSを計算した際の時刻(ミリ秒)
+	this.before_time = 0;
+
+	// 計測したFPS
+	this.fps = 0;
 };
 
 Game.prototype = {
@@ -99,6 +109,12 @@ Game.prototype = {
 
 		// ゲームパッドが接続されているかどうか
 		this.is_connect_gamepad = 0;
+
+		// 前回にFPSを計算した際の時刻(ミリ秒)
+		this.before_time = 0;
+
+		// 計測したFPS
+		this.fps = 0;
 
 		// シーンをローディング画面にする
 		this.changeScene(constant.LOADING_SCENE);
@@ -291,6 +307,10 @@ Game.prototype = {
 		this.currentScene().run();
 		this.currentScene().updateDisplay();
 
+		if(Config.DEBUG) {
+			this._renderFPS();
+		}
+
 		// SEを再生
 		this.runPlaySound();
 
@@ -302,6 +322,28 @@ Game.prototype = {
 
 		// 次の描画タイミングで再呼び出ししてループ
 		this.request_id = requestAnimationFrame(this.run.bind(this));
+	},
+	_renderFPS: function() {
+		// FPSをレンダリング
+		var ctx = this.surface;
+		ctx.save();
+		ctx.fillStyle = 'rgb( 6, 40, 255 )';
+		ctx.textAlign = 'left';
+		ctx.font = "16px 'Migu'";
+		ctx.fillText("FPS: " + this.fps, this.width - 70, this.height - 10);
+		ctx.restore();
+
+		// FPS_SPAN 毎にFPSを計測する
+		if((this.frame_count % FPS_SPAN) !== 0) return;
+
+		// 現在時刻(ミリ秒)を取得
+		var newTime = Date.now();
+
+		if(this.before_time) {
+			this.fps = parseInt(1000 * FPS_SPAN / (newTime - this.before_time));
+		}
+
+		this.before_time = newTime;
 	},
 	// ローディング画面が終わったら
 	notifyLoadingDone: function() {
