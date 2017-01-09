@@ -14,6 +14,13 @@ var Config = {
 		title_bg:  'image/title_bg.png',
 		press_z:  'image/pressZ.png',
 		press_x:  'image/pressX.png',
+
+		num:  'image/num.png',
+		player:  'image/player.png',
+		score:  'image/score.png',
+		spell:  'image/spell.png',
+		star:  'image/star.png',
+
 		prologue1_bg:  'image/prologue1_bg.png',
 		prologue2_bg:  'image/prologue2_bg.png',
 		logo:  'image/logo.png',
