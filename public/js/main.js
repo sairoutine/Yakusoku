@@ -227,6 +227,13 @@ var Config = {
 		title_bg:  'image/title_bg.png',
 		press_z:  'image/pressZ.png',
 		press_x:  'image/pressX.png',
+
+		num:  'image/num.png',
+		player:  'image/player.png',
+		score:  'image/score.png',
+		spell:  'image/spell.png',
+		star:  'image/star.png',
+
 		prologue1_bg:  'image/prologue1_bg.png',
 		prologue2_bg:  'image/prologue2_bg.png',
 		logo:  'image/logo.png',
@@ -5403,8 +5410,12 @@ module.exports = EnemiesParams;
 },{"../constant":3}],18:[function(require,module,exports){
 'use strict';
 
+// エンディングの分岐条件
 var THRESHOLD_EPILOGUE_A = 2500000;
 var THRESHOLD_EPILOGUE_B = 1000000;
+
+// FPS計算する間隔(frame)
+var FPS_SPAN = 30;
 
 var Config = require('./config');
 var constant = require('./constant');
@@ -5483,6 +5494,12 @@ var Game = function(mainCanvas) {
 
 	// ゲームパッドが接続されているかどうか
 	this.is_connect_gamepad = 0;
+
+	// 前回にFPSを計算した際の時刻(ミリ秒)
+	this.before_time = 0;
+
+	// 計測したFPS
+	this.fps = 0;
 };
 
 Game.prototype = {
@@ -5502,6 +5519,12 @@ Game.prototype = {
 
 		// ゲームパッドが接続されているかどうか
 		this.is_connect_gamepad = 0;
+
+		// 前回にFPSを計算した際の時刻(ミリ秒)
+		this.before_time = 0;
+
+		// 計測したFPS
+		this.fps = 0;
 
 		// シーンをローディング画面にする
 		this.changeScene(constant.LOADING_SCENE);
@@ -5694,6 +5717,10 @@ Game.prototype = {
 		this.currentScene().run();
 		this.currentScene().updateDisplay();
 
+		if(Config.DEBUG) {
+			this._renderFPS();
+		}
+
 		// SEを再生
 		this.runPlaySound();
 
@@ -5705,6 +5732,28 @@ Game.prototype = {
 
 		// 次の描画タイミングで再呼び出ししてループ
 		this.request_id = requestAnimationFrame(this.run.bind(this));
+	},
+	_renderFPS: function() {
+		// FPSをレンダリング
+		var ctx = this.surface;
+		ctx.save();
+		ctx.fillStyle = 'rgb( 6, 40, 255 )';
+		ctx.textAlign = 'left';
+		ctx.font = "16px 'Migu'";
+		ctx.fillText("FPS: " + this.fps, this.width - 70, this.height - 10);
+		ctx.restore();
+
+		// FPS_SPAN 毎にFPSを計測する
+		if((this.frame_count % FPS_SPAN) !== 0) return;
+
+		// 現在時刻(ミリ秒)を取得
+		var newTime = Date.now();
+
+		if(this.before_time) {
+			this.fps = parseInt(1000 * FPS_SPAN / (newTime - this.before_time));
+		}
+
+		this.before_time = newTime;
 	},
 	// ローディング画面が終わったら
 	notifyLoadingDone: function() {
@@ -9473,85 +9522,99 @@ Scene.prototype._showSidebar = function(){
 };
 
 Scene.prototype._showText = function(){
-	var size1 = 18;
-	var size2 = 21;
+	var star = this.game.getImage('star');
+	var star_width = star.width * Config.CHARA_SIZE_RATIO;
+	var star_height = star.height * Config.CHARA_SIZE_RATIO;
+
+	var num_string = this.game.getImage('num');
+	var player_string = this.game.getImage('player');
+	var score_string = this.game.getImage('score');
+	var spell_string = this.game.getImage('spell');
 
 	var x1 = this.game.width - SIDE_WIDTH + 10;
 	var x2 = this.game.width - SIDE_WIDTH + 35;
 
-	// 残ライフ
-	var life_star_string;
-	switch(this.character.life) {
-		case 1:
-			life_star_string = "★";
-			break;
-		case 2:
-			life_star_string = "★★";
-			break;
-		case 3:
-			life_star_string = "★★★";
-			break;
-		case 4:
-			life_star_string = "★★★★";
-			break;
-		case 5:
-			life_star_string = "★★★★★";
-			break;
+	var num_width = 30; // 数字の横サイズ
 
-
-		default:
-			life_star_string = "";
-			break;
-	}
+	var i;
 
 	var ctx = this.game.surface;
 	ctx.save();
-	ctx.fillStyle = 'rgb( 6, 40, 255 )';
-	ctx.textAlign = 'left';
-	ctx.font = size1 + "px 'Migu'" ;
-	//ctx.fillText("HiScore",   x1, 25);
-	ctx.fillText("Score",     x1, 70);
-	ctx.fillText("Player",    x1, 130);
-	ctx.fillText("Spell",     x1, 175);
+
+	// Score String
+	ctx.drawImage(score_string,
+		x1,
+		50,
+		score_string.width * Config.CHARA_SIZE_RATIO,
+		score_string.height * Config.CHARA_SIZE_RATIO
+	);
+
+	var score_string_list = this.score.toString().split("");
+
+	for (i = 0; i < score_string_list.length; i++) {
+		// 0 だけ一番最後にある
+		var pos = score_string_list[i] === "0" ? 9 : score_string_list[i] - 1;
+
+		ctx.drawImage(num_string,
+			// スプライトの取得位置
+			num_width * pos, 0,
+			// スプライトのサイズ
+			num_width, num_string.height,
+			// 位置
+			x2 + i * num_width * Config.CHARA_SIZE_RATIO, 75,
+			// オブジェクトのゲーム上のサイズ
+			num_width * Config.CHARA_SIZE_RATIO, num_string.height * Config.CHARA_SIZE_RATIO
+		);
+	}
+
+
+
+
+	// Player String
+	ctx.drawImage(player_string,
+		x1,
+		100,
+		player_string.width * Config.CHARA_SIZE_RATIO,
+		player_string.height * Config.CHARA_SIZE_RATIO
+	);
+
+	// Player Life
+	for (i = 0; i < this.character.life; i++) {
+		ctx.drawImage(star,
+			x2 + i * star_width,
+			125,
+			star_width,
+			star_height
+		);
+	}
+
+	// Spell String
+	ctx.drawImage(spell_string,
+		x1,
+		150,
+		spell_string.width * Config.CHARA_SIZE_RATIO,
+		spell_string.height * Config.CHARA_SIZE_RATIO
+	);
+
+
+	// Player Bombs
+	for (i = 0; i < this.character.bombs; i++) {
+		ctx.drawImage(star,
+			x2 + i * star_width,
+			175,
+			star_width,
+			star_height
+		);
+	}
+
+	/*
 	if(Config.DEBUG) {
-		ctx.fillText("Frame",     x1, 235);
+		ctx.fillStyle = 'rgb( 6, 40, 255 )';
+		ctx.textAlign = 'left';
+		ctx.font = "16px 'Migu'";
+		ctx.fillText("Frame: " + this.frame_count, x1, this.game.height - 30);
 	}
-	ctx.font = size2 + "px 'Migu'" ;
-	// TODO:
-	//ctx.fillText("123456789", x2, 50);  // HiScore
-	ctx.fillText(this.score, x2, 95);  // Score
-	ctx.fillText(life_star_string,     x2, 155); // Player
-
-	// 残ボム数
-	var bomb_star_string;
-	switch(this.character.bombs) {
-		case 1:
-			bomb_star_string = "★";
-			break;
-		case 2:
-			bomb_star_string = "★★";
-			break;
-		case 3:
-			bomb_star_string = "★★★";
-			break;
-		case 4:
-			bomb_star_string = "★★★★";
-			break;
-		case 5:
-			bomb_star_string = "★★★★★";
-			break;
-
-
-		default:
-			bomb_star_string = "";
-			break;
-	}
-
-	ctx.fillText(bomb_star_string,     x2, 200); // Bomb
-
-	if(Config.DEBUG) {
-		ctx.fillText(this.frame_count,     x2, 260); // Frame
-	}
+	*/
 	ctx.restore();
 };
 
