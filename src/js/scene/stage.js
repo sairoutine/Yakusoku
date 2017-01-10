@@ -473,7 +473,7 @@ Scene.prototype.notifyCharacterDead = function() {
 };
 
 // ゲームオーバーのリザルト終了後
-Scene.prototype.notifyGameOverEnd = function() {
+Scene.prototype.notifyRetry = function() {
 	// コンティニューしたらスコアを半分にする
 	this.score = Math.floor(this.score / 2);
 
