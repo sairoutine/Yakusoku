@@ -10,6 +10,9 @@ var Config = {
 	//DEBUG_SPELL: 2,
 	//DEBUG_MUSIC_OFF: true,
 	TRIAL: false,
+	// エンディングの分岐条件
+	THRESHOLD_EPILOGUE_A: 4500000,
+	THRESHOLD_EPILOGUE_B: 3000000,
 	IMAGES: {
 		title_bg:  'image/title_bg.png',
 		press_z:  'image/pressZ.png',

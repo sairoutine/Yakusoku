@@ -75,7 +75,7 @@ Item.prototype.notifyCollision = function(obj) {
 		this.stage.character.addPower(1);
 	}
 	else if(this.isScore()) {
-		this.stage.score += 1000;
+		this.stage.score += 500;
 	}
 
 };
