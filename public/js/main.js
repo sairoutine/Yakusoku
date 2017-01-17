@@ -223,6 +223,9 @@ var Config = {
 	//DEBUG_SPELL: 2,
 	//DEBUG_MUSIC_OFF: true,
 	TRIAL: false,
+	// エンディングの分岐条件
+	THRESHOLD_EPILOGUE_A: 4500000,
+	THRESHOLD_EPILOGUE_B: 3000000,
 	IMAGES: {
 		title_bg:  'image/title_bg.png',
 		press_z:  'image/pressZ.png',
@@ -5410,10 +5413,6 @@ module.exports = EnemiesParams;
 },{"../constant":3}],18:[function(require,module,exports){
 'use strict';
 
-// エンディングの分岐条件
-var THRESHOLD_EPILOGUE_A = 2500000;
-var THRESHOLD_EPILOGUE_B = 1000000;
-
 // FPS計算する間隔(frame)
 var FPS_SPAN = 30;
 
@@ -5780,10 +5779,10 @@ Game.prototype = {
 	// ステージ画面が終わったら
 	notifyStageDone: function() {
 		// エンディング分岐
-		if(this.currentScene().score > THRESHOLD_EPILOGUE_A) {
+		if(this.currentScene().score > Config.THRESHOLD_EPILOGUE_A) {
 			this.changeScene(constant.EPILOGUE_A_SCENE);
 		}
-		else if(this.currentScene().score > THRESHOLD_EPILOGUE_B) {
+		else if(this.currentScene().score > Config.THRESHOLD_EPILOGUE_B) {
 			this.changeScene(constant.EPILOGUE_B_SCENE);
 		}
 		else {
@@ -7938,7 +7937,7 @@ Item.prototype.notifyCollision = function(obj) {
 		this.stage.character.addPower(1);
 	}
 	else if(this.isScore()) {
-		this.stage.score += 1000;
+		this.stage.score += 500;
 	}
 
 };
