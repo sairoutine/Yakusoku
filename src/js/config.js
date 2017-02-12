@@ -297,7 +297,7 @@ var Config = {
 		},
 		enemy_vanish: {
 			id: 0x20,
-			path: 'sound/enemy_vanish.mp3',
+			path: 'sound/enemy_vanish.wav',
 			volume: 0.1
 		},
 		graze: {
@@ -312,7 +312,7 @@ var Config = {
 		},
 		kirakira: {
 			id: 0x100,
-			path: 'sound/kira2.mp3',
+			path: 'sound/kira2.wav',
 			volume: 0.2
 		},
 		boss_powerup: {
