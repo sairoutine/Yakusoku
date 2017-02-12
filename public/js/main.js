@@ -222,7 +222,7 @@ var Config = {
 	//DEBUG_STAGE: 4,
 	//DEBUG_SPELL: 2,
 	//DEBUG_MUSIC_OFF: true,
-	TRIAL: false,
+	TRIAL: true,
 	// エンディングの分岐条件
 	THRESHOLD_EPILOGUE_A: 4500000,
 	THRESHOLD_EPILOGUE_B: 3000000,
@@ -510,7 +510,7 @@ var Config = {
 		},
 		enemy_vanish: {
 			id: 0x20,
-			path: 'sound/enemy_vanish.mp3',
+			path: 'sound/enemy_vanish.wav',
 			volume: 0.1
 		},
 		graze: {
@@ -525,7 +525,7 @@ var Config = {
 		},
 		kirakira: {
 			id: 0x100,
-			path: 'sound/kira2.mp3',
+			path: 'sound/kira2.wav',
 			volume: 0.2
 		},
 		boss_powerup: {
