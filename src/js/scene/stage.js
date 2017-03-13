@@ -79,10 +79,10 @@ var Scene = function(game) {
 
 	// シーンが管理するオブジェクト一覧
 	this.objects = [
-		this.bullet_manager,
 		this.item_manager,
 		this.shot_manager,
 		this.character,
+		this.bullet_manager,
 		this.enemy_manager,
 		this.effect_manager,
 	];
