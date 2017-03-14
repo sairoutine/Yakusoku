@@ -3,6 +3,7 @@
 var Constant = {
 	LOADING_SCENE:   0,
 	TITLE_SCENE:     1,
+	CONFIG_SCENE:    2,
 	PROLOGUE2_SCENE: 3,
 	STAGE_SCENE:     4,
 	EPILOGUE_A_SCENE: 5,

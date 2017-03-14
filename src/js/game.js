@@ -8,6 +8,7 @@ var constant = require('./constant');
 
 var LoadingScene   = require('./scene/loading');
 var TitleScene     = require('./scene/title');
+var ConfigScene     = require('./scene/config');
 var Prologue2Scene = require('./scene/prologue2');
 var StageScene    = require('./scene/stage');
 var EpilogueAScene = require('./scene/epilogue_a');
@@ -44,6 +45,8 @@ var Game = function(mainCanvas) {
 	this.scenes[ constant.LOADING_SCENE ] = new LoadingScene(this);
 	// タイトル画面
 	this.scenes[ constant.TITLE_SCENE ] = new TitleScene(this);
+	// コンフィグ画面
+	this.scenes[ constant.CONFIG_SCENE ] = new ConfigScene(this);
 	// プロローグ画面2
 	this.scenes[ constant.PROLOGUE2_SCENE ] = new Prologue2Scene(this);
 	// ステージ
