@@ -79,4 +79,12 @@ var Constant = {
 	ENEMY_GREEN_NEUTRAL_TYPE:  4,
 };
 
+// デフォルトのキーコンフィグ
+Constant.DEFAULT_KEYCONFIG = {
+	0: Constant.BUTTON_Z,
+	1: Constant.BUTTON_X,
+	4: Constant.BUTTON_SHIFT,
+	6: Constant.BUTTON_SPACE,
+};
+
 module.exports = Constant;
