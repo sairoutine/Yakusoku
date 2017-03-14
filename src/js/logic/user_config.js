@@ -7,7 +7,6 @@ var UserConfig = function(param) {
 	if(!param) param = Constant.DEFAULT_KEYCONFIG;
 
 	this.button_id_to_key_map = param;
-	console.log(param);
 };
 UserConfig.prototype.getKeyByButtonId = function(button_id) {
 	var key = this.button_id_to_key_map[button_id];
