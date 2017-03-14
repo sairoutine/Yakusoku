@@ -46,7 +46,10 @@ OpeningScene.prototype.run = function(){
 			this.game.playSound('select');
 			this.game.notifyTitleDoneToPrologue();
 	}
-
+	else if(this.game.isKeyPush(Constant.BUTTON_SPACE)) {
+			this.game.playSound('select');
+			this.game.notifyTitleDoneToConfig();
+	}
 };
 
 // 画面更新

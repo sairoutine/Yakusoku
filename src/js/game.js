@@ -369,7 +369,15 @@ Game.prototype = {
 		// プロローグ画面に切り替え
 		this.changeScene(constant.PROLOGUE2_SCENE);
 	},
-
+	notifyTitleDoneToConfig: function() {
+		// コンフィグ画面に切り替え
+		this.changeScene(constant.CONFIG_SCENE);
+	},
+	// コンフィグ画面から戻ったら
+	notifyConfigDone: function() {
+		// タイトル画面に切り替え
+		this.changeScene(constant.TITLE_SCENE);
+	},
 	// プロローグ画面が終わったら
 	notifyPrologue2Done: function() {
 		// ステージ画面に切り替え
