@@ -266,17 +266,17 @@ Character.prototype.addPower = function(power){
 };
 // 自機を描画
 Character.prototype.updateDisplay = function(){
-	// 無敵状態ならば半透明に
-	if (this.is_unhittable) {
+	var ctx = this.game.surface;
+	ctx.save();
+	// 無敵 or ボム使用中状態ならばキャラを半透明に
+	if (this.is_unhittable || this.is_using_bomb) {
 		this.game.surface.globalAlpha = 0.4;
 	}
 
 	// 描画
 	BaseObject.prototype.updateDisplay.apply(this, arguments);
 
-	if (this.is_unhittable) {
-		this.game.surface.globalAlpha = 1.0;
-	}
+	ctx.restore();
 
 	// ボム使用中ならスペカカットインを表示
 	if(this.is_using_bomb) {
@@ -285,6 +285,7 @@ Character.prototype.updateDisplay = function(){
 
 	// オプションの描画
 	this.option_manager.updateDisplay();
+
 };
 
 // 衝突判定
