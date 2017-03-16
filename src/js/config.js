@@ -278,42 +278,42 @@ var Config = {
 		boss_shot_small: {
 			id: 0x02,
 			path: 'sound/boss_shot_small.wav',
-			volume: 0.15
+			volume: 0.25
 		},
 		boss_shot_big: {
 			id: 0x04,
 			path: 'sound/boss_shot_big.wav',
-			volume: 0.15
+			volume: 0.25
 		},
 		spellcard: {
 			id: 0x08,
 			path: 'sound/spellcard.wav',
-			volume: 0.15
+			volume: 0.30
 		},
 		dead: {
 			id: 0x10,
 			path: 'sound/dead.wav',
-			volume: 0.08
+			volume: 0.15
 		},
 		enemy_vanish: {
 			id: 0x20,
 			path: 'sound/enemy_vanish.wav',
-			volume: 0.1
+			volume: 0.2
 		},
 		graze: {
 			id: 0x40,
 			path: 'sound/graze.wav',
-			volume: 0.2
+			volume: 0.4
 		},
 		powerup: {
 			id: 0x80,
 			path: 'sound/powerup.wav',
-			volume: 0.4
+			volume: 0.8
 		},
 		kirakira: {
 			id: 0x100,
 			path: 'sound/kira2.wav',
-			volume: 0.2
+			volume: 0.4
 		},
 		boss_powerup: {
 			id: 0x200,
