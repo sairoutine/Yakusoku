@@ -102,7 +102,7 @@ State.prototype.run = function(){
 		// ボスが表示されているなら当たり判定をする
 		if(this.stage.currentStageBoss().is_show) {
 			// ボスと自機の衝突判定
-			character.checkCollisionWithObject(this.stage.currentStageBoss());
+			this.stage.currentStageBoss().checkCollisionWithObject(character);
 		}
 	}
 
