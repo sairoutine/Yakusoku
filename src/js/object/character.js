@@ -25,7 +25,7 @@ var LR_ANIMATION_SPAN = 4; // 左右移動
 // Nフレーム毎に自機をショット
 var SHOT_SPAN = 5;
 // 死亡時の無敵時間(フレーム)
-var UNHITTABLE_COUNT = 100;
+var UNHITTABLE_COUNT = 200;
 // ボム発動時間(フレーム)
 var BOMB_COUNT = 500;
 // 初期ライフ
