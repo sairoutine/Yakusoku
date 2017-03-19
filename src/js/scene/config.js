@@ -67,7 +67,7 @@ ConfigScene.prototype.run = function(){
 
 	// 押下したボタンを取得
 	var button_id = this.getAnyButtonId();
-	if (button_id && this.index !== MENU.length - 1) { // ボタンが押下されてて、戻るボタンにカーソルを合わせてないなら
+	if (button_id !== undefined && this.index !== MENU.length - 1) { // ボタンが押下されてて、戻るボタンにカーソルを合わせてないなら
 		this.game.user_config.setKeyByButtonId(button_id, MENU[this.index].key);
 	}
 };
