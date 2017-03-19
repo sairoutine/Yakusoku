@@ -26,6 +26,8 @@ var LR_ANIMATION_SPAN = 4; // 左右移動
 var SHOT_SPAN = 5;
 // 死亡時の無敵時間(フレーム)
 var UNHITTABLE_COUNT = 200;
+// 死亡時に初期位置からしばらく動けない時間(フレーム)
+var UNABLE_MOVE_COUNT = 50;
 // ボム発動時間(フレーム)
 var BOMB_COUNT = 600;
 // 初期ライフ
@@ -67,6 +69,8 @@ Character.prototype.setInitPosition = function() {
 	// 自機の初期位置
 	this.x = (this.stage.width / 2);
 	this.y = (this.stage.height - 100);
+
+	this.animateNeutral();
 };
 
 // 初期化
@@ -87,6 +91,9 @@ Character.prototype.init = function() {
 
 	// ボム使用中かどうか
 	this.is_using_bomb = false;
+
+	// 移動不可能かどうか(死亡後の拘束時間に使用)
+	this.is_unable_move = false;
 
 	// ステージ開始直後は無敵状態にする
 	this.setAutoDisableFlag("is_unhittable", UNHITTABLE_COUNT);
@@ -140,27 +147,34 @@ Character.prototype.setSlow = function(bool){
 };
 // 自機移動
 Character.prototype.moveLeft = function(){
+	if(this.is_unable_move) return;
 	this.x -= this.is_slow ? SLOW_SPEED : FAST_SPEED;
 };
 Character.prototype.moveRight = function(){
+	if(this.is_unable_move) return;
 	this.x += this.is_slow ? SLOW_SPEED : FAST_SPEED;
 };
 Character.prototype.moveUp = function(){
+	if(this.is_unable_move) return;
 	this.y -= this.is_slow ? SLOW_SPEED : FAST_SPEED;
 };
 Character.prototype.moveDown = function(){
+	if(this.is_unable_move) return;
 	this.y += this.is_slow ? SLOW_SPEED : FAST_SPEED;
 };
 
 // 移動アニメーション
 Character.prototype.animateLeft = function(){
-		this.indexY = 1;
+	if(this.is_unable_move) return;
+	this.indexY = 1;
 };
 Character.prototype.animateRight = function(){
-		this.indexY = 2;
+	if(this.is_unable_move) return;
+	this.indexY = 2;
 };
 Character.prototype.animateNeutral = function(){
-		this.indexY = 0;
+	if(this.is_unable_move) return;
+	this.indexY = 0;
 };
 
 
@@ -346,6 +360,9 @@ Character.prototype.die = function() {
 	// 無敵状態にする
 	this.setAutoDisableFlag("is_unhittable", UNHITTABLE_COUNT);
 
+	// 死亡後、しばらくは初期位置から移動できない
+	this.setAutoDisableFlag("is_unable_move", UNABLE_MOVE_COUNT);
+
 	// 画面上の弾を全部消す
 	this.stage.bullet_manager.removeAll();
 };
@@ -412,6 +429,7 @@ Character.prototype.notifyGraze = function(obj) {
 	this.stage.score += 100;
 };
 
+// TODO: false -> true もできるように。変数の初期化は this.is_XXX = false しないといけないのもダサい
 // フレーム経過で消滅するフラグを立てる
 Character.prototype.setAutoDisableFlag = function(flag_name, count) {
 	var self = this;
