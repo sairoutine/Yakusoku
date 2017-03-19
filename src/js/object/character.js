@@ -283,6 +283,10 @@ Character.prototype.updateDisplay = function(){
 	// 描画
 	BaseObject.prototype.updateDisplay.apply(this, arguments);
 
+	// 低速移動中はアタリ判定表示
+	if (this.is_slow) {
+		this._showHitArea();
+	}
 	ctx.restore();
 
 	// ボム使用中ならスペカカットインを表示
@@ -294,6 +298,36 @@ Character.prototype.updateDisplay = function(){
 	this.option_manager.updateDisplay();
 
 };
+
+// アタリ判定表示
+Character.prototype._showHitArea = function(){
+	var SCALE = 0.5;
+	var sprite_width  = 20;
+	var sprite_height = 20;
+	var width  = sprite_width  * SCALE;
+	var height = sprite_height * SCALE;
+	var sprite_x = 0;
+	var sprite_y = 0;
+
+	var ctx = this.game.surface;
+
+	var image = this.game.getImage('shot');
+
+	// オブジェクトの位置を指定
+	ctx.translate(this.x, this.y);
+
+	ctx.drawImage(image,
+		// スプライトの取得位置
+		sprite_width  * sprite_x, sprite_height * sprite_y,
+		// スプライトのサイズ
+		sprite_width, sprite_height,
+		// x, yがオブジェクトの真ん中を指定しているので、左上をx, yの始点に変更
+		-width/2 + 1, -height/2, // 何故か 1px ズレるので、右に1px補正
+		// オブジェクトのゲーム上のサイズ
+		width, height
+	);
+};
+
 
 // 衝突判定
 Character.prototype.checkCollision = function(obj) {
