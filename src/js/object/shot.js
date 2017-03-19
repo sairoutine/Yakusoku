@@ -61,6 +61,9 @@ Shot.prototype.init = function(type_id, x, y, vector) {
 
 	// 敵と接触しても消滅しないかどうか
 	this.is_penetration = type.is_penetration;
+
+	// 最後に衝突したオブジェクトのID
+	this.is_last_damage_obj_id = null;
 };
 Shot.prototype.run = function() {
 	// ベクトルに従って移動
@@ -92,11 +95,23 @@ Shot.prototype.spriteHeight = function() { return this.height; };
 
 // 衝突した時
 Shot.prototype.notifyCollision = function(obj) {
+	// 最後に衝突したオブジェクトのIDを保存
+	this.is_last_damage_obj_id = obj.id;
+
 	// 貫通する弾なら消えない
 	if(this.is_penetration) return;
 
 	// 自分を消す
 	this.stage.shot_manager.remove(this.id);
 };
+// obj に対してダメージが与えられるかどうか
+Shot.prototype.isEnableDamage = function(obj) {
+	// 最後にダメージを与えた敵には重複してダメージを与えない
+	// 貫通する弾だとフレーム毎にダメージを与えてしまうため
+	if(this.is_last_damage_obj_id === obj.id) return false;
+
+	return true;
+};
+
 
 module.exports = Shot;

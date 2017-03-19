@@ -285,7 +285,7 @@ BossBase.prototype.updateDisplay = function(){
 // 衝突した時
 BossBase.prototype.notifyCollision = function(obj) {
 	// 自機弾が当たればボスのHPを減らす
-	if(obj instanceof Shot) {
+	if(obj instanceof Shot && obj.isEnableDamage(this)) {
 		this.vital-=3;
 		this.stage.score+=10;
 	}
