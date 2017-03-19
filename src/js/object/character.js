@@ -94,6 +94,9 @@ Character.prototype.init = function() {
 	// 無敵状態になったフレームを保存
 	this.unhittable_count = 0;
 
+	// 低速移動かどうか
+	this.is_slow = false;
+
 	this.power = 0; // パワーアップアイテムで獲得したパワー
 	this.level = 0; // 自機のレベル
 
@@ -134,18 +137,22 @@ Character.prototype.forbidOutOfStage = function(){
 	}
 };
 
+// 低速移動かどうかを設定
+Character.prototype.setSlow = function(bool){
+	this.is_slow = bool;
+};
 // 自機移動
-Character.prototype.moveLeft = function(is_slow){
-	this.x -= is_slow ? SLOW_SPEED : FAST_SPEED;
+Character.prototype.moveLeft = function(){
+	this.x -= this.is_slow ? SLOW_SPEED : FAST_SPEED;
 };
-Character.prototype.moveRight = function(is_slow){
-	this.x += is_slow ? SLOW_SPEED : FAST_SPEED;
+Character.prototype.moveRight = function(){
+	this.x += this.is_slow ? SLOW_SPEED : FAST_SPEED;
 };
-Character.prototype.moveUp = function(is_slow){
-	this.y -= is_slow ? SLOW_SPEED : FAST_SPEED;
+Character.prototype.moveUp = function(){
+	this.y -= this.is_slow ? SLOW_SPEED : FAST_SPEED;
 };
-Character.prototype.moveDown = function(is_slow){
-	this.y += is_slow ? SLOW_SPEED : FAST_SPEED;
+Character.prototype.moveDown = function(){
+	this.y += this.is_slow ? SLOW_SPEED : FAST_SPEED;
 };
 
 // 移動アニメーション

@@ -49,21 +49,22 @@ State.prototype.run = function(){
 	}
 
 	// Z押しっぱで低速移動
-	var is_slow = this.game.isKeyDown(Constant.BUTTON_SHIFT);
+	character.setSlow(this.game.isKeyDown(Constant.BUTTON_SHIFT));
 
 	// 自機移動
 	if(this.game.isKeyDown(Constant.BUTTON_LEFT)) {
-		character.moveLeft(is_slow);
+		character.moveLeft();
 	}
 	if(this.game.isKeyDown(Constant.BUTTON_RIGHT)) {
-		character.moveRight(is_slow);
+		character.moveRight();
 	}
 	if(this.game.isKeyDown(Constant.BUTTON_DOWN)) {
-		character.moveDown(is_slow);
+		character.moveDown();
 	}
 	if(this.game.isKeyDown(Constant.BUTTON_UP)) {
-		character.moveUp(is_slow);
+		character.moveUp();
 	}
+
 
 	// 画面外に出させない
 	character.forbidOutOfStage();
