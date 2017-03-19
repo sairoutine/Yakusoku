@@ -3,9 +3,7 @@
 /* エフェクトオブジェクト */
 
 // 何フレームで消滅するか
-var VANISH_FRAME = 10;
-// エフェクトのサイズ(直径)
-var DIAM = 32;
+var VANISH_FRAME = 16;
 
 // 基底クラス
 var BaseObject = require('./base');
@@ -20,10 +18,11 @@ var Effect = function(id, scene) {
 Util.inherit(Effect, BaseObject);
 
 // 初期化
-Effect.prototype.init = function(x, y) {
+Effect.prototype.init = function(x, y, diam) {
 	BaseObject.prototype.init.apply(this, arguments);
 	this.x = x;
 	this.y = y;
+	this.diam = diam; // 直径
 };
 
 // フレーム処理
@@ -40,7 +39,7 @@ Effect.prototype.run = function(){
 Effect.prototype.updateDisplay = function() {
 	var x = this.x;
 	var y = this.y;
-	var r = Math.round(DIAM * this.frame_count * 0.1);
+	var r = Math.round(this.diam * this.frame_count * 0.1);
 
 	var cvs = document.createElement('canvas');
 	cvs.width = r*2 + 4;

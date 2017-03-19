@@ -133,7 +133,8 @@ Enemy.prototype.die = function() {
 	this.stage.score += 100;
 
 	// 死亡エフェクト生成
-	this.stage.effect_manager.create(this.x, this.y);
+	var size = 32;
+	this.stage.effect_manager.create(this.x, this.y, size);
 
 
 	// ポイントアイテムの生成

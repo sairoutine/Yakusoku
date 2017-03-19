@@ -370,7 +370,8 @@ Character.prototype.notifyCollision = function(obj) {
 		this.game.playSound('dead');
 
 		// 自機死亡エフェクト生成
-		this.stage.effect_manager.create(this.x, this.y);
+		var size = 108;
+		this.stage.effect_manager.create(this.x, this.y, size);
 
 		// 自機を死亡
 		this.die();
