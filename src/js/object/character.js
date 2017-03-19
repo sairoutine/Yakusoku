@@ -88,9 +88,6 @@ Character.prototype.init = function() {
 	// ボム使用中かどうか
 	this.is_using_bomb = false;
 
-	// ボムを使用した際のフレームを保存
-	this.using_bomb_count = 0;
-
 	// ステージ開始直後は無敵状態にする
 	this.setAutoDisableFlag("is_unhittable", UNHITTABLE_COUNT);
 
@@ -171,13 +168,8 @@ Character.prototype.animateNeutral = function(){
 Character.prototype.run = function(){
 	BaseObject.prototype.run.apply(this, arguments);
 
-	// 自機が無敵状態なら無敵切れか判定
+	// フレーム経過で消滅するフラグの消滅判定
 	this.checkAutoDisableFlags();
-
-	// 自機がボム使用中なら期限切れか判定
-	if(this.is_using_bomb && this.using_bomb_count + BOMB_COUNT < this.frame_count) {
-		this.is_using_bomb = false;
-	}
 
 	var span = this.indexY === 0 ? FRONT_ANIMATION_SPAN : LR_ANIMATION_SPAN;
 	// Nフレーム毎に自機をアニメーション
@@ -392,11 +384,8 @@ Character.prototype.useBomb = function() {
 	// ボム所持数を減らす
 	this.bombs--;
 
-	// ボムを使用した際のフレームを保存
-	this.using_bomb_count = this.frame_count;
-
-	// ボム使用中
-	this.is_using_bomb = true;
+	// ボム使用中フラグを立てる
+	this.setAutoDisableFlag("is_using_bomb", BOMB_COUNT);
 
 	// ザコ敵を vanish する
 	this.stage.enemy_manager.notifyUseBomb();
