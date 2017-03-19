@@ -146,8 +146,8 @@ Enemy.prototype.die = function() {
 };
 
 // 当たり判定サイズ
-Enemy.prototype.collisionWidth  = function() { return 20;  };
-Enemy.prototype.collisionHeight = function() { return 28; };
+Enemy.prototype.collisionWidth  = function() { return 14;  };
+Enemy.prototype.collisionHeight = function() { return 24; };
 
 // スプライトの開始位置
 Enemy.prototype.spriteX = function() { return this.indexX; };

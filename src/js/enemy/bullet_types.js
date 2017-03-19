@@ -10,8 +10,8 @@ BulletTypes[Constant.BULLET_BALL_BLUE] = {
 	'indexY':           0,
 	'width':           20,
 	'height':          20,
-	'collisionWidth':  16,
-	'collisionHeight': 16,
+	'collisionWidth':  12,
+	'collisionHeight': 12,
 	'is_rotate':       false
 };
 // 0;文：黄色い弾
@@ -21,8 +21,8 @@ BulletTypes[Constant.BULLET_TINY_YELLOW] = {
 	'indexY':           1,
 	'width':           14,
 	'height':          20,
-	'collisionWidth':  12,
-	'collisionHeight': 12,
+	'collisionWidth':  8,
+	'collisionHeight': 8,
 	'is_rotate':       true
 };
 // 1:文：赤い弾
@@ -32,8 +32,8 @@ BulletTypes[Constant.BULLET_TINY_RED] = {
 	'indexY':           1,
 	'width':           14,
 	'height':          20,
-	'collisionWidth':  12,
-	'collisionHeight': 12,
+	'collisionWidth':  8,
+	'collisionHeight': 8,
 	'is_rotate':       true
 };
 // 3: 文：オレンジっぽい弾
@@ -43,8 +43,8 @@ BulletTypes[Constant.BULLET_TINY_ORANGE] = {
 	'indexY':           1,
 	'width':           14,
 	'height':          20,
-	'collisionWidth':  12,
-	'collisionHeight': 12,
+	'collisionWidth':  8,
+	'collisionHeight': 8,
 	'is_rotate':       true
 };
 // 8; 米びつ黄緑弾
@@ -54,8 +54,8 @@ BulletTypes[Constant.BULLET_TINY_LIMEGREEN] = {
 	'indexY':           1,
 	'width':           14,
 	'height':          20,
-	'collisionWidth':  12,
-	'collisionHeight': 12,
+	'collisionWidth':  8,
+	'collisionHeight': 8,
 	'is_rotate':       true
 };
 // 9: 米びつ青弾
@@ -65,8 +65,8 @@ BulletTypes[Constant.BULLET_TINY_BLUE] = {
 	'indexY':           1,
 	'width':           14,
 	'height':          20,
-	'collisionWidth':  12,
-	'collisionHeight': 12,
+	'collisionWidth':  8,
+	'collisionHeight': 8,
 	'is_rotate':       true
 };
 
@@ -76,8 +76,8 @@ BulletTypes[Constant.BULLET_TINY_AQUA] = {
 	'indexY':           1,
 	'width':           14,
 	'height':          20,
-	'collisionWidth':  12,
-	'collisionHeight': 12,
+	'collisionWidth':  8,
+	'collisionHeight': 8,
 	'is_rotate':       true
 };
 BulletTypes[Constant.BULLET_TINY_PURPLE] = {
@@ -86,8 +86,8 @@ BulletTypes[Constant.BULLET_TINY_PURPLE] = {
 	'indexY':           1,
 	'width':           14,
 	'height':          20,
-	'collisionWidth':  12,
-	'collisionHeight': 12,
+	'collisionWidth':  8,
+	'collisionHeight': 8,
 	'is_rotate':       true
 };
 BulletTypes[Constant.BULLET_TINY_GRAY] = {
@@ -96,8 +96,8 @@ BulletTypes[Constant.BULLET_TINY_GRAY] = {
 	'indexY':           1,
 	'width':           14,
 	'height':          20,
-	'collisionWidth':  12,
-	'collisionHeight': 12,
+	'collisionWidth':  8,
+	'collisionHeight': 8,
 	'is_rotate':       true
 };
 
