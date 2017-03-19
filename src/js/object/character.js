@@ -27,7 +27,7 @@ var SHOT_SPAN = 5;
 // 死亡時の無敵時間(フレーム)
 var UNHITTABLE_COUNT = 200;
 // ボム発動時間(フレーム)
-var BOMB_COUNT = 500;
+var BOMB_COUNT = 600;
 // 初期ライフ
 var INIT_LIFE = 5;
 // 初期ボム数

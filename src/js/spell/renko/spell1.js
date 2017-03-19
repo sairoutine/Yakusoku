@@ -2,7 +2,10 @@
 
 /* 自機スペルカード */
 
-// 何個ボムをばらまくか
+// 何回ボムをばらまくか
+var SHOT_NUM = 8;
+
+// 1発につき何個ボムをばらまくか
 var BOMB_NUM = 12;
 
 // 何フレーム毎にボムをばらまくか
@@ -20,9 +23,14 @@ Util.inherit(Spell, BaseSpell);
 // 初期化
 Spell.prototype.init = function() {
 	BaseSpell.prototype.init.apply(this, arguments);
+
+	this.shot_num = 0;
 };
 
 Spell.prototype.runInSpellExecute = function() {
+	// SHOT_NUM 回数しかボムを発射しない
+	if(this.shot_num >= SHOT_NUM) return;
+
 	// ボムの初期位置が蓮子からどれだけ離れているか
 	var r = 30;
 
@@ -42,6 +50,8 @@ Spell.prototype.runInSpellExecute = function() {
 		}
 
 		this.game.playSound('boss_shot_big');
+
+		this.shot_num++;
 	}
 };
 
