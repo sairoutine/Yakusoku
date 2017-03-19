@@ -82,6 +82,9 @@ Character.prototype.init = function() {
 	// 初期ボム数
 	this.bombs = INIT_BOMB;
 
+	// フレーム経過で消滅するフラグの消滅するフレーム管理
+	this.auto_disable_times_map = {};
+
 	// ボム使用中かどうか
 	this.is_using_bomb = false;
 
@@ -89,10 +92,7 @@ Character.prototype.init = function() {
 	this.using_bomb_count = 0;
 
 	// ステージ開始直後は無敵状態にする
-	this.is_unhittable = true;
-
-	// 無敵状態になったフレームを保存
-	this.unhittable_count = 0;
+	this.setAutoDisableFlag("is_unhittable", UNHITTABLE_COUNT);
 
 	// 低速移動かどうか
 	this.is_slow = false;
@@ -172,9 +172,8 @@ Character.prototype.run = function(){
 	BaseObject.prototype.run.apply(this, arguments);
 
 	// 自機が無敵状態なら無敵切れか判定
-	if(this.is_unhittable && this.unhittable_count + UNHITTABLE_COUNT < this.frame_count) {
-		this.is_unhittable = false;
-	}
+	this.checkAutoDisableFlags();
+
 	// 自機がボム使用中なら期限切れか判定
 	if(this.is_using_bomb && this.using_bomb_count + BOMB_COUNT < this.frame_count) {
 		this.is_using_bomb = false;
@@ -353,10 +352,7 @@ Character.prototype.die = function() {
 	}
 
 	// 無敵状態にする
-	this.is_unhittable = true;
-
-	// 無敵状態になったフレームを保存
-	this.unhittable_count = this.frame_count;
+	this.setAutoDisableFlag("is_unhittable", UNHITTABLE_COUNT);
 
 	// 画面上の弾を全部消す
 	this.stage.bullet_manager.removeAll();
@@ -426,6 +422,31 @@ Character.prototype.notifyGraze = function(obj) {
 
 	this.stage.score += 100;
 };
+
+// フレーム経過で消滅するフラグを立てる
+Character.prototype.setAutoDisableFlag = function(flag_name, count) {
+	var self = this;
+
+	self[flag_name] = true;
+
+	self.auto_disable_times_map[flag_name] = self.frame_count + count; // 消滅フレーム
+
+};
+// フレーム経過で消滅するフラグの消滅判定
+Character.prototype.checkAutoDisableFlags = function() {
+	var self = this;
+	for (var flag_name in self.auto_disable_times_map) {
+		// 消滅するフレーム数が経過したかどうか
+		if(this.auto_disable_times_map[flag_name] < self.frame_count) {
+			self[flag_name] = false;
+			delete self.auto_disable_times_map[flag_name];
+		}
+	}
+};
+
+
+
+
 
 // 当たり判定サイズ
 Character.prototype.collisionWidth  = function() { return 1; };
