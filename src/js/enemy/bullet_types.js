@@ -14,6 +14,17 @@ BulletTypes[Constant.BULLET_BALL_BLUE] = {
 	'collisionHeight': 12,
 	'is_rotate':       false
 };
+// 11: 道中雑魚：緑円形弾
+BulletTypes[Constant.BULLET_BALL_LIMEGREEN] = {
+	'image':       'shot',
+	'indexX':           1,
+	'indexY':           0,
+	'width':           20,
+	'height':          20,
+	'collisionWidth':  12,
+	'collisionHeight': 12,
+	'is_rotate':       false
+};
 // 0;文：黄色い弾
 BulletTypes[Constant.BULLET_TINY_YELLOW] = {
 	'image':       'shot',
@@ -101,12 +112,6 @@ BulletTypes[Constant.BULLET_TINY_GRAY] = {
 	'is_rotate':       true
 };
 
-
-
-
-
-
-
 // 4: 文：赤いにじゅうまる弾
 BulletTypes[Constant.BULLET_DOUBLEBALL_RED] = {
 	'image':       'shot',
@@ -135,8 +140,8 @@ BulletTypes[Constant.BULLET_BIG_ORANGE] = {
 	'indexY':           1,
 	'width':           64,
 	'height':          64,
-	'collisionWidth':  48,
-	'collisionHeight': 48,
+	'collisionWidth':  32,
+	'collisionHeight': 32,
 	'is_rotate':       false
 };
 
@@ -146,10 +151,24 @@ BulletTypes[Constant.BULLET_BIG_PURPLE] = {
 	'indexY':           1,
 	'width':           64,
 	'height':          64,
-	'collisionWidth':  48,
-	'collisionHeight': 48,
+	'collisionWidth':  32,
+	'collisionHeight': 32,
 	'is_rotate':       false
 };
+// 10: 緑大玉
+BulletTypes[Constant.BULLET_BIG_LIMEGREEN] = {
+	'image':       'shot',
+	'indexX':           6,
+	'indexY':           0,
+	'width':           64,
+	'height':          64,
+	'collisionWidth':  32,
+	'collisionHeight': 32,
+	'is_rotate':       false
+};
+
+
+
 
 // 6: 文：クナイみたいな赤い弾
 BulletTypes[Constant.BULLET_KUNAI_RED] = {
@@ -197,38 +216,14 @@ BulletTypes[Constant.BULLET_BEAM_YELLOW] = {
 	'is_rotate':       true
 };
 
-// 10: 緑大玉
-BulletTypes[Constant.BULLET_BIG_LIMEGREEN] = {
-	'image':       'shot',
-	'indexX':           6,
-	'indexY':           0,
-	'width':           64,
-	'height':          64,
-	'collisionWidth':  48,
-	'collisionHeight': 48,
-	'is_rotate':       false
-};
-
-// 11: 道中雑魚：緑円形弾
-BulletTypes[Constant.BULLET_BALL_LIMEGREEN] = {
-	'image':       'shot',
-	'indexX':           1,
-	'indexY':           0,
-	'width':           20,
-	'height':          20,
-	'collisionWidth':  16,
-	'collisionHeight': 16,
-	'is_rotate':       false
-};
-
 BulletTypes[Constant.BULLET_BUTTERFLY_ORANGE] = {
 	'image':       'shot',
 	'indexX':           7,
 	'indexY':           4,
 	'width':           34,
 	'height':          32,
-	'collisionWidth':  16,
-	'collisionHeight': 16,
+	'collisionWidth':  12,
+	'collisionHeight': 12,
 	'is_rotate':       true
 };
 
@@ -238,8 +233,8 @@ BulletTypes[Constant.BULLET_BUTTERFLY_AQUA] = {
 	'indexY':           4,
 	'width':           34,
 	'height':          32,
-	'collisionWidth':  16,
-	'collisionHeight': 16,
+	'collisionWidth':  12,
+	'collisionHeight': 12,
 	'is_rotate':       true
 };
 
@@ -249,8 +244,8 @@ BulletTypes[Constant.BULLET_BUTTERFLY_PURPLE] = {
 	'indexY':           4,
 	'width':           34,
 	'height':          32,
-	'collisionWidth':  16,
-	'collisionHeight': 16,
+	'collisionWidth':  12,
+	'collisionHeight': 12,
 	'is_rotate':       true
 };
 
@@ -260,8 +255,8 @@ BulletTypes[Constant.BULLET_BUTTERFLY_YELLOW] = {
 	'indexY':           4,
 	'width':           34,
 	'height':          32,
-	'collisionWidth':  16,
-	'collisionHeight': 16,
+	'collisionWidth':  12,
+	'collisionHeight': 12,
 	'is_rotate':       true
 };
 
@@ -271,8 +266,8 @@ BulletTypes[Constant.BULLET_BUTTERFLY_BLUE] = {
 	'indexY':           4,
 	'width':           34,
 	'height':          32,
-	'collisionWidth':  16,
-	'collisionHeight': 16,
+	'collisionWidth':  12,
+	'collisionHeight': 12,
 	'is_rotate':       true
 };
 
@@ -282,8 +277,8 @@ BulletTypes[Constant.BULLET_BUTTERFLY_LIMEGREEN] = {
 	'indexY':           4,
 	'width':           34,
 	'height':          32,
-	'collisionWidth':  16,
-	'collisionHeight': 16,
+	'collisionWidth':  12,
+	'collisionHeight': 12,
 	'is_rotate':       true
 };
 
@@ -293,8 +288,8 @@ BulletTypes[Constant.BULLET_BUTTERFLY_RED] = {
 	'indexY':           4,
 	'width':           34,
 	'height':          32,
-	'collisionWidth':  16,
-	'collisionHeight': 16,
+	'collisionWidth':  12,
+	'collisionHeight': 12,
 	'is_rotate':       true
 };
 
