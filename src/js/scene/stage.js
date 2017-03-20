@@ -320,7 +320,6 @@ Scene.prototype._showText = function(){
 	var star_width = star.width * Config.CHARA_SIZE_RATIO;
 	var star_height = star.height * Config.CHARA_SIZE_RATIO;
 
-	var num_string = this.game.getImage('num');
 	var player_string = this.game.getImage('player');
 	var score_string = this.game.getImage('score');
 	var spell_string = this.game.getImage('spell');
@@ -328,7 +327,6 @@ Scene.prototype._showText = function(){
 	var x1 = this.game.width - SIDE_WIDTH + 10;
 	var x2 = this.game.width - SIDE_WIDTH + 35;
 
-	var num_width = 30; // 数字の横サイズ
 
 	var i;
 
@@ -343,26 +341,7 @@ Scene.prototype._showText = function(){
 		score_string.height * Config.CHARA_SIZE_RATIO
 	);
 
-	var score_string_list = this.score.toString().split("");
-
-	for (i = 0; i < score_string_list.length; i++) {
-		// 0 だけ一番最後にある
-		var pos = score_string_list[i] === "0" ? 9 : score_string_list[i] - 1;
-
-		ctx.drawImage(num_string,
-			// スプライトの取得位置
-			num_width * pos, 0,
-			// スプライトのサイズ
-			num_width, num_string.height,
-			// 位置
-			x2 + i * num_width * Config.CHARA_SIZE_RATIO, 75,
-			// オブジェクトのゲーム上のサイズ
-			num_width * Config.CHARA_SIZE_RATIO, num_string.height * Config.CHARA_SIZE_RATIO
-		);
-	}
-
-
-
+	this._showNumString(this.score, x2, 75);
 
 	// Player String
 	ctx.drawImage(player_string,
@@ -466,6 +445,34 @@ Scene.prototype._showBG = function() {
 	}
 
 };
+
+Scene.prototype._showNumString = function(num, x, y){
+	var ctx = this.game.surface;
+	var num_string = this.game.getImage('num');
+	var score_string_list = num.toString().split("");
+
+	var num_width = 30; // 数字の横サイズ
+
+	for (var i = 0; i < score_string_list.length; i++) {
+		// 0 だけ一番最後にある
+		var pos = score_string_list[i] === "0" ? 9 : score_string_list[i] - 1;
+
+		ctx.drawImage(num_string,
+			// スプライトの取得位置
+			num_width * pos, 0,
+			// スプライトのサイズ
+			num_width, num_string.height,
+			// 位置
+			x + i * num_width * Config.CHARA_SIZE_RATIO, y,
+			// オブジェクトのゲーム上のサイズ
+			num_width * Config.CHARA_SIZE_RATIO, num_string.height * Config.CHARA_SIZE_RATIO
+		);
+	}
+};
+
+
+
+
 
 // 自機が死亡
 Scene.prototype.notifyCharacterDead = function() {
