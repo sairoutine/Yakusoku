@@ -86,9 +86,6 @@ Character.prototype.init = function() {
 	// 初期ボム数
 	this.bombs = INIT_BOMB;
 
-	// フレーム経過で消滅するフラグの消滅するフレーム管理
-	this.auto_disable_times_map = {};
-
 	// ボム使用中かどうか
 	this.is_using_bomb = false;
 
@@ -181,9 +178,6 @@ Character.prototype.animateNeutral = function(){
 // フレーム処理
 Character.prototype.run = function(){
 	BaseObject.prototype.run.apply(this, arguments);
-
-	// フレーム経過で消滅するフラグの消滅判定
-	this.checkAutoDisableFlags();
 
 	var span = this.indexY === 0 ? FRONT_ANIMATION_SPAN : LR_ANIMATION_SPAN;
 	// Nフレーム毎に自機をアニメーション
@@ -427,28 +421,6 @@ Character.prototype.notifyGraze = function(obj) {
 	this.game.playSound('graze');
 
 	this.stage.score += 100;
-};
-
-// TODO: false -> true もできるように。変数の初期化は this.is_XXX = false しないといけないのもダサい
-// フレーム経過で消滅するフラグを立てる
-Character.prototype.setAutoDisableFlag = function(flag_name, count) {
-	var self = this;
-
-	self[flag_name] = true;
-
-	self.auto_disable_times_map[flag_name] = self.frame_count + count; // 消滅フレーム
-
-};
-// フレーム経過で消滅するフラグの消滅判定
-Character.prototype.checkAutoDisableFlags = function() {
-	var self = this;
-	for (var flag_name in self.auto_disable_times_map) {
-		// 消滅するフレーム数が経過したかどうか
-		if(this.auto_disable_times_map[flag_name] < self.frame_count) {
-			self[flag_name] = false;
-			delete self.auto_disable_times_map[flag_name];
-		}
-	}
 };
 
 

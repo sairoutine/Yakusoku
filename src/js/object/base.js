@@ -16,6 +16,9 @@ var id = 0;
 var ObjectBase = function(scene) {
 	this.frame_count = 0;
 
+	// フレーム経過で消滅するフラグの消滅するフレーム管理
+	this.auto_disable_times_map = {};
+
 	// StageScene インスタンス
 	this.stage = scene;
 	// Game インスタンス
@@ -37,6 +40,9 @@ var ObjectBase = function(scene) {
 ObjectBase.prototype.init = function() {
 	// 経過フレーム数初期化
 	this.frame_count = 0;
+
+	// フレーム経過で消滅するフラグの消滅するフレーム管理
+	this.auto_disable_times_map = {};
 };
 
 // 衝突した時
@@ -100,6 +106,9 @@ ObjectBase.prototype.scale = function() { return 1; };
 ObjectBase.prototype.run = function(){
 	// 経過フレーム数更新
 	this.frame_count++;
+
+	// フレーム経過で消滅するフラグの消滅判定
+	this.checkAutoDisableFlags();
 };
 
 // 画面更新
@@ -181,9 +190,6 @@ ObjectBase.prototype.checkGraze = function(obj) {
 	return false;
 };
 
-
-
-
 // 画面外に出たかどうかの判定
 ObjectBase.prototype.isOutOfStage = function( ) {
 	if(this.x + EXTRA_OUT_OF_SIZE < 0 ||
@@ -196,6 +202,31 @@ ObjectBase.prototype.isOutOfStage = function( ) {
 
 	return false;
 };
+
+// フレーム経過で消滅するフラグを立てる
+// TODO: false -> true もできるように。変数の初期化は this.is_XXX = false しないといけないのもダサい
+ObjectBase.prototype.setAutoDisableFlag = function(flag_name, count) {
+	var self = this;
+
+	self[flag_name] = true;
+
+	self.auto_disable_times_map[flag_name] = self.frame_count + count; // 消滅フレーム
+
+};
+// フレーム経過で消滅するフラグの消滅判定
+ObjectBase.prototype.checkAutoDisableFlags = function() {
+	var self = this;
+	for (var flag_name in self.auto_disable_times_map) {
+		// 消滅するフレーム数が経過したかどうか
+		if(this.auto_disable_times_map[flag_name] < self.frame_count) {
+			self[flag_name] = false;
+			delete self.auto_disable_times_map[flag_name];
+		}
+	}
+};
+
+
+
 
 // ボムの使用を通知
 ObjectBase.prototype.notifyUseBomb = function() {
