@@ -84,7 +84,7 @@ for( var i = 0; i < 24; i++ ) {
 	);
 }
 
-appear_frame += 1000;
+appear_frame += 720 + 60;
 
 for( var i = 0; i < 4 ; i++ ) {
 	EnemiesParams.push({
@@ -170,14 +170,14 @@ for( var i = 0; i < 4 ; i++ ) {
 	});
 }
 
-appear_frame += 720;
+appear_frame += 320;
 
-for(var i = 0; i < 8; i++) {
+for(var i = 0; i < 4; i++) {
 	EnemiesParams.push({
 		'appear_frame': appear_frame + 260 * i,
 		'x': 120,
 		'y': 0,
-		'vital': 3,
+		'vital': 30,
 		'type': Constant.ENEMY_GREEN_NEUTRAL_TYPE,
 		'shot': [
 			{ 'bullet': 3, 'count': 30 },
@@ -197,7 +197,53 @@ for(var i = 0; i < 8; i++) {
 		'appear_frame': appear_frame + 130 + 260 * i,
 		'x': 360,
 		'y': 0,
-		'vital': 3,
+		'vital': 30,
+		'type': Constant.ENEMY_GREEN_NEUTRAL_TYPE,
+		'shot': [
+			{ 'bullet': 3, 'count': 30 },
+			{ 'bullet': 6, 'count': 50 },
+			{ 'bullet': 3, 'count': 70 },
+			{ 'bullet': 6, 'count': 90 },
+			{ 'bullet': 3, 'count': 110 },
+			{ 'bullet': 6, 'count': 130 },
+		],
+		'vector': [
+			{ 'count':   0,      'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
+			{ 'count':  30, 'vector': { 'r': 0,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
+			{ 'count': 180, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':  -0.1, 'trange': { 'min': -10 } } },
+		]
+	});
+
+}
+
+appear_frame += 1100;
+
+for(var i = 0; i < 4; i++) {
+	EnemiesParams.push({
+		'appear_frame': appear_frame + 260 * i,
+		'x': 120,
+		'y': 0,
+		'vital': 10,
+		'type': Constant.ENEMY_GREEN_NEUTRAL_TYPE,
+		'shot': [
+			{ 'bullet': 3, 'count': 30 },
+			{ 'bullet': 6, 'count': 50 },
+			{ 'bullet': 3, 'count': 70 },
+			{ 'bullet': 6, 'count': 90 },
+			{ 'bullet': 3, 'count': 110 },
+			{ 'bullet': 6, 'count': 130 },
+		],
+		'vector': [
+			{ 'count':   0,      'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
+			{ 'count':  30, 'vector': { 'r': 0,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
+			{ 'count': 180, 'vector': { 'r': 2,  'theta': 90, 'w':    0, 'ra': 0, 'wa':   0.1, 'trange': { 'max': 190 } } },
+		]
+	});
+	EnemiesParams.push({
+		'appear_frame': appear_frame + 260 * i,
+		'x': 360,
+		'y': 0,
+		'vital': 10,
 		'type': Constant.ENEMY_GREEN_NEUTRAL_TYPE,
 		'shot': [
 			{ 'bullet': 3, 'count': 30 },
@@ -214,6 +260,55 @@ for(var i = 0; i < 8; i++) {
 		]
 	});
 }
+// 左右からホーミング自機狙い打ってくるやつ
+for(var i = 0; i < 10; i++) {
+	EnemiesParams.push({
+		'appear_frame': appear_frame + i * 105,
+		'x': 10,
+		'y': 0,
+		'vital': 10,
+		'powerItem': i % 4 === 0 ? 1 : 0,
+		'scoreItem': i % 4 === 2 ? 1 : 0,
+		'type': Constant.ENEMY_GREEN_NEUTRAL_TYPE,
+		'shot': [
+			{ 'bullet': 1, 'count': 10 },
+			{ 'bullet': 1, 'count': 20 },
+			{ 'bullet': 1, 'count': 30 },
+			{ 'bullet': 1, 'count': 40 },
+			{ 'bullet': 1, 'count': 50 },
+			{ 'bullet': 1, 'count': 60 },
+		],
+		'vector': [
+			{ 'count':   0,  'vector': { 'r': 4,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
+			{ 'count':  10,  'vector': { 'r': 4,               'w':    0, 'ra': 0, 'wa': 0.01, 'trange': { 'max': 210 }, 'wrange': { 'max': 1 } } },
+		]
+	});
+	EnemiesParams.push({
+		'appear_frame': appear_frame + i * 105 + 45,
+		'x': 480 - 10,
+		'y': 0,
+		'vital': 10,
+		'powerItem': i % 4 === 0 ? 1 : 0,
+		'scoreItem': i % 4 === 2 ? 1 : 0,
+		'type': Constant.ENEMY_GREEN_NEUTRAL_TYPE,
+		'shot': [
+			{ 'bullet': 1, 'count': 10 },
+			{ 'bullet': 1, 'count': 20 },
+			{ 'bullet': 1, 'count': 30 },
+			{ 'bullet': 1, 'count': 40 },
+			{ 'bullet': 1, 'count': 50 },
+			{ 'bullet': 1, 'count': 60 },
+		],
+		'vector': [
+			{ 'count':   0,  'vector': { 'r': 4,  'theta': 90, 'w':    0, 'ra': 0, 'wa':     0 } },
+
+			{ 'count':  10,  'vector': { 'r': 4,               'w':    0, 'ra': 0, 'wa': -0.01, 'trange': { 'min': -30 }, 'wrange': { 'min': -1 } } },
+		]
+	});
+
+}
+
+
 
 // 出現順にソート
 EnemiesParams.sort(function(a, b) {
