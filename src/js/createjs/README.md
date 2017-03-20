@@ -19,3 +19,22 @@ module.exports = lib;
 ```
 
 6. js から playSound を削除する(BGMはゲーム側で制御してください)
+
+7. ゲームでの使い方
+```
+# モジュール先頭
+var nnn = require("../../createjs/NNN");
+var CreateJS = require("../../logic/createjs");
+
+# init 関数等で
+var width  = 960;
+var height = 960;
+this.nnn = new CreateJS(new nnn.nnn(), width, height);
+
+# run 関数内で
+this.nnn.update();
+
+# updateDisplay 関数内で
+var x = y = 0;
+ctx.drawImage(this.boss_appearance.canvas, x, y);
+```
