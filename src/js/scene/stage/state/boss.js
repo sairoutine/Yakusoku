@@ -36,7 +36,7 @@ State.prototype.run = function(){
 	}
 
 	// ボス戦の終了
-	if(this.stage.currentStageBoss().isDead() && !this.stage.currentStageBoss().hasNextSpell()) {
+	if(this.stage.currentStageBoss().isDeadCompletely()) {
 		//ボスのスペルカードが全て無くなった
 		this.stage.notifyBossEnd();
 	}

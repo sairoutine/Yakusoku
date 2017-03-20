@@ -6,6 +6,7 @@
 var BaseObject = require('../base');
 var Util = require('../../util');
 var Config = require('../../config');
+var Constant = require('../../constant');
 
 var Shot = require('../../object/shot');
 
@@ -45,6 +46,9 @@ var BossBase = function(stage) {
 
 	// ボスを描画するかどうか
 	this.is_show = true;
+
+	// 撃破エフェクト実行中かどうか
+	this.is_occured_destroyed_effect = false;
 };
 
 // 基底クラスを継承
@@ -74,6 +78,9 @@ BossBase.prototype.init = function() {
 
 	// ボスを描画するかどうか
 	this.is_show = true;
+
+	// 撃破エフェクト実行中かどうか
+	this.is_occured_destroyed_effect = false;
 };
 
 // スペルカード設定
@@ -112,59 +119,85 @@ BossBase.prototype.resetVital = function(){
 };
 
 // ボスが死んだかどうか
-BossBase.prototype.isDead = function(){
+BossBase.prototype.isHpEmpty = function(){
 	return this.vital <= 0;
 };
+// ボスのスペカが全て撃破されたか
+BossBase.prototype.isDead = function(){
+	return this.isHpEmpty() && !this.hasNextSpell();
+};
+// ボスが生存中か
+BossBase.prototype.isLive = function(){
+	return !this.isDead();
+};
 
-
+// ボスのスペカが全て終了して撃破エフェクトも終わったか
+BossBase.prototype.isDeadCompletely = function(){
+	return this.isDead() && !this.is_occured_destroyed_effect;
+};
 
 // フレーム処理
 BossBase.prototype.run = function(){
 	BaseObject.prototype.run.apply(this, arguments);
 
-	// スペルカード処理
-	this.currentSpell().run();
+	if (this.isLive()) { // ボス生存中
+		// スペルカード処理
+		this.currentSpell().run();
 
-	// 移動が設定されてるなら移動
-	this._moveTo();
+		// 移動が設定されてるなら移動
+		this._moveTo();
 
-	// スペルカード実行中ならば
-	if(this.currentSpell().isSpellExecute()) {
-		// 時間経過でスペルカード発動時間は減っていく
-		this.vital--;
-		this.stage.score+=10;
+		// スペルカード実行中ならば
+		if(this.currentSpell().isSpellExecute()) {
+			// 時間経過でスペルカード発動時間は減っていく
+			this.vital--;
+			this.stage.score+=10;
+		}
+
+		if(this.isHpEmpty()) {
+			// スペル終了時のフックを実行
+			this.currentSpell().onend();
+
+			// スペル終了に変更
+			this.currentSpell().changeState(Constant.SPELLCARD_END_STATE);
+
+			// 敵の弾を vanish する
+			this.stage.bullet_manager.notifyUseBomb();
+
+			// アイテムを自機に吸引させる
+			this.stage.item_manager.notifyUseBomb();
+
+			if(this.hasNextSpell()) {
+				// HPを初期化
+				this.resetVital();
+
+				// 次のスペルカード発動！
+				this.executeSpell();
+			}
+			else { // スペルカードが全て終了
+				// 撃破エフェクト開始
+				//this.setAutoDisableFlag("is_occured_destroyed_effect", 1000);
+			}
+		}
+
+		var span = this.indexY === 0 ? FRONT_ANIMATION_SPAN : LR_ANIMATION_SPAN;
+
+		// Nフレーム毎にボスをアニメーション
+		if(this.frame_count % span === 0) {
+			// 次のスプライトに
+			this.indexX++;
+
+			// スプライトを全て表示しきったら最初のスプライトに戻る
+			if(this.indexX > 2) { this.indexX = 0; }
+		}
+
+		// ボス出現エフェクト
+		this.boss_appearance.update();
 	}
+	else { // ボス死亡エフェクト処理
 
-	if(this.isDead() && this.hasNextSpell()) {
-		// スペル終了時のフックを実行
-		this.currentSpell().onend();
 
-		// 敵の弾を vanish する
-		this.stage.bullet_manager.notifyUseBomb();
-
-		// アイテムを自機に吸引させる
-		this.stage.item_manager.notifyUseBomb();
-
-		// HPを初期化
-		this.resetVital();
-
-		// 次のスペルカード発動！
-		this.executeSpell();
 	}
-
-	var span = this.indexY === 0 ? FRONT_ANIMATION_SPAN : LR_ANIMATION_SPAN;
-
-	// Nフレーム毎にボスをアニメーション
-	if(this.frame_count % span === 0) {
-		// 次のスプライトに
-		this.indexX++;
-
-		// スプライトを全て表示しきったら最初のスプライトに戻る
-		if(this.indexX > 2) { this.indexX = 0; }
-	}
-
-	// ボス出現エフェクト
-	this.boss_appearance.update();
 };
 
 // 移動
@@ -267,25 +300,30 @@ BossBase.prototype.isArrivedAtPoint = function(){
 BossBase.prototype.updateDisplay = function(){
 	var ctx = this.game.surface;
 
-	if(this.is_show) {
-		// ボス出現エフェクト
-		ctx.save();
-		ctx.translate(this.x, this.y);
-		ctx.drawImage(this.boss_appearance.canvas, (-this.boss_appearance.canvas.width/2), (-this.boss_appearance.canvas.height/2));
-		ctx.restore();
+	if (this.isLive()) { // ボス生存中
+		if(this.is_show) {
+			// ボス出現エフェクト
+			ctx.save();
+			ctx.translate(this.x, this.y);
+			ctx.drawImage(this.boss_appearance.canvas, (-this.boss_appearance.canvas.width/2), (-this.boss_appearance.canvas.height/2));
+			ctx.restore();
 
-		// ボス描画
-		BaseObject.prototype.updateDisplay.apply(this, arguments);
+			// ボス描画
+			BaseObject.prototype.updateDisplay.apply(this, arguments);
+		}
+
+		// スペルカード描画
+		this.currentSpell().updateDisplay();
 	}
+	else { // ボス死亡エフェクト
 
-	// スペルカード描画
-	this.currentSpell().updateDisplay();
+	}
 };
 
 // 衝突した時
 BossBase.prototype.notifyCollision = function(obj) {
 	// 自機弾が当たればボスのHPを減らす
-	if(obj instanceof Shot && obj.isEnableDamage(this)) {
+	if(obj instanceof Shot && this.currentSpell().isSpellExecute() && obj.isEnableDamage(this)) {
 		this.vital-=3;
 		this.stage.score+=10;
 	}
