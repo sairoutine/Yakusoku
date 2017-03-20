@@ -74,6 +74,11 @@ SpellBase.prototype.isSpellExecute = function(){
 SpellBase.prototype.isBossMoving = function(){
 	return this.state === Constant.SPELLCARD_BOSSMOVE_STATE ? true : false;
 };
+// スペルカード終了中
+SpellBase.prototype.isSpellEnd = function(){
+	return this.state === Constant.SPELLCARD_END_STATE ? true : false;
+};
+
 // 状態変更
 SpellBase.prototype.changeState = function(state){
 	this.state = state;
@@ -91,9 +96,13 @@ SpellBase.prototype.run = function(){
 		// ボス移動中
 		this.runInBossMoving();
 	}
-	else {
+	else if (this.isSpellExecute()){
 		// スペカ実行
 		this.runInSpellExecute();
+	}
+	else {
+		// スペカ終了
+		this.runInSpellEnd();
 	}
 };
 
@@ -150,6 +159,10 @@ SpellBase.prototype.runInBossMoving = function(){
 	}
 };
 
+// スペカ終了中に実行
+SpellBase.prototype.runInSpellEnd = function(){
+
+};
 // 描画
 SpellBase.prototype.updateDisplay = function(){
 	if(this.isSpellStarting()) {
@@ -160,9 +173,13 @@ SpellBase.prototype.updateDisplay = function(){
 		// ボス移動中
 		this.updateDisplayInBossMoving();
 	}
-	else {
+	else if (this.isSpellExecute()){
 		// スペカ実行
 		this.updateDisplayInSpellExecute();
+	}
+	else {
+		// スペカ終了
+		this.updateDisplayInSpellEnd();
 	}
 };
 
@@ -205,6 +222,10 @@ SpellBase.prototype.updateDisplayInBossMoving = function () {
 // スペカ実行の描画
 SpellBase.prototype.updateDisplayInSpellExecute = function () {
 };
+// スペカ終了の描画
+SpellBase.prototype.updateDisplayInSpellEnd = function () {
+};
+
 
 // 撃つ
 SpellBase.prototype.shot = function(type_id, x, y, vector) {
