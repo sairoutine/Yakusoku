@@ -380,6 +380,28 @@ Scene.prototype._showText = function(){
 		);
 	}
 
+	// Player Power
+	/* image
+	ctx.drawImage(score_string,
+		x1,
+		200,
+		score_string.width * Config.CHARA_SIZE_RATIO,
+		score_string.height * Config.CHARA_SIZE_RATIO
+	);
+	*/
+
+	/* text
+		ctx.fillStyle = 'rgb( 6, 40, 255 )';
+		ctx.textAlign = 'left';
+		ctx.font = "16px 'Migu'";
+		ctx.fillText("Power", x1, 200 + 16);
+	*/
+
+	this._showNumString(this.character.power, x2, 225);
+
+
+
+
 	/*
 	if(Config.DEBUG) {
 		ctx.fillStyle = 'rgb( 6, 40, 255 )';
