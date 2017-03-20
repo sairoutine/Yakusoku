@@ -11,6 +11,7 @@ var Constant = require('../../constant');
 var Shot = require('../../object/shot');
 
 var boss_appearance = require("../../createjs/boss_appearance");
+var explosion = require("../../createjs/explosion");
 var CreateJS = require("../../logic/createjs");
 
 
@@ -75,6 +76,9 @@ BossBase.prototype.init = function() {
 
 	// ボス出現エフェクト
 	this.boss_appearance = new CreateJS(new boss_appearance.boss_appearance(), 960, 960);
+
+	// ボス撃破エフェクト
+	this.explosion = new CreateJS(new explosion.explosion(), 960, 960);
 
 	// ボスを描画するかどうか
 	this.is_show = true;
@@ -176,7 +180,7 @@ BossBase.prototype.run = function(){
 			}
 			else { // スペルカードが全て終了
 				// 撃破エフェクト開始
-				//this.setAutoDisableFlag("is_occured_destroyed_effect", 1000);
+				this.setAutoDisableFlag("is_occured_destroyed_effect", 280);
 			}
 		}
 
@@ -195,8 +199,7 @@ BossBase.prototype.run = function(){
 		this.boss_appearance.update();
 	}
 	else { // ボス死亡エフェクト処理
-
-
+		this.explosion.update();
 	}
 };
 
@@ -316,7 +319,11 @@ BossBase.prototype.updateDisplay = function(){
 		this.currentSpell().updateDisplay();
 	}
 	else { // ボス死亡エフェクト
-
+		// ボス出現エフェクト
+		ctx.save();
+		ctx.translate(this.x, this.y);
+		ctx.drawImage(this.explosion.canvas, (-this.explosion.canvas.width/2), (-this.explosion.canvas.height/2));
+		ctx.restore();
 	}
 };
 
