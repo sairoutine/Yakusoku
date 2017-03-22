@@ -22,6 +22,7 @@ var Config = {
 		player:  'image/player.png',
 		score:  'image/score.png',
 		spell:  'image/spell.png',
+		power:  'image/power.png',
 		star:  'image/star.png',
 
 		prologue1_bg:  'image/prologue1_bg.png',
@@ -125,10 +126,16 @@ var Config = {
 	   */
 	},
 	CJS_IMAGES: [
+		// ボス出現エフェクト
 		{src:"image/createjs/boss_appearance/circle.png", id:"circle"},
 		{src:"image/createjs/boss_appearance/dot.png", id:"dot"},
 		{src:"image/createjs/boss_appearance/emlight.png", id:"emlight"},
-
+		// 爆発エフェクト
+		{src:"image/createjs/explosion/ef_circle.png", id:"ef_circle"},
+		{src:"image/createjs/explosion/ef_smoke.png", id:"ef_smoke"},
+		{src:"image/createjs/explosion/ef_smoke_b.png", id:"ef_smoke_b"},
+		{src:"image/createjs/explosion/ef_smoke_s.png", id:"ef_smoke_s"},
+		{src:"image/createjs/explosion/maru.png", id:"maru"},
 		// エピローグC
 		{src:"image/createjs/epilogue/bg_ED_C.png", id:"bg_ED_C"},
 		{src:"image/createjs/epilogue/BO.png", id:"BO"},

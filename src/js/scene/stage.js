@@ -321,6 +321,7 @@ Scene.prototype._showText = function(){
 	var star_height = star.height * Config.CHARA_SIZE_RATIO;
 
 	var player_string = this.game.getImage('player');
+	var power_string = this.game.getImage('power');
 	var score_string = this.game.getImage('score');
 	var spell_string = this.game.getImage('spell');
 
@@ -381,14 +382,12 @@ Scene.prototype._showText = function(){
 	}
 
 	// Player Power
-	/* image
-	ctx.drawImage(score_string,
+	ctx.drawImage(power_string,
 		x1,
 		200,
 		score_string.width * Config.CHARA_SIZE_RATIO,
 		score_string.height * Config.CHARA_SIZE_RATIO
 	);
-	*/
 
 	/* text
 		ctx.fillStyle = 'rgb( 6, 40, 255 )';
