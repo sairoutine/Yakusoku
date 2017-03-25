@@ -101,7 +101,7 @@ State.prototype.run = function(){
 		this.stage.bullet_manager.checkCollisionWithObject(character);
 
 		// ボスが表示されているなら当たり判定をする
-		if(this.stage.currentStageBoss().is_show) {
+		if(this.stage.currentStageBoss().is_show && this.stage.currentStageBoss().is_live) {
 			// ボスと自機の衝突判定
 			this.stage.currentStageBoss().checkCollisionWithObject(character);
 		}
@@ -109,7 +109,7 @@ State.prototype.run = function(){
 
 	// TODO: コリジョンチェック側でis_showを見たいね・・
 	// ボスが表示されているなら当たり判定をする
-	if(this.stage.currentStageBoss().is_show) {
+	if(this.stage.currentStageBoss().is_show && this.stage.currentStageBoss().is_live) {
 		// ボスと自機弾の衝突判定
 		this.stage.shot_manager.checkCollisionWithObject(this.stage.currentStageBoss());
 	}
