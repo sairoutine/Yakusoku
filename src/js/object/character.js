@@ -262,13 +262,7 @@ Character.prototype._actionLevelUp = function () {
 
 // パワーを加算
 Character.prototype.addPower = function(power){
-	if(this.power > 128) return;
-
 	this.power += power;
-
-	if(this.power > 128) {
-		this.power = 128;
-	}
 };
 // 自機を描画
 Character.prototype.updateDisplay = function(){
