@@ -7902,13 +7902,7 @@ Character.prototype._actionLevelUp = function () {
 
 // パワーを加算
 Character.prototype.addPower = function(power){
-	if(this.power > 128) return;
-
 	this.power += power;
-
-	if(this.power > 128) {
-		this.power = 128;
-	}
 };
 // 自機を描画
 Character.prototype.updateDisplay = function(){
@@ -10401,7 +10395,7 @@ State.prototype.run = function(){
 		this.stage.bullet_manager.checkCollisionWithObject(character);
 
 		// ボスが表示されているなら当たり判定をする
-		if(this.stage.currentStageBoss().is_show) {
+		if(this.stage.currentStageBoss().is_show && this.stage.currentStageBoss().is_live) {
 			// ボスと自機の衝突判定
 			this.stage.currentStageBoss().checkCollisionWithObject(character);
 		}
@@ -10409,7 +10403,7 @@ State.prototype.run = function(){
 
 	// TODO: コリジョンチェック側でis_showを見たいね・・
 	// ボスが表示されているなら当たり判定をする
-	if(this.stage.currentStageBoss().is_show) {
+	if(this.stage.currentStageBoss().is_show && this.stage.currentStageBoss().is_live) {
 		// ボスと自機弾の衝突判定
 		this.stage.shot_manager.checkCollisionWithObject(this.stage.currentStageBoss());
 	}
