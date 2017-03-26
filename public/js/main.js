@@ -216,11 +216,11 @@ module.exports = MersenneTwister;
 var Constant = require('./constant');
 
 var Config = {
-	DEBUG: true,
-	DEBUG_SCENE: Constant.STAGE_SCENE,
-	DEBUG_STATE: Constant.BOSS_STATE,
-	DEBUG_STAGE: 0,
-	DEBUG_SPELL: 3,
+	DEBUG: false,
+	//DEBUG_SCENE: Constant.STAGE_SCENE,
+	//DEBUG_STATE: Constant.GAMEOVER_STATE,
+	//DEBUG_STAGE: 4,
+	//DEBUG_SPELL: 2,
 	//DEBUG_MUSIC_OFF: true,
 	TRIAL: false,
 	// エンディングの分岐条件
@@ -6964,7 +6964,7 @@ Aya.prototype.spriteHeight = function() { return 128; };
 // BGM
 Aya.prototype.bgm = function() { return 'stage1'; };
 
-Aya.prototype.MAX_VITAL = function() { return 2; };
+Aya.prototype.MAX_VITAL = function() { return 60 * 45; };
 
 
 module.exports = Aya;
