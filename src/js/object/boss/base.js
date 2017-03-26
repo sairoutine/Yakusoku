@@ -88,7 +88,10 @@ BossBase.prototype.init = function() {
 	this.is_show = true;
 
 	// 生存中
-	this.is_occured_destroyed_effect = true;
+	this.is_live = true;
+
+	// 撃破エフェクト発動中
+	this.is_occured_destroyed_effect = false;
 };
 
 // スペルカード設定
