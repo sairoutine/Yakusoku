@@ -117,7 +117,7 @@ Item.prototype.spriteImage = function() { return 'item'; };
 
 // スプライトのサイズ
 Item.prototype.spriteWidth  = function() { return 17; };
-Item.prototype.spriteHeight = function() { return 17; };
+Item.prototype.spriteHeight = function() { return 16; };
 
 
 
