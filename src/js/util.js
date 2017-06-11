@@ -19,6 +19,15 @@ var Util = {
 	thetaToRadian: function(theta) {
 		return theta * Math.PI / 180;
 	},
+
+	canPlayOgg: function () {
+		var audio = document.createElement('audio');
+		if (audio.canPlayType) {
+			return audio.canPlayType('audio/ogg');
+		}
+
+		return false;
+	},
 };
 
 module.exports = Util;

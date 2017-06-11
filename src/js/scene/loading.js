@@ -22,6 +22,9 @@ var LoadingScene = function(game) {
 
 	// フォントの読み込みが完了したか
 	this.fontLoadingDone = false;
+
+	// ogg ファイルのBGMが再生可能かどうか
+	this.canPlayOgg = Util.canPlayOgg();
 };
 
 // 基底クラスを継承
@@ -128,12 +131,14 @@ LoadingScene.prototype._loadSounds = function() {
 LoadingScene.prototype._loadBGMs = function() {
 	var self = this;
 
+	var ext = this.canPlayOgg ? ".ogg" : ".m4a";
+
 	for(var key in Config.BGMS) {
 		/*jshint loopfunc: true */
 		(function(key) {
 			var conf = Config.BGMS[key];
 
-			self._loadBGM(conf.path, function(audioBuffer) {
+			self._loadBGM(conf.path + ext, function(audioBuffer) {
 				// BGMが読み込まれたら読み込んだ数を+1
 				self.loadedBGMNum++;
 				self.game.bgms[key] = audioBuffer;
