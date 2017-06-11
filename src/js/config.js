@@ -337,65 +337,66 @@ var Config = {
 	   */
 	},
 
+	// BGM ファイルはogg と m4a の二種類を用意してください
 	BGMS:{
 		title: {
-			path:   'bgm/title.ogg',
+			path:   'bgm/title',
 			volume: 0.40,
 			loopStart: 29.142,
 			loopEnd: 60 * 1 + 24.000,
 		},
 		prologue: {
-			path:   'bgm/prologue.ogg',
+			path:   'bgm/prologue',
 			volume: 0.40,
 			loopStart: 7.500,
 			loopEnd: 60 * 2 + 14.999,
 		},
 		douchu: {
-			path:   'bgm/douchu.ogg',
+			path:   'bgm/douchu',
 			volume: 0.40,
 			loopStart: 60 * 1 + 39.096,
 			loopEnd: 60 * 3 + 18.193,
 		},
 		stage1: {
-			path:   'bgm/stage1.ogg',
+			path:   'bgm/stage1',
 			volume: 0.50,
 			loopStart: 41.379,
 			loopEnd: 60 * 2 + 0.827,
 		},
 		stage2: {
-			path:   'bgm/stage2.ogg',
+			path:   'bgm/stage2',
 			volume: 0.50,
 			loopStart: 54.857,
 			loopEnd: 60 * 3 + 12,
 		},
 		stage3: {
-			path:   'bgm/stage3.ogg',
+			path:   'bgm/stage3',
 			volume: 0.50,
 			loopStart: 0.103,
 			loopEnd: 60 * 6 + 37.344,
 		},
 		stage4: {
-			path:   'bgm/stage4.ogg',
+			path:   'bgm/stage4',
 			volume: 0.50,
 			loopStart: 60 * 2 + 10.909,
 			loopEnd: 60 * 3 + 38.181,
 		},
 		stage5: {
-			path:   'bgm/stage5.ogg',
+			path:   'bgm/stage5',
 			volume: 0.50,
 			loopStart: 60 * 2 + 8,
 			loopEnd: 60 * 3 + 12,
 		},
 		epilogue: {
-			path:   'bgm/epilogue.ogg',
+			path:   'bgm/epilogue',
 			volume: 0.40,
 		},
 		staffroll: {
-			path:   'bgm/title.ogg', // タイトル曲と同じ
+			path:   'bgm/title', // タイトル曲と同じ
 			volume: 0.40,
 		},
 		ending: {
-			path:   'bgm/ending.ogg',
+			path:   'bgm/ending',
 			volume: 0.40,
 		},
 	},
