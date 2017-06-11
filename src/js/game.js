@@ -200,6 +200,7 @@ Game.prototype = {
 		var self = this;
 		if(self.audio_source) {
 			self.audio_source.stop(0);
+			self.audio_source = null;
 		}
 		return;
 	},
