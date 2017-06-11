@@ -18,7 +18,8 @@ window.onload = function() {
 	window.onkeyup   = function(e) { game.handleKeyUp(e); };
 
 	// フォントの読み込みが完了
-	if(document.fonts) {
+	// safari のみ doument.fonts はあるけれど、loadingdone が発火しないのでスルー
+	if(document.fonts && !navigator.userAgent.toLowerCase().indexOf("safari")) {
 		document.fonts.addEventListener('loadingdone', function() { game.fontLoadingDone(); });
 	}
 	else {
