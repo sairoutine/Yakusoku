@@ -437,7 +437,10 @@ Game.prototype = {
 		// ボタン入力
 		for (var i = 0; i < pad.buttons.length; i++) {
 			if(pad.buttons[i].pressed) { // 押下されてたら
-				this.keyflag |= this.user_config.getKeyByButtonId(i); // button_id に割り当てられたキーを取得
+				var keys = this.user_config.getKeysByButtonId(i); // button_id に割り当てられたキーを取得
+				for (var j = 0, len = keys.length; j < len; j++) {
+					this.keyflag |=  keys[j];
+				}
 			}
 		}
 

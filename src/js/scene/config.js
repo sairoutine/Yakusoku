@@ -68,7 +68,9 @@ ConfigScene.prototype.run = function(){
 	// 押下したボタンを取得
 	var button_id = this.getAnyButtonId();
 	if (button_id !== undefined && this.index !== MENU.length - 1) { // ボタンが押下されてて、戻るボタンにカーソルを合わせてないなら
-		this.game.user_config.setKeyByButtonId(button_id, MENU[this.index].key);
+		if(this.frame_count >= 60) { // キーコンフィグ遷移後すぐの入力は、キーコンフィグ遷移ボタンがまだ入力されている可能性があるので無視
+			this.game.user_config.setKeyByButtonId(button_id, MENU[this.index].key);
+		}
 	}
 };
 
@@ -107,6 +109,8 @@ ConfigScene.prototype.updateDisplay = function(){
 	var text_x      = 266;
 	var button_id_x = 346;
 	var y = 220;
+
+	var map = this.game.user_config.getKeyToButtonIdMap();
 	for(var i = 0, len = MENU.length; i < len; i++) {
 		if(this.index === i) {
 			// cursor 表示
@@ -117,7 +121,7 @@ ConfigScene.prototype.updateDisplay = function(){
 
 		// button_id 表示
 		if(MENU[i].key) {
-			ctx.fillText(this.game.user_config.getButtonIdByKey(MENU[i].key), button_id_x, y);
+			ctx.fillText(map[ MENU[i].key ], button_id_x, y);
 		}
 
 		y+= 30;
