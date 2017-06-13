@@ -3,6 +3,7 @@
 var Constant = {
 	LOADING_SCENE:   0,
 	TITLE_SCENE:     1,
+	CONFIG_SCENE:    2,
 	PROLOGUE2_SCENE: 3,
 	STAGE_SCENE:     4,
 	EPILOGUE_A_SCENE: 5,
@@ -78,6 +79,14 @@ var Constant = {
 	ENEMY_RED_NEUTRAL_TYPE:    2,
 	ENEMY_BLUE_NEUTRAL_TYPE:   3,
 	ENEMY_GREEN_NEUTRAL_TYPE:  4,
+};
+
+// デフォルトのキーコンフィグ
+Constant.DEFAULT_KEYCONFIG = {
+	0: Constant.BUTTON_Z,
+	1: Constant.BUTTON_X,
+	4: Constant.BUTTON_SHIFT,
+	6: Constant.BUTTON_SPACE,
 };
 
 module.exports = Constant;

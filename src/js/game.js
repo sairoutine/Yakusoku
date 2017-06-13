@@ -8,6 +8,7 @@ var constant = require('./constant');
 
 var LoadingScene   = require('./scene/loading');
 var TitleScene     = require('./scene/title');
+var ConfigScene     = require('./scene/config');
 var Prologue2Scene = require('./scene/prologue2');
 var StageScene    = require('./scene/stage');
 var EpilogueAScene = require('./scene/epilogue_a');
@@ -15,6 +16,9 @@ var EpilogueBScene = require('./scene/epilogue_b');
 var EpilogueCScene = require('./scene/epilogue_c');
 var StaffRollScene   = require('./scene/staffroll');
 var EndScene   = require('./scene/end');
+
+// ユーザーの設定した項目
+var UserConfig   = require('./logic/user_config');
 
 var Game = function(mainCanvas) {
 	// メインCanvas
@@ -41,6 +45,8 @@ var Game = function(mainCanvas) {
 	this.scenes[ constant.LOADING_SCENE ] = new LoadingScene(this);
 	// タイトル画面
 	this.scenes[ constant.TITLE_SCENE ] = new TitleScene(this);
+	// コンフィグ画面
+	this.scenes[ constant.CONFIG_SCENE ] = new ConfigScene(this);
 	// プロローグ画面2
 	this.scenes[ constant.PROLOGUE2_SCENE ] = new Prologue2Scene(this);
 	// ステージ
@@ -86,6 +92,9 @@ var Game = function(mainCanvas) {
 
 	// 計測したFPS
 	this.fps = 0;
+
+	// ユーザーの設定した項目
+	this.user_config = null;
 };
 
 Game.prototype = {
@@ -111,6 +120,9 @@ Game.prototype = {
 
 		// 計測したFPS
 		this.fps = 0;
+
+		// ユーザーの設定した項目
+		this.user_config = UserConfig.load();
 
 		// シーンをローディング画面にする
 		this.changeScene(constant.LOADING_SCENE);
@@ -358,7 +370,15 @@ Game.prototype = {
 		// プロローグ画面に切り替え
 		this.changeScene(constant.PROLOGUE2_SCENE);
 	},
-
+	notifyTitleDoneToConfig: function() {
+		// コンフィグ画面に切り替え
+		this.changeScene(constant.CONFIG_SCENE);
+	},
+	// コンフィグ画面から戻ったら
+	notifyConfigDone: function() {
+		// タイトル画面に切り替え
+		this.changeScene(constant.TITLE_SCENE);
+	},
 	// プロローグ画面が終わったら
 	notifyPrologue2Done: function() {
 		// ステージ画面に切り替え
@@ -412,17 +432,17 @@ Game.prototype = {
 
 		if(!pad) return;
 
+		// 初期化
 		this.keyflag = 0x00;
-		this.keyflag |= pad.buttons[1].pressed ? constant.BUTTON_Z:      0x00;// A
-		this.keyflag |= pad.buttons[0].pressed ? constant.BUTTON_X:      0x00;// B
-		this.keyflag |= pad.buttons[2].pressed ? constant.BUTTON_SELECT: 0x00;// SELECT
-		this.keyflag |= pad.buttons[3].pressed ? constant.BUTTON_START:  0x00;// START
-		this.keyflag |= pad.buttons[4].pressed ? constant.BUTTON_SHIFT:  0x00;// SHIFT
-		this.keyflag |= pad.buttons[5].pressed ? constant.BUTTON_SHIFT:  0x00;// SHIFT
-		this.keyflag |= pad.buttons[6].pressed ? constant.BUTTON_SPACE:  0x00;// SPACE
-		//this.keyflag |= pad.buttons[8].pressed ? 0x04 : 0x00;// SELECT
-		//this.keyflag |= pad.buttons[9].pressed ? 0x08 : 0x00;// START
 
+		// ボタン入力
+		for (var i = 0; i < pad.buttons.length; i++) {
+			if(pad.buttons[i].pressed) { // 押下されてたら
+				this.keyflag |= this.user_config.getKeyByButtonId(i); // button_id に割り当てられたキーを取得
+			}
+		}
+
+		// 十字キー入力
 		this.keyflag |= pad.axes[1] < -0.5 ? constant.BUTTON_UP:         0x00;// UP
 		this.keyflag |= pad.axes[1] >  0.5 ? constant.BUTTON_DOWN:       0x00;// DOWN
 		this.keyflag |= pad.axes[0] < -0.5 ? constant.BUTTON_LEFT:       0x00;// LEFT
