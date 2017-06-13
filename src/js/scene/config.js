@@ -11,8 +11,8 @@ var Config = require('../config');
 
 // キーコンフィグメニュー一覧
 var MENU = [
-	{name: 'SHOT', key: Constant.BUTTON_Z },
-	{name: 'BOMB', key: Constant.BUTTON_X },
+	{name: 'SHOT (Zキー)', key: Constant.BUTTON_Z },
+	{name: 'BOMB (Xキー)', key: Constant.BUTTON_X },
 	{name: 'SLOW', key: Constant.BUTTON_SHIFT },
 	{name: 'PAUSE', key: Constant.BUTTON_SPACE },
 	{name: '戻る', key: null }, // 戻るだけキーコンフィグではない
@@ -81,6 +81,12 @@ ConfigScene.prototype.updateDisplay = function(){
 
 	ctx.save();
 
+	// セリフテキストの x, y 座標初期位置
+	var cursor_x    = 206;
+	var text_x      = 236;
+	var button_id_x = 386;
+	var y = 220;
+
 	var title_bg = this.game.getImage('title_bg');
 
 	// 背景画像表示
@@ -99,16 +105,17 @@ ConfigScene.prototype.updateDisplay = function(){
 	// コンフィグメニュー一覧
 	ctx.save();
 
+	// 文字背景 表示
+	ctx.fillStyle = 'rgb( 57, 93, 220 )' ;
+	//ctx.globalAlpha = 0.3; // 半透明
+	ctx.fillRect(cursor_x - 10, y - 30, button_id_x - cursor_x + 50, MENU.length * 33);
+
+	// 文字表示
+	ctx.globalAlpha = 1.0; // 半透明戻す
 	ctx.font = "18px 'Migu'";
 	ctx.textAlign = 'left';
 	ctx.textBaseAlign = 'middle';
-	ctx.fillStyle = 'rgb( 6, 40, 255 )';
-
-	// セリフテキストの x, y 座標初期位置
-	var cursor_x    = 226;
-	var text_x      = 266;
-	var button_id_x = 346;
-	var y = 220;
+	ctx.fillStyle = 'rgb( 255, 255, 255 )';
 
 	var map = this.game.user_config.getKeyToButtonIdMap();
 	for(var i = 0, len = MENU.length; i < len; i++) {
