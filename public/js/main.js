@@ -226,33 +226,194 @@ var Config = {
 	// エンディングの分岐条件
 	THRESHOLD_EPILOGUE_A: 4500000,
 	THRESHOLD_EPILOGUE_B: 3000000,
-	IMAGES: {
-		title_bg:  'image/trial/title_bg.png',
-		press_z:  'image/trial/pressZ.png',
-		press_x:  'image/trial/pressX.png',
 
-		num:  'image/trial/num.png',
-		player:  'image/trial/player.png',
-		score:  'image/trial/score.png',
-		spell:  'image/trial/spell.png',
-		power:  'image/trial/power.png',
-		star:  'image/trial/star.png',
+	SOUNDS: {
+		select: {
+			id: 0x01,
+			path:   'sound/select.wav',
+			volume: 0.80
+		},
+		boss_shot_small: {
+			id: 0x02,
+			path: 'sound/boss_shot_small.wav',
+			volume: 0.25
+		},
+		boss_shot_big: {
+			id: 0x04,
+			path: 'sound/boss_shot_big.wav',
+			volume: 0.25
+		},
+		spellcard: {
+			id: 0x08,
+			path: 'sound/spellcard.wav',
+			volume: 0.30
+		},
+		dead: {
+			id: 0x10,
+			path: 'sound/dead.wav',
+			volume: 0.15
+		},
+		enemy_vanish: {
+			id: 0x20,
+			path: 'sound/enemy_vanish.wav',
+			volume: 0.2
+		},
+		graze: {
+			id: 0x40,
+			path: 'sound/graze.wav',
+			volume: 0.4
+		},
+		powerup: {
+			id: 0x80,
+			path: 'sound/powerup.wav',
+			volume: 0.8
+		},
+		kirakira: {
+			id: 0x100,
+			path: 'sound/kira2.wav',
+			volume: 0.4
+		},
+		boss_powerup: {
+			id: 0x200,
+			path: 'sound/boss_powerup.wav',
+			volume: 1.0
+		},
 
-		prologue1_bg:  'image/trial/prologue1_bg.png',
-		prologue2_bg:  'image/trial/prologue2_bg.png',
-		logo:  'image/trial/logo.png',
-		side_bar:  'image/trial/side_bar.png',
-		fukidashi_normal:  'image/trial/fukidashi_blue.png',
-		fukidashi_orange:  'image/trial/fukidashi_orange.png',
-		fukidashi_purple:  'image/trial/fukidashi_purple.png',
+		/*
+		shot: {
+			id: 0x02,
+			path: 'sound/shot.wav',
+			volume: 0.08
+		},
+	   */
+	},
 
-		/* キャラ立ち絵 */
+	// テキストの typography スピード
+	MESSAGE_SPEED: 10,
+	// 喋ってる方が寄る際のpx
+	TALKER_MOVE_PX: 5,
+	// キャラのサイズ(1/2)
+	CHARA_SIZE_RATIO: 0.5,
+	// ノベルパートにおける左キャラの(x, y)
+	PROLOGUE2_LEFT_X: 0,
+	PROLOGUE2_LEFT_Y: 132,
+	// ノベルパートにおける右キャラの(x, y)
+	PROLOGUE2_RIGHT_X: 283,
+	PROLOGUE2_RIGHT_Y: 132,
+	// セリフウィンドウの(x, y)
+	PROLOGUE2_SERIF_WINDOW_X: 80,
+	PROLOGUE2_SERIF_WINDOW_Y: 0,
+	// 左の名前プレートの(x, y)
+	PROLOGUE2_LEFT_NAME_WINDOW_X: 78,
+	PROLOGUE2_LEFT_NAME_WINDOW_Y: 420,
+	// 右の名前プレートの(x, y)
+	PROLOGUE2_RIGHT_NAME_WINDOW_X: 362,
+	PROLOGUE2_RIGHT_NAME_WINDOW_Y: 420,
 
-		// 射命丸 文
-		aya_normal:       'image/trial/aya/normal.png',
-		aya_dissatisfied: 'image/trial/aya/dissatisfied.png',
-		aya_smile:        'image/trial/aya/smile.png',
+	// ボス会話パートにおける左キャラの(x, y)
+	TALKING_LEFT_X: -59,
+	TALKING_LEFT_Y: 132,
+	// ボス会話パートにおける右キャラの(x, y)
+	TALKING_RIGHT_X: 182,
+	TALKING_RIGHT_Y: 132,
+	// ボス会話のウィンドウの(x, y)
+	TALKING_SERIF_WINDOW_X: 0,
+	TALKING_SERIF_WINDOW_Y: 0,
+	// ボス会話の左の名前プレートの(x, y)
+	TALKING_LEFT_NAME_WINDOW_X: 0,
+	TALKING_LEFT_NAME_WINDOW_Y: 420,
+	// ボス会話の右の名前プレートの(x, y)
+	TALKING_RIGHT_NAME_WINDOW_X: 280,
+	TALKING_RIGHT_NAME_WINDOW_Y: 420,
 
+};
+
+// 画像素材(体験版)
+Config.IMAGES = {
+	title_bg:  'image/trial/title_bg.png',
+	press_z:  'image/trial/pressZ.png',
+	press_x:  'image/trial/pressX.png',
+
+	num:  'image/trial/num.png',
+	player:  'image/trial/player.png',
+	score:  'image/trial/score.png',
+	spell:  'image/trial/spell.png',
+	power:  'image/trial/power.png',
+	star:  'image/trial/star.png',
+
+	prologue1_bg:  'image/trial/prologue1_bg.png',
+	prologue2_bg:  'image/trial/prologue2_bg.png',
+	logo:  'image/trial/logo.png',
+	side_bar:  'image/trial/side_bar.png',
+	fukidashi_normal:  'image/trial/fukidashi_blue.png',
+	fukidashi_orange:  'image/trial/fukidashi_orange.png',
+	fukidashi_purple:  'image/trial/fukidashi_purple.png',
+
+	/* キャラ立ち絵 */
+
+	// 射命丸 文
+	aya_normal:       'image/trial/aya/normal.png',
+	aya_dissatisfied: 'image/trial/aya/dissatisfied.png',
+	aya_smile:        'image/trial/aya/smile.png',
+
+	// ドッペルゲンガー
+	ganger_normal: 'image/trial/ganger/normal.png',
+	ganger_owata:  'image/trial/ganger/owata.png',
+	ganger_smile:  'image/trial/ganger/smile.png',
+	hatena_normal: 'image/trial/ganger/normal.png',
+	hatena_owata:  'image/trial/ganger/owata.png',
+	hatena_smile:  'image/trial/ganger/smile.png',
+
+	// 蓮子
+	renko_normal:         'image/trial/renko/normal.png',
+	renko_anger:          'image/trial/renko/anger.png',
+	renko_disappointed:   'image/trial/renko/disappointed.png',
+	renko_surprised:      'image/trial/renko/surprised.png',
+	renko_troubled:       'image/trial/renko/troubled.png',
+	renko_troubled_blood: 'image/trial/renko/troubled_blood.png',
+	renko_calm:           'image/trial/renko/calm.png',
+	renko_calm_blood:     'image/trial/renko/calm_blood.png',
+	renko_normal_blood:   'image/trial/renko/normal_blood.png',
+	renko_pain:           'image/trial/renko/pain.png',
+	renko_pain_blood:     'image/trial/renko/pain_blood.png',
+	renko_sad:            'image/trial/renko/sad.png',
+	renko_smile_blood:    'image/trial/renko/smile_blood.png',
+
+	// メリー
+	merry_normal:       'image/trial/merry/normal.png',
+	merry_disappointed: 'image/trial/merry/disappointed.png',
+	merry_troubled:     'image/trial/merry/troubled.png',
+	merry_anger:        'image/trial/merry/anger.png',
+	merry_calm:         'image/trial/merry/calm.png',
+	merry_furious:      'image/trial/merry/furious.png',
+	merry_grin:         'image/trial/merry/grin.png',
+	merry_sad:          'image/trial/merry/sad.png',
+
+	// 名前プレート
+	name_aya:    'image/trial/name_aya.png',
+	name_ganger: 'image/trial/name_ganger.png',
+	name_hatena: 'image/trial/name_hatena.png',
+	name_merry:  'image/trial/name_merry.png',
+	name_renko:  'image/trial/name_renko.png',
+
+	stage1_bg: 'image/trial/stage1_bg.png',
+	shadow:      'image/trial/shadow.png',
+	character_renko: 'image/trial/character_renko.png',
+	boss_aya:        'image/trial/boss_aya.png',
+	shot:      'image/trial/shot.png',
+	shot2:      'image/trial/shot2.png',
+	beam:      'image/trial/beam.png',
+	item:      'image/trial/item.png',
+
+	enemy:     'image/trial/enemy.png',
+
+
+	magic_circle:     'image/trial/magic_circle.png',
+};
+
+// 画像(完成版)
+if (!Config.TRIAL) {
+	Object.assign(Config.IMAGES, {
 		// 東風谷 早苗
 		sanae_normal:        'image/production/sanae/normal.png',
 		sanae_smile:        'image/production/sanae/smile.png',
@@ -267,82 +428,38 @@ var Config = {
 		yukari_disappointed: 'image/production/yukari/disappointed.png',
 		yukari_normal:       'image/production/yukari/normal.png',
 
-		// ドッペルゲンガー
-		ganger_normal: 'image/trial/ganger/normal.png',
-		ganger_owata:  'image/trial/ganger/owata.png',
-		ganger_smile:  'image/trial/ganger/smile.png',
-		hatena_normal: 'image/trial/ganger/normal.png',
-		hatena_owata:  'image/trial/ganger/owata.png',
-		hatena_smile:  'image/trial/ganger/smile.png',
-
-		// 蓮子
-		renko_normal:         'image/trial/renko/normal.png',
-		renko_anger:          'image/trial/renko/anger.png',
-		renko_disappointed:   'image/trial/renko/disappointed.png',
-		renko_surprised:      'image/trial/renko/surprised.png',
-		renko_troubled:       'image/trial/renko/troubled.png',
-		renko_troubled_blood: 'image/trial/renko/troubled_blood.png',
-		renko_calm:           'image/trial/renko/calm.png',
-		renko_calm_blood:     'image/trial/renko/calm_blood.png',
-		renko_normal_blood:   'image/trial/renko/normal_blood.png',
-		renko_pain:           'image/trial/renko/pain.png',
-		renko_pain_blood:     'image/trial/renko/pain_blood.png',
-		renko_sad:            'image/trial/renko/sad.png',
-		renko_smile_blood:    'image/trial/renko/smile_blood.png',
-
-		// メリー
-		merry_normal:       'image/trial/merry/normal.png',
-		merry_disappointed: 'image/trial/merry/disappointed.png',
-		merry_troubled:     'image/trial/merry/troubled.png',
-		merry_anger:        'image/trial/merry/anger.png',
-		merry_calm:         'image/trial/merry/calm.png',
-		merry_furious:      'image/trial/merry/furious.png',
-		merry_grin:         'image/trial/merry/grin.png',
-		merry_sad:          'image/trial/merry/sad.png',
-
 		// 名前プレート
-		name_aya:    'image/trial/name_aya.png',
-		name_ganger: 'image/trial/name_ganger.png',
-		name_hatena: 'image/trial/name_hatena.png',
-		name_merry:  'image/trial/name_merry.png',
-		name_renko:  'image/trial/name_renko.png',
 		name_yuuka:  'image/production/name_yuuka.png',
 		name_sanae:  'image/production/name_sanae.png',
 		name_yukari: 'image/production/name_yukari.png',
 
-		stage1_bg: 'image/trial/stage1_bg.png',
 		stage2_bg: 'image/production/stage2_bg.png',
 		stage3_bg: 'image/production/stage3_bg.png',
 		stage4_bg: 'image/production/stage4_bg.png',
 		stage5_bg: 'image/production/stage5_bg.png',
-		shadow:      'image/trial/shadow.png',
-		character_renko: 'image/trial/character_renko.png',
-		boss_aya:        'image/trial/boss_aya.png',
+
 		boss_sanae:      'image/production/boss_sanae.png',
 		boss_yuuka:      'image/production/boss_yuuka.png',
 		boss_yukari:     'image/production/boss_yukari.png',
 		boss_merry:      'image/production/boss_merry.png',
-		shot:      'image/trial/shot.png',
-		shot2:      'image/trial/shot2.png',
-		beam:      'image/trial/beam.png',
-		item:      'image/trial/item.png',
+	});
+}
 
-		enemy:     'image/trial/enemy.png',
+Config.CJS_IMAGES = [
+	// ボス出現エフェクト
+	{src:"image/trial/createjs/boss_appearance/circle.png", id:"circle"},
+	{src:"image/trial/createjs/boss_appearance/dot.png", id:"dot"},
+	{src:"image/trial/createjs/boss_appearance/emlight.png", id:"emlight"},
+	// 爆発エフェクト
+	{src:"image/trial/createjs/explosion/ef_circle.png", id:"ef_circle"},
+	{src:"image/trial/createjs/explosion/ef_smoke.png", id:"ef_smoke"},
+	{src:"image/trial/createjs/explosion/ef_smoke_b.png", id:"ef_smoke_b"},
+	{src:"image/trial/createjs/explosion/ef_smoke_s.png", id:"ef_smoke_s"},
+	{src:"image/trial/createjs/explosion/maru.png", id:"maru"},
+];
 
-
-		magic_circle:     'image/trial/magic_circle.png',
-	},
-	CJS_IMAGES: [
-		// ボス出現エフェクト
-		{src:"image/trial/createjs/boss_appearance/circle.png", id:"circle"},
-		{src:"image/trial/createjs/boss_appearance/dot.png", id:"dot"},
-		{src:"image/trial/createjs/boss_appearance/emlight.png", id:"emlight"},
-		// 爆発エフェクト
-		{src:"image/trial/createjs/explosion/ef_circle.png", id:"ef_circle"},
-		{src:"image/trial/createjs/explosion/ef_smoke.png", id:"ef_smoke"},
-		{src:"image/trial/createjs/explosion/ef_smoke_b.png", id:"ef_smoke_b"},
-		{src:"image/trial/createjs/explosion/ef_smoke_s.png", id:"ef_smoke_s"},
-		{src:"image/trial/createjs/explosion/maru.png", id:"maru"},
+if(!Config.TRIAL) {
+	Config.CJS_IMAGES.push(
 		// エピローグC
 		{src:"image/production/createjs/epilogue/bg_ED_C.png", id:"bg_ED_C"},
 		{src:"image/production/createjs/epilogue/BO.png", id:"BO"},
@@ -481,95 +598,43 @@ var Config = {
 		{src:"image/production/createjs/end/l20.png", id:"l20"},
 		{src:"image/production/createjs/end/l21.png", id:"l21"},
 		{src:"image/production/createjs/end/last.png", id:"last"},
-		{src:"image/production/createjs/end/WO.png", id:"WO"},
-	],
-	SOUNDS: {
-		select: {
-			id: 0x01,
-			path:   'sound/select.wav',
-			volume: 0.80
-		},
-		boss_shot_small: {
-			id: 0x02,
-			path: 'sound/boss_shot_small.wav',
-			volume: 0.25
-		},
-		boss_shot_big: {
-			id: 0x04,
-			path: 'sound/boss_shot_big.wav',
-			volume: 0.25
-		},
-		spellcard: {
-			id: 0x08,
-			path: 'sound/spellcard.wav',
-			volume: 0.30
-		},
-		dead: {
-			id: 0x10,
-			path: 'sound/dead.wav',
-			volume: 0.15
-		},
-		enemy_vanish: {
-			id: 0x20,
-			path: 'sound/enemy_vanish.wav',
-			volume: 0.2
-		},
-		graze: {
-			id: 0x40,
-			path: 'sound/graze.wav',
-			volume: 0.4
-		},
-		powerup: {
-			id: 0x80,
-			path: 'sound/powerup.wav',
-			volume: 0.8
-		},
-		kirakira: {
-			id: 0x100,
-			path: 'sound/kira2.wav',
-			volume: 0.4
-		},
-		boss_powerup: {
-			id: 0x200,
-			path: 'sound/boss_powerup.wav',
-			volume: 1.0
-		},
+		{src:"image/production/createjs/end/WO.png", id:"WO"}
+	);
+}
 
-		/*
-		shot: {
-			id: 0x02,
-			path: 'sound/shot.wav',
-			volume: 0.08
-		},
-	   */
+// BGM ファイルはogg と m4a の二種類を用意してください
+
+// BGM(体験版用)
+Config.BGMS = {
+	title: {
+		path:   'bgm/trial/title',
+		volume: 0.40,
+		loopStart: 29.142,
+		loopEnd: 60 * 1 + 24.000,
 	},
+	prologue: {
+		path:   'bgm/trial/prologue',
+		volume: 0.40,
+		loopStart: 7.500,
+		loopEnd: 60 * 2 + 14.999,
+	},
+	douchu: {
+		path:   'bgm/trial/douchu',
+		volume: 0.40,
+		loopStart: 60 * 1 + 39.096,
+		loopEnd: 60 * 3 + 18.193,
+	},
+	stage1: {
+		path:   'bgm/trial/stage1',
+		volume: 0.50,
+		loopStart: 41.379,
+		loopEnd: 60 * 2 + 0.827,
+	},
+};
 
-	// BGM ファイルはogg と m4a の二種類を用意してください
-	BGMS:{
-		title: {
-			path:   'bgm/trial/title',
-			volume: 0.40,
-			loopStart: 29.142,
-			loopEnd: 60 * 1 + 24.000,
-		},
-		prologue: {
-			path:   'bgm/trial/prologue',
-			volume: 0.40,
-			loopStart: 7.500,
-			loopEnd: 60 * 2 + 14.999,
-		},
-		douchu: {
-			path:   'bgm/trial/douchu',
-			volume: 0.40,
-			loopStart: 60 * 1 + 39.096,
-			loopEnd: 60 * 3 + 18.193,
-		},
-		stage1: {
-			path:   'bgm/trial/stage1',
-			volume: 0.50,
-			loopStart: 41.379,
-			loopEnd: 60 * 2 + 0.827,
-		},
+// BGM(完成版)
+if (!Config.TRIAL) {
+	Object.assign(Config.BGMS, {
 		stage2: {
 			path:   'bgm/production/stage2',
 			volume: 0.50,
@@ -606,46 +671,8 @@ var Config = {
 			path:   'bgm/production/ending',
 			volume: 0.40,
 		},
-	},
-	// テキストの typography スピード
-	MESSAGE_SPEED: 10,
-	// 喋ってる方が寄る際のpx
-	TALKER_MOVE_PX: 5,
-	// キャラのサイズ(1/2)
-	CHARA_SIZE_RATIO: 0.5,
-	// ノベルパートにおける左キャラの(x, y)
-	PROLOGUE2_LEFT_X: 0,
-	PROLOGUE2_LEFT_Y: 132,
-	// ノベルパートにおける右キャラの(x, y)
-	PROLOGUE2_RIGHT_X: 283,
-	PROLOGUE2_RIGHT_Y: 132,
-	// セリフウィンドウの(x, y)
-	PROLOGUE2_SERIF_WINDOW_X: 80,
-	PROLOGUE2_SERIF_WINDOW_Y: 0,
-	// 左の名前プレートの(x, y)
-	PROLOGUE2_LEFT_NAME_WINDOW_X: 78,
-	PROLOGUE2_LEFT_NAME_WINDOW_Y: 420,
-	// 右の名前プレートの(x, y)
-	PROLOGUE2_RIGHT_NAME_WINDOW_X: 362,
-	PROLOGUE2_RIGHT_NAME_WINDOW_Y: 420,
-
-	// ボス会話パートにおける左キャラの(x, y)
-	TALKING_LEFT_X: -59,
-	TALKING_LEFT_Y: 132,
-	// ボス会話パートにおける右キャラの(x, y)
-	TALKING_RIGHT_X: 182,
-	TALKING_RIGHT_Y: 132,
-	// ボス会話のウィンドウの(x, y)
-	TALKING_SERIF_WINDOW_X: 0,
-	TALKING_SERIF_WINDOW_Y: 0,
-	// ボス会話の左の名前プレートの(x, y)
-	TALKING_LEFT_NAME_WINDOW_X: 0,
-	TALKING_LEFT_NAME_WINDOW_Y: 420,
-	// ボス会話の右の名前プレートの(x, y)
-	TALKING_RIGHT_NAME_WINDOW_X: 280,
-	TALKING_RIGHT_NAME_WINDOW_Y: 420,
-
-};
+	});
+}
 
 // 全素材数
 Config.ALL_MATERIAL_NUM = Object.keys(Config.IMAGES).length + Object.keys(Config.SOUNDS).length + Object.keys(Config.BGMS).length + Config.CJS_IMAGES.length;
@@ -658,6 +685,7 @@ module.exports = Config;
 var Constant = {
 	LOADING_SCENE:   0,
 	TITLE_SCENE:     1,
+	CONFIG_SCENE:    2,
 	PROLOGUE2_SCENE: 3,
 	STAGE_SCENE:     4,
 	EPILOGUE_A_SCENE: 5,
@@ -735,6 +763,14 @@ var Constant = {
 	ENEMY_GREEN_NEUTRAL_TYPE:  4,
 };
 
+// デフォルトのキーコンフィグ
+Constant.DEFAULT_KEYCONFIG = {
+	0: Constant.BUTTON_Z,
+	1: Constant.BUTTON_X,
+	4: Constant.BUTTON_SHIFT,
+	6: Constant.BUTTON_SPACE,
+};
+
 module.exports = Constant;
 
 },{}],4:[function(require,module,exports){
@@ -747,7 +783,7 @@ var cjs = window.createjs;
 
 module.exports = cjs;
 
-},{"easeljs":96,"movieclipjs":97,"preloadjs":98,"tweenjs":99}],5:[function(require,module,exports){
+},{"easeljs":98,"movieclipjs":99,"preloadjs":100,"tweenjs":101}],5:[function(require,module,exports){
 'use strict';
 var createjs = require("../createjs");
 var images = require("../image_store");
@@ -5765,6 +5801,7 @@ var constant = require('./constant');
 
 var LoadingScene   = require('./scene/loading');
 var TitleScene     = require('./scene/title');
+var ConfigScene     = require('./scene/config');
 var Prologue2Scene = require('./scene/prologue2');
 var StageScene    = require('./scene/stage');
 var EpilogueAScene = require('./scene/epilogue_a');
@@ -5772,6 +5809,9 @@ var EpilogueBScene = require('./scene/epilogue_b');
 var EpilogueCScene = require('./scene/epilogue_c');
 var StaffRollScene   = require('./scene/staffroll');
 var EndScene   = require('./scene/end');
+
+// ユーザーの設定した項目
+var UserConfig   = require('./logic/user_config');
 
 var Game = function(mainCanvas) {
 	// メインCanvas
@@ -5798,6 +5838,8 @@ var Game = function(mainCanvas) {
 	this.scenes[ constant.LOADING_SCENE ] = new LoadingScene(this);
 	// タイトル画面
 	this.scenes[ constant.TITLE_SCENE ] = new TitleScene(this);
+	// コンフィグ画面
+	this.scenes[ constant.CONFIG_SCENE ] = new ConfigScene(this);
 	// プロローグ画面2
 	this.scenes[ constant.PROLOGUE2_SCENE ] = new Prologue2Scene(this);
 	// ステージ
@@ -5843,6 +5885,9 @@ var Game = function(mainCanvas) {
 
 	// 計測したFPS
 	this.fps = 0;
+
+	// ユーザーの設定した項目
+	this.user_config = null;
 };
 
 Game.prototype = {
@@ -5868,6 +5913,9 @@ Game.prototype = {
 
 		// 計測したFPS
 		this.fps = 0;
+
+		// ユーザーの設定した項目
+		this.user_config = UserConfig.load();
 
 		// シーンをローディング画面にする
 		this.changeScene(constant.LOADING_SCENE);
@@ -6115,7 +6163,15 @@ Game.prototype = {
 		// プロローグ画面に切り替え
 		this.changeScene(constant.PROLOGUE2_SCENE);
 	},
-
+	notifyTitleDoneToConfig: function() {
+		// コンフィグ画面に切り替え
+		this.changeScene(constant.CONFIG_SCENE);
+	},
+	// コンフィグ画面から戻ったら
+	notifyConfigDone: function() {
+		// タイトル画面に切り替え
+		this.changeScene(constant.TITLE_SCENE);
+	},
 	// プロローグ画面が終わったら
 	notifyPrologue2Done: function() {
 		// ステージ画面に切り替え
@@ -6169,17 +6225,17 @@ Game.prototype = {
 
 		if(!pad) return;
 
+		// 初期化
 		this.keyflag = 0x00;
-		this.keyflag |= pad.buttons[1].pressed ? constant.BUTTON_Z:      0x00;// A
-		this.keyflag |= pad.buttons[0].pressed ? constant.BUTTON_X:      0x00;// B
-		this.keyflag |= pad.buttons[2].pressed ? constant.BUTTON_SELECT: 0x00;// SELECT
-		this.keyflag |= pad.buttons[3].pressed ? constant.BUTTON_START:  0x00;// START
-		this.keyflag |= pad.buttons[4].pressed ? constant.BUTTON_SHIFT:  0x00;// SHIFT
-		this.keyflag |= pad.buttons[5].pressed ? constant.BUTTON_SHIFT:  0x00;// SHIFT
-		this.keyflag |= pad.buttons[6].pressed ? constant.BUTTON_SPACE:  0x00;// SPACE
-		//this.keyflag |= pad.buttons[8].pressed ? 0x04 : 0x00;// SELECT
-		//this.keyflag |= pad.buttons[9].pressed ? 0x08 : 0x00;// START
 
+		// ボタン入力
+		for (var i = 0; i < pad.buttons.length; i++) {
+			if(pad.buttons[i].pressed) { // 押下されてたら
+				this.keyflag |= this.user_config.getKeyByButtonId(i); // button_id に割り当てられたキーを取得
+			}
+		}
+
+		// 十字キー入力
 		this.keyflag |= pad.axes[1] < -0.5 ? constant.BUTTON_UP:         0x00;// UP
 		this.keyflag |= pad.axes[1] >  0.5 ? constant.BUTTON_DOWN:       0x00;// DOWN
 		this.keyflag |= pad.axes[0] < -0.5 ? constant.BUTTON_LEFT:       0x00;// LEFT
@@ -6192,7 +6248,7 @@ Game.prototype = {
 
 module.exports = Game;
 
-},{"./config":2,"./constant":3,"./scene/end":44,"./scene/epilogue_a":45,"./scene/epilogue_b":46,"./scene/epilogue_c":47,"./scene/loading":48,"./scene/prologue2":49,"./scene/staffroll":50,"./scene/stage":51,"./scene/title":63}],20:[function(require,module,exports){
+},{"./config":2,"./constant":3,"./logic/user_config":27,"./scene/config":45,"./scene/end":46,"./scene/epilogue_a":47,"./scene/epilogue_b":48,"./scene/epilogue_c":49,"./scene/loading":50,"./scene/prologue2":51,"./scene/staffroll":52,"./scene/stage":53,"./scene/title":65}],20:[function(require,module,exports){
 module.exports = {};
 
 },{}],21:[function(require,module,exports){
@@ -6604,6 +6660,120 @@ module.exports = Logic;
 
 },{"../config":2}],27:[function(require,module,exports){
 'use strict';
+var Constant = require("../constant");
+
+var KEY = "user_config";
+
+var UserConfig = function(param) {
+	if(!param) param = Constant.DEFAULT_KEYCONFIG;
+
+	this.button_id_to_key_map = param;
+};
+UserConfig.prototype.getKeyByButtonId = function(button_id) {
+	var keys = this.button_id_to_key_map[button_id];
+	if(!keys) keys = 0x00;
+
+	return keys;
+};
+UserConfig.prototype.setKeyByButtonId = function(button_id, key) {
+	var defined_key = this.button_id_to_key_map[button_id];
+
+	for (var target_button_id in this.button_id_to_key_map) {
+		var target_key = this.button_id_to_key_map[target_button_id];
+		// button_id に既に割り当てられているキーがあれば、置換
+		if (target_key === key) {
+			if (defined_key) {
+				// 置換
+				this.button_id_to_key_map[target_button_id] = defined_key;
+			}
+			else {
+				// 削除
+				delete this.button_id_to_key_map[target_button_id];
+			}
+		}
+	}
+
+	this.button_id_to_key_map[button_id] = key;
+};
+
+UserConfig.prototype.save = function() {
+
+	var self = this;
+	var ls = window.localStorage;
+	return setTimeout(function(){ // 非同期で保存
+		try {
+			ls.setItem(KEY, JSON.stringify(self.button_id_to_key_map));
+		}
+		catch(e) {}
+	}, 0);
+};
+UserConfig.load = function() {
+	var ls = window.localStorage;
+	var param;
+	try {
+		param = ls.getItem(KEY);
+		if (param) {
+			param = JSON.parse(param);
+		}
+	}
+	catch(e) {}
+
+	return new UserConfig(param);
+};
+
+UserConfig.prototype.getKeyToButtonIdMap = function() {
+	var map = {};
+	for (var button_id in this.button_id_to_key_map) {
+		var key = this.button_id_to_key_map[button_id];
+		map[key] = button_id;
+	}
+
+	return map;
+};
+
+UserConfig.prototype.dump = function() {
+	var dump = {};
+
+	for (var button_id in this.button_id_to_key_map) {
+		var key = this.button_id_to_key_map[ button_id ];
+		switch(key) {
+			case Constant.BUTTON_LEFT:
+				dump[button_id] = "LEFT";
+				break;
+			case Constant.BUTTON_UP:
+				dump[button_id] = "UP";
+				break;
+			case Constant.BUTTON_RIGHT:
+				dump[button_id] = "RIGHT";
+				break;
+			case Constant.BUTTON_DOWN:
+				dump[button_id] = "DOWN";
+				break;
+			case Constant.BUTTON_Z:
+				dump[button_id] = "Z";
+				break;
+			case Constant.BUTTON_X:
+				dump[button_id] = "X";
+				break;
+			case Constant.BUTTON_SHIFT:
+				dump[button_id] = "SHIFT";
+				break;
+			case Constant.BUTTON_SPACE:
+				dump[button_id] = "SPACE";
+				break;
+			default:
+				dump[button_id] = "UNKNOWN";
+		}
+	}
+
+	console.log(dump);
+};
+
+
+module.exports = UserConfig;
+
+},{"../constant":3}],28:[function(require,module,exports){
+'use strict';
 var Game = require('./game');
 
 // WebAudio
@@ -6675,7 +6845,7 @@ window.changeFullScreen = function () {
 };
 
 
-},{"./game":19}],28:[function(require,module,exports){
+},{"./game":19}],29:[function(require,module,exports){
 'use strict';
 
 /* オブジェクトの基底クラス */
@@ -6916,7 +7086,7 @@ ObjectBase.prototype.notifyGraze = function() {
 
 module.exports = ObjectBase;
 
-},{"../config":2}],29:[function(require,module,exports){
+},{"../config":2}],30:[function(require,module,exports){
 'use strict';
 
 /* ステージ1ボス 射命丸文 */
@@ -6966,7 +7136,7 @@ Aya.prototype.MAX_VITAL = function() { return 60 * 45; };
 
 module.exports = Aya;
 
-},{"../../spell/stage1/spell1":79,"../../spell/stage1/spell2":80,"../../spell/stage1/spell3":81,"../../spell/stage1/spell4":82,"../../util":95,"./base":30}],30:[function(require,module,exports){
+},{"../../spell/stage1/spell1":81,"../../spell/stage1/spell2":82,"../../spell/stage1/spell3":83,"../../spell/stage1/spell4":84,"../../util":97,"./base":31}],31:[function(require,module,exports){
 'use strict';
 
 /* ボス基底クラス */
@@ -7341,7 +7511,7 @@ BossBase.prototype.MAX_VITAL = function() {
 
 module.exports = BossBase;
 
-},{"../../config":2,"../../constant":3,"../../createjs/boss_appearance":5,"../../createjs/explosion":10,"../../logic/createjs":21,"../../object/shot":41,"../../util":95,"../base":28}],31:[function(require,module,exports){
+},{"../../config":2,"../../constant":3,"../../createjs/boss_appearance":5,"../../createjs/explosion":10,"../../logic/createjs":21,"../../object/shot":42,"../../util":97,"../base":29}],32:[function(require,module,exports){
 'use strict';
 
 /* ステージ5ボス マエリベリー・ハーン */
@@ -7388,7 +7558,7 @@ Merry.prototype.MAX_VITAL = function() { return 60 * 1.5 * 60; };
 module.exports = Merry;
 
 
-},{"../../spell/stage5/spell1":92,"../../spell/stage5/spell2":93,"../../spell/stage5/spell3":94,"../../util":95,"./base":30}],32:[function(require,module,exports){
+},{"../../spell/stage5/spell1":94,"../../spell/stage5/spell2":95,"../../spell/stage5/spell3":96,"../../util":97,"./base":31}],33:[function(require,module,exports){
 'use strict';
 
 /* ステージ2ボス 東風谷早苗 */
@@ -7436,7 +7606,7 @@ Sanae.prototype.MAX_VITAL = function() { return 60 * 60; };
 
 module.exports = Sanae;
 
-},{"../../spell/stage2/spell1":83,"../../spell/stage2/spell2":84,"../../spell/stage2/spell3":85,"../../util":95,"./base":30}],33:[function(require,module,exports){
+},{"../../spell/stage2/spell1":85,"../../spell/stage2/spell2":86,"../../spell/stage2/spell3":87,"../../util":97,"./base":31}],34:[function(require,module,exports){
 'use strict';
 
 /* ステージ4ボス 八雲紫 */
@@ -7482,7 +7652,7 @@ Yukari.prototype.bgm = function() { return 'stage4'; };
 Yukari.prototype.MAX_VITAL = function() { return 60 * 75; };
 module.exports = Yukari;
 
-},{"../../spell/stage4/spell1":89,"../../spell/stage4/spell2":90,"../../spell/stage4/spell3":91,"../../util":95,"./base":30}],34:[function(require,module,exports){
+},{"../../spell/stage4/spell1":91,"../../spell/stage4/spell2":92,"../../spell/stage4/spell3":93,"../../util":97,"./base":31}],35:[function(require,module,exports){
 'use strict';
 
 /* ステージ3ボス 風見幽香 */
@@ -7529,7 +7699,7 @@ Yuuka.prototype.MAX_VITAL = function() { return 60 * 75; };
 
 module.exports = Yuuka;
 
-},{"../../spell/stage3/spell1":86,"../../spell/stage3/spell2":87,"../../spell/stage3/spell3":88,"../../util":95,"./base":30}],35:[function(require,module,exports){
+},{"../../spell/stage3/spell1":88,"../../spell/stage3/spell2":89,"../../spell/stage3/spell3":90,"../../util":97,"./base":31}],36:[function(require,module,exports){
 'use strict';
 
 /* 敵弾オブジェクト */
@@ -7637,7 +7807,7 @@ Bullet.prototype.spriteHeight = function() { return this.height; };
 
 module.exports = Bullet;
 
-},{"../constant":3,"../enemy/bullet_types":13,"../util":95,"./vector_base":42}],36:[function(require,module,exports){
+},{"../constant":3,"../enemy/bullet_types":13,"../util":97,"./vector_base":43}],37:[function(require,module,exports){
 'use strict';
 
 /* 自機 */
@@ -8085,7 +8255,7 @@ Character.prototype.spriteHeight = function() { return 48; };
 
 module.exports = Character;
 
-},{"../constant":3,"../logic/manager":24,"../spell/renko/spell1":78,"../util":95,"./base":28,"./boss/base":30,"./bullet":35,"./enemy":38,"./option":40}],37:[function(require,module,exports){
+},{"../constant":3,"../logic/manager":24,"../spell/renko/spell1":80,"../util":97,"./base":29,"./boss/base":31,"./bullet":36,"./enemy":39,"./option":41}],38:[function(require,module,exports){
 'use strict';
 
 /* エフェクトオブジェクト */
@@ -8154,7 +8324,7 @@ Effect.prototype.updateDisplay = function() {
 
 module.exports = Effect;
 
-},{"../constant":3,"../util":95,"./base":28}],38:[function(require,module,exports){
+},{"../constant":3,"../util":97,"./base":29}],39:[function(require,module,exports){
 'use strict';
 
 /* 敵オブジェクト */
@@ -8321,7 +8491,7 @@ Enemy.prototype.spriteHeight = function() { return 32; };
 
 module.exports = Enemy;
 
-},{"../constant":3,"../enemy/bullet_dictionaries":12,"../object/shot":41,"../util":95,"./vector_base":42}],39:[function(require,module,exports){
+},{"../constant":3,"../enemy/bullet_dictionaries":12,"../object/shot":42,"../util":97,"./vector_base":43}],40:[function(require,module,exports){
 'use strict';
 
 /* アイテムオブジェクト */
@@ -8448,7 +8618,7 @@ Item.prototype.spriteHeight = function() { return 16; };
 
 module.exports = Item;
 
-},{"../constant":3,"../util":95,"./vector_base":42}],40:[function(require,module,exports){
+},{"../constant":3,"../util":97,"./vector_base":43}],41:[function(require,module,exports){
 'use strict';
 
 /* 自機オプションオブジェクト */
@@ -8514,7 +8684,7 @@ Option.prototype.spriteHeight = function() { return 16; };
 
 module.exports = Option;
 
-},{"../constant":3,"../util":95,"./base":28}],41:[function(require,module,exports){
+},{"../constant":3,"../util":97,"./base":29}],42:[function(require,module,exports){
 'use strict';
 
 /* 自機弾オブジェクト */
@@ -8633,7 +8803,7 @@ Shot.prototype.isEnableDamage = function(obj) {
 
 module.exports = Shot;
 
-},{"../constant":3,"../shot_types":75,"../util":95,"./vector_base":42}],42:[function(require,module,exports){
+},{"../constant":3,"../shot_types":77,"../util":97,"./vector_base":43}],43:[function(require,module,exports){
 'use strict';
 
 /* ベクトルを使って動くオブジェクトの基底クラス */
@@ -8819,7 +8989,7 @@ VectorBase.prototype.calc_moveY = function() {
 
 module.exports = VectorBase;
 
-},{"../constant":3,"../util":95,"./base":28}],43:[function(require,module,exports){
+},{"../constant":3,"../util":97,"./base":29}],44:[function(require,module,exports){
 'use strict';
 
 /* シーンの基底クラス */
@@ -8860,7 +9030,170 @@ BaseScene.prototype.onunload = function(){
 
 module.exports = BaseScene;
 
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
+'use strict';
+
+/* コンフィグ画面 */
+
+// 基底クラス
+var BaseScene = require('./base');
+
+var Util = require('../util');
+var Constant = require('../constant');
+var Config = require('../config');
+
+// キーコンフィグメニュー一覧
+var MENU = [
+	{name: 'SHOT (Zキー)', key: Constant.BUTTON_Z },
+	{name: 'BOMB (Xキー)', key: Constant.BUTTON_X },
+	{name: 'SLOW', key: Constant.BUTTON_SHIFT },
+	{name: 'PAUSE', key: Constant.BUTTON_SPACE },
+	{name: '戻る', key: null }, // 戻るだけキーコンフィグではない
+];
+
+var ConfigScene = function(game) {
+	BaseScene.apply(this, arguments);
+
+	// 今どれにカーソルがあるか
+	this.index = 0;
+};
+
+// 基底クラスを継承
+Util.inherit(ConfigScene, BaseScene);
+
+// フレーム処理
+ConfigScene.prototype.init = function(){
+	BaseScene.prototype.init.apply(this, arguments);
+	// 今どれにカーソルがあるか
+	this.index = 0;
+};
+
+// フレーム処理
+ConfigScene.prototype.run = function(){
+	BaseScene.prototype.run.apply(this, arguments);
+
+	// カーソルを上移動
+	if(this.game.isKeyPush(Constant.BUTTON_DOWN)) {
+		this.index++;
+
+		if(this.index >= MENU.length) {
+			this.index = MENU.length - 1;
+		}
+	}
+	// カーソルを下移動
+	if(this.game.isKeyPush(Constant.BUTTON_UP)) {
+		this.index--;
+
+		if(this.index < 0) {
+			this.index = 0;
+		}
+	}
+
+	// 戻る
+	if(this.game.isKeyPush(Constant.BUTTON_Z)) {
+		// TODO: menu.length -1 を const化
+		if(this.index === MENU.length - 1) { // MENU の最後の項目 = 戻る
+			this.game.user_config.save();
+			this.game.notifyConfigDone();
+		}
+	}
+
+	// 押下したボタンを取得
+	var button_id = this.getAnyButtonId();
+	if (button_id !== undefined && this.index !== MENU.length - 1) { // ボタンが押下されてて、戻るボタンにカーソルを合わせてないなら
+		if(this.frame_count >= 60) { // キーコンフィグ遷移後すぐの入力は、キーコンフィグ遷移ボタンがまだ入力されている可能性があるので無視
+			this.game.user_config.setKeyByButtonId(button_id, MENU[this.index].key);
+		}
+	}
+};
+
+// 画面更新
+ConfigScene.prototype.updateDisplay = function(){
+	this.game.clearCanvas();
+	var ctx = this.game.surface;
+
+	ctx.save();
+
+	// セリフテキストの x, y 座標初期位置
+	var cursor_x    = 206;
+	var text_x      = 236;
+	var button_id_x = 386;
+	var y = 220;
+
+	var title_bg = this.game.getImage('title_bg');
+
+	// 背景画像表示
+	ctx.drawImage(title_bg,
+					0,
+					0,
+					title_bg.width,
+					title_bg.height,
+					0,
+					0,
+					this.game.width,
+					this.game.height);
+
+	ctx.restore();
+
+	// コンフィグメニュー一覧
+	ctx.save();
+
+	// 文字背景 表示
+	ctx.fillStyle = 'rgb( 57, 93, 220 )' ;
+	//ctx.globalAlpha = 0.3; // 半透明
+	ctx.fillRect(cursor_x - 10, y - 30, button_id_x - cursor_x + 50, MENU.length * 33);
+
+	// 文字表示
+	ctx.globalAlpha = 1.0; // 半透明戻す
+	ctx.font = "18px 'Migu'";
+	ctx.textAlign = 'left';
+	ctx.textBaseAlign = 'middle';
+	ctx.fillStyle = 'rgb( 255, 255, 255 )';
+
+	var map = this.game.user_config.getKeyToButtonIdMap();
+	for(var i = 0, len = MENU.length; i < len; i++) {
+		if(this.index === i) {
+			// cursor 表示
+			ctx.fillText("▶", cursor_x, y);
+		}
+		// 文字表示
+		ctx.fillText(MENU[i].name, text_x, y); // 1行表示
+
+		// button_id 表示
+		if(MENU[i].key) {
+			ctx.fillText(map[ MENU[i].key ], button_id_x, y);
+		}
+
+		y+= 30;
+	}
+
+	ctx.restore();
+
+};
+
+// 押下されている GamePad のbutton_id を取得
+ConfigScene.prototype.getAnyButtonId = function(){
+	if(!this.game.is_connect_gamepad) return;
+
+	var pads = navigator.getGamepads();
+	var pad = pads[0]; // 1Pコン
+
+	if(!pad) return;
+
+	// ボタン入力
+	for (var i = 0; i < pad.buttons.length; i++) {
+		if(pad.buttons[i].pressed) { // 押下されてたら
+			return i;
+		}
+	}
+};
+
+
+
+
+module.exports = ConfigScene;
+
+},{"../config":2,"../constant":3,"../util":97,"./base":44}],46:[function(require,module,exports){
 'use strict';
 
 /* エンド */
@@ -8943,7 +9276,7 @@ Scene.prototype._showFrameCount = function() {
 
 module.exports = Scene;
 
-},{"../config":2,"../constant":3,"../createjs/end":6,"../logic/createjs":21,"../util":95,"./base":43}],45:[function(require,module,exports){
+},{"../config":2,"../constant":3,"../createjs/end":6,"../logic/createjs":21,"../util":97,"./base":44}],47:[function(require,module,exports){
 'use strict';
 
 /* エピローグ画面A */
@@ -9033,7 +9366,7 @@ Scene.prototype._showFrameCount = function() {
 
 module.exports = Scene;
 
-},{"../config":2,"../constant":3,"../createjs/epilogue_a":7,"../logic/createjs":21,"../util":95,"./base":43}],46:[function(require,module,exports){
+},{"../config":2,"../constant":3,"../createjs/epilogue_a":7,"../logic/createjs":21,"../util":97,"./base":44}],48:[function(require,module,exports){
 'use strict';
 
 /* エピローグ画面B */
@@ -9113,7 +9446,7 @@ Scene.prototype._showFrameCount = function() {
 
 module.exports = Scene;
 
-},{"../config":2,"../constant":3,"../createjs/epilogue_b":8,"../logic/createjs":21,"../util":95,"./base":43}],47:[function(require,module,exports){
+},{"../config":2,"../constant":3,"../createjs/epilogue_b":8,"../logic/createjs":21,"../util":97,"./base":44}],49:[function(require,module,exports){
 'use strict';
 
 /* エピローグ画面C */
@@ -9193,7 +9526,7 @@ Scene.prototype._showFrameCount = function() {
 
 module.exports = Scene;
 
-},{"../config":2,"../constant":3,"../createjs/epilogue_c":9,"../logic/createjs":21,"../util":95,"./base":43}],48:[function(require,module,exports){
+},{"../config":2,"../constant":3,"../createjs/epilogue_c":9,"../logic/createjs":21,"../util":97,"./base":44}],50:[function(require,module,exports){
 'use strict';
 var cjs = require("../createjs");
 var images = require("../image_store");
@@ -9369,7 +9702,7 @@ LoadingScene.prototype._loadBGM = function(url, successCallback) {
 };
 module.exports = LoadingScene;
 
-},{"../config":2,"../createjs":4,"../image_store":20,"../util":95,"./base":43}],49:[function(require,module,exports){
+},{"../config":2,"../createjs":4,"../image_store":20,"../util":97,"./base":44}],51:[function(require,module,exports){
 'use strict';
 
 /* プロローグ画面2 */
@@ -9606,7 +9939,7 @@ Scene.prototype._showMessage = function() {
 
 module.exports = Scene;
 
-},{"../config":2,"../constant":3,"../logic/serif":26,"../serif/prologue2":64,"../util":95,"./base":43}],50:[function(require,module,exports){
+},{"../config":2,"../constant":3,"../logic/serif":26,"../serif/prologue2":66,"../util":97,"./base":44}],52:[function(require,module,exports){
 'use strict';
 
 /* スタッフロール */
@@ -9684,7 +10017,7 @@ Scene.prototype._showFrameCount = function() {
 
 module.exports = Scene;
 
-},{"../config":2,"../constant":3,"../createjs/staffroll":11,"../logic/createjs":21,"../util":95,"./base":43}],51:[function(require,module,exports){
+},{"../config":2,"../constant":3,"../createjs/staffroll":11,"../logic/createjs":21,"../util":97,"./base":44}],53:[function(require,module,exports){
 'use strict';
 
 /* ステージ画面 */
@@ -10263,7 +10596,7 @@ Scene.prototype.notifyClearEnd = function() {
 
 module.exports = Scene;
 
-},{"../config":2,"../constant":3,"../enemy/stage1":14,"../enemy/stage2":15,"../enemy/stage3":16,"../enemy/stage4":17,"../enemy/stage5":18,"../logic/manager":24,"../object/boss/aya":29,"../object/boss/merry":31,"../object/boss/sanae":32,"../object/boss/yukari":33,"../object/boss/yuuka":34,"../object/bullet":35,"../object/character":36,"../object/effect":37,"../object/enemy":38,"../object/item":39,"../object/shot":41,"../serif/stage1/after":65,"../serif/stage1/before":66,"../serif/stage2/after":67,"../serif/stage2/before":68,"../serif/stage3/after":69,"../serif/stage3/before":70,"../serif/stage4/after":71,"../serif/stage4/before":72,"../serif/stage5/after":73,"../serif/stage5/before":74,"../util":95,"./base":43,"./stage/state/boss":53,"./stage/state/pause":54,"./stage/state/result_clear":56,"./stage/state/result_gameover":57,"./stage/state/start":58,"./stage/state/talk_after":59,"./stage/state/talk_before":61,"./stage/state/way":62}],52:[function(require,module,exports){
+},{"../config":2,"../constant":3,"../enemy/stage1":14,"../enemy/stage2":15,"../enemy/stage3":16,"../enemy/stage4":17,"../enemy/stage5":18,"../logic/manager":24,"../object/boss/aya":30,"../object/boss/merry":32,"../object/boss/sanae":33,"../object/boss/yukari":34,"../object/boss/yuuka":35,"../object/bullet":36,"../object/character":37,"../object/effect":38,"../object/enemy":39,"../object/item":40,"../object/shot":42,"../serif/stage1/after":67,"../serif/stage1/before":68,"../serif/stage2/after":69,"../serif/stage2/before":70,"../serif/stage3/after":71,"../serif/stage3/before":72,"../serif/stage4/after":73,"../serif/stage4/before":74,"../serif/stage5/after":75,"../serif/stage5/before":76,"../util":97,"./base":44,"./stage/state/boss":55,"./stage/state/pause":56,"./stage/state/result_clear":58,"./stage/state/result_gameover":59,"./stage/state/start":60,"./stage/state/talk_after":61,"./stage/state/talk_before":63,"./stage/state/way":64}],54:[function(require,module,exports){
 'use strict';
 
 /* ステージ状態の基底クラス */
@@ -10296,7 +10629,7 @@ BaseState.prototype.updateDisplay = function(){
 
 module.exports = BaseState;
 
-},{}],53:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 'use strict';
 
 var BaseState = require('./base');
@@ -10458,7 +10791,7 @@ State.prototype._showVital = function(){
 
 module.exports = State;
 
-},{"../../../config":2,"../../../constant":3,"../../../util":95,"./base":52}],54:[function(require,module,exports){
+},{"../../../config":2,"../../../constant":3,"../../../util":97,"./base":54}],56:[function(require,module,exports){
 'use strict';
 
 // ポーズ
@@ -10543,7 +10876,7 @@ PauseState.prototype.updateDisplay = function(){
 
 module.exports = PauseState;
 
-},{"../../../constant":3,"../../../util":95,"./base":52}],55:[function(require,module,exports){
+},{"../../../constant":3,"../../../util":97,"./base":54}],57:[function(require,module,exports){
 'use strict';
 
 /* 結果画面基底クラス */
@@ -10688,7 +11021,7 @@ State.prototype.resultName = function(){
 
 module.exports = State;
 
-},{"../../../config":2,"../../../constant":3,"../../../util":95,"./base":52}],56:[function(require,module,exports){
+},{"../../../config":2,"../../../constant":3,"../../../util":97,"./base":54}],58:[function(require,module,exports){
 'use strict';
 
 // クリア リザルト
@@ -10713,7 +11046,7 @@ ResultState.prototype.resultName = function(){
 
 module.exports = ResultState;
 
-},{"../../../util":95,"./result_base":55}],57:[function(require,module,exports){
+},{"../../../util":97,"./result_base":57}],59:[function(require,module,exports){
 'use strict';
 
 // ゲームオーバー リザルト
@@ -10829,7 +11162,7 @@ ResultState.prototype.resultName = function(){
 
 module.exports = ResultState;
 
-},{"../../../constant":3,"../../../util":95,"./result_base":55}],58:[function(require,module,exports){
+},{"../../../constant":3,"../../../util":97,"./result_base":57}],60:[function(require,module,exports){
 'use strict';
 
 /* 道中 最初のタイトル表示 */
@@ -10964,7 +11297,7 @@ State.prototype.updateDisplay = function(){
 };
 module.exports = State;
 
-},{"../../../constant":3,"../../../util":95,"./base":52}],59:[function(require,module,exports){
+},{"../../../constant":3,"../../../util":97,"./base":54}],61:[function(require,module,exports){
 'use strict';
 
 // ボス戦後のセリフ
@@ -10998,7 +11331,7 @@ TalkState.prototype.notifyTalkEnd = function () {
 
 module.exports = TalkState;
 
-},{"../../../config":2,"../../../util":95,"./talk_base":60}],60:[function(require,module,exports){
+},{"../../../config":2,"../../../util":97,"./talk_base":62}],62:[function(require,module,exports){
 'use strict';
 
 var BaseState = require('./base');
@@ -11215,7 +11548,7 @@ State.prototype.notifyTalkEnd = function () {
 
 module.exports = State;
 
-},{"../../../config":2,"../../../constant":3,"../../../logic/serif":26,"../../../util":95,"./base":52}],61:[function(require,module,exports){
+},{"../../../config":2,"../../../constant":3,"../../../logic/serif":26,"../../../util":97,"./base":54}],63:[function(require,module,exports){
 'use strict';
 
 // ボス戦前のセリフ
@@ -11249,7 +11582,7 @@ TalkState.prototype.notifyTalkEnd = function () {
 
 module.exports = TalkState;
 
-},{"../../../config":2,"../../../util":95,"./talk_base":60}],62:[function(require,module,exports){
+},{"../../../config":2,"../../../util":97,"./talk_base":62}],64:[function(require,module,exports){
 'use strict';
 
 // 敵生成終了から次のシーンまでの間隔
@@ -11369,7 +11702,7 @@ State.prototype.updateDisplay = function(){
 
 module.exports = State;
 
-},{"../../../config":2,"../../../constant":3,"../../../logic/enemy_appear":22,"../../../util":95,"./base":52}],63:[function(require,module,exports){
+},{"../../../config":2,"../../../constant":3,"../../../logic/enemy_appear":22,"../../../util":97,"./base":54}],65:[function(require,module,exports){
 'use strict';
 
 /* タイトル画面 */
@@ -11418,7 +11751,10 @@ OpeningScene.prototype.run = function(){
 			this.game.playSound('select');
 			this.game.notifyTitleDoneToPrologue();
 	}
-
+	else if(this.game.isKeyPush(Constant.BUTTON_SPACE)) {
+			this.game.playSound('select');
+			this.game.notifyTitleDoneToConfig();
+	}
 };
 
 // 画面更新
@@ -11473,7 +11809,7 @@ OpeningScene.prototype.updateDisplay = function(){
 
 module.exports = OpeningScene;
 
-},{"../config":2,"../constant":3,"../util":95,"./base":43}],64:[function(require,module,exports){
+},{"../config":2,"../constant":3,"../util":97,"./base":44}],66:[function(require,module,exports){
 'use strict';
 
 // セリフ
@@ -11481,7 +11817,7 @@ var Serif =
 [{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":null},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"早朝の散歩も良いものね。"},{"pos":"right","exp":null,"chara":null,"fukidashi":"normal","serif":"…約束を守りなさい。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"ん…誰？\n誰かいるの？"},{"pos":"right","exp":"normal","chara":"hatena","fukidashi":null,"serif":"　"},{"pos":"right","exp":"owata","chara":"hatena","fukidashi":"orange","serif":"わたしです"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"なんだ私か。"},{"pos":"right","exp":"normal","chara":"hatena","fukidashi":"normal","serif":"え…。\nちょっとは驚きなさいよ。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"驚いたわよ。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"で、貴方誰なの？\n見たところ、私に\nそっくりだけど。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"orange","serif":"…ひょっとして、\nドッペルゲンガーってやつ？"},{"pos":"right","exp":"normal","chara":"ganger","fukidashi":"normal","serif":"そのようなものね。\nそんなことより、\n貴方に大事な話があるの。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"なにかしら。"},{"pos":"right","exp":"normal","chara":"ganger","fukidashi":"normal","serif":"約束を守りなさい。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"約束？\n何か約束してたっけ。"},{"pos":"right","exp":"normal","chara":"ganger","fukidashi":"normal","serif":"ほら、博麗神社に…。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"orange","serif":"あぁ、そういえば前に\nメリーと約束してたわ。"},{"pos":"right","exp":null,"chara":null,"fukidashi":null,"serif":null},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"博麗神社の入り口を\n調べようって。\nそのことかしら？"},{"pos":"right","exp":"calm","chara":"merry","fukidashi":"orange","serif":"蓮子？\nこんなところで何してるの？"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"orange","serif":"あ、噂をすれば。\nメリー、見て！\n私のドッペルゲンガーが…"},{"pos":"right","exp":"normal","chara":null,"fukidashi":"normal","serif":null},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"あれ？いない…。"},{"pos":"right","exp":"normal","chara":"merry","fukidashi":"normal","serif":"どうしたの？"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"それが、\nかくかくしかじかで。"},{"pos":"right","exp":"calm","chara":"merry","fukidashi":"normal","serif":"ふーん。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"覚えてる？前に博霊神社の\n入り口を調べようって\n約束してたこと。"},{"pos":"right","exp":"calm","chara":"merry","fukidashi":"normal","serif":"そうだっけ？"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"orange","serif":"ねえ、今から行ってみない？"},{"pos":"right","exp":"troubled","chara":"merry","fukidashi":"normal","serif":"今から？面倒だわ…。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"なんだか気になるのよ。"},{"pos":"right","exp":"disappointed","chara":"merry","fukidashi":"normal","serif":"うっ…急にめまいと頭痛が。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"絶対嘘でしょ、それ。"},{"pos":"right","exp":"disappointed","chara":"merry","fukidashi":"normal","serif":"全身の骨が折れてるかも。"},{"pos":"left","exp":"surprised","chara":"renko","fukidashi":"purple","serif":"さっきまで\n元気だったじゃない！"},{"pos":"right","exp":"troubled","chara":"merry","fukidashi":"normal","serif":"うーん、気が進まないわ。"},{"pos":"left","exp":"disappointed","chara":"renko","fukidashi":"normal","serif":"はぁ…。そんなに嫌なら\n仕方ないわね。\n私一人で行ってくるわ。"}];
 module.exports = Serif;
 
-},{}],65:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 'use strict';
 
 // セリフ
@@ -11489,7 +11825,7 @@ var Serif= [{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","s
 
 module.exports = Serif;
 
-},{}],66:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 'use strict';
 
 // セリフ
@@ -11497,7 +11833,7 @@ var Serif= [{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","ser
 
 module.exports = Serif;
 
-},{}],67:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 'use strict';
 
 // セリフ
@@ -11505,7 +11841,7 @@ var Serif= [{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","s
 
 module.exports = Serif;
 
-},{}],68:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 'use strict';
 
 // セリフ
@@ -11513,7 +11849,7 @@ var Serif= [{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","ser
 
 module.exports = Serif;
 
-},{}],69:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 'use strict';
 
 // セリフ
@@ -11521,28 +11857,28 @@ var Serif= [{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","ser
 
 module.exports = Serif;
 
-},{}],70:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 'use strict';
 
 // セリフ
 var Serif= [{"pos":"left","exp":"disappointed","chara":"renko","fukidashi":"normal","serif":"闇雲に進んできたけれど、\n神社の姿は影も見えず。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"あれは誰かしら？"},{"pos":"right","exp":"normal","chara":"yuuka","fukidashi":"orange","serif":"天には星。\n地には花。\n人には悲鳴。"},{"pos":"left","exp":"troubled","chara":"renko","fukidashi":"normal","serif":"最後はどうかと思うわ。"},{"pos":"right","exp":"grin","chara":"yuuka","fukidashi":"normal","serif":"虐めると、人は\nいい声で鳴くのよ。"},{"pos":"right","exp":"normal","chara":"yuuka","fukidashi":"normal","serif":"ところで貴方は\n人間かしら？"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"今だけは\n人外でありたいわね。"},{"pos":"right","exp":"normal","chara":"yuuka","fukidashi":"normal","serif":"まあ、結局は何でも\nいいのよ。等しく、私が\n虐めてあげる。"}];
 module.exports = Serif;
 
-},{}],71:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 'use strict';
 
 // セリフ
 var Serif= [{"pos":"right","exp":"normal","chara":"yukari","fukidashi":"normal","serif":null},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"私、博霊神社に\n行きたいの。"},{"pos":"right","exp":"normal","chara":"yukari","fukidashi":"orange","serif":"どうぞ、お通りなさい。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"あら、あっさりね。"},{"pos":"right","exp":"normal","chara":"yukari","fukidashi":"normal","serif":"流石の私も疲れたわ。\nお願いした人数を\n忘れるほどに。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"人を追い返すのが仕事？\n変わってるのね。"},{"pos":"right","exp":"normal","chara":"yukari","fukidashi":"normal","serif":"まあね。貴方は\n楽しめたのかしら？"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"ちょっぴり楽しくなって\nきた…かな？"},{"pos":"right","exp":"anger","chara":"yukari","fukidashi":"normal","serif":"以前の貴方はもっと\n楽しく遊んでいたはずよ。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"…？\nどこかで前に会ったことが？"},{"pos":"right","exp":"normal","chara":"yukari","fukidashi":"normal","serif":"そうね。\nきっと、何度も。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"覚えてないなあ。"},{"pos":"right","exp":"disappointed","chara":"yukari","fukidashi":"normal","serif":"みんな疲れてるのね。\nああ…眠くなってきた…。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"さっき起きたところじゃ\nないの？"},{"pos":"right","exp":"normal","chara":"yukari","fukidashi":"normal","serif":"もう行きなさい。\nまた会えるといいわね。"}];
 module.exports = Serif;
 
-},{}],72:[function(require,module,exports){
+},{}],74:[function(require,module,exports){
 'use strict';
 
 // セリフ
 var Serif= [{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":null},{"pos":"right","exp":"disappointed","chara":"yukari","fukidashi":"orange","serif":"私としたことが。つい、\n早起きしてしまったわ。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"もう夕方みたいだけど…"},{"pos":"right","exp":"normal","chara":"yukari","fukidashi":"normal","serif":"まだ、夕方なのよ。"},{"pos":"left","exp":"troubled","chara":"renko","fukidashi":"normal","serif":"ああ…。また変な人に\n絡まれるのね、私。"},{"pos":"right","exp":"normal","chara":"yukari","fukidashi":"normal","serif":"まあ、人ではないけれど。\nひとつ、貴方に\nお願いがあるの。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"叶えられるかは分からない\nけど、聞くだけ聞いて\nあげるわ。"},{"pos":"right","exp":"anger","chara":"yukari","fukidashi":"normal","serif":"簡単なことよ。今来た道を\n戻って欲しいだけ。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"聞けそうにないなあ。"},{"pos":"right","exp":"normal","chara":"yukari","fukidashi":"normal","serif":"なら仕方ないわね。少し\n遊んでいってもらうわよ。"}];
 module.exports = Serif;
 
-},{}],73:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 'use strict';
 
 // セリフ
@@ -11550,14 +11886,14 @@ var Serif= [];
 
 module.exports = Serif;
 
-},{}],74:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 'use strict';
 
 // セリフ
 var Serif= [{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"この石段の先が\n博霊神社ね。"},{"pos":"right","exp":"anger","chara":"merry","fukidashi":"normal","serif":"蓮子…。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"orange","serif":"あれ？メリーじゃない。\nどうしてここに？"},{"pos":"right","exp":"anger","chara":"merry","fukidashi":"normal","serif":"もう一度言うわ。\nこの石段を登らないで。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"もう一度…？\nメリー、何を言ってるの？"},{"pos":"right","exp":"anger","chara":"merry","fukidashi":"normal","serif":"石段を登らないで。\n来た道を帰って頂戴。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"何かおかしいわ…。\n貴方、誰…？"},{"pos":"right","exp":"grin","chara":"merry","fukidashi":"normal","serif":"変なことを言うのね。私は\nメリーよ？貴方の知ってる、\nマエリベリー・ハーン。"},{"pos":"left","exp":"anger","chara":"renko","fukidashi":"normal","serif":"違う…。おかしい…。"},{"pos":"right","exp":"grin","chara":"merry","fukidashi":"normal","serif":"さ、もう夜も遅いわ。\n帰りましょ、蓮子。"},{"pos":"left","exp":"anger","chara":"renko","fukidashi":"normal","serif":"この先に何かあるのね。\n通してよ。"},{"pos":"right","exp":"furious","chara":"merry","fukidashi":"purple","serif":"絶対に行かせないわ！\n貴方は何度でも\n来た道を戻るのよ！"}];
 module.exports = Serif;
 
-},{}],75:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 'use strict';
 
 var ShotTypes = [
@@ -11598,7 +11934,7 @@ var ShotTypes = [
 
 module.exports = ShotTypes;
 
-},{}],76:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 'use strict';
 
 /* スペルカードの基底クラス */
@@ -11871,7 +12207,7 @@ SpellBase.prototype.onend = function( ) {
 
 module.exports = SpellBase;
 
-},{"../config":2,"../constant":3,"../util":95}],77:[function(require,module,exports){
+},{"../config":2,"../constant":3,"../util":97}],79:[function(require,module,exports){
 'use strict';
 
 /* パラメータ指定で作るスペルカード基底クラス */
@@ -12034,7 +12370,7 @@ BaseParamSpell.prototype.bulletDictionary = function( ) {
 
 module.exports = BaseParamSpell;
 
-},{"../util":95,"./base":76}],78:[function(require,module,exports){
+},{"../util":97,"./base":78}],80:[function(require,module,exports){
 'use strict';
 
 /* 自機スペルカード */
@@ -12098,7 +12434,7 @@ Spell.prototype.charaImage = function() { return "renko_normal"; };
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../util":95,"../base":76}],79:[function(require,module,exports){
+},{"../../constant":3,"../../util":97,"../base":78}],81:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -12194,7 +12530,7 @@ Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../util":95,"../base":76}],80:[function(require,module,exports){
+},{"../../constant":3,"../../util":97,"../base":78}],82:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -12252,7 +12588,7 @@ Spell.prototype._getRandomValue = function( range ) {
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../logic/mersenne":25,"../../util":95,"../base":76}],81:[function(require,module,exports){
+},{"../../constant":3,"../../logic/mersenne":25,"../../util":97,"../base":78}],83:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -12301,7 +12637,7 @@ Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../util":95,"../base":76}],82:[function(require,module,exports){
+},{"../../constant":3,"../../util":97,"../base":78}],84:[function(require,module,exports){
 'use strict';
 
 /* TODO:
@@ -12379,7 +12715,7 @@ Spell.prototype._getRandomValue = function( range ) {
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../logic/mersenne":25,"../../util":95,"../base":76}],83:[function(require,module,exports){
+},{"../../constant":3,"../../logic/mersenne":25,"../../util":97,"../base":78}],85:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -12467,7 +12803,7 @@ Spell.prototype.bulletDictionary = function( ) {
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../util":95,"../param_base":77}],84:[function(require,module,exports){
+},{"../../constant":3,"../../util":97,"../param_base":79}],86:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -12553,7 +12889,7 @@ Spell.prototype.initY = function( ) { return 100; };
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../util":95,"../base":76}],85:[function(require,module,exports){
+},{"../../constant":3,"../../util":97,"../base":78}],87:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -12644,7 +12980,7 @@ var spell5_1 = function( ) {
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../util":95,"../param_base":77}],86:[function(require,module,exports){
+},{"../../constant":3,"../../util":97,"../param_base":79}],88:[function(require,module,exports){
 'use strict';
 
 
@@ -12805,7 +13141,7 @@ Spell.prototype.initY = function() { return 100; };
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../logic/manager":24,"../../logic/mersenne":25,"../../object/vector_base":42,"../../util":95,"../base":76}],87:[function(require,module,exports){
+},{"../../constant":3,"../../logic/manager":24,"../../logic/mersenne":25,"../../object/vector_base":43,"../../util":97,"../base":78}],89:[function(require,module,exports){
 'use strict';
 
 /* 幽香 ビーム */
@@ -13001,7 +13337,7 @@ Spell.prototype._getRandomValue = function( range ) {
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../logic/mersenne":25,"../../object/base":28,"../../util":95,"../base":76}],88:[function(require,module,exports){
+},{"../../constant":3,"../../logic/mersenne":25,"../../object/base":29,"../../util":97,"../base":78}],90:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -13106,7 +13442,7 @@ Spell.prototype._getRandomValue = function( range ) {
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../util":95,"../base":76}],89:[function(require,module,exports){
+},{"../../constant":3,"../../util":97,"../base":78}],91:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -13196,7 +13532,7 @@ Spell.prototype.charaImage = function() { return "yukari_normal"; };
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../util":95,"../base":76}],90:[function(require,module,exports){
+},{"../../constant":3,"../../util":97,"../base":78}],92:[function(require,module,exports){
 'use strict';
 
 /* 幽香 蝶を生成するオブジェクト */
@@ -13351,7 +13687,7 @@ Spell.prototype.initY = function() { return 240; };
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../logic/manager":24,"../../object/vector_base":42,"../../util":95,"../base":76}],91:[function(require,module,exports){
+},{"../../constant":3,"../../logic/manager":24,"../../object/vector_base":43,"../../util":97,"../base":78}],93:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -13434,7 +13770,7 @@ Spell.prototype.initY = function() { return 100; };
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../util":95,"../base":76}],92:[function(require,module,exports){
+},{"../../constant":3,"../../util":97,"../base":78}],94:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -13520,7 +13856,7 @@ Spell.prototype.bulletDictionary = function( ) {
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../util":95,"../param_base":77}],93:[function(require,module,exports){
+},{"../../constant":3,"../../util":97,"../param_base":79}],95:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -13609,7 +13945,7 @@ Spell.prototype._getRandomValue = function( range ) {
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../util":95,"../base":76}],94:[function(require,module,exports){
+},{"../../constant":3,"../../util":97,"../base":78}],96:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -13714,7 +14050,7 @@ Spell.prototype.charaImage = function() { return "merry_furious"; };
 
 module.exports = Spell;
 
-},{"../../constant":3,"../../util":95,"../base":76}],95:[function(require,module,exports){
+},{"../../constant":3,"../../util":97,"../base":78}],97:[function(require,module,exports){
 'use strict';
 var Util = {
 	// 継承
@@ -13749,7 +14085,7 @@ var Util = {
 
 module.exports = Util;
 
-},{}],96:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*
@@ -13880,7 +14216,7 @@ function(b,a,c,h,d){b.__touch.pointers[a]&&b._handlePointerMove(a,c,h,d)};c._han
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],97:[function(require,module,exports){
+},{}],99:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*
@@ -13907,7 +14243,7 @@ c.length-1;b>=0;b--)a=c[b].id,this._managed[a]==1&&(this.removeChildAt(b),delete
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],98:[function(require,module,exports){
+},{}],100:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /**
@@ -13961,7 +14297,7 @@ a.src,true);if(createjs.PreloadJS.isBinary(a.type))this._request.responseType="a
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],99:[function(require,module,exports){
+},{}],101:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*
@@ -14002,4 +14338,4 @@ function(a,b){var h=Math.PI*2;return function(c){if(c==0||c==1)return c;var e=b/
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[27]);
+},{}]},{},[28]);
