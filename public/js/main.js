@@ -9161,7 +9161,7 @@ ConfigScene.prototype.updateDisplay = function(){
 
 		// button_id 表示
 		if(MENU[i].key) {
-			ctx.fillText(map[ MENU[i].key ], button_id_x, y);
+			ctx.fillText(Number(map[ MENU[i].key ]) + 1, button_id_x, y); // 配列の index なので -1 されているので、+1する
 		}
 
 		y+= 30;
