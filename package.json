@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "electron ./public/electron.js",
-    "build:win": "cd public && electron-packager ./ Yakusoku --overwrite --platform=win32  --arch=x64 --version=0.36.1 --icon=icon.ico --out ../ --ignore '(main.js|.m4a)' --asar",
-    "build:mac": "cd public && electron-packager ./ Yakusoku --overwrite --platform=darwin --arch=x64 --version=0.36.1 --icon=icon.icns --out ../ --ignore '(main.js|.m4a)' --asar",
-    "build:trial:win": "cd public && electron-packager ./ YakusokuTrial --overwrite --platform=win32  --arch=x64 --version=0.36.1 --icon=icon.ico --out ../ --ignore '(production/|main.js|.m4a)' --asar",
-    "build:trial:mac": "cd public && electron-packager ./ YakusokuTrial --overwrite --platform=darwin --arch=x64 --version=0.36.1 --icon=icon.icns --out ../ --ignore '(production/|main.js|.m4a)' --asar"
+    "build:win": "cd public && electron-packager ./ Yakusoku --overwrite --platform=win32  --arch=x64 --version=1.6.0 --icon=icon.ico --out ../ --ignore '(main.js|.m4a)' --asar",
+    "build:mac": "cd public && electron-packager ./ Yakusoku --overwrite --platform=darwin --arch=x64 --version=1.6.0 --icon=icon.icns --out ../ --ignore '(main.js|.m4a)' --asar",
+    "build:trial:win": "cd public && electron-packager ./ YakusokuTrial --overwrite --platform=win32  --arch=x64 --version=1.6.0 --icon=icon.ico --out ../ --ignore '(production/|main.js|.m4a)' --asar",
+    "build:trial:mac": "cd public && electron-packager ./ YakusokuTrial --overwrite --platform=darwin --arch=x64 --version=1.6.0 --icon=icon.icns --out ../ --ignore '(production/|main.js|.m4a)' --asar"
 
   },
   "repository": {
