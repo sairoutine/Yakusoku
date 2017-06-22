@@ -227,62 +227,63 @@ var Config = {
 	THRESHOLD_EPILOGUE_A: 4500000,
 	THRESHOLD_EPILOGUE_B: 3000000,
 
+	// sound ファイルはogg と m4a の二種類を用意してください
 	SOUNDS: {
 		select: {
 			id: 0x01,
-			path:   'sound/select.wav',
+			path:   'sound/select',
 			volume: 0.80
 		},
 		boss_shot_small: {
 			id: 0x02,
-			path: 'sound/boss_shot_small.wav',
+			path: 'sound/boss_shot_small',
 			volume: 0.25
 		},
 		boss_shot_big: {
 			id: 0x04,
-			path: 'sound/boss_shot_big.wav',
+			path: 'sound/boss_shot_big',
 			volume: 0.25
 		},
 		spellcard: {
 			id: 0x08,
-			path: 'sound/spellcard.wav',
+			path: 'sound/spellcard',
 			volume: 0.30
 		},
 		dead: {
 			id: 0x10,
-			path: 'sound/dead.wav',
+			path: 'sound/dead',
 			volume: 0.15
 		},
 		enemy_vanish: {
 			id: 0x20,
-			path: 'sound/enemy_vanish.wav',
+			path: 'sound/enemy_vanish',
 			volume: 0.2
 		},
 		graze: {
 			id: 0x40,
-			path: 'sound/graze.wav',
+			path: 'sound/graze',
 			volume: 0.4
 		},
 		powerup: {
 			id: 0x80,
-			path: 'sound/powerup.wav',
+			path: 'sound/powerup',
 			volume: 0.8
 		},
 		kirakira: {
 			id: 0x100,
-			path: 'sound/kira2.wav',
+			path: 'sound/kira2',
 			volume: 0.4
 		},
 		boss_powerup: {
 			id: 0x200,
-			path: 'sound/boss_powerup.wav',
+			path: 'sound/boss_powerup',
 			volume: 1.0
 		},
 
 		/*
 		shot: {
 			id: 0x02,
-			path: 'sound/shot.wav',
+			path: 'sound/shot',
 			volume: 0.08
 		},
 	   */
@@ -9639,6 +9640,7 @@ LoadingScene.prototype._loadCjsImages = function() {
 
 LoadingScene.prototype._loadSounds = function() {
 	var self = this;
+	var ext = self.canPlayOgg ? ".ogg" : ".m4a";
 
 	// SEが読み込まれたら読み込んだ数を+1
 	var onload_function = function() {
@@ -9648,7 +9650,7 @@ LoadingScene.prototype._loadSounds = function() {
 	var conf, audio;
 	for(var key in Config.SOUNDS) {
 		conf = Config.SOUNDS[key];
-		audio = new Audio(conf.path);
+		audio = new Audio(conf.path + ext);
 		audio.volume = conf.volume;
 		audio.addEventListener('canplay', onload_function);
 		audio.load();
@@ -9660,7 +9662,7 @@ LoadingScene.prototype._loadSounds = function() {
 LoadingScene.prototype._loadBGMs = function() {
 	var self = this;
 
-	var ext = this.canPlayOgg ? ".ogg" : ".m4a";
+	var ext = self.canPlayOgg ? ".ogg" : ".m4a";
 
 	for(var key in Config.BGMS) {
 		/*jshint loopfunc: true */
