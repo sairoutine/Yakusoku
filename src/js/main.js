@@ -69,3 +69,8 @@ window.changeFullScreen = function () {
 	}
 };
 
+// Electron のレンダラプロセスならば
+if(window.require) {
+	require('electron').webFrame.setZoomLevelLimits(1,1); //zoomさせない
+}
+
