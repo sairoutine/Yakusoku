@@ -62,11 +62,15 @@ LoadingScene.prototype.run = function(){
 // 画面更新
 LoadingScene.prototype.updateDisplay = function(){
 	this.game.clearCanvas();
+
 	var material_num = Config.ALL_MATERIAL_NUM;
 	var loaded_material_num = this.loaded_material_num();
 
 	var ctx = this.game.surface;
 	ctx.save();
+	ctx.fillStyle = 'rgb(255,255,255)' ;
+	ctx.fillRect(0, 0, this.game.width, this.game.height);
+
 	ctx.fillStyle = 'rgb( 0, 0, 0 )';
 	ctx.textAlign = 'right';
 	ctx.font = "30px 'Migu'" ;
