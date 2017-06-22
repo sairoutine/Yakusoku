@@ -110,6 +110,7 @@ LoadingScene.prototype._loadCjsImages = function() {
 
 LoadingScene.prototype._loadSounds = function() {
 	var self = this;
+	var ext = self.canPlayOgg ? ".ogg" : ".m4a";
 
 	// SEが読み込まれたら読み込んだ数を+1
 	var onload_function = function() {
@@ -119,7 +120,7 @@ LoadingScene.prototype._loadSounds = function() {
 	var conf, audio;
 	for(var key in Config.SOUNDS) {
 		conf = Config.SOUNDS[key];
-		audio = new Audio(conf.path);
+		audio = new Audio(conf.path + ext);
 		audio.volume = conf.volume;
 		audio.addEventListener('canplay', onload_function);
 		audio.load();
@@ -131,7 +132,7 @@ LoadingScene.prototype._loadSounds = function() {
 LoadingScene.prototype._loadBGMs = function() {
 	var self = this;
 
-	var ext = this.canPlayOgg ? ".ogg" : ".m4a";
+	var ext = self.canPlayOgg ? ".ogg" : ".m4a";
 
 	for(var key in Config.BGMS) {
 		/*jshint loopfunc: true */
