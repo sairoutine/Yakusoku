@@ -71,6 +71,5 @@ window.changeFullScreen = function () {
 
 // Electron のレンダラプロセスならば
 if(window.require) {
-	require('electron').webFrame.setZoomLevelLimits(1,1); //zoomさせない
+	window.require('electron').webFrame.setVisualZoomLevelLimits(1,1); //zoomさせない
 }
-
