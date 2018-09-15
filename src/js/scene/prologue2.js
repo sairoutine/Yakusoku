@@ -204,7 +204,7 @@ Scene.prototype._showMessage = function() {
 
 	ctx.font = "18px 'Migu'";
 	ctx.textAlign = 'left';
-	ctx.textBaseAlign = 'middle';
+	//ctx.textBaseline = 'middle';
 	ctx.fillStyle = 'rgb( 0, 0, 0 )';
 
 	var x, y;

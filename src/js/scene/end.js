@@ -69,7 +69,7 @@ Scene.prototype._showFrameCount = function() {
 
 	ctx.font = "18px 'Migu'";
 	ctx.textAlign = 'left';
-	ctx.textBaseAlign = 'middle';
+	//ctx.textBaseline = 'middle';
 	ctx.fillStyle = 'rgb( 255, 0, 255 )';
 
 	// フレーム数

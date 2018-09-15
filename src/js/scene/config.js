@@ -114,7 +114,7 @@ ConfigScene.prototype.updateDisplay = function(){
 	ctx.globalAlpha = 1.0; // 半透明戻す
 	ctx.font = "18px 'Migu'";
 	ctx.textAlign = 'left';
-	ctx.textBaseAlign = 'middle';
+	//ctx.textBaseline = 'middle';
 	ctx.fillStyle = 'rgb( 255, 255, 255 )';
 
 	var map = this.game.user_config.getKeyToButtonIdMap();
