@@ -1,382 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-
-},{}],2:[function(require,module,exports){
-(function (process){
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-// resolves . and .. elements in a path array with directory names there
-// must be no slashes, empty elements, or device names (c:\) in the array
-// (so also no leading and trailing slashes - it does not distinguish
-// relative and absolute paths)
-function normalizeArray(parts, allowAboveRoot) {
-  // if the path tries to go above the root, `up` ends up > 0
-  var up = 0;
-  for (var i = parts.length - 1; i >= 0; i--) {
-    var last = parts[i];
-    if (last === '.') {
-      parts.splice(i, 1);
-    } else if (last === '..') {
-      parts.splice(i, 1);
-      up++;
-    } else if (up) {
-      parts.splice(i, 1);
-      up--;
-    }
-  }
-
-  // if the path is allowed to go above the root, restore leading ..s
-  if (allowAboveRoot) {
-    for (; up--; up) {
-      parts.unshift('..');
-    }
-  }
-
-  return parts;
-}
-
-// Split a filename into [root, dir, basename, ext], unix version
-// 'root' is just a slash, or nothing.
-var splitPathRe =
-    /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
-var splitPath = function(filename) {
-  return splitPathRe.exec(filename).slice(1);
-};
-
-// path.resolve([from ...], to)
-// posix version
-exports.resolve = function() {
-  var resolvedPath = '',
-      resolvedAbsolute = false;
-
-  for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
-    var path = (i >= 0) ? arguments[i] : process.cwd();
-
-    // Skip empty and invalid entries
-    if (typeof path !== 'string') {
-      throw new TypeError('Arguments to path.resolve must be strings');
-    } else if (!path) {
-      continue;
-    }
-
-    resolvedPath = path + '/' + resolvedPath;
-    resolvedAbsolute = path.charAt(0) === '/';
-  }
-
-  // At this point the path should be resolved to a full absolute path, but
-  // handle relative paths to be safe (might happen when process.cwd() fails)
-
-  // Normalize the path
-  resolvedPath = normalizeArray(filter(resolvedPath.split('/'), function(p) {
-    return !!p;
-  }), !resolvedAbsolute).join('/');
-
-  return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
-};
-
-// path.normalize(path)
-// posix version
-exports.normalize = function(path) {
-  var isAbsolute = exports.isAbsolute(path),
-      trailingSlash = substr(path, -1) === '/';
-
-  // Normalize the path
-  path = normalizeArray(filter(path.split('/'), function(p) {
-    return !!p;
-  }), !isAbsolute).join('/');
-
-  if (!path && !isAbsolute) {
-    path = '.';
-  }
-  if (path && trailingSlash) {
-    path += '/';
-  }
-
-  return (isAbsolute ? '/' : '') + path;
-};
-
-// posix version
-exports.isAbsolute = function(path) {
-  return path.charAt(0) === '/';
-};
-
-// posix version
-exports.join = function() {
-  var paths = Array.prototype.slice.call(arguments, 0);
-  return exports.normalize(filter(paths, function(p, index) {
-    if (typeof p !== 'string') {
-      throw new TypeError('Arguments to path.join must be strings');
-    }
-    return p;
-  }).join('/'));
-};
-
-
-// path.relative(from, to)
-// posix version
-exports.relative = function(from, to) {
-  from = exports.resolve(from).substr(1);
-  to = exports.resolve(to).substr(1);
-
-  function trim(arr) {
-    var start = 0;
-    for (; start < arr.length; start++) {
-      if (arr[start] !== '') break;
-    }
-
-    var end = arr.length - 1;
-    for (; end >= 0; end--) {
-      if (arr[end] !== '') break;
-    }
-
-    if (start > end) return [];
-    return arr.slice(start, end - start + 1);
-  }
-
-  var fromParts = trim(from.split('/'));
-  var toParts = trim(to.split('/'));
-
-  var length = Math.min(fromParts.length, toParts.length);
-  var samePartsLength = length;
-  for (var i = 0; i < length; i++) {
-    if (fromParts[i] !== toParts[i]) {
-      samePartsLength = i;
-      break;
-    }
-  }
-
-  var outputParts = [];
-  for (var i = samePartsLength; i < fromParts.length; i++) {
-    outputParts.push('..');
-  }
-
-  outputParts = outputParts.concat(toParts.slice(samePartsLength));
-
-  return outputParts.join('/');
-};
-
-exports.sep = '/';
-exports.delimiter = ':';
-
-exports.dirname = function(path) {
-  var result = splitPath(path),
-      root = result[0],
-      dir = result[1];
-
-  if (!root && !dir) {
-    // No dirname whatsoever
-    return '.';
-  }
-
-  if (dir) {
-    // It has a dirname, strip trailing slash
-    dir = dir.substr(0, dir.length - 1);
-  }
-
-  return root + dir;
-};
-
-
-exports.basename = function(path, ext) {
-  var f = splitPath(path)[2];
-  // TODO: make this comparison case-insensitive on windows?
-  if (ext && f.substr(-1 * ext.length) === ext) {
-    f = f.substr(0, f.length - ext.length);
-  }
-  return f;
-};
-
-
-exports.extname = function(path) {
-  return splitPath(path)[3];
-};
-
-function filter (xs, f) {
-    if (xs.filter) return xs.filter(f);
-    var res = [];
-    for (var i = 0; i < xs.length; i++) {
-        if (f(xs[i], i, xs)) res.push(xs[i]);
-    }
-    return res;
-}
-
-// String.prototype.substr - negative index don't work in IE8
-var substr = 'ab'.substr(-1) === 'b'
-    ? function (str, start, len) { return str.substr(start, len) }
-    : function (str, start, len) {
-        if (start < 0) start = str.length + start;
-        return str.substr(start, len);
-    }
-;
-
-}).call(this,require('_process'))
-},{"_process":3}],3:[function(require,module,exports){
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-(function () {
-    try {
-        cachedSetTimeout = setTimeout;
-    } catch (e) {
-        cachedSetTimeout = function () {
-            throw new Error('setTimeout is not defined');
-        }
-    }
-    try {
-        cachedClearTimeout = clearTimeout;
-    } catch (e) {
-        cachedClearTimeout = function () {
-            throw new Error('clearTimeout is not defined');
-        }
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        return setTimeout(fun, 0);
-    } else {
-        return cachedSetTimeout.call(null, fun, 0);
-    }
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        clearTimeout(marker);
-    } else {
-        cachedClearTimeout.call(null, marker);
-    }
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-},{}],4:[function(require,module,exports){
-(function (__dirname){
-var fs = require('fs')
-var path = require('path')
-
-var pathFile = path.join(__dirname, 'path.txt')
-
-if (fs.existsSync(pathFile)) {
-  module.exports = path.join(__dirname, fs.readFileSync(pathFile, 'utf-8'))
-} else {
-  throw new Error('Electron failed to install correctly, please delete node_modules/' + path.basename(__dirname) + ' and try installing again')
-}
-
-}).call(this,"/node_modules/electron")
-},{"fs":1,"path":2}],5:[function(require,module,exports){
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 /*
   https://github.com/banksean wrapped Makoto Matsumoto and Takuji Nishimura's code in a namespace
   so it's better encapsulated. Now you can have multiple random number generators
@@ -588,7 +210,7 @@ MersenneTwister.prototype.random_long = function() {
 
 module.exports = MersenneTwister;
 
-},{}],6:[function(require,module,exports){
+},{}],2:[function(require,module,exports){
 'use strict';
 
 var Constant = require('./constant');
@@ -1058,7 +680,7 @@ Config.ALL_MATERIAL_NUM = Object.keys(Config.IMAGES).length + Object.keys(Config
 
 module.exports = Config;
 
-},{"./constant":7}],7:[function(require,module,exports){
+},{"./constant":3}],3:[function(require,module,exports){
 'use strict';
 
 var Constant = {
@@ -1152,7 +774,7 @@ Constant.DEFAULT_KEYCONFIG = {
 
 module.exports = Constant;
 
-},{}],8:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 'use strict';
 require("easeljs");
 require("tweenjs");
@@ -1162,7 +784,7 @@ var cjs = window.createjs;
 
 module.exports = cjs;
 
-},{"easeljs":102,"movieclipjs":103,"preloadjs":104,"tweenjs":105}],9:[function(require,module,exports){
+},{"easeljs":98,"movieclipjs":99,"preloadjs":100,"tweenjs":101}],5:[function(require,module,exports){
 'use strict';
 var createjs = require("../createjs");
 var images = require("../image_store");
@@ -1371,7 +993,7 @@ p.nominalBounds = new cjs.Rectangle(-96.2,-96.2,192.5,192.5);
 var lib, images, createjs;
 module.exports = lib;
 
-},{"../createjs":8,"../image_store":24}],10:[function(require,module,exports){
+},{"../createjs":4,"../image_store":20}],6:[function(require,module,exports){
 'use strict';
 var createjs = require("../createjs");
 var images = require("../image_store");
@@ -2045,7 +1667,7 @@ p.nominalBounds = new cjs.Rectangle(0,0,640,480);
 var lib, images, createjs;
 module.exports = lib;
 
-},{"../createjs":8,"../image_store":24}],11:[function(require,module,exports){
+},{"../createjs":4,"../image_store":20}],7:[function(require,module,exports){
 'use strict';
 var createjs = require("../createjs");
 var images = require("../image_store");
@@ -2981,7 +2603,7 @@ p.nominalBounds = new cjs.Rectangle(0,0,640,480);
 var lib, images, createjs;
 module.exports = lib;
 
-},{"../createjs":8,"../image_store":24}],12:[function(require,module,exports){
+},{"../createjs":4,"../image_store":20}],8:[function(require,module,exports){
 'use strict';
 var createjs = require("../createjs");
 var images = require("../image_store");
@@ -3248,7 +2870,7 @@ p.nominalBounds = new cjs.Rectangle(0,0,640,480);
 var lib, images, createjs;
 module.exports = lib;
 
-},{"../createjs":8,"../image_store":24}],13:[function(require,module,exports){
+},{"../createjs":4,"../image_store":20}],9:[function(require,module,exports){
 'use strict';
 var createjs = require("../createjs");
 var images = require("../image_store");
@@ -3699,7 +3321,7 @@ p.nominalBounds = new cjs.Rectangle(0,0,640,480);
 var lib, images, createjs;
 module.exports = lib;
 
-},{"../createjs":8,"../image_store":24}],14:[function(require,module,exports){
+},{"../createjs":4,"../image_store":20}],10:[function(require,module,exports){
 'use strict';
 var createjs = require("../createjs");
 var images = require("../image_store");
@@ -3950,7 +3572,7 @@ p.nominalBounds = new cjs.Rectangle(-23.2,-18.8,112.3,99.4);
 var lib, images, createjs;
 module.exports = lib;
 
-},{"../createjs":8,"../image_store":24}],15:[function(require,module,exports){
+},{"../createjs":4,"../image_store":20}],11:[function(require,module,exports){
 'use strict';
 var createjs = require("../createjs");
 var images = require("../image_store");
@@ -4410,7 +4032,7 @@ p.nominalBounds = new cjs.Rectangle(0,0,640,480);
 var lib, images, createjs;
 module.exports = lib;
 
-},{"../createjs":8,"../image_store":24}],16:[function(require,module,exports){
+},{"../createjs":4,"../image_store":20}],12:[function(require,module,exports){
 'use strict';
 var Constant = require('../constant');
 var i;
@@ -4529,7 +4151,7 @@ for(i = 0; i < 8; i++) {
 
 module.exports = BulletDictionaries;
 
-},{"../constant":7}],17:[function(require,module,exports){
+},{"../constant":3}],13:[function(require,module,exports){
 'use strict';
 
 var Constant = require('../constant');
@@ -4827,7 +4449,7 @@ BulletTypes[Constant.BULLET_BUTTERFLY_RED] = {
 
 module.exports = BulletTypes;
 
-},{"../constant":7}],18:[function(require,module,exports){
+},{"../constant":3}],14:[function(require,module,exports){
 'use strict';
 var Constant = require('../constant');
 var EnemiesParams = [ ] ;
@@ -5162,7 +4784,7 @@ EnemiesParams.sort(function(a, b) {
 
 module.exports = EnemiesParams;
 
-},{"../constant":7}],19:[function(require,module,exports){
+},{"../constant":3}],15:[function(require,module,exports){
 'use strict';
 var Constant = require('../constant');
 var mersenne = require('../logic/mersenne');
@@ -5408,7 +5030,7 @@ EnemiesParams.sort(function(a, b) {
 
 module.exports = EnemiesParams;
 
-},{"../constant":7,"../logic/mersenne":29}],20:[function(require,module,exports){
+},{"../constant":3,"../logic/mersenne":25}],16:[function(require,module,exports){
 'use strict';
 var Constant = require('../constant');
 
@@ -5628,7 +5250,7 @@ EnemiesParams.sort(function(a, b) {
 
 module.exports = EnemiesParams;
 
-},{"../constant":7}],21:[function(require,module,exports){
+},{"../constant":3}],17:[function(require,module,exports){
 'use strict';
 var Constant = require('../constant');
 
@@ -5948,7 +5570,7 @@ EnemiesParams.sort(function(a, b) {
 
 module.exports = EnemiesParams;
 
-},{"../constant":7}],22:[function(require,module,exports){
+},{"../constant":3}],18:[function(require,module,exports){
 'use strict';
 var Constant = require('../constant');
 
@@ -6169,7 +5791,7 @@ EnemiesParams.sort(function(a, b) {
 
 module.exports = EnemiesParams;
 
-},{"../constant":7}],23:[function(require,module,exports){
+},{"../constant":3}],19:[function(require,module,exports){
 'use strict';
 
 // FPS計算する間隔(frame)
@@ -6627,10 +6249,10 @@ Game.prototype = {
 
 module.exports = Game;
 
-},{"./config":6,"./constant":7,"./logic/user_config":31,"./scene/config":49,"./scene/end":50,"./scene/epilogue_a":51,"./scene/epilogue_b":52,"./scene/epilogue_c":53,"./scene/loading":54,"./scene/prologue2":55,"./scene/staffroll":56,"./scene/stage":57,"./scene/title":69}],24:[function(require,module,exports){
+},{"./config":2,"./constant":3,"./logic/user_config":27,"./scene/config":45,"./scene/end":46,"./scene/epilogue_a":47,"./scene/epilogue_b":48,"./scene/epilogue_c":49,"./scene/loading":50,"./scene/prologue2":51,"./scene/staffroll":52,"./scene/stage":53,"./scene/title":65}],20:[function(require,module,exports){
 module.exports = {};
 
-},{}],25:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 'use strict';
 
 var cjs = require("../createjs");
@@ -6651,7 +6273,7 @@ CreateJS.prototype.update = function() {
 
 module.exports = CreateJS;
 
-},{"../createjs":8}],26:[function(require,module,exports){
+},{"../createjs":4}],22:[function(require,module,exports){
 'use strict';
 
 /* 雑魚敵の出現管理クラス */
@@ -6691,7 +6313,7 @@ Logic.prototype.getLastEnemyAppearCount = function() {
 };
 module.exports = Logic;
 
-},{}],27:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 'use strict';
 
 var Factory = function(Class, stage) {
@@ -6724,7 +6346,7 @@ Factory.prototype.free = function(obj) {
 
 module.exports = Factory;
 
-},{}],28:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 'use strict';
 
 var Factory = require("./factory");
@@ -6864,13 +6486,13 @@ Manager.prototype.checkGrazeWithObject = function(obj1) {
 
 module.exports = Manager;
 
-},{"./factory":27}],29:[function(require,module,exports){
+},{"./factory":23}],25:[function(require,module,exports){
 var MersenneTwister = require('mersenne-twister');
 var generator = new MersenneTwister(1000); //乱数初期化
 
 module.exports = generator;
 
-},{"mersenne-twister":5}],30:[function(require,module,exports){
+},{"mersenne-twister":1}],26:[function(require,module,exports){
 'use strict';
 
 /* セリフを扱うクラス */
@@ -7037,7 +6659,7 @@ Logic.prototype.lines = function () {
 
 module.exports = Logic;
 
-},{"../config":6}],31:[function(require,module,exports){
+},{"../config":2}],27:[function(require,module,exports){
 'use strict';
 var Constant = require("../constant");
 
@@ -7151,7 +6773,7 @@ UserConfig.prototype.dump = function() {
 
 module.exports = UserConfig;
 
-},{"../constant":7}],32:[function(require,module,exports){
+},{"../constant":3}],28:[function(require,module,exports){
 'use strict';
 var Game = require('./game');
 
@@ -7225,11 +6847,10 @@ window.changeFullScreen = function () {
 
 // Electron のレンダラプロセスならば
 if(window.require) {
-	require('electron').webFrame.setZoomLevelLimits(1,1); //zoomさせない
+	window.require('electron').webFrame.setVisualZoomLevelLimits(1,1); //zoomさせない
 }
 
-
-},{"./game":23,"electron":4}],33:[function(require,module,exports){
+},{"./game":19}],29:[function(require,module,exports){
 'use strict';
 
 /* オブジェクトの基底クラス */
@@ -7470,7 +7091,7 @@ ObjectBase.prototype.notifyGraze = function() {
 
 module.exports = ObjectBase;
 
-},{"../config":6}],34:[function(require,module,exports){
+},{"../config":2}],30:[function(require,module,exports){
 'use strict';
 
 /* ステージ1ボス 射命丸文 */
@@ -7520,7 +7141,7 @@ Aya.prototype.MAX_VITAL = function() { return 60 * 45; };
 
 module.exports = Aya;
 
-},{"../../spell/stage1/spell1":85,"../../spell/stage1/spell2":86,"../../spell/stage1/spell3":87,"../../spell/stage1/spell4":88,"../../util":101,"./base":35}],35:[function(require,module,exports){
+},{"../../spell/stage1/spell1":81,"../../spell/stage1/spell2":82,"../../spell/stage1/spell3":83,"../../spell/stage1/spell4":84,"../../util":97,"./base":31}],31:[function(require,module,exports){
 'use strict';
 
 /* ボス基底クラス */
@@ -7895,7 +7516,7 @@ BossBase.prototype.MAX_VITAL = function() {
 
 module.exports = BossBase;
 
-},{"../../config":6,"../../constant":7,"../../createjs/boss_appearance":9,"../../createjs/explosion":14,"../../logic/createjs":25,"../../object/shot":46,"../../util":101,"../base":33}],36:[function(require,module,exports){
+},{"../../config":2,"../../constant":3,"../../createjs/boss_appearance":5,"../../createjs/explosion":10,"../../logic/createjs":21,"../../object/shot":42,"../../util":97,"../base":29}],32:[function(require,module,exports){
 'use strict';
 
 /* ステージ5ボス マエリベリー・ハーン */
@@ -7942,7 +7563,7 @@ Merry.prototype.MAX_VITAL = function() { return 60 * 1.5 * 60; };
 module.exports = Merry;
 
 
-},{"../../spell/stage5/spell1":98,"../../spell/stage5/spell2":99,"../../spell/stage5/spell3":100,"../../util":101,"./base":35}],37:[function(require,module,exports){
+},{"../../spell/stage5/spell1":94,"../../spell/stage5/spell2":95,"../../spell/stage5/spell3":96,"../../util":97,"./base":31}],33:[function(require,module,exports){
 'use strict';
 
 /* ステージ2ボス 東風谷早苗 */
@@ -7990,7 +7611,7 @@ Sanae.prototype.MAX_VITAL = function() { return 60 * 60; };
 
 module.exports = Sanae;
 
-},{"../../spell/stage2/spell1":89,"../../spell/stage2/spell2":90,"../../spell/stage2/spell3":91,"../../util":101,"./base":35}],38:[function(require,module,exports){
+},{"../../spell/stage2/spell1":85,"../../spell/stage2/spell2":86,"../../spell/stage2/spell3":87,"../../util":97,"./base":31}],34:[function(require,module,exports){
 'use strict';
 
 /* ステージ4ボス 八雲紫 */
@@ -8036,7 +7657,7 @@ Yukari.prototype.bgm = function() { return 'stage4'; };
 Yukari.prototype.MAX_VITAL = function() { return 60 * 75; };
 module.exports = Yukari;
 
-},{"../../spell/stage4/spell1":95,"../../spell/stage4/spell2":96,"../../spell/stage4/spell3":97,"../../util":101,"./base":35}],39:[function(require,module,exports){
+},{"../../spell/stage4/spell1":91,"../../spell/stage4/spell2":92,"../../spell/stage4/spell3":93,"../../util":97,"./base":31}],35:[function(require,module,exports){
 'use strict';
 
 /* ステージ3ボス 風見幽香 */
@@ -8083,7 +7704,7 @@ Yuuka.prototype.MAX_VITAL = function() { return 60 * 75; };
 
 module.exports = Yuuka;
 
-},{"../../spell/stage3/spell1":92,"../../spell/stage3/spell2":93,"../../spell/stage3/spell3":94,"../../util":101,"./base":35}],40:[function(require,module,exports){
+},{"../../spell/stage3/spell1":88,"../../spell/stage3/spell2":89,"../../spell/stage3/spell3":90,"../../util":97,"./base":31}],36:[function(require,module,exports){
 'use strict';
 
 /* 敵弾オブジェクト */
@@ -8191,7 +7812,7 @@ Bullet.prototype.spriteHeight = function() { return this.height; };
 
 module.exports = Bullet;
 
-},{"../constant":7,"../enemy/bullet_types":17,"../util":101,"./vector_base":47}],41:[function(require,module,exports){
+},{"../constant":3,"../enemy/bullet_types":13,"../util":97,"./vector_base":43}],37:[function(require,module,exports){
 'use strict';
 
 /* 自機 */
@@ -8639,7 +8260,7 @@ Character.prototype.spriteHeight = function() { return 48; };
 
 module.exports = Character;
 
-},{"../constant":7,"../logic/manager":28,"../spell/renko/spell1":84,"../util":101,"./base":33,"./boss/base":35,"./bullet":40,"./enemy":43,"./option":45}],42:[function(require,module,exports){
+},{"../constant":3,"../logic/manager":24,"../spell/renko/spell1":80,"../util":97,"./base":29,"./boss/base":31,"./bullet":36,"./enemy":39,"./option":41}],38:[function(require,module,exports){
 'use strict';
 
 /* エフェクトオブジェクト */
@@ -8708,7 +8329,7 @@ Effect.prototype.updateDisplay = function() {
 
 module.exports = Effect;
 
-},{"../constant":7,"../util":101,"./base":33}],43:[function(require,module,exports){
+},{"../constant":3,"../util":97,"./base":29}],39:[function(require,module,exports){
 'use strict';
 
 /* 敵オブジェクト */
@@ -8875,7 +8496,7 @@ Enemy.prototype.spriteHeight = function() { return 32; };
 
 module.exports = Enemy;
 
-},{"../constant":7,"../enemy/bullet_dictionaries":16,"../object/shot":46,"../util":101,"./vector_base":47}],44:[function(require,module,exports){
+},{"../constant":3,"../enemy/bullet_dictionaries":12,"../object/shot":42,"../util":97,"./vector_base":43}],40:[function(require,module,exports){
 'use strict';
 
 /* アイテムオブジェクト */
@@ -9002,7 +8623,7 @@ Item.prototype.spriteHeight = function() { return 16; };
 
 module.exports = Item;
 
-},{"../constant":7,"../util":101,"./vector_base":47}],45:[function(require,module,exports){
+},{"../constant":3,"../util":97,"./vector_base":43}],41:[function(require,module,exports){
 'use strict';
 
 /* 自機オプションオブジェクト */
@@ -9068,7 +8689,7 @@ Option.prototype.spriteHeight = function() { return 16; };
 
 module.exports = Option;
 
-},{"../constant":7,"../util":101,"./base":33}],46:[function(require,module,exports){
+},{"../constant":3,"../util":97,"./base":29}],42:[function(require,module,exports){
 'use strict';
 
 /* 自機弾オブジェクト */
@@ -9187,7 +8808,7 @@ Shot.prototype.isEnableDamage = function(obj) {
 
 module.exports = Shot;
 
-},{"../constant":7,"../shot_types":81,"../util":101,"./vector_base":47}],47:[function(require,module,exports){
+},{"../constant":3,"../shot_types":77,"../util":97,"./vector_base":43}],43:[function(require,module,exports){
 'use strict';
 
 /* ベクトルを使って動くオブジェクトの基底クラス */
@@ -9373,7 +8994,7 @@ VectorBase.prototype.calc_moveY = function() {
 
 module.exports = VectorBase;
 
-},{"../constant":7,"../util":101,"./base":33}],48:[function(require,module,exports){
+},{"../constant":3,"../util":97,"./base":29}],44:[function(require,module,exports){
 'use strict';
 
 /* シーンの基底クラス */
@@ -9414,7 +9035,7 @@ BaseScene.prototype.onunload = function(){
 
 module.exports = BaseScene;
 
-},{}],49:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 'use strict';
 
 /* コンフィグ画面 */
@@ -9531,7 +9152,7 @@ ConfigScene.prototype.updateDisplay = function(){
 	ctx.globalAlpha = 1.0; // 半透明戻す
 	ctx.font = "18px 'Migu'";
 	ctx.textAlign = 'left';
-	ctx.textBaseAlign = 'middle';
+	//ctx.textBaseline = 'middle';
 	ctx.fillStyle = 'rgb( 255, 255, 255 )';
 
 	var map = this.game.user_config.getKeyToButtonIdMap();
@@ -9577,7 +9198,7 @@ ConfigScene.prototype.getAnyButtonId = function(){
 
 module.exports = ConfigScene;
 
-},{"../config":6,"../constant":7,"../util":101,"./base":48}],50:[function(require,module,exports){
+},{"../config":2,"../constant":3,"../util":97,"./base":44}],46:[function(require,module,exports){
 'use strict';
 
 /* エンド */
@@ -9649,7 +9270,7 @@ Scene.prototype._showFrameCount = function() {
 
 	ctx.font = "18px 'Migu'";
 	ctx.textAlign = 'left';
-	ctx.textBaseAlign = 'middle';
+	//ctx.textBaseline = 'middle';
 	ctx.fillStyle = 'rgb( 255, 0, 255 )';
 
 	// フレーム数
@@ -9660,7 +9281,7 @@ Scene.prototype._showFrameCount = function() {
 
 module.exports = Scene;
 
-},{"../config":6,"../constant":7,"../createjs/end":10,"../logic/createjs":25,"../util":101,"./base":48}],51:[function(require,module,exports){
+},{"../config":2,"../constant":3,"../createjs/end":6,"../logic/createjs":21,"../util":97,"./base":44}],47:[function(require,module,exports){
 'use strict';
 
 /* エピローグ画面A */
@@ -9736,7 +9357,7 @@ Scene.prototype._showFrameCount = function() {
 
 	ctx.font = "18px 'Migu'";
 	ctx.textAlign = 'left';
-	ctx.textBaseAlign = 'middle';
+	//ctx.textBaseline = 'middle';
 	ctx.fillStyle = 'rgb( 255, 0, 255 )';
 
 	// フレーム数
@@ -9750,7 +9371,7 @@ Scene.prototype._showFrameCount = function() {
 
 module.exports = Scene;
 
-},{"../config":6,"../constant":7,"../createjs/epilogue_a":11,"../logic/createjs":25,"../util":101,"./base":48}],52:[function(require,module,exports){
+},{"../config":2,"../constant":3,"../createjs/epilogue_a":7,"../logic/createjs":21,"../util":97,"./base":44}],48:[function(require,module,exports){
 'use strict';
 
 /* エピローグ画面B */
@@ -9816,7 +9437,7 @@ Scene.prototype._showFrameCount = function() {
 
 	ctx.font = "18px 'Migu'";
 	ctx.textAlign = 'left';
-	ctx.textBaseAlign = 'middle';
+	//ctx.textBaseline = 'middle';
 	ctx.fillStyle = 'rgb( 255, 255, 255 )';
 
 	// フレーム数
@@ -9830,7 +9451,7 @@ Scene.prototype._showFrameCount = function() {
 
 module.exports = Scene;
 
-},{"../config":6,"../constant":7,"../createjs/epilogue_b":12,"../logic/createjs":25,"../util":101,"./base":48}],53:[function(require,module,exports){
+},{"../config":2,"../constant":3,"../createjs/epilogue_b":8,"../logic/createjs":21,"../util":97,"./base":44}],49:[function(require,module,exports){
 'use strict';
 
 /* エピローグ画面C */
@@ -9896,7 +9517,7 @@ Scene.prototype._showFrameCount = function() {
 
 	ctx.font = "18px 'Migu'";
 	ctx.textAlign = 'left';
-	ctx.textBaseAlign = 'middle';
+	//ctx.textBaseline = 'middle';
 	ctx.fillStyle = 'rgb( 255, 255, 255 )';
 
 	// フレーム数
@@ -9910,7 +9531,7 @@ Scene.prototype._showFrameCount = function() {
 
 module.exports = Scene;
 
-},{"../config":6,"../constant":7,"../createjs/epilogue_c":13,"../logic/createjs":25,"../util":101,"./base":48}],54:[function(require,module,exports){
+},{"../config":2,"../constant":3,"../createjs/epilogue_c":9,"../logic/createjs":21,"../util":97,"./base":44}],50:[function(require,module,exports){
 'use strict';
 var cjs = require("../createjs");
 var images = require("../image_store");
@@ -10091,7 +9712,7 @@ LoadingScene.prototype._loadBGM = function(url, successCallback) {
 };
 module.exports = LoadingScene;
 
-},{"../config":6,"../createjs":8,"../image_store":24,"../util":101,"./base":48}],55:[function(require,module,exports){
+},{"../config":2,"../createjs":4,"../image_store":20,"../util":97,"./base":44}],51:[function(require,module,exports){
 'use strict';
 
 /* プロローグ画面2 */
@@ -10298,7 +9919,7 @@ Scene.prototype._showMessage = function() {
 
 	ctx.font = "18px 'Migu'";
 	ctx.textAlign = 'left';
-	ctx.textBaseAlign = 'middle';
+	//ctx.textBaseline = 'middle';
 	ctx.fillStyle = 'rgb( 0, 0, 0 )';
 
 	var x, y;
@@ -10328,7 +9949,7 @@ Scene.prototype._showMessage = function() {
 
 module.exports = Scene;
 
-},{"../config":6,"../constant":7,"../logic/serif":30,"../serif/prologue2":70,"../util":101,"./base":48}],56:[function(require,module,exports){
+},{"../config":2,"../constant":3,"../logic/serif":26,"../serif/prologue2":66,"../util":97,"./base":44}],52:[function(require,module,exports){
 'use strict';
 
 /* スタッフロール */
@@ -10395,7 +10016,7 @@ Scene.prototype._showFrameCount = function() {
 
 	ctx.font = "18px 'Migu'";
 	ctx.textAlign = 'left';
-	ctx.textBaseAlign = 'middle';
+	//ctx.textBaseline = 'middle';
 	ctx.fillStyle = 'rgb( 255, 0, 255 )';
 
 	// フレーム数
@@ -10406,7 +10027,7 @@ Scene.prototype._showFrameCount = function() {
 
 module.exports = Scene;
 
-},{"../config":6,"../constant":7,"../createjs/staffroll":15,"../logic/createjs":25,"../util":101,"./base":48}],57:[function(require,module,exports){
+},{"../config":2,"../constant":3,"../createjs/staffroll":11,"../logic/createjs":21,"../util":97,"./base":44}],53:[function(require,module,exports){
 'use strict';
 
 /* ステージ画面 */
@@ -10985,7 +10606,7 @@ Scene.prototype.notifyClearEnd = function() {
 
 module.exports = Scene;
 
-},{"../config":6,"../constant":7,"../enemy/stage1":18,"../enemy/stage2":19,"../enemy/stage3":20,"../enemy/stage4":21,"../enemy/stage5":22,"../logic/manager":28,"../object/boss/aya":34,"../object/boss/merry":36,"../object/boss/sanae":37,"../object/boss/yukari":38,"../object/boss/yuuka":39,"../object/bullet":40,"../object/character":41,"../object/effect":42,"../object/enemy":43,"../object/item":44,"../object/shot":46,"../serif/stage1/after":71,"../serif/stage1/before":72,"../serif/stage2/after":73,"../serif/stage2/before":74,"../serif/stage3/after":75,"../serif/stage3/before":76,"../serif/stage4/after":77,"../serif/stage4/before":78,"../serif/stage5/after":79,"../serif/stage5/before":80,"../util":101,"./base":48,"./stage/state/boss":59,"./stage/state/pause":60,"./stage/state/result_clear":62,"./stage/state/result_gameover":63,"./stage/state/start":64,"./stage/state/talk_after":65,"./stage/state/talk_before":67,"./stage/state/way":68}],58:[function(require,module,exports){
+},{"../config":2,"../constant":3,"../enemy/stage1":14,"../enemy/stage2":15,"../enemy/stage3":16,"../enemy/stage4":17,"../enemy/stage5":18,"../logic/manager":24,"../object/boss/aya":30,"../object/boss/merry":32,"../object/boss/sanae":33,"../object/boss/yukari":34,"../object/boss/yuuka":35,"../object/bullet":36,"../object/character":37,"../object/effect":38,"../object/enemy":39,"../object/item":40,"../object/shot":42,"../serif/stage1/after":67,"../serif/stage1/before":68,"../serif/stage2/after":69,"../serif/stage2/before":70,"../serif/stage3/after":71,"../serif/stage3/before":72,"../serif/stage4/after":73,"../serif/stage4/before":74,"../serif/stage5/after":75,"../serif/stage5/before":76,"../util":97,"./base":44,"./stage/state/boss":55,"./stage/state/pause":56,"./stage/state/result_clear":58,"./stage/state/result_gameover":59,"./stage/state/start":60,"./stage/state/talk_after":61,"./stage/state/talk_before":63,"./stage/state/way":64}],54:[function(require,module,exports){
 'use strict';
 
 /* ステージ状態の基底クラス */
@@ -11018,7 +10639,7 @@ BaseState.prototype.updateDisplay = function(){
 
 module.exports = BaseState;
 
-},{}],59:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 'use strict';
 
 var BaseState = require('./base');
@@ -11180,7 +10801,7 @@ State.prototype._showVital = function(){
 
 module.exports = State;
 
-},{"../../../config":6,"../../../constant":7,"../../../util":101,"./base":58}],60:[function(require,module,exports){
+},{"../../../config":2,"../../../constant":3,"../../../util":97,"./base":54}],56:[function(require,module,exports){
 'use strict';
 
 // ポーズ
@@ -11241,7 +10862,7 @@ PauseState.prototype.updateDisplay = function(){
 	ctx.textAlign = 'center';
 	ctx.font = "18px 'Migu'" ;
 
-	ctx.textBaseAlign = 'middle';
+	//ctx.textBaseline = 'middle';
 
 	if(this.selectIndex === 0) {
 		ctx.globalAlpha = 1.0;
@@ -11265,7 +10886,7 @@ PauseState.prototype.updateDisplay = function(){
 
 module.exports = PauseState;
 
-},{"../../../constant":7,"../../../util":101,"./base":58}],61:[function(require,module,exports){
+},{"../../../constant":3,"../../../util":97,"./base":54}],57:[function(require,module,exports){
 'use strict';
 
 /* 結果画面基底クラス */
@@ -11410,7 +11031,7 @@ State.prototype.resultName = function(){
 
 module.exports = State;
 
-},{"../../../config":6,"../../../constant":7,"../../../util":101,"./base":58}],62:[function(require,module,exports){
+},{"../../../config":2,"../../../constant":3,"../../../util":97,"./base":54}],58:[function(require,module,exports){
 'use strict';
 
 // クリア リザルト
@@ -11435,7 +11056,7 @@ ResultState.prototype.resultName = function(){
 
 module.exports = ResultState;
 
-},{"../../../util":101,"./result_base":61}],63:[function(require,module,exports){
+},{"../../../util":97,"./result_base":57}],59:[function(require,module,exports){
 'use strict';
 
 // ゲームオーバー リザルト
@@ -11551,7 +11172,7 @@ ResultState.prototype.resultName = function(){
 
 module.exports = ResultState;
 
-},{"../../../constant":7,"../../../util":101,"./result_base":61}],64:[function(require,module,exports){
+},{"../../../constant":3,"../../../util":97,"./result_base":57}],60:[function(require,module,exports){
 'use strict';
 
 /* 道中 最初のタイトル表示 */
@@ -11686,7 +11307,7 @@ State.prototype.updateDisplay = function(){
 };
 module.exports = State;
 
-},{"../../../constant":7,"../../../util":101,"./base":58}],65:[function(require,module,exports){
+},{"../../../constant":3,"../../../util":97,"./base":54}],61:[function(require,module,exports){
 'use strict';
 
 // ボス戦後のセリフ
@@ -11720,7 +11341,7 @@ TalkState.prototype.notifyTalkEnd = function () {
 
 module.exports = TalkState;
 
-},{"../../../config":6,"../../../util":101,"./talk_base":66}],66:[function(require,module,exports){
+},{"../../../config":2,"../../../util":97,"./talk_base":62}],62:[function(require,module,exports){
 'use strict';
 
 var BaseState = require('./base');
@@ -11905,7 +11526,7 @@ State.prototype._showMessage = function() {
 
 	ctx.font = "18px 'Migu'";
 	ctx.textAlign = 'left';
-	ctx.textBaseAlign = 'middle';
+	//ctx.textBaseline = 'middle';
 	ctx.fillStyle = 'rgb( 0, 0, 0 )';
 
 	var x, y;
@@ -11937,7 +11558,7 @@ State.prototype.notifyTalkEnd = function () {
 
 module.exports = State;
 
-},{"../../../config":6,"../../../constant":7,"../../../logic/serif":30,"../../../util":101,"./base":58}],67:[function(require,module,exports){
+},{"../../../config":2,"../../../constant":3,"../../../logic/serif":26,"../../../util":97,"./base":54}],63:[function(require,module,exports){
 'use strict';
 
 // ボス戦前のセリフ
@@ -11971,7 +11592,7 @@ TalkState.prototype.notifyTalkEnd = function () {
 
 module.exports = TalkState;
 
-},{"../../../config":6,"../../../util":101,"./talk_base":66}],68:[function(require,module,exports){
+},{"../../../config":2,"../../../util":97,"./talk_base":62}],64:[function(require,module,exports){
 'use strict';
 
 // 敵生成終了から次のシーンまでの間隔
@@ -12091,7 +11712,7 @@ State.prototype.updateDisplay = function(){
 
 module.exports = State;
 
-},{"../../../config":6,"../../../constant":7,"../../../logic/enemy_appear":26,"../../../util":101,"./base":58}],69:[function(require,module,exports){
+},{"../../../config":2,"../../../constant":3,"../../../logic/enemy_appear":22,"../../../util":97,"./base":54}],65:[function(require,module,exports){
 'use strict';
 
 /* タイトル画面 */
@@ -12198,7 +11819,7 @@ OpeningScene.prototype.updateDisplay = function(){
 
 module.exports = OpeningScene;
 
-},{"../config":6,"../constant":7,"../util":101,"./base":48}],70:[function(require,module,exports){
+},{"../config":2,"../constant":3,"../util":97,"./base":44}],66:[function(require,module,exports){
 'use strict';
 
 // セリフ
@@ -12206,7 +11827,7 @@ var Serif =
 [{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":null},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"早朝の散歩も良いものね。"},{"pos":"right","exp":null,"chara":null,"fukidashi":"normal","serif":"…約束を守りなさい。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"ん…誰？\n誰かいるの？"},{"pos":"right","exp":"normal","chara":"hatena","fukidashi":null,"serif":"　"},{"pos":"right","exp":"owata","chara":"hatena","fukidashi":"orange","serif":"わたしです"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"なんだ私か。"},{"pos":"right","exp":"normal","chara":"hatena","fukidashi":"normal","serif":"え…。\nちょっとは驚きなさいよ。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"驚いたわよ。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"で、貴方誰なの？\n見たところ、私に\nそっくりだけど。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"orange","serif":"…ひょっとして、\nドッペルゲンガーってやつ？"},{"pos":"right","exp":"normal","chara":"ganger","fukidashi":"normal","serif":"そのようなものね。\nそんなことより、\n貴方に大事な話があるの。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"なにかしら。"},{"pos":"right","exp":"normal","chara":"ganger","fukidashi":"normal","serif":"約束を守りなさい。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"約束？\n何か約束してたっけ。"},{"pos":"right","exp":"normal","chara":"ganger","fukidashi":"normal","serif":"ほら、博麗神社に…。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"orange","serif":"あぁ、そういえば前に\nメリーと約束してたわ。"},{"pos":"right","exp":null,"chara":null,"fukidashi":null,"serif":null},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"博麗神社の入り口を\n調べようって。\nそのことかしら？"},{"pos":"right","exp":"calm","chara":"merry","fukidashi":"orange","serif":"蓮子？\nこんなところで何してるの？"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"orange","serif":"あ、噂をすれば。\nメリー、見て！\n私のドッペルゲンガーが…"},{"pos":"right","exp":"normal","chara":null,"fukidashi":"normal","serif":null},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"あれ？いない…。"},{"pos":"right","exp":"normal","chara":"merry","fukidashi":"normal","serif":"どうしたの？"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"それが、\nかくかくしかじかで。"},{"pos":"right","exp":"calm","chara":"merry","fukidashi":"normal","serif":"ふーん。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"覚えてる？前に博霊神社の\n入り口を調べようって\n約束してたこと。"},{"pos":"right","exp":"calm","chara":"merry","fukidashi":"normal","serif":"そうだっけ？"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"orange","serif":"ねえ、今から行ってみない？"},{"pos":"right","exp":"troubled","chara":"merry","fukidashi":"normal","serif":"今から？面倒だわ…。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"なんだか気になるのよ。"},{"pos":"right","exp":"disappointed","chara":"merry","fukidashi":"normal","serif":"うっ…急にめまいと頭痛が。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"絶対嘘でしょ、それ。"},{"pos":"right","exp":"disappointed","chara":"merry","fukidashi":"normal","serif":"全身の骨が折れてるかも。"},{"pos":"left","exp":"surprised","chara":"renko","fukidashi":"purple","serif":"さっきまで\n元気だったじゃない！"},{"pos":"right","exp":"troubled","chara":"merry","fukidashi":"normal","serif":"うーん、気が進まないわ。"},{"pos":"left","exp":"disappointed","chara":"renko","fukidashi":"normal","serif":"はぁ…。そんなに嫌なら\n仕方ないわね。\n私一人で行ってくるわ。"}];
 module.exports = Serif;
 
-},{}],71:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 'use strict';
 
 // セリフ
@@ -12214,7 +11835,7 @@ var Serif= [{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","s
 
 module.exports = Serif;
 
-},{}],72:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 'use strict';
 
 // セリフ
@@ -12222,7 +11843,7 @@ var Serif= [{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","ser
 
 module.exports = Serif;
 
-},{}],73:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 'use strict';
 
 // セリフ
@@ -12230,7 +11851,7 @@ var Serif= [{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","s
 
 module.exports = Serif;
 
-},{}],74:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 'use strict';
 
 // セリフ
@@ -12238,7 +11859,7 @@ var Serif= [{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","ser
 
 module.exports = Serif;
 
-},{}],75:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 'use strict';
 
 // セリフ
@@ -12246,28 +11867,28 @@ var Serif= [{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","ser
 
 module.exports = Serif;
 
-},{}],76:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 'use strict';
 
 // セリフ
 var Serif= [{"pos":"left","exp":"disappointed","chara":"renko","fukidashi":"normal","serif":"闇雲に進んできたけれど、\n神社の姿は影も見えず。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"あれは誰かしら？"},{"pos":"right","exp":"normal","chara":"yuuka","fukidashi":"orange","serif":"天には星。\n地には花。\n人には悲鳴。"},{"pos":"left","exp":"troubled","chara":"renko","fukidashi":"normal","serif":"最後はどうかと思うわ。"},{"pos":"right","exp":"grin","chara":"yuuka","fukidashi":"normal","serif":"虐めると、人は\nいい声で鳴くのよ。"},{"pos":"right","exp":"normal","chara":"yuuka","fukidashi":"normal","serif":"ところで貴方は\n人間かしら？"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"今だけは\n人外でありたいわね。"},{"pos":"right","exp":"normal","chara":"yuuka","fukidashi":"normal","serif":"まあ、結局は何でも\nいいのよ。等しく、私が\n虐めてあげる。"}];
 module.exports = Serif;
 
-},{}],77:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 'use strict';
 
 // セリフ
 var Serif= [{"pos":"right","exp":"normal","chara":"yukari","fukidashi":"normal","serif":null},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"私、博霊神社に\n行きたいの。"},{"pos":"right","exp":"normal","chara":"yukari","fukidashi":"orange","serif":"どうぞ、お通りなさい。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"あら、あっさりね。"},{"pos":"right","exp":"normal","chara":"yukari","fukidashi":"normal","serif":"流石の私も疲れたわ。\nお願いした人数を\n忘れるほどに。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"人を追い返すのが仕事？\n変わってるのね。"},{"pos":"right","exp":"normal","chara":"yukari","fukidashi":"normal","serif":"まあね。貴方は\n楽しめたのかしら？"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"ちょっぴり楽しくなって\nきた…かな？"},{"pos":"right","exp":"anger","chara":"yukari","fukidashi":"normal","serif":"以前の貴方はもっと\n楽しく遊んでいたはずよ。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"…？\nどこかで前に会ったことが？"},{"pos":"right","exp":"normal","chara":"yukari","fukidashi":"normal","serif":"そうね。\nきっと、何度も。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"覚えてないなあ。"},{"pos":"right","exp":"disappointed","chara":"yukari","fukidashi":"normal","serif":"みんな疲れてるのね。\nああ…眠くなってきた…。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"さっき起きたところじゃ\nないの？"},{"pos":"right","exp":"normal","chara":"yukari","fukidashi":"normal","serif":"もう行きなさい。\nまた会えるといいわね。"}];
 module.exports = Serif;
 
-},{}],78:[function(require,module,exports){
+},{}],74:[function(require,module,exports){
 'use strict';
 
 // セリフ
 var Serif= [{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":null},{"pos":"right","exp":"disappointed","chara":"yukari","fukidashi":"orange","serif":"私としたことが。つい、\n早起きしてしまったわ。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"もう夕方みたいだけど…"},{"pos":"right","exp":"normal","chara":"yukari","fukidashi":"normal","serif":"まだ、夕方なのよ。"},{"pos":"left","exp":"troubled","chara":"renko","fukidashi":"normal","serif":"ああ…。また変な人に\n絡まれるのね、私。"},{"pos":"right","exp":"normal","chara":"yukari","fukidashi":"normal","serif":"まあ、人ではないけれど。\nひとつ、貴方に\nお願いがあるの。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"normal","serif":"叶えられるかは分からない\nけど、聞くだけ聞いて\nあげるわ。"},{"pos":"right","exp":"anger","chara":"yukari","fukidashi":"normal","serif":"簡単なことよ。今来た道を\n戻って欲しいだけ。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"聞けそうにないなあ。"},{"pos":"right","exp":"normal","chara":"yukari","fukidashi":"normal","serif":"なら仕方ないわね。少し\n遊んでいってもらうわよ。"}];
 module.exports = Serif;
 
-},{}],79:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 'use strict';
 
 // セリフ
@@ -12275,14 +11896,14 @@ var Serif= [];
 
 module.exports = Serif;
 
-},{}],80:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 'use strict';
 
 // セリフ
 var Serif= [{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"この石段の先が\n博霊神社ね。"},{"pos":"right","exp":"anger","chara":"merry","fukidashi":"normal","serif":"蓮子…。"},{"pos":"left","exp":"normal","chara":"renko","fukidashi":"orange","serif":"あれ？メリーじゃない。\nどうしてここに？"},{"pos":"right","exp":"anger","chara":"merry","fukidashi":"normal","serif":"もう一度言うわ。\nこの石段を登らないで。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"もう一度…？\nメリー、何を言ってるの？"},{"pos":"right","exp":"anger","chara":"merry","fukidashi":"normal","serif":"石段を登らないで。\n来た道を帰って頂戴。"},{"pos":"left","exp":"calm","chara":"renko","fukidashi":"normal","serif":"何かおかしいわ…。\n貴方、誰…？"},{"pos":"right","exp":"grin","chara":"merry","fukidashi":"normal","serif":"変なことを言うのね。私は\nメリーよ？貴方の知ってる、\nマエリベリー・ハーン。"},{"pos":"left","exp":"anger","chara":"renko","fukidashi":"normal","serif":"違う…。おかしい…。"},{"pos":"right","exp":"grin","chara":"merry","fukidashi":"normal","serif":"さ、もう夜も遅いわ。\n帰りましょ、蓮子。"},{"pos":"left","exp":"anger","chara":"renko","fukidashi":"normal","serif":"この先に何かあるのね。\n通してよ。"},{"pos":"right","exp":"furious","chara":"merry","fukidashi":"purple","serif":"絶対に行かせないわ！\n貴方は何度でも\n来た道を戻るのよ！"}];
 module.exports = Serif;
 
-},{}],81:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 'use strict';
 
 var ShotTypes = [
@@ -12323,7 +11944,7 @@ var ShotTypes = [
 
 module.exports = ShotTypes;
 
-},{}],82:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 'use strict';
 
 /* スペルカードの基底クラス */
@@ -12596,7 +12217,7 @@ SpellBase.prototype.onend = function( ) {
 
 module.exports = SpellBase;
 
-},{"../config":6,"../constant":7,"../util":101}],83:[function(require,module,exports){
+},{"../config":2,"../constant":3,"../util":97}],79:[function(require,module,exports){
 'use strict';
 
 /* パラメータ指定で作るスペルカード基底クラス */
@@ -12759,7 +12380,7 @@ BaseParamSpell.prototype.bulletDictionary = function( ) {
 
 module.exports = BaseParamSpell;
 
-},{"../util":101,"./base":82}],84:[function(require,module,exports){
+},{"../util":97,"./base":78}],80:[function(require,module,exports){
 'use strict';
 
 /* 自機スペルカード */
@@ -12823,7 +12444,7 @@ Spell.prototype.charaImage = function() { return "renko_normal"; };
 
 module.exports = Spell;
 
-},{"../../constant":7,"../../util":101,"../base":82}],85:[function(require,module,exports){
+},{"../../constant":3,"../../util":97,"../base":78}],81:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -12919,7 +12540,7 @@ Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 module.exports = Spell;
 
-},{"../../constant":7,"../../util":101,"../base":82}],86:[function(require,module,exports){
+},{"../../constant":3,"../../util":97,"../base":78}],82:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -12977,7 +12598,7 @@ Spell.prototype._getRandomValue = function( range ) {
 
 module.exports = Spell;
 
-},{"../../constant":7,"../../logic/mersenne":29,"../../util":101,"../base":82}],87:[function(require,module,exports){
+},{"../../constant":3,"../../logic/mersenne":25,"../../util":97,"../base":78}],83:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -13026,7 +12647,7 @@ Spell.prototype.charaImage = function() { return "aya_normal"; };
 
 module.exports = Spell;
 
-},{"../../constant":7,"../../util":101,"../base":82}],88:[function(require,module,exports){
+},{"../../constant":3,"../../util":97,"../base":78}],84:[function(require,module,exports){
 'use strict';
 
 /* TODO:
@@ -13104,7 +12725,7 @@ Spell.prototype._getRandomValue = function( range ) {
 
 module.exports = Spell;
 
-},{"../../constant":7,"../../logic/mersenne":29,"../../util":101,"../base":82}],89:[function(require,module,exports){
+},{"../../constant":3,"../../logic/mersenne":25,"../../util":97,"../base":78}],85:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -13192,7 +12813,7 @@ Spell.prototype.bulletDictionary = function( ) {
 
 module.exports = Spell;
 
-},{"../../constant":7,"../../util":101,"../param_base":83}],90:[function(require,module,exports){
+},{"../../constant":3,"../../util":97,"../param_base":79}],86:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -13278,7 +12899,7 @@ Spell.prototype.initY = function( ) { return 100; };
 
 module.exports = Spell;
 
-},{"../../constant":7,"../../util":101,"../base":82}],91:[function(require,module,exports){
+},{"../../constant":3,"../../util":97,"../base":78}],87:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -13369,7 +12990,7 @@ var spell5_1 = function( ) {
 
 module.exports = Spell;
 
-},{"../../constant":7,"../../util":101,"../param_base":83}],92:[function(require,module,exports){
+},{"../../constant":3,"../../util":97,"../param_base":79}],88:[function(require,module,exports){
 'use strict';
 
 
@@ -13530,7 +13151,7 @@ Spell.prototype.initY = function() { return 100; };
 
 module.exports = Spell;
 
-},{"../../constant":7,"../../logic/manager":28,"../../logic/mersenne":29,"../../object/vector_base":47,"../../util":101,"../base":82}],93:[function(require,module,exports){
+},{"../../constant":3,"../../logic/manager":24,"../../logic/mersenne":25,"../../object/vector_base":43,"../../util":97,"../base":78}],89:[function(require,module,exports){
 'use strict';
 
 /* 幽香 ビーム */
@@ -13726,7 +13347,7 @@ Spell.prototype._getRandomValue = function( range ) {
 
 module.exports = Spell;
 
-},{"../../constant":7,"../../logic/mersenne":29,"../../object/base":33,"../../util":101,"../base":82}],94:[function(require,module,exports){
+},{"../../constant":3,"../../logic/mersenne":25,"../../object/base":29,"../../util":97,"../base":78}],90:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -13831,7 +13452,7 @@ Spell.prototype._getRandomValue = function( range ) {
 
 module.exports = Spell;
 
-},{"../../constant":7,"../../util":101,"../base":82}],95:[function(require,module,exports){
+},{"../../constant":3,"../../util":97,"../base":78}],91:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -13921,7 +13542,7 @@ Spell.prototype.charaImage = function() { return "yukari_normal"; };
 
 module.exports = Spell;
 
-},{"../../constant":7,"../../util":101,"../base":82}],96:[function(require,module,exports){
+},{"../../constant":3,"../../util":97,"../base":78}],92:[function(require,module,exports){
 'use strict';
 
 /* 幽香 蝶を生成するオブジェクト */
@@ -14076,7 +13697,7 @@ Spell.prototype.initY = function() { return 240; };
 
 module.exports = Spell;
 
-},{"../../constant":7,"../../logic/manager":28,"../../object/vector_base":47,"../../util":101,"../base":82}],97:[function(require,module,exports){
+},{"../../constant":3,"../../logic/manager":24,"../../object/vector_base":43,"../../util":97,"../base":78}],93:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -14159,7 +13780,7 @@ Spell.prototype.initY = function() { return 100; };
 
 module.exports = Spell;
 
-},{"../../constant":7,"../../util":101,"../base":82}],98:[function(require,module,exports){
+},{"../../constant":3,"../../util":97,"../base":78}],94:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -14245,7 +13866,7 @@ Spell.prototype.bulletDictionary = function( ) {
 
 module.exports = Spell;
 
-},{"../../constant":7,"../../util":101,"../param_base":83}],99:[function(require,module,exports){
+},{"../../constant":3,"../../util":97,"../param_base":79}],95:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -14334,7 +13955,7 @@ Spell.prototype._getRandomValue = function( range ) {
 
 module.exports = Spell;
 
-},{"../../constant":7,"../../util":101,"../base":82}],100:[function(require,module,exports){
+},{"../../constant":3,"../../util":97,"../base":78}],96:[function(require,module,exports){
 'use strict';
 
 /* スペルカード */
@@ -14439,7 +14060,7 @@ Spell.prototype.charaImage = function() { return "merry_furious"; };
 
 module.exports = Spell;
 
-},{"../../constant":7,"../../util":101,"../base":82}],101:[function(require,module,exports){
+},{"../../constant":3,"../../util":97,"../base":78}],97:[function(require,module,exports){
 'use strict';
 var Util = {
 	// 継承
@@ -14474,7 +14095,7 @@ var Util = {
 
 module.exports = Util;
 
-},{}],102:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*
@@ -14605,7 +14226,7 @@ function(b,a,c,h,d){b.__touch.pointers[a]&&b._handlePointerMove(a,c,h,d)};c._han
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],103:[function(require,module,exports){
+},{}],99:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*
@@ -14632,7 +14253,7 @@ c.length-1;b>=0;b--)a=c[b].id,this._managed[a]==1&&(this.removeChildAt(b),delete
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],104:[function(require,module,exports){
+},{}],100:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /**
@@ -14686,7 +14307,7 @@ a.src,true);if(createjs.PreloadJS.isBinary(a.type))this._request.responseType="a
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],105:[function(require,module,exports){
+},{}],101:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*
@@ -14727,4 +14348,4 @@ function(a,b){var h=Math.PI*2;return function(c){if(c==0||c==1)return c;var e=b/
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[32]);
+},{}]},{},[28]);
