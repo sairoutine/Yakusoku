@@ -14,6 +14,9 @@ npm run build:win
 # trial オプションを true にする
 vim src/js/config.js
 
+# js をビルド
+gulp build
+
 # for mac
 npm run build:trial:mac
 # for win
