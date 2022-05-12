@@ -5794,6 +5794,9 @@ module.exports = EnemiesParams;
 },{"../constant":3}],19:[function(require,module,exports){
 'use strict';
 
+// ゲームのFPSレート
+var FPS = 60;
+
 // FPS計算する間隔(frame)
 var FPS_SPAN = 30;
 
@@ -5813,6 +5816,8 @@ var EndScene   = require('./scene/end');
 
 // ユーザーの設定した項目
 var UserConfig   = require('./logic/user_config');
+
+var FrameLimit = 1000/FPS;
 
 var Game = function(mainCanvas) {
 	// メインCanvas
@@ -5869,6 +5874,9 @@ var Game = function(mainCanvas) {
 	// 経過フレーム数
 	this.frame_count = 0;
 
+	// 前回にゲーム更新をした際の時刻(ミリ秒)
+	this.before_update_time = 0;
+
 	// requestAnimationFrame の ID
 	this.request_id = null;
 
@@ -5899,6 +5907,9 @@ Game.prototype = {
 
 		// requestAnimationFrame の ID
 		this.request_id = null;
+
+		// 前回にゲーム更新をした際の時刻(ミリ秒)
+		this.before_update_time = 0;
 
 		// キー押下フラグ
 		this.keyflag = 0x0;
@@ -6123,8 +6134,24 @@ Game.prototype = {
 		// 経過フレーム数更新
 		this.frame_count++;
 
-		// 次の描画タイミングで再呼び出ししてループ
-		this.request_id = requestAnimationFrame(this.run.bind(this));
+		var now = Date.now();
+		if (now - this.before_update_time >= FrameLimit) {
+			this.before_update_time = now;
+			this.request_id = requestAnimationFrame(this.run.bind(this));
+		}
+		else {
+			// ゲーミングディスプレイなどリフレッシュレートが144Hzのディスプレイの場合、
+			// requestAnimationFrame が 60FPS 以上で実行されることがある。
+			//
+			// 過剰にゲームの更新が行われないように 60FPS より早く更新されそうなときは待つ。
+			var that = this;
+			setTimeout(function() {
+				if (!that.isRunning()) return;
+
+				that.before_update_time = Date.now();
+				that.request_id = requestAnimationFrame(that.run.bind(that));
+			}, this.before_update_time + FrameLimit - now);
+		}
 	},
 	_renderFPS: function() {
 		// FPSをレンダリング
@@ -14096,7 +14123,7 @@ var Util = {
 module.exports = Util;
 
 },{}],98:[function(require,module,exports){
-(function (global){
+(function (global){(function (){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*
 * EaselJS
@@ -14225,9 +14252,9 @@ function(b,a,c,h,d){b.__touch.pointers[a]&&b._handlePointerMove(a,c,h,d)};c._han
 
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],99:[function(require,module,exports){
-(function (global){
+(function (global){(function (){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*
 * EaselJS
@@ -14252,9 +14279,9 @@ c.length-1;b>=0;b--)a=c[b].id,this._managed[a]==1&&(this.removeChildAt(b),delete
 
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],100:[function(require,module,exports){
-(function (global){
+(function (global){(function (){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /**
 * PreloadJS
@@ -14306,9 +14333,9 @@ a.src,true);if(createjs.PreloadJS.isBinary(a.type))this._request.responseType="a
 
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],101:[function(require,module,exports){
-(function (global){
+(function (global){(function (){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*
 * TweenJS
@@ -14347,5 +14374,5 @@ function(a,b){var h=Math.PI*2;return function(c){if(c==0||c==1)return c;var e=b/
 
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}]},{},[28]);
