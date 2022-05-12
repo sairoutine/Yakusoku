@@ -12,23 +12,31 @@
 body {
 	margin:0;
 	padding:0;
-	width:640;
-	height:480;
-	overflow: hidden;
+	width:640px;
+	height:480px
 }
 #canvasdiv {
+	cursor: none;
 	position:relative;
 	width:640px;
 	height:480px
 }
+#mainCanvas {
+	top: 0px;
+	left: 0px;
+	position: absolute;
+}
 #mainCanvas:-webkit-full-screen {
 	height: 100%;
+	position:relative;
+	top: 0px;
+	left: 0px;
 }
 </style>
 </head>
 <body>
 	<div id="canvasdiv">
-		<canvas id="mainCanvas" width="640" height="480" style="position:absolute;left: 0px;top: 0px;"></canvas>
+		<canvas id="mainCanvas" width="640" height="480"></canvas>
 	</div>
 <!--
 <table>
